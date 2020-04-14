@@ -1,0 +1,143 @@
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url('../fonts/SourceSansPro-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Source Sans Pro Italic'), local('SourceSansPro-Italic'), url('../fonts/SourceSansPro-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Source Sans Pro SemiBold'), local('SourceSansPro-SemiBold'), url('../fonts/SourceSansPro-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 600;
+  src: local('Source Sans Pro SemiBold Italic'), local('SourceSansPro-SemiBoldItalic'), url('../fonts/SourceSansPro-SemiBoldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url('../fonts/SourceSansPro-Bold.woff2') format('woff2');
+}
+
+:root {
+  font-family: 'Source Sans Pro';
+  font-size: 13pt;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #ddd;
+  line-height: 140%;
+  max-width: 50rem;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  width: 100%;
+  height: 100%;
+  padding: .5rem;
+  box-sizing: border-box;
+  position: relative;
+  --hue-base: 240;
+  --hue-inc: 80;
+}
+
+.list {
+  overflow: auto;
+}
+
+.list :last-child {
+  margin-bottom: 0;
+}
+
+.cGreen {
+  --hue: 100;
+}
+
+.c1 {
+  --hue: var(--hue-base);
+}
+
+.c2 {
+  --hue: calc(var(--hue-base) + var(--hue-inc));
+}
+
+.c3 {
+  --hue: calc(var(--hue-base) + 2*var(--hue-inc));
+}
+
+.c4 {
+  --hue: calc(var(--hue-base) + 3*var(--hue-inc));
+}
+
+.c5 {
+  --hue: calc(var(--hue-base) + 4*var(--hue-inc));
+}
+
+.color {
+  --color-main: hsl(var(--hue), 90%, 85%);
+  --color-darker: hsl(var(--hue), 90%, 50%);
+}
+
+.colorAll {
+  --color-main: linear-gradient(
+    .32turn,
+    hsl(0, 90%, 85%),
+    hsl(60, 90%, 85%),
+    hsl(120, 90%, 85%),
+    hsl(180, 90%, 85%),
+    hsl(240, 90%, 85%));
+  --color-darker: hsl(0, 0%, 50%);
+}
+
+.log-item {
+  border: 1px solid var(--color-darker);
+  border-radius: .5rem;
+  padding: .2rem .3rem;
+  margin: .5rem 0;
+  background: var(--color-main);
+}
+
+.plus {
+  width: 3rem;
+  height: 3rem;
+  background: hsl(var(--hue), 50%, 50%) url(../images/plus.svg) 50% 50% no-repeat;
+  background-size: 1.2rem;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  border-radius: 2rem;
+  box-shadow: .1rem .1rem .3rem rgba(0, 0, 0, .3);
+  text-align: center;
+}
+
+.col-sel {
+  display: inline-block;
+  width: 1ex;
+  height: 1ex;
+  padding: .2ex;
+  margin: 0 .25rem;
+  background: var(--color-main);
+  border: 1px solid var(--color-darker);
+  border-radius: .1rem;
+}
