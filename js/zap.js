@@ -1,14 +1,12 @@
+'use strict';
+
 var db;
 var gid;
 
-function error(e) {
-  return function() { alert(e); }
-}
-
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', () => {
   //indexedDB.deleteDatabase('spa');
   let rq = indexedDB.open('spa', 1);
-  rq.onupgradeneeded = function(e) {
+  rq.onupgradeneeded = e => {
     db = e.target.result;
     if(e.oldVersion === 0) {
       let sGames = db.createObjectStore('zap-hry', { keyPath: 'id', autoIncrement: true });
@@ -16,13 +14,13 @@ window.addEventListener('DOMContentLoaded', function() {
       sNotes.createIndex('gid', 'gid', { unique: false });
     }
   };
-  rq.onsuccess = function(e) {
+  rq.onsuccess = e => {
     db = e.target.result;
     let tx = db.transaction('zap-hry', 'readonly');
     let os = tx.objectStore('zap-hry');
     let rq = os.getAllKeys();
-    rq.onerror = error('Error getAllKeys');
-    rq.onsuccess = function(e) {
+    rq.onerror = console.log;
+    rq.onsuccess = e => {
       let keys = e.target.result;
       if(keys.length > 0) {
         gid = keys[0];
@@ -32,7 +30,7 @@ window.addEventListener('DOMContentLoaded', function() {
         addTestData();
     }
   };
-  rq.onerror = error('Error creating IndexedDB');
+  rq.onerror = console.log;
 });
 
 function addTestData() {
@@ -45,8 +43,8 @@ function addTestData() {
   };
 
   let rq = os.add(item);
-  rq.onerror = error('Error adding test data (hry)');
-  rq.onsuccess = function(e) {
+  rq.onerror = console.log;
+  rq.onsuccess = e => {
     gid = e.target.result;
     let tx = db.transaction('zap-zaz', 'readwrite');
     let os = tx.objectStore('zap-zaz');
@@ -57,11 +55,11 @@ function addTestData() {
       { tag: 4, text: 'Nápověda' },
       { tag: 5, text: 'Adresa' }
     ];
-    items.forEach(function(item) {
+    items.forEach(item => {
       item.gid = gid;
       os.add(item);
     });
-    tx.onerror = error('Error adding test data (zaz)');
+    tx.onerror = console.log;
     tx.oncomplete = refreshItems;
   }
 }
@@ -71,18 +69,18 @@ function refreshItems() {
   let os = tx.objectStore('zap-zaz');
   let ix = os.index('gid');
   let rq = ix.getAll(gid);
-  rq.onsuccess = function(e) {
+  rq.onsuccess = e => {
     let results = e.target.result;
     let cont = document.getElementById('list');
     while(cont.firstChild) {
       cont.removeChild(cont.firstChild);
     }
-    results.forEach(function(item) {
+    results.forEach(item => {
       let div = document.createElement('div');
       div.classList.add('color', 'c' + item.tag, 'log-item');
       div.innerText = item.text;
       cont.appendChild(div);
     });
   };
-  rq.onerror = error('Error refreshing items');
+  rq.onerror = console.log;
 }
