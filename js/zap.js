@@ -93,6 +93,28 @@ function loadItems() {
   rq.onerror = console.log;
 }
 
+function closeOpenItems() {
+  let count = 0;
+  [...document.querySelectorAll('[data-open]')].forEach(div => {
+    if(div.classList.contains('processing'))
+      return;
+    else if(!div.hasAttribute('data-id')) {
+      document.getElementById('list').removeChild(div);
+      count++;
+    } else {
+      finishEditing(div);
+      count++;
+    }
+  });
+  return count;
+}
+
+function findParent(elm, cls) {
+  while(!elm.classList.contains(cls))
+    elm = elm.parentElement;
+  return elm;
+}
+
 function plus(e) {
   closeOpenItems();
   let cont = document.getElementById('list');
@@ -101,12 +123,6 @@ function plus(e) {
   [...div.querySelectorAll('.col-sel')].forEach(elm =>
     elm.addEventListener('click', newColor));
   cont.appendChild(div);
-}
-
-function findParent(elm, cls) {
-  while(!elm.classList.contains(cls))
-    elm = elm.parentElement;
-  return elm;
 }
 
 function newColor(e) {
@@ -146,28 +162,16 @@ function editItem(div) {
     ta.value = span.innerText;
     div.removeChild(span);
   }
+  ta.addEventListener('input', () => {
+    div.setAttribute('data-changed', '');
+    setTimeout(autosave, 300, div);
+  });
   div.appendChild(ta);
   ta.focus();
 }
 
-function closeOpenItems() {
-  let count = 0;
-  [...document.querySelectorAll('[data-open]')].forEach(div => {
-    if(div.classList.contains('processing'))
-      return;
-    else if(!div.hasAttribute('data-id')) {
-      document.getElementById('list').removeChild(div);
-      count++;
-    } else {
-      finishEditing(div);
-      count++;
-    }
-  });
-  return count;
-}
-
 function finishEditing(div) {
-  div.classList.add('processing');
+  autosave(div);
   let ta = div.querySelector('textarea');
   let span = document.createElement('span');
   span.classList.add('zaz-text');
@@ -175,15 +179,22 @@ function finishEditing(div) {
   div.removeChild(ta);
   div.appendChild(span);
   div.removeAttribute('data-open');
+}
 
+function autosave(div) {
+  if(!div.hasAttribute('data-changed'))
+    return;
+  div.classList.add('processing');
   let id = +div.getAttribute('data-id');
   let tag = div.getAttribute('data-tag');
   let tx = db.transaction('zap-zaz', 'readwrite');
   let os = tx.objectStore('zap-zaz');
+  let ta = div.querySelector('textarea');
   let item = { id, tag, gid, text: ta.value };
   let rq = os.put(item);
   rq.onerror = console.log;
   rq.onsuccess = () => {
     div.classList.remove('processing');
+    div.removeAttribute('data-changed');
   };
 }
