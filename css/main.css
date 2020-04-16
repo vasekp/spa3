@@ -135,7 +135,7 @@ main {
   --color-darker: hsl(0, 0%, 50%);
 }
 
-.log-item {
+.log-rec {
   border: 1px solid var(--color-darker);
   border-radius: .5rem;
   padding: .2rem .3rem;
@@ -178,12 +178,13 @@ main {
   opacity: .5;
 }
 
-.log-item {
+.log-rec span {
   min-height: 1em;
 }
 
-.log-item textarea {
+.log-rec textarea {
   border: none;
+  outline: none;
   background: inherit;
   font: inherit;
   box-sizing: border-box;
