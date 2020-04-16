@@ -96,25 +96,15 @@ main {
   margin-bottom: 0;
 }
 
-.c1 {
-  --hue: var(--hue-base);
-}
-
-.c2 {
-  --hue: calc(var(--hue-base) + var(--hue-inc));
-}
-
-.c3 {
-  --hue: calc(var(--hue-base) + 2*var(--hue-inc));
-}
-
-.c4 {
-  --hue: calc(var(--hue-base) + 3*var(--hue-inc));
-}
-
-.c5 {
-  --hue: calc(var(--hue-base) + 4*var(--hue-inc));
-}
+.c1 { --hue: var(--hue-base); }
+.c2 { --hue: calc(var(--hue-base) + var(--hue-inc)); }
+.c3 { --hue: calc(var(--hue-base) + 2*var(--hue-inc)); }
+.c4 { --hue: calc(var(--hue-base) + 3*var(--hue-inc)); }
+.c5 { --hue: calc(var(--hue-base) + 4*var(--hue-inc)); }
+.c6 { --hue: calc(var(--hue-base) + 5*var(--hue-inc)); }
+.c7 { --hue: calc(var(--hue-base) + 6*var(--hue-inc)); }
+.c8 { --hue: calc(var(--hue-base) + 7*var(--hue-inc)); }
+.c9 { --hue: calc(var(--hue-base) + 8*var(--hue-inc)); }
 
 .color {
   --color-main: hsl(var(--hue), 90%, 85%);
