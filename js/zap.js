@@ -74,21 +74,9 @@ function loadItems() {
   rq.onsuccess = e => {
     let results = e.target.result;
     let cont = document.getElementById('list');
-    while(cont.firstChild) {
+    while(cont.firstChild)
       cont.removeChild(cont.firstChild);
-    }
-    results.forEach(item => {
-      let div = document.createElement('div');
-      div.setAttribute('data-id', item.id);
-      div.setAttribute('data-tag', item.tag);
-      div.classList.add('color', 'c' + item.tag, 'log-item');
-      let span = document.createElement('span');
-      span.classList.add('zaz-text');
-      span.innerText = item.text;
-      div.appendChild(span);
-      div.addEventListener('click', () => editItem(div));
-      cont.appendChild(div);
-    });
+    results.forEach(item => addItem(item.tag, item.id, item.text));
   };
   rq.onerror = console.log;
 }
@@ -109,32 +97,33 @@ function closeOpenItems() {
   return count;
 }
 
-function findParent(elm, cls) {
-  while(!elm.classList.contains(cls))
-    elm = elm.parentElement;
-  return elm;
+function templateClone(id) {
+  return document.getElementById(id).content.firstElementChild.cloneNode(true);
 }
 
 function plus(e) {
   closeOpenItems();
-  let cont = document.getElementById('list');
-  let div = document.getElementById('zaz-new').content.firstElementChild.cloneNode(true);
+  let div = templateClone('zaz-new');
   div.setAttribute('data-open', '');
   [...div.querySelectorAll('.col-sel')].forEach(elm =>
-    elm.addEventListener('click', newColor));
-  cont.appendChild(div);
+    elm.addEventListener('click', () => newItem(elm.getAttribute('data-tag'))));
+  document.getElementById('list').appendChild(div);
 }
 
-function newColor(e) {
-  let elm = e.currentTarget;
-  let tag = elm.getAttribute('data-tag');
-  let div = findParent(elm, 'log-item');
-  div.classList.remove('colorTemp');
-  div.classList.add('color', 'c' + tag);
+function addItem(tag, id, text) {
+  let div = templateClone('log-item');
+  div.setAttribute('data-id', id);
   div.setAttribute('data-tag', tag);
-  div.removeChild(div.querySelector('.log-colorsel'));
-  div.classList.add('processing');
+  div.classList.add('color', 'c' + tag);
+  let span = div.querySelector('.zaz-text');
+  span.innerText = text;
+  div.addEventListener('click', () => editItem(div));
+  document.getElementById('list').appendChild(div);
+  return div;
+}
 
+function newItem(tag) {
+  closeOpenItems();
   let tx = db.transaction('zap-zaz', 'readwrite');
   let os = tx.objectStore('zap-zaz');
   let item = { tag, gid, text: '' };
@@ -142,12 +131,9 @@ function newColor(e) {
   rq.onerror = console.log;
   rq.onsuccess = e => {
     let id = e.target.result;
-    div.classList.remove('processing');
-    div.setAttribute('data-id', id);
-    div.removeAttribute('data-open');
-    div.addEventListener('click', () => editItem(div));
-    editItem(div);
-  }
+    let div = addItem(tag, id, '');
+    div.click();
+  };
 }
 
 function editItem(div) {
