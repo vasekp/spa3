@@ -140,31 +140,32 @@ function newRecord(tag) {
 function editRecord(div) {
   if(div.hasAttribute('data-open'))
     return;
-  if(closeOpenItems() > 0)
-    return;
   div.setAttribute('data-open', '');
   let span = div.querySelector('.rec-text');
   let ta = document.createElement('textarea');
-  if(span) {
-    ta.value = span.innerText;
-    div.removeChild(span);
-  }
+  ta.value = span.innerText;
+  span.style.visibility = 'hidden';
   ta.addEventListener('input', () => {
+    span.innerText = ta.value;
     div.setAttribute('data-changed', '');
     setTimeout(autosave, 300, div);
   });
-  div.appendChild(ta);
+  ta.addEventListener('keydown', e => {
+    if(e.key === "Enter") {
+      finishEditing(div);
+      e.preventDefault();
+    }
+  });
+  div.querySelector('.cont-box').appendChild(ta);
   ta.focus();
 }
 
 function finishEditing(div) {
   autosave(div);
   let ta = div.querySelector('textarea');
-  let span = document.createElement('span');
-  span.classList.add('rec-text');
-  span.innerText = ta.value;
-  div.removeChild(ta);
-  div.appendChild(span);
+  let span = div.querySelector('.rec-text');
+  span.style.visibility = 'visible';
+  div.querySelector('.cont-box').removeChild(ta);
   div.removeAttribute('data-open');
 }
 
