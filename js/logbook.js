@@ -4,6 +4,7 @@ var db;
 var gid;
 var list;
 var autosaveTimer;
+var touch;
 
 window.addEventListener('DOMContentLoaded', () => {
   list = document.getElementById('log-list');
@@ -122,6 +123,10 @@ function addRecord(tag, id, text) {
   let span = div.querySelector('.rec-text');
   span.innerText = text;
   div.addEventListener('click', () => editRecord(div));
+  div.addEventListener('pointerdown', pDown);
+  div.addEventListener('pointerup', pUp);
+  div.addEventListener('pointermove', pMove);
+  div.addEventListener('pointercancel', pCancel);
   list.appendChild(div);
   return div;
 }
@@ -193,6 +198,16 @@ function autosave(div) {
   };
 }
 
+function deleteRecord(div) {
+  closeOpenItems();
+  let tx = db.transaction('log-rec', 'readwrite');
+  let os = tx.objectStore('log-rec');
+  let id = +div.getAttribute('data-id');
+  let rq = os.delete(id);
+  rq.onerror = console.log;
+  rq.onsuccess = () => div.remove();
+}
+
 function filterTag(tag) {
   closeOpenItems();
   let sel = {};
@@ -217,4 +232,74 @@ function filterTag(tag) {
 
   [...document.querySelectorAll('.log-rec')].forEach(elm =>
     elm.classList.toggle('hide', !sel[elm.getAttribute('data-tag')]));
+}
+
+function pActive(elm) {
+  return elm.hasAttribute('data-pointer');
+}
+
+function pDown(e) {
+  let elm = e.currentTarget;
+  if(pActive(elm) || elm.hasAttribute('data-open'))
+    return;
+  elm.setAttribute('data-pointer', e.pointerId);
+  elm.setPointerCapture(e.pointerId);
+  touch = {
+    x: e.x,
+    t: e.timeStamp,
+    w: elm.clientWidth
+  };
+}
+
+function pUp(e) {
+  let elm = e.currentTarget;
+  if(!pActive(elm) || elm.getAttribute('data-pointer') != e.pointerId)
+    return;
+  elm.removeAttribute('data-pointer');
+  elm.releasePointerCapture(e.pointerId);
+  let dx = (e.x - touch.x) / touch.w;
+  let vx = dx / (e.timeStamp - touch.t) * 1000;
+  if(Math.abs(dx) > .5 || (Math.abs(vx) > 1 && dx*vx > 0))
+    finishMove(elm, dx);
+  else
+    revertMove(elm);
+}
+
+function pMove(e) {
+  let elm = e.currentTarget;
+  if(!pActive(elm) || elm.getAttribute('data-pointer') != e.pointerId)
+    return;
+  closeOpenItems();
+  let dx = e.x - touch.x;
+  elm.style.transform = `translateX(${dx}px)`;
+}
+
+function pCancel(e) {
+  let elm = e.currentTarget;
+  if(!pActive(elm) || elm.getAttribute('data-pointer') != e.pointerId)
+    return;
+  elm.removeAttribute('data-pointer');
+  elm.releasePointerCapture(e.pointerId);
+  revertMove(elm);
+}
+
+function revertMove(div) {
+  div.style.transition = 'transform .5s';
+  div.style.transform = '';
+  let cb = () => {
+    div.style.transition = '';
+    div.removeEventListener('transitionend', cb);
+  };
+  div.addEventListener('transitionend', cb);
+}
+
+function finishMove(div, dir) {
+  div.style.transition = 'transform .5s';
+  div.style.transform = `translateX(${dir > 0 ? '120%' : '-120%'})`;
+  let cb = () => {
+    div.style.transition = '';
+    div.removeEventListener('transitionend', cb);
+    deleteRecord(div);
+  };
+  div.addEventListener('transitionend', cb);
 }
