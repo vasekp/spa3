@@ -39,7 +39,6 @@
   line-height: 1.4em;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
 }
 
 body {
@@ -48,7 +47,6 @@ body {
   margin: 0 auto;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
 }
 
 main {
@@ -64,8 +62,9 @@ main {
   --hue-inc: 80;
 }
 
-#list {
-  overflow: auto;
+#log-list {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @keyframes loading {
@@ -132,12 +131,14 @@ main {
   height: 3rem;
   background: hsl(100, 50%, 50%) url(../images/plus.svg) 50% 50% no-repeat;
   background-size: 1.2rem;
-  position: absolute;
+  position: fixed;
   right: 1rem;
   bottom: 1rem;
   border-radius: 2rem;
   box-shadow: .1rem .1rem .3rem rgba(0, 0, 0, .3);
   text-align: center;
+  z-index: 1;
+  transform: translateZ(0);
 }
 
 .col-sel {

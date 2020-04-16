@@ -79,8 +79,7 @@ function loadRecords() {
   let rq = ix.getAll(gid);
   rq.onsuccess = e => {
     let results = e.target.result;
-    while(list.firstChild)
-      list.removeChild(list.firstChild);
+    document.getElementById('loading').remove();
     results.forEach(record => addRecord(record.tag, record.id, record.text));
   };
   rq.onerror = console.log;
@@ -113,6 +112,8 @@ function plus(e) {
   [...div.querySelectorAll('.col-sel')].forEach(elm =>
     elm.addEventListener('click', () => newRecord(elm.getAttribute('data-tag'))));
   list.appendChild(div);
+  div.scrollIntoView();
+  e.preventDefault();
 }
 
 function addRecord(tag, id, text) {
@@ -141,7 +142,7 @@ function newRecord(tag) {
   rq.onsuccess = e => {
     let id = e.target.result;
     let div = addRecord(tag, id, '');
-    div.click();
+    editRecord(div);
   };
 }
 
@@ -271,7 +272,10 @@ function pMove(e) {
     return;
   closeOpenItems();
   let dx = e.x - touch.x;
-  elm.style.transform = `translateX(${dx}px)`;
+  if(Math.abs(dx) < 0.05 * touch.w)
+    elm.style.transform = '';
+  else
+    elm.style.transform = `translateX(${dx}px)`;
 }
 
 function pCancel(e) {
