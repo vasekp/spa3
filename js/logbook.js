@@ -8,6 +8,8 @@ window.addEventListener('DOMContentLoaded', () => {
   list = document.getElementById('log-list');
   prepareDatabase();
   document.getElementById('plus').addEventListener('click', plus);
+  [...document.querySelectorAll('.log-fil .col-sel')].forEach(elm =>
+    elm.addEventListener('click', () => filterTag(elm.getAttribute('data-tag'))));
 });
 
 function prepareDatabase() {
@@ -185,4 +187,30 @@ function autosave(div) {
     div.classList.remove('processing');
     div.removeAttribute('data-changed');
   };
+}
+
+function filterTag(tag) {
+  closeOpenItems();
+  let sel = {};
+  [...document.querySelectorAll('.log-fil .col-sel')].forEach(elm =>
+    sel[elm.getAttribute('data-tag')] = elm.hasAttribute('data-selected'));
+  if(tag === 'all') {
+    for(let i in sel)
+      sel[i] = true;
+  } else if(sel.all) {
+    for(let i in sel)
+      sel[i] = i === tag;
+  } else {
+    sel[tag] = !sel[tag];
+    let empty = Object.values(sel).every(x => !x);
+    if(empty) {
+      for(let i in sel)
+        sel[i] = true;
+    }
+  }
+  [...document.querySelectorAll('.log-fil .col-sel')].forEach(elm =>
+    elm.toggleAttribute('data-selected', sel[elm.getAttribute('data-tag')]));
+
+  [...document.querySelectorAll('.log-rec')].forEach(elm =>
+    elm.classList.toggle('hide', !sel[elm.getAttribute('data-tag')]));
 }

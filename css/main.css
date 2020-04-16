@@ -165,6 +165,10 @@ main {
   display: none;
 }
 
+.col-sel:not([data-selected]) {
+  opacity: .5;
+}
+
 [data-processing] {
   transition: opacity .5s ease-in;
   opacity: .5;
