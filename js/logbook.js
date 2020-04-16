@@ -50,7 +50,7 @@ function addTestData() {
   let os = tx.objectStore('log-gid');
   let rec = {
     name: 'ABC',
-    date: new Date()
+    date: Date.now()
   };
 
   let rq = os.add(rec);
@@ -59,12 +59,13 @@ function addTestData() {
     gid = e.target.result;
     let tx = db.transaction('log-rec', 'readwrite');
     let os = tx.objectStore('log-rec');
+    let date = Date.now()
     let records = [
-      { tag: 1, gid, text: 'Příchod' },
-      { tag: 2, gid, text: 'Upřesnítko' },
-      { tag: 3, gid, text: 'Mezitajenka' },
-      { tag: 4, gid, text: 'Nápověda' },
-      { tag: 5, gid, text: 'Adresa' }
+      { tag: 1, gid, date, text: 'Příchod' },
+      { tag: 2, gid, date, text: 'Upřesnítko' },
+      { tag: 3, gid, date, text: 'Mezitajenka' },
+      { tag: 4, gid, date, text: 'Nápověda' },
+      { tag: 5, gid, date, text: 'Adresa' }
     ];
     records.forEach(i => os.add(i));
     tx.onerror = console.log;
@@ -79,8 +80,10 @@ function loadRecords() {
   let rq = ix.getAll(gid);
   rq.onsuccess = e => {
     let results = e.target.result;
-    document.getElementById('loading').remove();
-    results.forEach(record => addRecord(record.tag, record.id, record.text));
+    while(list.firstChild)
+      list.removeChild(list.firstChild);
+    results.forEach(record => addRecord(record));
+    updateDiffs();
   };
   rq.onerror = console.log;
 }
@@ -116,13 +119,15 @@ function plus(e) {
   e.preventDefault();
 }
 
-function addRecord(tag, id, text) {
+function addRecord(record) {
   let div = templateClone('log-rec');
-  div.setAttribute('data-id', id);
-  div.setAttribute('data-tag', tag);
-  div.classList.add('color', 'c' + tag);
-  let span = div.querySelector('.rec-text');
-  span.innerText = text;
+  div.setAttribute('data-id', record.id);
+  div.setAttribute('data-tag', record.tag);
+  div.setAttribute('data-date', record.date);
+  div.classList.add('color', 'c' + record.tag);
+  div.querySelector('.rec-text').innerText = record.text;
+  let fmt = new Intl.DateTimeFormat('cs', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }).format;
+  div.querySelector('.rec-timestamp').innerText = fmt(record.date);
   div.addEventListener('click', () => editRecord(div));
   div.addEventListener('pointerdown', pDown);
   div.addEventListener('pointerup', pUp);
@@ -136,12 +141,15 @@ function newRecord(tag) {
   closeOpenItems();
   let tx = db.transaction('log-rec', 'readwrite');
   let os = tx.objectStore('log-rec');
-  let record = { tag, gid, text: '' };
+  let date = Date.now();
+  let record = { tag, gid, date, text: '' };
   let rq = os.add(record);
   rq.onerror = console.log;
   rq.onsuccess = e => {
     let id = e.target.result;
-    let div = addRecord(tag, id, '');
+    let record = { tag, id, date, text: '' };
+    let div = addRecord(record);
+    updateDiffs();
     editRecord(div);
   };
 }
@@ -167,7 +175,7 @@ function editRecord(div) {
       e.preventDefault();
     }
   });
-  div.querySelector('.cont-box').appendChild(ta);
+  div.querySelector('.rec-cont-box').appendChild(ta);
   ta.focus();
 }
 
@@ -176,7 +184,7 @@ function finishEditing(div) {
   let ta = div.querySelector('textarea');
   let span = div.querySelector('.rec-text');
   span.style.visibility = 'visible';
-  div.querySelector('.cont-box').removeChild(ta);
+  div.querySelector('.rec-cont-box').removeChild(ta);
   div.removeAttribute('data-open');
 }
 
@@ -187,10 +195,11 @@ function autosave(div) {
   div.classList.add('processing');
   let id = +div.getAttribute('data-id');
   let tag = div.getAttribute('data-tag');
+  let date = div.getAttribute('data-date');
   let tx = db.transaction('log-rec', 'readwrite');
   let os = tx.objectStore('log-rec');
   let ta = div.querySelector('textarea');
-  let record = { id, tag, gid, text: ta.value };
+  let record = { id, tag, gid, date, text: ta.value };
   let rq = os.put(record);
   rq.onerror = console.log;
   rq.onsuccess = () => {
@@ -206,7 +215,10 @@ function deleteRecord(div) {
   let id = +div.getAttribute('data-id');
   let rq = os.delete(id);
   rq.onerror = console.log;
-  rq.onsuccess = () => div.remove();
+  rq.onsuccess = () => {
+    div.remove();
+    updateDiffs();
+  };
 }
 
 function filterTag(tag) {
@@ -230,9 +242,9 @@ function filterTag(tag) {
   }
   [...document.querySelectorAll('.log-fil .col-sel')].forEach(elm =>
     elm.toggleAttribute('data-selected', sel[elm.getAttribute('data-tag')]));
-
   [...document.querySelectorAll('.log-rec')].forEach(elm =>
     elm.classList.toggle('hide', !sel[elm.getAttribute('data-tag')]));
+  updateDiffs();
 }
 
 function pActive(elm) {
@@ -306,4 +318,35 @@ function finishMove(div, dir) {
     deleteRecord(div);
   };
   div.addEventListener('transitionend', cb);
+}
+
+function updateDiffs() {
+  let oldDate = null;
+  [...document.querySelectorAll('.log-rec:not(.hide)')].forEach(div => {
+    let newDate = div.getAttribute('data-date');
+    let span = div.querySelector('.rec-timediff');
+    if(oldDate) {
+      span.innerText = formatDiff(newDate - oldDate);
+      span.hidden = false;
+    } else
+      span.hidden = true;
+    oldDate = newDate;
+  });
+}
+
+function formatDiff(diff) {
+  let diffText = '+';
+  diff = Math.floor(diff / 1000);
+  let sec = diff % 60;
+  diff = Math.floor(diff / 60);
+  let min = diff % 60;
+  let hrs = Math.floor(diff / 60);
+  if(hrs >= 24)
+    diffText += Math.floor(hrs / 24) + 'd ';
+  if(hrs >= 1)
+    diffText += (hrs % 24) + ':' + min.toString().padStart(2, '0');
+  else
+    diffText += min;
+  diffText += ':' + sec.toString().padStart(2, '0');
+  return diffText;
 }

@@ -108,6 +108,7 @@ main {
 .color {
   --color-main: hsl(var(--hue), 90%, 85%);
   --color-darker: hsl(var(--hue), 90%, 50%);
+  --color-text: hsl(var(--hue), 50%, 25%);
 }
 
 .colorAll {
@@ -168,15 +169,29 @@ main {
 }
 
 .log-rec {
-  border: 1px solid var(--color-darker);
+  --border: 1px solid var(--color-darker);
+  border: var(--border);
   border-radius: .5rem;
-  padding: .2rem .3rem;
   margin: .5rem 0;
   background: var(--color-main);
   touch-action: pan-y;
 }
 
-.log-rec .cont-box {
+.rec-header {
+  display: flex;
+  border-bottom: var(--border);
+  font-size: 80%;
+  line-height: .8rem;
+  color: var(--color-text);
+}
+
+.rec-header > span {
+  padding: 0 1em;
+  border-right: var(--border);
+}
+
+.rec-cont-box {
+  margin: .2rem;
   min-height: 1.4em;
   position: relative;
 }
