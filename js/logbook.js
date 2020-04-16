@@ -3,6 +3,7 @@
 var db;
 var gid;
 var list;
+var autosaveTimer;
 
 window.addEventListener('DOMContentLoaded', () => {
   list = document.getElementById('log-list');
@@ -150,7 +151,9 @@ function editRecord(div) {
   ta.addEventListener('input', () => {
     span.innerText = ta.value;
     div.setAttribute('data-changed', '');
-    setTimeout(autosave, 300, div);
+    if(autosaveTimer)
+      clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(autosave, 300, div);
   });
   ta.addEventListener('keydown', e => {
     if(e.key === "Enter") {
@@ -172,6 +175,7 @@ function finishEditing(div) {
 }
 
 function autosave(div) {
+  autosaveTimer = null;
   if(!div.hasAttribute('data-changed'))
     return;
   div.classList.add('processing');
