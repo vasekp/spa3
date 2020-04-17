@@ -1,0 +1,34 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 0 .25rem;
+}
+
+:host(:not([selected])) {
+  opacity: .5;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+@keyframes loading {
+  0% { color: transparent; }
+  40% { color: black; }
+  80% { color: transparent; }
+  100% { color: transparent; }
+}
+
+span {
+  color: transparent;
+  animation: 3s loading ease-in-out infinite running;
+  margin: 0 .1em;
+}
+
+span:nth-of-type(2) {
+  animation-delay: .5s;
+}
+
+span:nth-of-type(3) {
+  animation-delay: 1s;
+}

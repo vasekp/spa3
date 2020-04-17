@@ -1,0 +1,28 @@
+.colors-var {
+  --hue: calc(160 + 80 * var(--color));
+  --color-main: hsl(var(--hue), 90%, 85%);
+  --color-border: hsl(var(--hue), 90%, 50%);
+  --color-text: hsl(var(--hue), 50%, 25%);
+}
+
+.colors-all {
+  --color-main: linear-gradient(
+    .32turn,
+    hsl(0, 90%, 85%),
+    hsl(60, 90%, 85%),
+    hsl(120, 90%, 85%),
+    hsl(180, 90%, 85%),
+    hsl(240, 90%, 85%));
+  --color-border: hsl(0, 0%, 50%);
+  --color-text: hsl(0, 0%, 25%);
+}
+
+.colors-temp {
+  --color-main: hsl(0, 0%, 85%);
+  --color-border: hsl(0, 0%, 50%);
+  --color-text: hsl(0, 0%, 25%);
+}
+
+.colors-var, .colors-all, .colors-temp {
+  --border: 1px solid var(--color-border);
+}

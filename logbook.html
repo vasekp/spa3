@@ -4,6 +4,10 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0"/>
     <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <script type="text/javascript" src="components/loading.js"></script>
+    <script type="text/javascript" src="components/colorsel.js"></script>
+    <script type="text/javascript" src="components/live-list.js"></script>
+    <script type="text/javascript" src="components/logbook-record.js"></script>
     <script type="text/javascript" src="js/logbook.js"></script>
   </head>
   <body>
@@ -12,48 +16,13 @@
         <span>Záznam:</span>
         <span>2.1.2020 ABC</span>
       </div>
-      <div class="log-fil">
+      <div>
         <span>Filtr:</span>
-        <span class="color c1 col-sel" data-selected data-tag="1"></span>
-        <span class="color c2 col-sel" data-selected data-tag="2"></span>
-        <span class="color c3 col-sel" data-selected data-tag="3"></span>
-        <span class="color c4 col-sel" data-selected data-tag="4"></span>
-        <span class="color c5 col-sel" data-selected data-tag="5"></span>
-        <span class="color c6 col-sel" data-selected data-tag="6"></span>
-        <span class="color c7 col-sel" data-selected data-tag="7"></span>
-        <span class="color c8 col-sel" data-selected data-tag="8"></span>
-        <span class="color c9 col-sel" data-selected data-tag="9"></span>
-        <span class="colorAll col-sel" data-selected data-tag="all"></span>
+        <spa-color-filter id="tag-filter"></spa-color-filter>
       </div>
-      <div id="log-list">
-        <div id="loading"><span>●</span> <span>●</span> <span>●</span></div>
-      </div>
-      <template id="log-rec">
-        <div class="log-rec">
-          <div class="rec-header">
-            <span class="rec-timestamp"></span>
-            <span class="rec-timediff"></span>
-          </div>
-          <div class="rec-cont-box">
-            <span class="rec-text"></span>
-          </div>
-        </div>
-      </template>
-      <template id="log-rec-new">
-        <div class="colorTemp log-rec">
-          <div class="rec-cont-box rec-colorsel">
-            <span class="color c1 col-sel" data-tag="1"></span>
-            <span class="color c2 col-sel" data-tag="2"></span>
-            <span class="color c3 col-sel" data-tag="3"></span>
-            <span class="color c4 col-sel" data-tag="4"></span>
-            <span class="color c5 col-sel" data-tag="5"></span>
-            <span class="color c6 col-sel" data-tag="6"></span>
-            <span class="color c7 col-sel" data-tag="7"></span>
-            <span class="color c8 col-sel" data-tag="8"></span>
-            <span class="color c9 col-sel" data-tag="9"></span>
-          </div>
-        </div>
-      </template>
+      <spa-live-list id="log-list">
+        <spa-loading></spa-loading>
+      </spa-live-list>
       <div id="plus"></div>
     </main>
   </body>

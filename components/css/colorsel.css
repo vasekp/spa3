@@ -1,0 +1,28 @@
+:host {
+  display: inline-block;
+  margin: 0 .25rem;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+#container {
+  display: flex;
+}
+
+.patch {
+  width: 1ex;
+  height: 1ex;
+  padding: .2ex;
+  position: relative;
+  bottom: -.05em;
+  background: var(--color-main);
+  border: var(--border);
+  border-radius: .1rem;
+  margin-right: .5rem;
+}
+
+.patch.filter:not(.selected) {
+  opacity: .5;
+}
