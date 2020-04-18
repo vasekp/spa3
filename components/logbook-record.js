@@ -109,7 +109,7 @@
       return !this._record;
     }
 
-    save(rev) {
+    notifySaved(rev) {
       if(rev === this._rev && !this._open)
         clearInterval(this._timer);
       this._lastSave = rev;

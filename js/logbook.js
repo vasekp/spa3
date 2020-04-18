@@ -93,6 +93,7 @@ function plus(e) {
   closeAll();
   let elm = document.createElement('log-record');
   list.appendChild(elm);
+  elm.setAttribute('data-protected', '');
   elm.scrollIntoView();
   e.preventDefault();
 }
@@ -106,6 +107,9 @@ function addRecord(record) {
 
 function materialize(elm, tag) {
   closeExcept(elm);
+  if(elm.classList.contains('processing'))
+    return;
+  elm.classList.add('processing');
   let tx = db.transaction('log-rec', 'readwrite');
   let os = tx.objectStore('log-rec');
   let date = Date.now();
@@ -114,6 +118,8 @@ function materialize(elm, tag) {
   rq.onerror = console.log;
   rq.onsuccess = e => {
     record.id = e.target.result;
+    elm.removeAttribute('data-protected');
+    elm.classList.remove('processing');
     elm.record = record;
     updateDiffs();
     elm.open();
@@ -127,7 +133,7 @@ function autosave(elm, rev) {
   let rq = os.put(elm.record);
   rq.onerror = console.log;
   rq.onsuccess = () => {
-    elm.save(rev);
+    elm.notifySaved(rev);
     elm.classList.remove('processing');
   };
 }

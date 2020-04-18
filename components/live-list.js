@@ -10,20 +10,30 @@
       this._slot.addEventListener('slotchange', () => this._updateElements());
       this.shadowRoot.appendChild(this._slot);
       this._tracking = {};
+      this._cb = {  // Need callback references for harmless reassigning
+        down: this._pDown.bind(this),
+        up: this._pUp.bind(this),
+        move: this._pMove.bind(this),
+        cancel: this._pCancel.bind(this)
+      };
     }
 
     _updateElements() {
       [...this._slot.assignedElements()].forEach(elm => {
-        elm.addEventListener('pointerdown', e => this._pDown(e));
-        elm.addEventListener('pointerup', e => this._pUp(e));
-        elm.addEventListener('pointermove', e => this._pMove(e));
-        elm.addEventListener('pointercancel', e => this._pCancel(e));
+        elm.addEventListener('pointerdown', this._cb.down);
+        elm.addEventListener('pointerup', this._cb.up);
+        elm.addEventListener('pointermove', this._cb.move);
+        elm.addEventListener('pointercancel', this._cb.cancel);
       });
+      if(this._tracking.elm && !this._slot.assignedElements().includes(this._tracking.elm))
+        this._tracking = {};
     }
 
     _pDown(e) {
       let elm = e.currentTarget;
-      if(this._tracking.elm) // protect
+      if(this._tracking.elm)
+        return;
+      if(elm.hasAttribute('data-protected'))
         return;
       elm.setPointerCapture(e.pointerId);
       this._tracking = {
@@ -55,7 +65,7 @@
           }));
         }
       }
-      elm.style.transform = `translateX(${dx}px)`;
+      elm.style.transform = dx ? `translateX(${dx}px)` : '';
     }
 
     _pUp(e) {
@@ -82,16 +92,17 @@
     }
 
     _revertMove(elm) {
+      if(!elm.style.transform)
+        return;
       elm.style.transition = 'transform .5s';
       elm.style.transform = '';
       let cb = () => {
         elm.style.transition = '';
-        elm.removeEventListener('transitionend', cb);
         elm.dispatchEvent(new CustomEvent('move-cancel', {
           bubbles: true
         }));
       };
-      elm.addEventListener('transitionend', cb);
+      elm.addEventListener('transitionend', cb, { once: true });
     }
 
     _finishMove(elm, dir) {
@@ -99,12 +110,11 @@
       elm.style.transform = `translateX(${dir > 0 ? '120%' : '-120%'})`;
       let cb = () => {
         elm.style.transition = '';
-        elm.removeEventListener('transitionend', cb);
         elm.dispatchEvent(new CustomEvent('move-away', {
           bubbles: true
         }));
       };
-      elm.addEventListener('transitionend', cb);
+      elm.addEventListener('transitionend', cb, { once: true });
     }
   }
 
