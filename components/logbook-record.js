@@ -7,11 +7,12 @@
   <div id="header" hidden>
     <span id="timestamp"></span>
     <span id="timediff" hidden></span>
+    <span id="edit"><img class="inline" src="../images/edit.svg"></span>
   </div>
   <div id="container">
     <spa-color-sel id="colorsel"></spa-color-sel>
     <span id="text" hidden></span>
-    <textarea id="edit" hidden></textarea>
+    <textarea id="tedit" hidden></textarea>
   </div>
 </div>`;
 
@@ -40,9 +41,10 @@
       this.attachShadow({mode: 'open'});
       this.shadowRoot.appendChild(template.content.cloneNode(true));
       this._text = this.shadowRoot.getElementById('text');
-      this._edit = this.shadowRoot.getElementById('edit');
+      this._edit = this.shadowRoot.getElementById('tedit');
       this._edit.addEventListener('input', () => this._input());
       this._edit.addEventListener('keydown', e => this._keydown(e));
+      this.shadowRoot.getElementById('edit').addEventListener('click', () => this.open());
       this.shadowRoot.getElementById('colorsel').addEventListener('color-click', e => {
         e.preventDefault();
         this.dispatchEvent(new CustomEvent('color-pick', {
@@ -61,7 +63,6 @@
       this.shadowRoot.getElementById('header').hidden = false;
       this.shadowRoot.getElementById('text').hidden = false;
       this.shadowRoot.getElementById('colorsel').remove();
-      this.shadowRoot.getElementById('container').addEventListener('click', () => this.open());
       this._text.innerText = record.text;
       this._rev = this._lastSave = 0;
     }
@@ -91,6 +92,7 @@
       this._edit.hidden = false;
       this._edit.focus();
       this._timer = setInterval(() => this._autosave(), 300);
+      this.shadowRoot.getElementById('edit').hidden = true;
       this.dispatchEvent(new CustomEvent('record-open', {
         bubbles: true
       }));
@@ -103,6 +105,7 @@
       this._open = false;
       this._text.style.visibility = 'visible';
       this._edit.hidden = true;
+      this.shadowRoot.getElementById('edit').hidden = false;
     }
 
     isTemp() {

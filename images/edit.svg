@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 10 10">
+  <defs>
+    <linearGradient id="pencil" x1="40%" y1="40%" x2="60%" y2="60%">
+      <stop offset="5%" stop-color="#f93"/>
+      <stop offset="95%" stop-color="#c60"/>
+    </linearGradient>
+    <linearGradient id="tip" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="70%" stop-color="white"/>
+      <stop offset="70%" stop-color="black"/>
+    </linearGradient>
+  </defs>
+  <g stroke="black" stroke-width="0.5" stroke-linejoin="round">
+    <path fill="url(#tip)" d="M 1.5 7 L .5 9.5 3 8.5"/>
+    <path fill="url(#pencil)" d="M 8 .5 L 9.5 2 3 8.5 1.5 7 z"/>
+  </g>
+</svg>

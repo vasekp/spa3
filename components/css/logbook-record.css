@@ -19,6 +19,7 @@
   border-bottom: var(--border);
   font-size: 80%;
   line-height: .8rem;
+  height: .8rem;
   color: var(--color-text);
 }
 
@@ -43,7 +44,7 @@
   white-space: pre-wrap;
 }
 
-#edit {
+#tedit {
   border: none;
   outline: none;
   margin: 0;
@@ -59,6 +60,10 @@
   height: 100%;
 }
 
-#edit:focus {
+#tedit:focus {
   box-shadow: 0 0 .2rem #888;
+}
+
+img.inline {
+  height: 1em;
 }
