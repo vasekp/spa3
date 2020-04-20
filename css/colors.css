@@ -1,3 +1,10 @@
+.colors-def {
+  --color-main: white;
+  --color-border: black;
+  --color-border-lighter: #888;
+  --color-text-lighter: #444;
+}
+
 .colors-var {
   --hue: calc(160 + 80 * var(--color));
   --color-main: hsl(var(--hue), 90%, 85%);

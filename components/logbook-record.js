@@ -18,7 +18,11 @@ template.innerHTML = `
 </div>
 </div>`;
 
-const dateFormat = new Intl.DateTimeFormat('cs', { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }).format;
+const timeFormat = new Intl.DateTimeFormat('cs', {
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric'
+}).format;
 
 export class Record extends HTMLElement {
   constructor() {
@@ -48,7 +52,7 @@ export class Record extends HTMLElement {
     this.shadowRoot.getElementById('content').classList.remove('colors-temp');
     this.shadowRoot.getElementById('content').classList.add('colors-var');
     this.shadowRoot.getElementById('content').style.setProperty('--color', record.tag);
-    this.shadowRoot.getElementById('timestamp').innerText = dateFormat(record.date);
+    this.shadowRoot.getElementById('timestamp').innerText = timeFormat(record.date);
     this.shadowRoot.getElementById('header').hidden = false;
     this.shadowRoot.getElementById('text').hidden = false;
     this.shadowRoot.getElementById('colorsel').remove();

@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.new-day {
+  display: flex;
+  font-size: 80%;
+  line-height: 100%;
+  align-items: center;
+}
+
+.line {
+  background: var(--color-border-lighter);
+  flex-grow: 1;
+  height: 1px;
+}
+
+.text {
+  color: var(--color-text-lighter);
+  margin: 0 .2rem;
+}

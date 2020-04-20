@@ -1,5 +1,17 @@
 import {LiveList} from './live-list.js';
 
+const dateMarkerTemp = document.createElement('template');
+dateMarkerTemp.innerHTML = `
+<link rel="stylesheet" href="css/colors.css"/>
+<link rel="stylesheet" href="components/css/date-marker.css"/>
+<div class="new-day colors-def" data-protected="true">
+<span class="line"></span>
+<span class="text"><slot></slot></span>
+<span class="line"></span>
+</div>`;
+
+const dateFormat = new Intl.DateTimeFormat('cs', { day: 'numeric', month: 'numeric', year: 'numeric' }).format;
+
 function formatDiff(diff) {
   let diffText = '+';
   diff = Math.floor(diff / 1000);
@@ -17,6 +29,14 @@ function formatDiff(diff) {
   return diffText;
 }
 
+class DateMarker extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.appendChild(dateMarkerTemp.content.cloneNode(true));
+  }
+}
+
 class List extends LiveList {
   constructor() {
     super();
@@ -32,15 +52,28 @@ class List extends LiveList {
 
   _applyChanges(rec) {
     this._pause();
-    let prev = null;
+    [...this.querySelectorAll('log-date-marker')].forEach(elm => elm.remove());
+    let prevDate = 0;
+    let prevDay = '';
     [...this.querySelectorAll('log-record:not(.hide)')].forEach(elm => {
-      elm.setAttribute('timediff', prev ? formatDiff(elm.record.date - prev.date) : '');
-      prev = elm.record;
+      if(!elm.record)
+        return;
+      let day = dateFormat(elm.record.date);
+      if(day !== prevDay) {
+        let div = document.createElement('log-date-marker');
+        div.setAttribute('data-protected', '');
+        div.innerText = day;
+        this.insertBefore(div, elm);
+      }
+      elm.setAttribute('timediff', prevDate ? formatDiff(elm.record.date - prevDate) : '');
+      prevDate = elm.record.date;
+      prevDay = day;
     });
     this._start();
   }
 }
 
 export default function() {
+  window.customElements.define('log-date-marker', DateMarker);
   window.customElements.define('log-list', List);
 }
