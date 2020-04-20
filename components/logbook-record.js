@@ -5,8 +5,11 @@
 <link rel="stylesheet" href="components/css/logbook-record.css"/>
 <div id="content" class="colors-temp">
   <div id="header" hidden>
-    <span id="timestamp"></span>
-    <span id="timediff" hidden></span>
+    <span>
+      <span id="timestamp"></span>
+      <span id="timediff"></span>
+    </span>
+    <span id="fill"></span>
     <span id="edit"><img class="inline" src="../images/edit.svg"></span>
   </div>
   <div id="container">
@@ -75,12 +78,9 @@
       if(this.isTemp())
         return;
       let span = this.shadowRoot.getElementById('timediff');
-      if(!prevRecord)
-        span.hidden = true;
-      else {
-        span.hidden = false;
-        span.innerText = formatDiff(this._record.date - prevRecord.date);
-      }
+      span.innerText = prevRecord
+        ? '(' + formatDiff(this._record.date - prevRecord.date) + ')'
+        : '';
     }
 
     open() {
