@@ -53,18 +53,25 @@ export class ColorFilter extends ColorSel {
 
   _click(color) {
     if(color == 0) {
+      // "All" clicked
       for(let i in this._sel)
         this._sel[i] = true;
     } else if(this._sel[0]) {
+      // One color clicked when "all" was on
       for(let i in this._sel)
         this._sel[i] = i == color;
     } else {
       this._sel[color] = !this._sel[color];
+      // Only active color clicked: invert
       let empty = this._sel.every(x => !x);
       if(empty) {
         for(let i in this._sel)
-          this._sel[i] = true;
+          this._sel[i] = i != color && i != 0;
       }
+      // Only inactive color clicked ("all" also inactive): turn "all" on
+      let full = this._sel.every((x, i) => i == 0 || x);
+      if(full)
+        this._sel[0] = true;
     }
     [...this.shadowRoot.querySelectorAll('.patch')].forEach(elm => {
       elm.classList.toggle('selected', this._sel[elm.getAttribute('data-color')]);
