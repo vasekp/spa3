@@ -92,6 +92,6 @@ main {
   display: none;
 }
 
-:unresolved {
+:not(:defined) {
   display: none;
 }
