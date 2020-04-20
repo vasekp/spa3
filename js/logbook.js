@@ -3,7 +3,7 @@
 import initLoading from '../components/loading.js';
 import initColorSel from '../components/colorsel.js';
 import initRecord from '../components/logbook-record.js';
-import initList from '../components/live-list.js';
+import initList from '../components/logbook-list.js';
 
 initLoading();
 initColorSel();
@@ -94,7 +94,6 @@ function loadRecords() {
     while(list.firstChild)
       list.removeChild(list.firstChild);
     results.forEach(record => addRecord(record));
-    updateDiffs();
   };
   rq.onerror = console.log;
 }
@@ -131,7 +130,6 @@ function materialize(elm, tag) {
     elm.removeAttribute('data-protected');
     elm.classList.remove('processing');
     elm.record = record;
-    updateDiffs();
     elm.open();
   };
 }
@@ -154,10 +152,7 @@ function deleteRecord(elm) {
   let os = tx.objectStore('log-rec');
   let rq = os.delete(elm.record.id);
   rq.onerror = console.log;
-  rq.onsuccess = () => {
-    elm.remove();
-    updateDiffs();
-  };
+  rq.onsuccess = () => elm.remove();
 }
 
 function filter(e) {
@@ -165,11 +160,10 @@ function filter(e) {
   closeAll();
   [...document.querySelectorAll('log-record')].forEach(elm =>
     elm.classList.toggle('hide', !sel[elm.record.tag]));
-  updateDiffs();
 }
 
 function closeExcept(elm0) {
-  [...list.children].forEach(elm => {
+  [...list.querySelectorAll('log-record')].forEach(elm => {
     if(elm === elm0)
       return;
     else if(elm.isTemp())
@@ -181,12 +175,4 @@ function closeExcept(elm0) {
 
 function closeAll() {
   closeExcept(null);
-}
-
-function updateDiffs() {
-  let prev = null;
-  [...document.querySelectorAll('log-record:not(.hide)')].forEach(elm => {
-    elm.previous = prev;
-    prev = elm.record;
-  });
 }

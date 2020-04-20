@@ -1,6 +1,3 @@
-const template = document.createElement('template');
-template.innerHTML = `<slot></slot>`;
-
 export class LiveList extends HTMLElement {
   constructor() {
     super();
