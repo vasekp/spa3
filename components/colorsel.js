@@ -15,7 +15,7 @@ export class ColorSel extends HTMLElement {
 
   _addPatch(color) {
     let div = document.createElement('div');
-    div.classList.add('patch', 'colors-var');
+    div.classList.add('patch', 'colors-param', 'color-border');
     div.style.setProperty('--color', color);
     div.addEventListener('click', () => this._click(color));
     div.setAttribute('data-color', color);
@@ -46,8 +46,8 @@ export class ColorFilter extends ColorSel {
     let div = super._addPatch(color === 'all' ? 0 : color);
     if(color === 'all') {
       div.style.removeProperty('--color');
-      div.classList.remove('colors-var');
-      div.classList.add('colors-all');
+      div.classList.remove('colors-param');
+      div.classList.add('colors-rainbow');
     }
   }
 

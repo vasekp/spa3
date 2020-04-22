@@ -2,8 +2,8 @@ const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" href="css/colors.css"/>
 <link rel="stylesheet" href="components/css/logbook-record.css"/>
-<div id="content" class="colors-temp">
-<div id="header" hidden>
+<div id="content" class="colors-grey color-border">
+<div id="header" class="color-fainter" hidden>
   <span>
     <span id="timestamp"></span>
     <span id="timediff"></span>
@@ -49,8 +49,8 @@ export class Record extends HTMLElement {
 
   set record(record) {
     this._record = record;
-    this.shadowRoot.getElementById('content').classList.remove('colors-temp');
-    this.shadowRoot.getElementById('content').classList.add('colors-var');
+    this.shadowRoot.getElementById('content').classList.remove('colors-grey');
+    this.shadowRoot.getElementById('content').classList.add('colors-param');
     this.shadowRoot.getElementById('content').style.setProperty('--color', record.tag);
     this.shadowRoot.getElementById('timestamp').innerText = timeFormat(record.date);
     this.shadowRoot.getElementById('header').hidden = false;

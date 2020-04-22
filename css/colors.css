@@ -1,35 +1,37 @@
-.colors-def {
-  --color-main: white;
-  --color-border: black;
-  --color-border-lighter: #888;
-  --color-text-lighter: #444;
+:root, :host {
+  --color-line: #888;
+  --color-text-fainter: #444;
 }
 
-.colors-var {
+.colors-param {
   --hue: calc(160 + 80 * var(--color));
-  --color-main: hsl(var(--hue), 90%, 85%);
-  --color-border: hsl(var(--hue), 90%, 50%);
-  --color-text: hsl(var(--hue), 50%, 25%);
+  background: hsl(var(--hue), 90%, 85%);
+  --color-line: hsl(var(--hue), 90%, 50%);
+  --color-text-fainter: hsl(var(--hue), 50%, 25%);
 }
 
-.colors-all {
-  --color-main: linear-gradient(
+.colors-rainbow {
+  background: linear-gradient(
     .32turn,
     hsl(0, 90%, 85%),
-    hsl(60, 90%, 85%),
+    hsl(50, 90%, 85%),
     hsl(120, 90%, 85%),
-    hsl(180, 90%, 85%),
+    hsl(190, 90%, 85%),
     hsl(240, 90%, 85%));
-  --color-border: hsl(0, 0%, 50%);
-  --color-text: hsl(0, 0%, 25%);
+  --color-line: hsl(0, 0%, 50%);
+  --color-text-fainter: hsl(0, 0%, 25%);
 }
 
-.colors-temp {
-  --color-main: hsl(0, 0%, 85%);
-  --color-border: hsl(0, 0%, 50%);
-  --color-text: hsl(0, 0%, 25%);
+.colors-grey {
+  background: hsl(0, 0%, 85%);
+  --color-line: hsl(0, 0%, 50%);
+  --color-text-fainter: hsl(0, 0%, 25%);
 }
 
-.colors-var, .colors-all, .colors-temp {
-  --border: 1px solid var(--color-border);
+.color-border {
+  --border: 1px solid var(--color-line);
+}
+
+.color-fainter {
+  color: var(--color-text-fainter);
 }

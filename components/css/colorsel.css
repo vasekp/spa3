@@ -17,7 +17,6 @@
   padding: .2ex;
   position: relative;
   bottom: -.05em;
-  background: var(--color-main);
   border: var(--border);
   border-radius: .1rem;
   margin-right: .5rem;

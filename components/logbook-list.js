@@ -6,7 +6,7 @@ dateMarkerTemp.innerHTML = `
 <link rel="stylesheet" href="components/css/date-marker.css"/>
 <div class="new-day colors-def" data-protected="true">
 <span class="line"></span>
-<span class="text"><slot></slot></span>
+<span class="text color-fainter"><slot></slot></span>
 <span class="line"></span>
 </div>`;
 
