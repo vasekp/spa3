@@ -15,8 +15,11 @@ export class ColorSel extends HTMLElement {
 
   _addPatch(color) {
     let div = document.createElement('div');
-    div.classList.add('patch', 'colors-param', 'color-border');
-    div.style.setProperty('--color', color);
+    div.classList.add('patch', 'color-border');
+    if(+color > 0) {
+      div.classList.add('colors-param');
+      div.style.setProperty('--color', color);
+    }
     div.addEventListener('click', () => this._click(color));
     div.setAttribute('data-color', color);
     this.shadowRoot.getElementById('container').appendChild(div);
@@ -38,25 +41,22 @@ export class ColorFilter extends ColorSel {
     this._sel = [];
     [...this.shadowRoot.querySelectorAll('.patch')].forEach(elm => {
       elm.classList.add('filter', 'selected');
-      this._sel[+elm.getAttribute('data-color')] = true;
+      this._sel[elm.getAttribute('data-color')] = true;
     });
   }
 
   _addPatch(color) {
-    let div = super._addPatch(color === 'all' ? 0 : color);
-    if(color === 'all') {
-      div.style.removeProperty('--color');
-      div.classList.remove('colors-param');
+    let div = super._addPatch(color);
+    if(color === 'all')
       div.classList.add('colors-rainbow');
-    }
   }
 
   _click(color) {
-    if(color == 0) {
+    if(color === 'all') {
       // "All" clicked
       for(let i in this._sel)
         this._sel[i] = true;
-    } else if(this._sel[0]) {
+    } else if(this._sel.all) {
       // One color clicked when "all" was on
       for(let i in this._sel)
         this._sel[i] = i == color;
@@ -66,12 +66,10 @@ export class ColorFilter extends ColorSel {
       let empty = this._sel.every(x => !x);
       if(empty) {
         for(let i in this._sel)
-          this._sel[i] = i != color && i != 0;
+          this._sel[i] = i != color;
       }
-      // Only inactive color clicked ("all" also inactive): turn "all" on
-      let full = this._sel.every((x, i) => i == 0 || x);
-      if(full)
-        this._sel[0] = true;
+      // All colors selected: also mark 'all'
+      this._sel.all = this._sel.every(x => x);
     }
     [...this.shadowRoot.querySelectorAll('.patch')].forEach(elm => {
       elm.classList.toggle('selected', this._sel[elm.getAttribute('data-color')]);
