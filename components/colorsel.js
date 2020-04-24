@@ -81,7 +81,5 @@ export class ColorFilter extends ColorSel {
   }
 }
 
-export default function() {
-  window.customElements.define('spa-color-sel', ColorSel);
-  window.customElements.define('spa-color-filter', ColorFilter);
-};
+window.customElements.define('spa-color-sel', ColorSel);
+window.customElements.define('spa-color-filter', ColorFilter);

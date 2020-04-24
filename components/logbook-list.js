@@ -73,7 +73,5 @@ class List extends LiveList {
   }
 }
 
-export default function() {
-  window.customElements.define('log-date-marker', DateMarker);
-  window.customElements.define('log-list', List);
-}
+window.customElements.define('log-date-marker', DateMarker);
+window.customElements.define('log-list', List);

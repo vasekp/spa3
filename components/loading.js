@@ -14,6 +14,4 @@ export class Loading extends HTMLElement {
   }
 }
 
-export default function() {
-  window.customElements.define('spa-loading', Loading);
-};
+window.customElements.define('spa-loading', Loading);

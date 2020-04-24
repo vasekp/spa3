@@ -129,6 +129,4 @@ export class Record extends HTMLElement {
   }
 }
 
-export default function() {
-  window.customElements.define('log-record', Record);
-};
+window.customElements.define('log-record', Record);

@@ -114,6 +114,4 @@ export class LiveList extends HTMLElement {
   }
 }
 
-export default function() {
-  window.customElements.define('spa-live-list', LiveList);
-};
+window.customElements.define('spa-live-list', LiveList);

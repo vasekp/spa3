@@ -1,14 +1,9 @@
 'use strict';
 
-import initLoading from '../components/loading.js';
-import initColorSel from '../components/colorsel.js';
-import initRecord from '../components/logbook-record.js';
-import initList from '../components/logbook-list.js';
-
-initLoading();
-initColorSel();
-initRecord();
-initList();
+import '../components/loading.js';
+import '../components/colorsel.js';
+import '../components/logbook-record.js';
+import '../components/logbook-list.js';
 
 var db;
 var gid;
