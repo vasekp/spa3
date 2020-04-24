@@ -2,12 +2,11 @@ import {LiveList} from './live-list.js';
 
 const dateMarkerTemp = document.createElement('template');
 dateMarkerTemp.innerHTML = `
-<link rel="stylesheet" href="css/colors.css"/>
 <link rel="stylesheet" href="components/css/date-marker.css"/>
-<div class="new-day colors-def" data-protected="true">
-<span class="line"></span>
-<span class="text color-fainter"><slot></slot></span>
-<span class="line"></span>
+<div id="content" class="new-day colors-def" data-protected="true" hidden>
+  <span class="line"></span>
+  <span class="text color-fainter"><slot></slot></span>
+  <span class="line"></span>
 </div>`;
 
 const dateFormat = new Intl.DateTimeFormat('cs', { day: 'numeric', month: 'numeric', year: 'numeric' }).format;
@@ -34,6 +33,8 @@ class DateMarker extends HTMLElement {
     super();
     this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(dateMarkerTemp.content.cloneNode(true));
+    this.shadowRoot.querySelector('link').onload = () =>
+      this.shadowRoot.getElementById('content').hidden = false;
   }
 }
 

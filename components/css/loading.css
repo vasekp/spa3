@@ -4,10 +4,6 @@
   margin: 0 .25rem;
 }
 
-:host(:not([selected])) {
-  opacity: .5;
-}
-
 :host([hidden]) {
   display: none;
 }

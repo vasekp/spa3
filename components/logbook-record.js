@@ -1,21 +1,20 @@
 const template = document.createElement('template');
 template.innerHTML = `
-<link rel="stylesheet" href="css/colors.css"/>
 <link rel="stylesheet" href="components/css/logbook-record.css"/>
-<div id="content" class="colors-grey color-border">
-<div id="header" class="color-fainter" hidden>
-  <span>
-    <span id="timestamp"></span>
-    <span id="timediff"></span>
-  </span>
-  <span id="fill"></span>
-  <span id="edit"><img class="inline" src="../images/edit.svg"></span>
-</div>
-<div id="container">
-  <spa-color-sel id="colorsel"></spa-color-sel>
-  <span id="text" hidden></span>
-  <textarea id="tedit" hidden></textarea>
-</div>
+<div id="content" class="colors-grey color-border" hidden>
+  <div id="header" class="color-fainter" hidden>
+    <span>
+      <span id="timestamp"></span>
+      <span id="timediff"></span>
+    </span>
+    <span id="fill"></span>
+    <span id="edit"><img class="inline" src="../images/edit.svg"></span>
+  </div>
+  <div id="container">
+    <spa-color-sel id="colorsel"></spa-color-sel>
+    <span id="text" hidden></span>
+    <textarea id="tedit" hidden></textarea>
+  </div>
 </div>`;
 
 const timeFormat = new Intl.DateTimeFormat('cs', {
@@ -41,6 +40,8 @@ export class Record extends HTMLElement {
         bubbles: true
       }));
     });
+    this.shadowRoot.querySelector('link').onload = () =>
+      this.shadowRoot.getElementById('content').hidden = false;
   }
 
   static get observedAttributes() {

@@ -1,6 +1,5 @@
 const template = document.createElement('template');
 template.innerHTML = `
-<link rel="stylesheet" href="css/colors.css"/>
 <link rel="stylesheet" href="components/css/colorsel.css"/>
 <div id="container"></div>`;
 
