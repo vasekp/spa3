@@ -1,0 +1,14 @@
+@import "../../css/colors.css";
+
+:host {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+div {
+  box-sizing: border-box;
+  width: calc(var(--rel-cap-size) * 1em);
+  height: calc(var(--rel-cap-size) * 1em);
+  border: var(--border);
+  border-radius: 2px;
+}

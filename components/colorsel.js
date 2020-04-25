@@ -3,6 +3,33 @@ template.innerHTML = `
 <link rel="stylesheet" href="components/css/colorsel.css"/>
 <div id="container"></div>`;
 
+const patchTemplate = document.createElement('template');
+patchTemplate.innerHTML = `
+<link rel="stylesheet" href="components/css/color-patch.css"/>
+<div></div>`;
+
+export class ColorPatch extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.appendChild(patchTemplate.content.cloneNode(true));
+    this._div = this.shadowRoot.querySelector('div');
+    this._div.classList.add('color-border');
+  }
+
+  static get observedAttributes() {
+    return ['color'];
+  }
+
+  attributeChangedCallback(name, oldValue, value) {
+    if(name === 'color') {
+      this._div.classList.toggle('colors-rainbow', value === 'all');
+      this._div.classList.toggle('colors-param', value !== 'all');
+      this._div.style.setProperty('--color', value);
+    }
+  }
+}
+
 export class ColorSel extends HTMLElement {
   constructor() {
     super();
@@ -13,16 +40,10 @@ export class ColorSel extends HTMLElement {
   }
 
   _addPatch(color) {
-    let div = document.createElement('div');
-    div.classList.add('patch', 'color-border');
-    if(+color > 0) {
-      div.classList.add('colors-param');
-      div.style.setProperty('--color', color);
-    }
+    let div = document.createElement('spa-color-patch');
+    div.setAttribute('color', color);
     div.addEventListener('click', () => this._click(color));
-    div.setAttribute('data-color', color);
     this.shadowRoot.getElementById('container').appendChild(div);
-    return div;
   }
 
   _click(color) {
@@ -38,16 +59,10 @@ export class ColorFilter extends ColorSel {
     super();
     this._addPatch('all');
     this._sel = [];
-    [...this.shadowRoot.querySelectorAll('.patch')].forEach(elm => {
+    [...this.shadowRoot.querySelectorAll('spa-color-patch')].forEach(elm => {
       elm.classList.add('filter', 'selected');
-      this._sel[elm.getAttribute('data-color')] = true;
+      this._sel[elm.getAttribute('color')] = true;
     });
-  }
-
-  _addPatch(color) {
-    let div = super._addPatch(color);
-    if(color === 'all')
-      div.classList.add('colors-rainbow');
   }
 
   _click(color) {
@@ -70,8 +85,8 @@ export class ColorFilter extends ColorSel {
       // All colors selected: also mark 'all'
       this._sel.all = this._sel.every(x => x);
     }
-    [...this.shadowRoot.querySelectorAll('.patch')].forEach(elm => {
-      elm.classList.toggle('selected', this._sel[elm.getAttribute('data-color')]);
+    [...this.shadowRoot.querySelectorAll('spa-color-patch')].forEach(elm => {
+      elm.classList.toggle('selected', this._sel[elm.getAttribute('color')]);
     });
     this.dispatchEvent(new CustomEvent('change', {
       detail: { selected: this._sel },
@@ -80,5 +95,6 @@ export class ColorFilter extends ColorSel {
   }
 }
 
+window.customElements.define('spa-color-patch', ColorPatch);
 window.customElements.define('spa-color-sel', ColorSel);
 window.customElements.define('spa-color-filter', ColorFilter);

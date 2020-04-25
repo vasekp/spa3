@@ -13,17 +13,10 @@
   display: flex;
 }
 
-.patch {
-  display: inline-block;
-  box-sizing: border-box;
-  width: var(--abs-cap-size);
-  height: var(--abs-cap-size);
-  vertical-align: baseline;
-  border: var(--border);
-  border-radius: 2px;
+spa-color-patch {
   margin-right: .5em;
 }
 
-.patch.filter:not(.selected) {
+spa-color-patch.filter:not(.selected) {
   opacity: .5;
 }
