@@ -12,9 +12,9 @@
 }
 
 .line {
+  height: var(--line-width);
   background: var(--color-line);
   flex-grow: 1;
-  height: 1px;
 }
 
 .text {

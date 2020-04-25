@@ -14,14 +14,14 @@
 }
 
 .patch {
-  width: 1ex;
-  height: 1ex;
-  padding: .2ex;
-  position: relative;
-  bottom: -.05em;
+  display: inline-block;
+  box-sizing: border-box;
+  width: var(--abs-cap-size);
+  height: var(--abs-cap-size);
+  vertical-align: baseline;
   border: var(--border);
-  border-radius: .1rem;
-  margin-right: .5rem;
+  border-radius: 2px;
+  margin-right: .5em;
 }
 
 .patch.filter:not(.selected) {
