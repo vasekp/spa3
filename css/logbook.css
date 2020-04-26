@@ -1,0 +1,35 @@
+#color-filter {
+  display: flex;
+  align-items: baseline;
+}
+
+#log-list {
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#log-list log-record {
+  touch-action: pan-y;
+  margin: .5rem 0;
+}
+
+#log-list :last-child {
+  margin-bottom: 0;
+}
+
+#plus {
+  width: 3rem;
+  height: 3rem;
+  background: hsl(100, 50%, 50%) url(../images/plus.svg) 50% 50% no-repeat;
+  background-size: 1.2rem;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  border-radius: 2rem;
+  box-shadow: .1rem .1rem .3rem rgba(0, 0, 0, .3);
+  text-align: center;
+  z-index: 1;
+  transform: translateZ(0);
+}
+

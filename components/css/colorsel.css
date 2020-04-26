@@ -14,7 +14,7 @@
 }
 
 spa-color-patch {
-  margin-right: .5em;
+  margin: 0 .25em;
 }
 
 spa-color-patch.filter:not(.selected) {
