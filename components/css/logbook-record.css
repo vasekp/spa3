@@ -4,6 +4,10 @@
   display: block;
 }
 
+:host([hidden]) {
+  display: none;
+}
+
 [data-processing] {
   transition: opacity .5s ease-in;
   opacity: .5;

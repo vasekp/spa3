@@ -5,6 +5,10 @@
   vertical-align: baseline;
 }
 
+:host([hidden]) {
+  display: none;
+}
+
 div {
   box-sizing: border-box;
   width: calc(var(--rel-cap-size) * 1em);
