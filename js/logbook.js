@@ -78,8 +78,9 @@ function addTestData() {
   let rq = os.add(rec);
   rq.onerror = console.log;
   rq.onsuccess = e => {
-    populateGList([rec]);
     let gid = e.target.result;
+    rec.id = gid;
+    populateGList([rec]);
     let tx = db.transaction('log-rec', 'readwrite');
     let os = tx.objectStore('log-rec');
     let date = Date.now()

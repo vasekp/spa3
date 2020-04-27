@@ -28,6 +28,7 @@ export class Record extends HTMLElement {
     this._edit = this.shadowRoot.getElementById('tedit');
     this._edit.addEventListener('input', () => this._input());
     this._edit.addEventListener('keydown', e => this._keydown(e));
+    this._edit.addEventListener('blur', () => this.close());
     this.shadowRoot.getElementById('edit').addEventListener('click', () => this.open());
     this.shadowRoot.getElementById('colorsel').addEventListener('color-click', e => {
       e.preventDefault();
@@ -78,7 +79,8 @@ export class Record extends HTMLElement {
     this._edit.hidden = false;
     this._edit.focus();
     this._timer = setInterval(() => this._autosave(), 300);
-    this.shadowRoot.getElementById('edit').hidden = true;
+    this.shadowRoot.getElementById('edit').visibility = 'hidden';
+    this.setAttribute('data-protected', '');
     this.dispatchEvent(new CustomEvent('record-open', {
       bubbles: true
     }));
@@ -91,7 +93,8 @@ export class Record extends HTMLElement {
     this._open = false;
     this._text.style.visibility = 'visible';
     this._edit.hidden = true;
-    this.shadowRoot.getElementById('edit').hidden = false;
+    this.removeAttribute('data-protected');
+    this.shadowRoot.getElementById('edit').visibility = 'visible';
   }
 
   isTemp() {

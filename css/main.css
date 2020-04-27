@@ -61,6 +61,6 @@ button {
   box-sizing: content-box;
   padding: .2rem;
   border: var(--line-width) solid #888;
-  border-radius: .2rem;
+  border-radius: var(--abs-line-height);
   background: var(--color-bg-alt);
 }

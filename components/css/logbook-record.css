@@ -35,7 +35,7 @@
 
 #container {
   margin: .2rem;
-  min-height: 1.4em;
+  min-height: var(--abs-line-height);
   position: relative;
 }
 

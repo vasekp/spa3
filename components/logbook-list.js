@@ -46,6 +46,7 @@ class List extends LiveList {
     this._start = () => this._observer.observe(this, {
       childList: true,
       attributes: true,
+      attributeFilter: ['class'],
       subtree: true
     });
     this._start();

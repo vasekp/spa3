@@ -31,7 +31,6 @@ export class LiveList extends HTMLElement {
       return;
     if(elm.hasAttribute('data-protected'))
       return;
-    elm.setPointerCapture(e.pointerId);
     this._tracking = {
       elm,
       pid: e.pointerId,
@@ -56,6 +55,8 @@ export class LiveList extends HTMLElement {
         return;
       else {
         this._tracking.zero = false;
+        elm.setPointerCapture(e.pointerId);
+        elm.style['user-select'] = 'none';
         elm.dispatchEvent(new CustomEvent('move-start', {
           bubbles: true
         }));
@@ -94,6 +95,7 @@ export class LiveList extends HTMLElement {
     elm.style.transform = '';
     let cb = () => {
       elm.style.transition = '';
+      elm.style['user-select'] = 'auto';
       elm.dispatchEvent(new CustomEvent('move-cancel', {
         bubbles: true
       }));
