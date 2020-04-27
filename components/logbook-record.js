@@ -1,3 +1,5 @@
+import {timeFormat} from '../js/datetime.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" href="components/css/logbook-record.css"/>
@@ -16,12 +18,6 @@ template.innerHTML = `
     <textarea id="tedit" hidden></textarea>
   </div>
 </div>`;
-
-const timeFormat = new Intl.DateTimeFormat('cs', {
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric'
-}).format;
 
 export class Record extends HTMLElement {
   constructor() {

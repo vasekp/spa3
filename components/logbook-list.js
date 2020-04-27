@@ -1,4 +1,5 @@
 import {LiveList} from './live-list.js';
+import {dateFormat} from '../js/datetime.js';
 
 const dateMarkerTemp = document.createElement('template');
 dateMarkerTemp.innerHTML = `
@@ -9,7 +10,6 @@ dateMarkerTemp.innerHTML = `
   <span class="line"></span>
 </div>`;
 
-const dateFormat = new Intl.DateTimeFormat('cs', { day: 'numeric', month: 'numeric', year: 'numeric' }).format;
 
 function formatDiff(diff) {
   let diffText = '+';
