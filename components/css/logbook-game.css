@@ -1,0 +1,89 @@
+@import "../../css/colors.css";
+
+:host {
+  display: block;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+#content {
+  padding: .5rem 0;
+  display: flex;
+  align-items: baseline;
+}
+
+#date {
+  color: var(--color-text-light);
+}
+
+#float {
+  --div-size: 1.2rem;
+  --padding: calc((var(--div-size) - var(--abs-cap-size)) / 2);
+  width: var(--div-size);
+  height: var(--div-size);
+  overflow: hidden;
+  transition: width .5s;
+  background: white;
+  border: var(--border);
+  border-radius: var(--div-size);
+  line-height: var(--div-size);
+  position: relative;
+  margin-left: auto;
+  z-index: 0;
+}
+
+#float:hover, #float:focus-within, :focus ~ #float {
+  width: 3rem;
+}
+
+#float img {
+  vertical-align: baseline;
+  width: var(--abs-cap-size);
+  height: var(--abs-cap-size);
+}
+
+spa-color-patch {
+  margin-right: .3rem;
+}
+
+#stash {
+  display: inline-block;
+  width: max-content;
+  padding: 0 var(--padding);
+}
+
+#edit-bg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: var(--div-size);
+  height: var(--div-size);
+  z-index: 1;
+  background: white;
+}
+
+#edit {
+  position: absolute;
+  z-index: 2;
+  right: var(--padding);
+  bottom: var(--padding);
+}
+
+#name-edit {
+  border: none;
+  outline: none;
+  margin: 0;
+  background: inherit;
+  font: inherit;
+  box-sizing: border-box;
+  resize: none;
+  padding: 0;
+  flex-grow: 1;
+  height: var(--abs-line-height);
+}
+
+#name-edit:focus {
+  box-shadow: 0 0 .2rem #888;
+}

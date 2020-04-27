@@ -8,6 +8,8 @@
   height: 100%;
   --rel-cap-size: 0.66;
   --abs-cap-size: calc(var(--rel-cap-size) * 1rem);
+  --rel-line-height: 1.424;
+  --abs-line-height: calc(var(--rel-line-height) * 1rem);
   --line-width: 1px;
 }
 
@@ -30,10 +32,35 @@ main {
   position: relative;
 }
 
+main > * {
+  transition: height .3s, flex-grow .3s;
+}
+
 .hide {
   display: none;
 }
 
+.zeroheight {
+  height: 0 !important;
+  flex-grow: 0 !important;
+  overflow: hidden !important;
+}
+
 :not(:defined) {
   display: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  line-height: var(--abs-cap-size);
+  display: inline-block;
+  height: var(--abs-cap-size);
+  min-width: var(--abs-cap-size);
+  box-sizing: content-box;
+  padding: .2rem;
+  border: var(--line-width) solid #888;
+  border-radius: .2rem;
+  background: var(--color-bg-alt);
 }

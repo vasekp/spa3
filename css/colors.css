@@ -1,6 +1,8 @@
 :root {
   --color-line: #888;
   --color-text-fainter: #444;
+  --color-text-light: #888;
+  --color-bg-alt: #eee;
 }
 
 .colors-param {
