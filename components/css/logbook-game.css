@@ -48,6 +48,10 @@ spa-color-patch {
   margin-right: .3rem;
 }
 
+spa-color-patch:not([color]), spa-color-patch[color="none"] {
+  display: none;
+}
+
 #stash {
   display: inline-block;
   width: max-content;

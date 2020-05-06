@@ -22,11 +22,9 @@ export class ColorPatch extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    if(name === 'color') {
-      this._div.classList.toggle('colors-rainbow', value === 'all');
-      this._div.classList.toggle('colors-param', value !== 'all');
-      this._div.style.setProperty('--color', value);
-    }
+    this._div.classList.toggle('colors-rainbow', value === 'all');
+    this._div.classList.toggle('colors-param', value !== 'all' && value != 'none');
+    this._div.style.setProperty('--color', value);
   }
 }
 
@@ -37,6 +35,16 @@ export class ColorSel extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     for(let color = 1; color <= 9; color++)
       this._addPatch(color);
+    this._addPatch('none');
+    this.shadowRoot.querySelector('spa-color-patch[color="none"]').hidden = true;
+  }
+
+  static get observedAttributes() {
+    return ['zero'];
+  }
+
+  attributeChangedCallback(name, oldValue, value) {
+    this.shadowRoot.querySelector('spa-color-patch[color="none"]').hidden = !this.hasAttribute('zero');
   }
 
   _addPatch(color) {

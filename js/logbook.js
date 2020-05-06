@@ -56,14 +56,11 @@ function prepareDatabase() {
 function populateGList(games) {
   let glist = document.getElementById('game-list');
   games.forEach(game => {
-    for(let i = 0; i < 5; i++) {
-      let elm = document.createElement('log-game');
-      elm.setAttribute('name', game.name);
-      elm.setAttribute('date', game.date);
-      elm.setAttribute('gid', game.id);
-      elm.addEventListener('click', gameClicked);
-      glist.appendChild(elm);
-    }
+    let elm = document.createElement('log-game');
+    elm.record = game;
+    elm.addEventListener('click', gameClicked);
+    elm.addEventListener('db-request', e => dbRequest(e.detail));
+    glist.appendChild(elm);
   });
 }
 
@@ -215,8 +212,18 @@ function gameClicked(e) {
     list.removeChild(list.firstChild);
   let load = document.createElement('spa-loading');
   list.appendChild(load);
-  loadRecords(e.currentTarget.getAttribute('gid'));
+  loadRecords(e.currentTarget.record.id);
   document.getElementById('log-list').classList.remove('zeroheight');
   document.getElementById('game-list').classList.add('zeroheight');
   document.getElementById('log-sel').classList.remove('zeroheight');
+}
+
+function dbRequest(r) {
+  let tx = db.transaction(r.store, 'readwrite');
+  let os = tx.objectStore(r.store);
+  if(r.query === 'update') {
+    let rq = os.put(r.record);
+    rq.onerror = console.log;
+    rq.onsuccess = r.callback;
+  }
 }

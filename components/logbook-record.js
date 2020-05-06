@@ -63,11 +63,9 @@ export class Record extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    if(name === 'timediff') {
-      this.shadowRoot.getElementById('timediff').innerText = value
-        ? '(' + value + ')'
-        : '';
-    }
+    this.shadowRoot.getElementById('timediff').innerText = value
+      ? '(' + value + ')'
+      : '';
   }
 
   open() {
