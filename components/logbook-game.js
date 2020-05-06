@@ -59,7 +59,7 @@ export class GameRecord extends HTMLElement {
   _update() {
     let root = this.shadowRoot;
     let patch = root.querySelector('spa-color-patch');
-    patch.setAttribute('color', this._record.color);
+    patch.setAttribute('color', this._record.color || 'none');
     root.getElementById('name').innerText = this._record.name;
     root.getElementById('date').innerText = '(' + dateFormat(this._record.date) + ')';
   }

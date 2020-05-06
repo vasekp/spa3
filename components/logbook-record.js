@@ -20,9 +20,9 @@ template.innerHTML = `
 </div>`;
 
 let states = {
-  closed: 0,
-  edit: 1,
-  temp: 2
+  empty: 0,
+  closed: 1,
+  edit: 2
 };
 
 export class Record extends HTMLElement {
@@ -39,7 +39,7 @@ export class Record extends HTMLElement {
     this.shadowRoot.getElementById('colorsel').addEventListener('color-click', e => this._materialize(e.detail.color));
     this.shadowRoot.querySelector('link').onload = () =>
       this.shadowRoot.getElementById('content').hidden = false;
-    this._state = states.temp;
+    this._state = states.empty;
   }
 
   static get observedAttributes() {

@@ -8,10 +8,8 @@ import '../components/logbook-game.js';
 import {dateFormat} from './datetime.js';
 
 var db;
-var list;
 
 window.addEventListener('DOMContentLoaded', () => {
-  list = document.getElementById('log-list');
   prepareDatabase();
   document.getElementById('plus').addEventListener('click', plus);
   document.getElementById('game-select').addEventListener('click', gameMenu);
@@ -62,7 +60,7 @@ function addTestData() {
   let tx = db.transaction('log-gid', 'readwrite');
   let os = tx.objectStore('log-gid');
   let rec = {
-    name: 'ABC',
+    name: 'Příklad',
     date: Date.now()
   };
 
@@ -89,6 +87,11 @@ function addTestData() {
 }
 
 function loadRecords(_gid) {
+  let list = document.getElementById('log-list');
+  while(list.firstChild)
+    list.removeChild(list.firstChild);
+  let load = document.createElement('spa-loading');
+  list.appendChild(load);
   let gid = +_gid;
   {
     let tx = db.transaction('log-gid', 'readonly');
@@ -117,19 +120,19 @@ function loadRecords(_gid) {
   list.setAttribute('data-gid', gid);
 }
 
-function plus(e) {
-  let elm = document.createElement('log-record');
-  list.appendChild(elm);
-  elm.setAttribute('data-protected', '');
-  elm.scrollIntoView();
-  e.preventDefault();
-}
-
 function addRecord(record) {
   let elm = document.createElement('log-record');
   elm.record = record;
-  list.appendChild(elm);
+  document.getElementById('log-list').appendChild(elm);
   return elm;
+}
+
+function plus(e) {
+  let elm = document.createElement('log-record');
+  document.getElementById('log-list').appendChild(elm);
+  elm.setAttribute('data-protected', '');
+  elm.scrollIntoView();
+  e.preventDefault();
 }
 
 function filter(e) {
@@ -145,10 +148,6 @@ function gameMenu() {
 }
 
 function gameClicked(e) {
-  while(list.firstChild)
-    list.removeChild(list.firstChild);
-  let load = document.createElement('spa-loading');
-  list.appendChild(load);
   loadRecords(e.currentTarget.record.id);
   document.getElementById('log-list').classList.remove('zeroheight');
   document.getElementById('game-list').classList.add('zeroheight');
