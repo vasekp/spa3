@@ -95,14 +95,7 @@ export class GameRecord extends HTMLElement {
     let newName = this.shadowRoot.getElementById('name-edit').value;
     this._record.name = newName;
     this._update();
-    this.dispatchEvent(new CustomEvent('db-request', {
-      detail: {
-        store: 'log-gid',
-        query: 'update',
-        record: this._record
-      },
-      bubbles: true
-    }));
+    this._dbUpdate();
   }
 
   close() {
@@ -112,6 +105,11 @@ export class GameRecord extends HTMLElement {
   _colorClicked(color) {
     this._record.color = color;
     this._update();
+    this._dbUpdate();
+    this.close();
+  }
+
+  _dbUpdate() {
     this.dispatchEvent(new CustomEvent('db-request', {
       detail: {
         store: 'log-gid',
@@ -120,7 +118,6 @@ export class GameRecord extends HTMLElement {
       },
       bubbles: true
     }));
-    this.close();
   }
 
   _keydown(e) {

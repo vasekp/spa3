@@ -111,6 +111,7 @@ export class LiveList extends HTMLElement {
       elm.dispatchEvent(new CustomEvent('move-away', {
         bubbles: true
       }));
+      elm.remove();
     };
     elm.addEventListener('transitionend', cb, { once: true });
   }

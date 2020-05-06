@@ -17,11 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('plus').addEventListener('click', plus);
   document.getElementById('game-select').addEventListener('click', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
-  list.addEventListener('color-pick', e => materialize(e.target, e.detail.tag));
-  list.addEventListener('record-open', e => closeExcept(e.target));
-  list.addEventListener('record-save', e => autosave(e.target, e.detail.rev));
-  list.addEventListener('move-start', e => closeAll());
-  list.addEventListener('move-away', e => deleteRecord(e.target));
+  window.addEventListener('db-request', e => dbRequest(e.detail));
 });
 
 function prepareDatabase() {
@@ -59,7 +55,6 @@ function populateGList(games) {
     let elm = document.createElement('log-game');
     elm.record = game;
     elm.addEventListener('click', gameClicked);
-    elm.addEventListener('db-request', e => dbRequest(e.detail));
     glist.appendChild(elm);
   });
 }
@@ -123,7 +118,6 @@ function loadRecords(_gid) {
 }
 
 function plus(e) {
-  closeAll();
   let elm = document.createElement('log-record');
   list.appendChild(elm);
   elm.setAttribute('data-protected', '');
@@ -138,67 +132,10 @@ function addRecord(record) {
   return elm;
 }
 
-function materialize(elm, tag) {
-  closeExcept(elm);
-  if(elm.classList.contains('processing'))
-    return;
-  elm.classList.add('processing');
-  let tx = db.transaction('log-rec', 'readwrite');
-  let os = tx.objectStore('log-rec');
-  let date = Date.now();
-  let record = { tag, gid, date, text: '' };
-  let rq = os.add(record);
-  rq.onerror = console.log;
-  rq.onsuccess = e => {
-    record.id = e.target.result;
-    elm.removeAttribute('data-protected');
-    elm.classList.remove('processing');
-    elm.record = record;
-    elm.open();
-  };
-}
-
-function autosave(elm, rev) {
-  elm.classList.add('processing');
-  let tx = db.transaction('log-rec', 'readwrite');
-  let os = tx.objectStore('log-rec');
-  let rq = os.put(elm.record);
-  rq.onerror = console.log;
-  rq.onsuccess = () => {
-    elm.notifySaved(rev);
-    elm.classList.remove('processing');
-  };
-}
-
-function deleteRecord(elm) {
-  closeAll();
-  let tx = db.transaction('log-rec', 'readwrite');
-  let os = tx.objectStore('log-rec');
-  let rq = os.delete(elm.record.id);
-  rq.onerror = console.log;
-  rq.onsuccess = () => elm.remove();
-}
-
 function filter(e) {
   let sel = e.detail.selected;
-  closeAll();
   document.querySelectorAll('log-record').forEach(elm =>
     elm.classList.toggle('hide', !sel[elm.record.tag]));
-}
-
-function closeExcept(elm0) {
-  list.querySelectorAll('log-record').forEach(elm => {
-    if(elm === elm0)
-      return;
-    else if(elm.isTemp())
-      list.removeChild(elm);
-    else
-      elm.close();
-  });
-}
-
-function closeAll() {
-  closeExcept(null);
 }
 
 function gameMenu() {
@@ -225,5 +162,16 @@ function dbRequest(r) {
     let rq = os.put(r.record);
     rq.onerror = console.log;
     rq.onsuccess = r.callback;
+  } else if(r.query === 'delete') {
+    let rq = os.delete(r.record.id);
+    rq.onerror = console.log;
+    rq.onsuccess = r.callback;
+  } else if(r.query === 'add') {
+    let rq = os.add(r.record);
+    rq.onerror = console.log;
+    rq.onsuccess = e => {
+      r.record.id = e.target.result;
+      r.callback(r.record);
+    }
   }
 }

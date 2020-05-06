@@ -8,11 +8,6 @@
   display: none;
 }
 
-[data-processing] {
-  transition: opacity .5s ease-in;
-  opacity: .5;
-}
-
 #content {
   border: var(--border);
   border-radius: .5rem;

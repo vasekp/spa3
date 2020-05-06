@@ -19,6 +19,12 @@ template.innerHTML = `
   </div>
 </div>`;
 
+let states = {
+  closed: 0,
+  edit: 1,
+  temp: 2
+};
+
 export class Record extends HTMLElement {
   constructor() {
     super();
@@ -29,16 +35,11 @@ export class Record extends HTMLElement {
     this._edit.addEventListener('input', () => this._input());
     this._edit.addEventListener('keydown', e => this._keydown(e));
     this._edit.addEventListener('blur', () => this.close());
-    this.shadowRoot.getElementById('edit').addEventListener('click', () => this.open());
-    this.shadowRoot.getElementById('colorsel').addEventListener('color-click', e => {
-      e.preventDefault();
-      this.dispatchEvent(new CustomEvent('color-pick', {
-        detail: { tag: e.detail.color },
-        bubbles: true
-      }));
-    });
+    this.shadowRoot.getElementById('edit').addEventListener('click', () => this.state = states.edit);
+    this.shadowRoot.getElementById('colorsel').addEventListener('color-click', e => this._materialize(e.detail.color));
     this.shadowRoot.querySelector('link').onload = () =>
       this.shadowRoot.getElementById('content').hidden = false;
+    this._state = states.temp;
   }
 
   static get observedAttributes() {
@@ -56,6 +57,7 @@ export class Record extends HTMLElement {
     this.shadowRoot.getElementById('colorsel').remove();
     this._text.innerText = record.text;
     this._rev = this._lastSave = 0;
+    this.state = states.closed;
   }
 
   get record() {
@@ -68,48 +70,68 @@ export class Record extends HTMLElement {
       : '';
   }
 
-  open() {
-    if(this._open)
-      return;
-    this._open = true;
+  set state(_state) {
+    if(_state != states.closed)
+      this.parentElement.querySelectorAll('log-record').forEach(elm => elm.close());
+    if(this._state == states.edit)
+      this._autosave();
+    this._state = _state;
+    this.toggleAttribute('data-protected', _state != states.closed);
+    this.shadowRoot.getElementById('edit').hidden = _state != states.closed;
+    if(_state == states.closed)
+      this._close();
+    if(_state == states.edit)
+      this._open();
+  }
+
+  _open() {
     this._edit.value = this._text.innerText;
     this._text.style.visibility = 'hidden';
     this._edit.hidden = false;
     this._edit.focus();
     this._timer = setInterval(() => this._autosave(), 300);
-    this.shadowRoot.getElementById('edit').visibility = 'hidden';
-    this.setAttribute('data-protected', '');
-    this.dispatchEvent(new CustomEvent('record-open', {
+  }
+
+  _close() {
+    if(!this._record)
+      this.remove();
+    this._text.style.visibility = 'visible';
+    this._edit.hidden = true;
+  }
+
+  _materialize(tag) {
+    let record = {
+      tag,
+      gid: 1,
+      date: Date.now(),
+      text: ''
+    };
+    let callback = record => {
+      this.record = record;
+      this.state = states.edit;
+      this.dispatchEvent(new CustomEvent('new-record', { bubbles: true }));
+    };
+    this.dispatchEvent(new CustomEvent('db-request', {
+      detail: { store: 'log-rec', query: 'add', record, callback },
       bubbles: true
     }));
   }
 
   close() {
-    if(!this._open)
-      return;
-    this._autosave();
-    this._open = false;
-    this._text.style.visibility = 'visible';
-    this._edit.hidden = true;
-    this.removeAttribute('data-protected');
-    this.shadowRoot.getElementById('edit').visibility = 'visible';
-  }
-
-  isTemp() {
-    return !this._record;
-  }
-
-  notifySaved(rev) {
-    if(rev === this._rev && !this._open)
-      clearInterval(this._timer);
-    this._lastSave = rev;
+    this.state = states.closed;
   }
 
   _autosave() {
     if(this._lastSave == this._rev)
       return;
-    this.dispatchEvent(new CustomEvent('record-save', {
-      detail: { rev: this._rev },
+    let rev = this._rev;
+    let callback = () => {
+      if(rev === this._rev && this._state != states.edit)
+        clearInterval(this._timer);
+      this._lastSave = rev;
+    }
+    this.dispatchEvent(new CustomEvent('db-request', {
+      detail: { store: 'log-rec', query: 'update', record: this._record, callback },
       bubbles: true
     }));
   }

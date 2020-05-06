@@ -41,7 +41,7 @@ class DateMarker extends HTMLElement {
 class List extends LiveList {
   constructor() {
     super();
-    this._observer = new MutationObserver((rec) => this._applyChanges(rec));
+    this._observer = new MutationObserver(() => this._applyChanges());
     this._pause = () => this._observer.disconnect();
     this._start = () => this._observer.observe(this, {
       childList: true,
@@ -50,9 +50,11 @@ class List extends LiveList {
       subtree: true
     });
     this._start();
+    this.addEventListener('new-record', () => this._applyChanges());
+    this.addEventListener('move-away', e => this._delete(e.target.record));
   }
 
-  _applyChanges(rec) {
+  _applyChanges() {
     this._pause();
     this.querySelectorAll('log-date-marker').forEach(elm => elm.remove());
     let prevDate = 0;
@@ -72,6 +74,13 @@ class List extends LiveList {
       prevDay = day;
     });
     this._start();
+  }
+
+  _delete(record) {
+    this.dispatchEvent(new CustomEvent('db-request', {
+      detail: { store: 'log-rec', query: 'delete', record },
+      bubbles: true
+    }));
   }
 }
 
