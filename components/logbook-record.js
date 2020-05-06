@@ -102,7 +102,7 @@ export class Record extends HTMLElement {
   _materialize(tag) {
     let record = {
       tag,
-      gid: 1,
+      gid: +this.closest('log-list').getAttribute('data-gid'),
       date: Date.now(),
       text: ''
     };

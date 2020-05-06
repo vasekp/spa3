@@ -8,7 +8,6 @@ import '../components/logbook-game.js';
 import {dateFormat} from './datetime.js';
 
 var db;
-var gid;
 var list;
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -90,7 +89,7 @@ function addTestData() {
 }
 
 function loadRecords(_gid) {
-  gid = +_gid;
+  let gid = +_gid;
   {
     let tx = db.transaction('log-gid', 'readonly');
     let os = tx.objectStore('log-gid');
@@ -115,6 +114,7 @@ function loadRecords(_gid) {
       results.forEach(record => addRecord(record));
     };
   }
+  list.setAttribute('data-gid', gid);
 }
 
 function plus(e) {
