@@ -9,12 +9,19 @@ import {dateFormat} from './datetime.js';
 
 var db;
 
+let views = {
+  records: 0,
+  games: 1
+};
+let curView = views.records;
+
 window.addEventListener('DOMContentLoaded', () => {
   prepareDatabase();
   document.getElementById('plus').addEventListener('click', plus);
   document.getElementById('game-select').addEventListener('click', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
   window.addEventListener('db-request', e => dbRequest(e.detail));
+  document.getElementById('game-list').addEventListener('game-clicked', e => gameClicked(e.detail.gid));
 });
 
 function prepareDatabase() {
@@ -44,16 +51,6 @@ function prepareDatabase() {
     }
   };
   rq.onerror = console.log;
-}
-
-function populateGList(games) {
-  let glist = document.getElementById('game-list');
-  games.forEach(game => {
-    let elm = document.createElement('log-game');
-    elm.record = game;
-    elm.addEventListener('click', gameClicked);
-    glist.appendChild(elm);
-  });
 }
 
 function addTestData() {
@@ -127,31 +124,52 @@ function addRecord(record) {
   return elm;
 }
 
+function populateGList(games) {
+  let glist = document.getElementById('game-list');
+  games.forEach(game => {
+    let elm = document.createElement('log-game');
+    elm.record = game;
+    glist.appendChild(elm);
+  });
+}
+
 function plus(e) {
-  let elm = document.createElement('log-record');
-  document.getElementById('log-list').appendChild(elm);
-  elm.setAttribute('data-protected', '');
-  elm.scrollIntoView();
-  e.preventDefault();
+  if(curView == views.records) {
+    let elm = document.createElement('log-record');
+    document.getElementById('log-list').appendChild(elm);
+    elm.setAttribute('data-protected', '');
+    elm.scrollIntoView();
+  } else {
+    let elm = document.createElement('log-game');
+    document.getElementById('game-list').appendChild(elm);
+    elm.scrollIntoView();
+    elm.focus();
+  }
 }
 
 function filter(e) {
-  let sel = e.detail.selected;
-  document.querySelectorAll('log-record').forEach(elm =>
-    elm.classList.toggle('hide', !sel[elm.record.tag]));
+  if(curView == view.records) {
+    let sel = e.detail.selected;
+    document.querySelectorAll('log-record').forEach(elm =>
+      elm.classList.toggle('hide', !sel[elm.record.tag]));
+  } else {
+    /* TODO */
+  }
 }
 
 function gameMenu() {
   document.getElementById('log-list').classList.add('zeroheight');
   document.getElementById('game-list').classList.remove('zeroheight');
   document.getElementById('log-sel').classList.add('zeroheight');
+  curView = views.games;
 }
 
-function gameClicked(e) {
-  loadRecords(e.currentTarget.record.id);
+function gameClicked(gid) {
+  loadRecords(gid);
   document.getElementById('log-list').classList.remove('zeroheight');
   document.getElementById('game-list').classList.add('zeroheight');
   document.getElementById('log-sel').classList.remove('zeroheight');
+  curView = views.records;
 }
 
 function dbRequest(r) {
