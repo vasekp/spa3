@@ -13,7 +13,7 @@ export class Loading extends HTMLElement {
     this.shadowRoot.appendChild(span.cloneNode(true));
     this.shadowRoot.appendChild(span.cloneNode(true));
     link.onload = () => {
-      [...this.shadowRoot.querySelectorAll('span')].forEach(e => e.hidden = false);
+      this.shadowRoot.querySelectorAll('span').forEach(e => e.hidden = false);
     }
   }
 }

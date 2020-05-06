@@ -54,10 +54,10 @@ class List extends LiveList {
 
   _applyChanges(rec) {
     this._pause();
-    [...this.querySelectorAll('log-date-marker')].forEach(elm => elm.remove());
+    this.querySelectorAll('log-date-marker').forEach(elm => elm.remove());
     let prevDate = 0;
     let prevDay = '';
-    [...this.querySelectorAll('log-record:not(.hide)')].forEach(elm => {
+    this.querySelectorAll('log-record:not(.hide)').forEach(elm => {
       if(!elm.record)
         return;
       let day = dateFormat(elm.record.date);

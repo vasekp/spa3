@@ -185,12 +185,12 @@ function deleteRecord(elm) {
 function filter(e) {
   let sel = e.detail.selected;
   closeAll();
-  [...document.querySelectorAll('log-record')].forEach(elm =>
+  document.querySelectorAll('log-record').forEach(elm =>
     elm.classList.toggle('hide', !sel[elm.record.tag]));
 }
 
 function closeExcept(elm0) {
-  [...list.querySelectorAll('log-record')].forEach(elm => {
+  list.querySelectorAll('log-record').forEach(elm => {
     if(elm === elm0)
       return;
     else if(elm.isTemp())

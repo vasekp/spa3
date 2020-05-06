@@ -15,7 +15,7 @@ export class LiveList extends HTMLElement {
   }
 
   _updateElements() {
-    [...this._slot.assignedElements()].forEach(elm => {
+    this._slot.assignedElements().forEach(elm => {
       elm.addEventListener('pointerdown', this._cb.down);
       elm.addEventListener('pointerup', this._cb.up);
       elm.addEventListener('pointermove', this._cb.move);
