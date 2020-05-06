@@ -8,23 +8,23 @@
   align-items: baseline;
 }
 
-#log-list {
-  flex-grow: 1;
+log-list {
+  flex: 1 1;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-#log-list log-record {
+log-list log-record {
   touch-action: pan-y;
   margin: .5rem 0;
 }
 
-#log-list :last-child {
+log-list :last-child {
   margin-bottom: 0;
 }
 
 #game-list {
-  flex-grow: 1;
+  flex: 1 1;
 }
 
 #game-list > :nth-child(even) {

@@ -34,6 +34,7 @@ main {
 
 main > * {
   transition: height .3s, flex-grow .3s;
+  flex-shrink: 0;
 }
 
 .hide {

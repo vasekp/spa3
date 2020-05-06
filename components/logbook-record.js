@@ -10,7 +10,7 @@ template.innerHTML = `
       <span id="timediff"></span>
     </span>
     <span id="fill"></span>
-    <span id="edit"><img class="inline" src="../images/edit.svg"></span>
+    <span id="edit"><img class="inline" src="images/edit.svg"></span>
   </div>
   <div id="container">
     <spa-color-sel id="colorsel"></spa-color-sel>
