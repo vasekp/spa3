@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('tag-filter').addEventListener('change', filter);
   window.addEventListener('db-request', e => dbRequest(e.detail));
   document.getElementById('game-list').addEventListener('game-clicked', e => gameClicked(e.detail.gid));
+  document.getElementById('game-list').addEventListener('delete-game', e => deleteGame(e.detail.gid));
 });
 
 function prepareDatabase() {
@@ -189,6 +190,24 @@ function dbRequest(r) {
     rq.onsuccess = e => {
       r.record.id = e.target.result;
       r.callback(r.record);
+    }
+  }
+}
+
+function deleteGame(_gid) {
+  let gid = +_gid;
+  let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
+  let os = tx.objectStore('log-gid');
+  let rq = os.delete(gid);
+  rq.onerror = console.log;
+  os = tx.objectStore('log-rec');
+  let ix = os.index('gid');
+  rq = ix.openKeyCursor(IDBKeyRange.only(gid));
+  rq.onsuccess = () => {
+    let cursor = rq.result;
+    if(cursor) {
+      os.delete(cursor.primaryKey);
+      cursor.continue();
     }
   }
 }

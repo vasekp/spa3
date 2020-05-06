@@ -9,6 +9,7 @@ template.innerHTML = `
   <span id="name" hidden></span>
   <input type="text" id="name-edit" class="stop-click">&nbsp;
   <span id="date" hidden></span>
+  <div id="confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
   <div id="float" class="color-border stop-click" hidden>
     <div id="stash">
       <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
@@ -34,12 +35,14 @@ export class GameRecord extends HTMLElement {
     root.querySelector('link').onload = () => this.shadowRoot.getElementById('content').hidden = false;
     root.getElementById('edit').addEventListener('click', () => this.state = states.edit);
     root.getElementById('colorsel').addEventListener('click', () => this.state = states.color);
-    root.getElementById('name-edit').addEventListener('blur', () => this.state = states.closed);
+    root.getElementById('delete').addEventListener('click', () => this._delete());
+    root.getElementById('delete').addEventListener('blur', () => this.close());
+    root.getElementById('name-edit').addEventListener('blur', () => this.close());
     root.getElementById('name-edit').addEventListener('keydown', e => this._keydown(e));
     root.querySelector('spa-color-sel').addEventListener('color-click', e => this._colorClicked(e.detail.color));
+    this.addEventListener('click', () => this._clicked());
     root.querySelectorAll('.stop-click').forEach(
       elm => elm.addEventListener('click', e => e.stopPropagation()));
-    this.addEventListener('click', () => this._clicked());
     this._state = states.empty;
   }
 
@@ -79,6 +82,7 @@ export class GameRecord extends HTMLElement {
     root.getElementById('name').hidden = _state != states.closed;
     root.getElementById('date').hidden = _state != states.closed;
     root.getElementById('name-edit').hidden = _state != states.edit;
+    root.getElementById('confirm').hidden = _state != states.delete;
     root.getElementById('float').hidden = false;
     if(_state == states.edit)
       this._open();
@@ -119,6 +123,17 @@ export class GameRecord extends HTMLElement {
       detail: { store: 'log-gid', query: 'add', record, callback },
       bubbles: true
     }));
+  }
+
+  _delete() {
+    if(this.state == states.delete) {
+      this.dispatchEvent(new CustomEvent('delete-game', {
+        detail: { gid: this._record.id },
+        bubbles: true
+      }));
+      this.remove();
+    } else
+      this.state = states.delete;
   }
 
   _clicked() {

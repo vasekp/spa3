@@ -12,6 +12,7 @@
   padding: .5rem 0;
   display: flex;
   align-items: baseline;
+  position: relative;
 }
 
 #date {
@@ -90,4 +91,14 @@ spa-color-patch:not([color]), spa-color-patch[color="none"] {
 
 #name-edit:focus {
   box-shadow: 0 0 .2rem #888;
+}
+
+#confirm {
+  position: absolute;
+  left: 0;
+  top: .5rem;
+  background: #f006;
+  padding: 0 .2rem;
+  border-radius: .5rem;
+  outline: none;
 }
