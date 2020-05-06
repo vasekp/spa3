@@ -15,6 +15,17 @@
   position: relative;
 }
 
+#content > * {
+  flex-shrink: 0;
+}
+
+#name {
+  flex-shrink: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 #date {
   color: var(--color-text-light);
 }

@@ -1,6 +1,19 @@
 #log-sel {
   height: var(--abs-line-height);
   overflow: hidden;
+  display: flex;
+  align-items: baseline;
+}
+
+#gname {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 .2em;
+}
+
+#gdate {
+  flex-shrink: 0;
 }
 
 #color-filter {
