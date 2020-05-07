@@ -4,18 +4,15 @@ const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" href="components/css/log-game.css"/>
 <div id="content" hidden>
+  <spa-color-patch id="patch" hidden></spa-color-patch>
   <spa-color-sel class="stop-click" zero hidden></spa-color-sel>
-  <spa-color-patch hidden></spa-color-patch>
   <span id="name" hidden></span>
-  <input type="text" id="name-edit" class="stop-click">&nbsp;
+  <input type="text" id="name-edit" class="stop-click">
   <span id="date" hidden></span>
   <div id="confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
   <div id="float" class="color-border stop-click" hidden>
-    <div id="stash">
-      <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
-      <spa-color-patch id="colorsel" color="all" tabindex="0"></spa-color-patch>
-    </div>
-    <div id="edit-bg"></div>
+    <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
+    <spa-color-patch id="colorsel" color="all" tabindex="0"></spa-color-patch>
     <img id="edit" alt="edit" src="images/edit.svg" tabindex="0"/>
   </div>
 </div>`;
@@ -58,8 +55,7 @@ export class GameRecord extends HTMLElement {
 
   _update() {
     let root = this.shadowRoot;
-    let patch = root.querySelector('spa-color-patch');
-    patch.setAttribute('color', this._record.color || 'none');
+    root.getElementById('patch').setAttribute('color', this._record.color || 'none');
     root.getElementById('name').innerText = this._record.name;
     root.getElementById('date').innerText = '(' + dateFormat(this._record.date) + ')';
   }
@@ -78,7 +74,7 @@ export class GameRecord extends HTMLElement {
     this._state = _state;
     let root = this.shadowRoot;
     root.querySelector('spa-color-sel').hidden = _state != states.color;
-    root.querySelector('spa-color-patch').hidden = _state == states.color;
+    root.querySelector('spa-color-patch').hidden = _state != states.closed && _state != states.edit;
     root.getElementById('name').hidden = _state != states.closed;
     root.getElementById('date').hidden = _state != states.closed;
     root.getElementById('name-edit').hidden = _state != states.edit;
