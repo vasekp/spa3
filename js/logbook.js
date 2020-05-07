@@ -135,6 +135,7 @@ function populateGList(games) {
 }
 
 function plus(e) {
+  document.getElementById('tag-filter').selectAll();
   if(curView == views.records) {
     let elm = document.createElement('log-record');
     document.getElementById('log-list').appendChild(elm);
@@ -149,12 +150,15 @@ function plus(e) {
 }
 
 function filter(e) {
-  if(curView == view.records) {
-    let sel = e.detail.selected;
-    document.querySelectorAll('log-record').forEach(elm =>
+  let sel = e.detail.selected;
+  if(curView == views.records) {
+    document.getElementById('log-list').querySelectorAll('log-record').forEach(elm =>
       elm.classList.toggle('hide', !sel[elm.record.tag]));
   } else {
-    /* TODO */
+    document.getElementById('game-list').querySelectorAll('log-game').forEach(elm => {
+      let show = elm.record.color ? sel[elm.record.color] : sel.all;
+      elm.classList.toggle('hide', !show);
+    });
   }
 }
 
@@ -162,6 +166,7 @@ function gameMenu() {
   document.getElementById('log-list').classList.add('zeroheight');
   document.getElementById('game-list').classList.remove('zeroheight');
   document.getElementById('log-sel').classList.add('zeroheight');
+  document.getElementById('tag-filter').selectAll();
   curView = views.games;
 }
 
@@ -170,6 +175,7 @@ function gameClicked(gid) {
   document.getElementById('log-list').classList.remove('zeroheight');
   document.getElementById('game-list').classList.add('zeroheight');
   document.getElementById('log-sel').classList.remove('zeroheight');
+  document.getElementById('tag-filter').selectAll();
   curView = views.records;
 }
 

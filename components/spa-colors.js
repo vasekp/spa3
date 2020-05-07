@@ -68,10 +68,7 @@ export class ColorFilter extends ColorSel {
     super();
     this._addPatch('all');
     this._sel = [];
-    this.shadowRoot.querySelectorAll('spa-color-patch').forEach(elm => {
-      elm.classList.add('filter', 'selected');
-      this._sel[elm.getAttribute('color')] = true;
-    });
+    this.selectAll(true);
   }
 
   _click(color) {
@@ -97,6 +94,19 @@ export class ColorFilter extends ColorSel {
     this.shadowRoot.querySelectorAll('spa-color-patch').forEach(elm => {
       elm.classList.toggle('selected', this._sel[elm.getAttribute('color')]);
     });
+    this._notify();
+  }
+
+  selectAll(noEvent) {
+    this.shadowRoot.querySelectorAll('spa-color-patch').forEach(elm => {
+      elm.classList.add('filter', 'selected');
+      this._sel[elm.getAttribute('color')] = true;
+    });
+    if(!noEvent)
+      this._notify();
+  }
+
+  _notify() {
     this.dispatchEvent(new CustomEvent('change', {
       detail: { selected: this._sel },
       bubbles: true
