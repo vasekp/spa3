@@ -1,9 +1,9 @@
-import {LiveList} from './live-list.js';
+import {LiveList} from './spa-live-list.js';
 import {dateFormat} from '../js/datetime.js';
 
 const dateMarkerTemp = document.createElement('template');
 dateMarkerTemp.innerHTML = `
-<link rel="stylesheet" href="components/css/date-marker.css"/>
+<link rel="stylesheet" href="components/css/log-date-marker.css"/>
 <div id="content" class="new-day colors-def" data-protected="true" hidden>
   <span class="line"></span>
   <span class="text color-fainter"><slot></slot></span>

@@ -1,10 +1,10 @@
 'use strict';
 
-import '../components/loading.js';
-import '../components/colorsel.js';
-import '../components/logbook-record.js';
-import '../components/logbook-list.js';
-import '../components/logbook-game.js';
+import '../components/spa-loading.js';
+import '../components/spa-colors.js';
+import '../components/log-record.js';
+import '../components/log-list.js';
+import '../components/log-game.js';
 import {dateFormat} from './datetime.js';
 
 var db;

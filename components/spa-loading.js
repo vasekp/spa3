@@ -4,7 +4,7 @@ export class Loading extends HTMLElement {
     this.attachShadow({mode: 'open'});
     let link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', 'components/css/loading.css');
+    link.setAttribute('href', 'components/css/spa-loading.css');
     this.shadowRoot.appendChild(link);
     let span = document.createElement('span');
     span.innerText = '●';

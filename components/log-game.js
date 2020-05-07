@@ -2,7 +2,7 @@ import {dateFormat} from '../js/datetime.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<link rel="stylesheet" href="components/css/logbook-game.css"/>
+<link rel="stylesheet" href="components/css/log-game.css"/>
 <div id="content" hidden>
   <spa-color-sel class="stop-click" zero hidden></spa-color-sel>
   <spa-color-patch hidden></spa-color-patch>

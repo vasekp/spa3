@@ -1,11 +1,11 @@
-const template = document.createElement('template');
-template.innerHTML = `
-<link rel="stylesheet" href="components/css/colorsel.css"/>
+const cselTemplate = document.createElement('template');
+cselTemplate.innerHTML = `
+<link rel="stylesheet" href="components/css/spa-color-sel.css"/>
 <div id="container"></div>`;
 
 const patchTemplate = document.createElement('template');
 patchTemplate.innerHTML = `
-<link rel="stylesheet" href="components/css/color-patch.css"/>
+<link rel="stylesheet" href="components/css/spa-color-patch.css"/>
 <div></div>`;
 
 export class ColorPatch extends HTMLElement {
@@ -32,7 +32,7 @@ export class ColorSel extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadowRoot.appendChild(cselTemplate.content.cloneNode(true));
     for(let color = 1; color <= 9; color++)
       this._addPatch(color);
     this._addPatch('none');
