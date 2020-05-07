@@ -23,6 +23,7 @@ export class ColorPatch extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, value) {
     this._div.classList.toggle('colors-rainbow', value === 'all');
+    this._div.classList.toggle('colors-cross', value === 'none');
     this._div.classList.toggle('colors-param', value !== 'all' && value != 'none');
     this._div.style.setProperty('--color', value);
   }

@@ -24,6 +24,13 @@
   --color-text-fainter: hsl(0, 0%, 25%);
 }
 
+.colors-cross {
+  background: linear-gradient(.125turn, transparent 42%, red 45% 55%, transparent 58%),
+              linear-gradient(-.125turn, transparent 42%, red 45% 55%, transparent 58%);
+  --color-line: hsl(0, 0%, 50%);
+  --color-text-fainter: hsl(0, 0%, 25%);
+}
+
 .colors-grey {
   background: hsl(0, 0%, 85%);
   --color-line: hsl(0, 0%, 50%);
