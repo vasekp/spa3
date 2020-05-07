@@ -31,7 +31,8 @@ export class GameRecord extends HTMLElement {
     root.appendChild(template.content.cloneNode(true));
     root.querySelector('link').onload = () => this.shadowRoot.getElementById('content').hidden = false;
     root.getElementById('edit').addEventListener('click', () => this.state = states.edit);
-    root.getElementById('colorsel').addEventListener('click', () => this.state = states.color);
+    root.getElementById('colorsel').addEventListener('click', () =>
+      this.state = (this.state == states.color ? states.closed : states.color));
     root.getElementById('delete').addEventListener('click', () => this._delete());
     root.getElementById('delete').addEventListener('blur', () => this.close());
     root.getElementById('name-edit').addEventListener('blur', () => this.close());
