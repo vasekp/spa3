@@ -2,7 +2,6 @@
 
 :host {
   display: inline-block;
-  margin: 0 .25rem;
 }
 
 :host([hidden]) {
@@ -14,7 +13,15 @@
 }
 
 spa-color-patch {
-  margin: 0 .25em;
+  padding: 0 .25em;
+}
+
+spa-color-patch:first-of-type {
+  padding-left: 0;
+}
+
+spa-color-patch:last-of-type {
+  padding-right: 0;
 }
 
 spa-color-patch.filter:not(.selected) {

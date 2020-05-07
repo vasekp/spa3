@@ -16,9 +16,8 @@
   flex-shrink: 0;
 }
 
-#color-filter {
-  display: flex;
-  align-items: baseline;
+#tag-filter {
+  margin-left: .25rem;
 }
 
 log-list {
