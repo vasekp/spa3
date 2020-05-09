@@ -30,33 +30,42 @@
   margin-left: .25em;
 }
 
-#float {
+#tools-container {
   --div-size: 1.2rem;
+  width: calc(var(--div-size) + 2*var(--line-width));
+  height: calc(var(--div-size) + 2*var(--line-width));
+  overflow: visible;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#tools {
   --padding: calc((var(--div-size) - var(--abs-cap-size)) / 2);
   --count: 3;
   width: var(--div-size);
   height: var(--div-size);
+  flex-shrink: 0;
   overflow: hidden;
   transition: width .5s;
   background: white;
   border: var(--border);
   border-radius: var(--div-size);
   line-height: var(--div-size);
-  margin-left: auto;
   display: flex;
   justify-content: flex-end;
 }
 
-#float:hover, #float:focus-within, :focus ~ #float {
+#tools:hover, #tools:focus-within, :focus ~ #tools {
   width: calc(var(--count) * var(--div-size));
 }
 
-#float img {
+#tools img {
   width: var(--abs-cap-size);
   height: var(--abs-cap-size);
 }
 
-#float > * {
+#tools > * {
   padding: var(--padding);
   flex-shrink: 0;
   outline: 0;

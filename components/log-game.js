@@ -10,10 +10,12 @@ template.innerHTML = `
   <input type="text" id="name-edit" class="stop-click">
   <span id="date" hidden></span>
   <div id="confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
-  <div id="float" class="color-border stop-click" hidden>
-    <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
-    <spa-color-patch id="colorsel" color="all" tabindex="0"></spa-color-patch>
-    <img id="edit" alt="edit" src="images/edit.svg" tabindex="0"/>
+  <div id="tools-container">
+    <div id="tools" class="color-border stop-click" hidden>
+      <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
+      <spa-color-patch id="colorsel" color="all" tabindex="0"></spa-color-patch>
+      <img id="edit" alt="edit" src="images/edit.svg" tabindex="0"/>
+    </div>
   </div>
 </div>`;
 
@@ -80,7 +82,7 @@ export class GameRecord extends HTMLElement {
     root.getElementById('date').hidden = _state != states.closed;
     root.getElementById('name-edit').hidden = _state != states.edit;
     root.getElementById('confirm').hidden = _state != states.delete;
-    root.getElementById('float').hidden = false;
+    root.getElementById('tools').hidden = false;
     if(_state == states.edit)
       this._open();
   }
