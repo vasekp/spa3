@@ -44,9 +44,9 @@ log-list :last-child {
 }
 
 #plus {
-  width: 3rem;
-  height: 3rem;
-  background: hsl(100, 50%, 50%) url(../images/plus.svg) 50% 50% no-repeat;
+  width: 1.2em;
+  height: 1.2em;
+  background: hsl(100, 50%, 50%);
   background-size: 1.2rem;
   position: absolute;
   right: 1rem;
@@ -56,6 +56,10 @@ log-list :last-child {
   text-align: center;
   z-index: 1;
   transform: translateZ(0);
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
+  color: white;
 }
 
 #game-select {
