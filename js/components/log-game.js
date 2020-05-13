@@ -1,8 +1,8 @@
-import {dateFormat} from '../js/datetime.js';
+import {dateFormat} from '../datetime.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<link rel="stylesheet" href="components/css/log-game.css"/>
+<link rel="stylesheet" href="css/components/log-game.css"/>
 <div id="content" hidden>
   <spa-color-patch id="patch" hidden></spa-color-patch>
   <spa-color-sel class="stop-click" zero hidden></spa-color-sel>

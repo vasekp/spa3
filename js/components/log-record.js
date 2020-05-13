@@ -1,8 +1,8 @@
-import {timeFormat} from '../js/datetime.js';
+import {timeFormat} from '../datetime.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<link rel="stylesheet" href="components/css/log-record.css"/>
+<link rel="stylesheet" href="css/components/log-record.css"/>
 <div id="content" class="colors-grey color-border" hidden>
   <div id="header" class="color-fainter" hidden>
     <span>

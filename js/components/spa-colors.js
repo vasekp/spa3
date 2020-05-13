@@ -1,11 +1,11 @@
 const cselTemplate = document.createElement('template');
 cselTemplate.innerHTML = `
-<link rel="stylesheet" href="components/css/spa-color-sel.css"/>
+<link rel="stylesheet" href="css/components/spa-color-sel.css"/>
 <div id="container"></div>`;
 
 const patchTemplate = document.createElement('template');
 patchTemplate.innerHTML = `
-<link rel="stylesheet" href="components/css/spa-color-patch.css"/>
+<link rel="stylesheet" href="css/components/spa-color-patch.css"/>
 <div></div>`;
 
 export class ColorPatch extends HTMLElement {
