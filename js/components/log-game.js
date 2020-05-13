@@ -26,7 +26,7 @@ let states = {
   color: 3
 };
 
-export class GameRecord extends HTMLElement {
+export class GameRecordElement extends HTMLElement {
   constructor() {
     super();
     let root = this.attachShadow({mode: 'open'});
@@ -162,4 +162,4 @@ export class GameRecord extends HTMLElement {
   }
 }
 
-window.customElements.define('log-game', GameRecord);
+window.customElements.define('log-game', GameRecordElement);

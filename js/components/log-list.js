@@ -1,4 +1,4 @@
-import {LiveList} from './spa-live-list.js';
+import {LiveListElement} from './spa-live-list.js';
 import {dateFormat} from '../datetime.js';
 
 const dateMarkerTemp = document.createElement('template');
@@ -28,7 +28,7 @@ function formatDiff(diff) {
   return diffText;
 }
 
-class DateMarker extends HTMLElement {
+export class DateMarkerElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -38,7 +38,7 @@ class DateMarker extends HTMLElement {
   }
 }
 
-class List extends LiveList {
+export class ListElement extends LiveListElement {
   constructor() {
     super();
     this._observer = new MutationObserver(() => this._applyChanges());
@@ -84,5 +84,5 @@ class List extends LiveList {
   }
 }
 
-window.customElements.define('log-date-marker', DateMarker);
-window.customElements.define('log-list', List);
+window.customElements.define('log-date-marker', DateMarkerElement);
+window.customElements.define('log-list', ListElement);

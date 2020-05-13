@@ -1,4 +1,4 @@
-export class Loading extends HTMLElement {
+export class LoadingElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -18,4 +18,4 @@ export class Loading extends HTMLElement {
   }
 }
 
-window.customElements.define('spa-loading', Loading);
+window.customElements.define('spa-loading', LoadingElement);

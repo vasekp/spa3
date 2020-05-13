@@ -25,7 +25,7 @@ let states = {
   edit: 2
 };
 
-export class Record extends HTMLElement {
+export class RecordElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -149,4 +149,4 @@ export class Record extends HTMLElement {
   }
 }
 
-window.customElements.define('log-record', Record);
+window.customElements.define('log-record', RecordElement);

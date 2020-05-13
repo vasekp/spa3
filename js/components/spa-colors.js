@@ -8,7 +8,7 @@ patchTemplate.innerHTML = `
 <link rel="stylesheet" href="css/components/spa-color-patch.css"/>
 <div></div>`;
 
-export class ColorPatch extends HTMLElement {
+export class ColorPatchElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -29,7 +29,7 @@ export class ColorPatch extends HTMLElement {
   }
 }
 
-export class ColorSel extends HTMLElement {
+export class ColorSelElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -63,7 +63,7 @@ export class ColorSel extends HTMLElement {
   }
 }
 
-export class ColorFilter extends ColorSel {
+export class ColorFilterElement extends ColorSelElement {
   constructor() {
     super();
     this._addPatch('all');
@@ -114,6 +114,6 @@ export class ColorFilter extends ColorSel {
   }
 }
 
-window.customElements.define('spa-color-patch', ColorPatch);
-window.customElements.define('spa-color-sel', ColorSel);
-window.customElements.define('spa-color-filter', ColorFilter);
+window.customElements.define('spa-color-patch', ColorPatchElement);
+window.customElements.define('spa-color-sel', ColorSelElement);
+window.customElements.define('spa-color-filter', ColorFilterElement);

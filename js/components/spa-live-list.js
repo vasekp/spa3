@@ -1,4 +1,4 @@
-export class LiveList extends HTMLElement {
+export class LiveListElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -117,4 +117,4 @@ export class LiveList extends HTMLElement {
   }
 }
 
-window.customElements.define('spa-live-list', LiveList);
+window.customElements.define('spa-live-list', LiveListElement);
