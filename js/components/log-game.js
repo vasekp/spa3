@@ -93,7 +93,7 @@ export class GameRecordElement extends HTMLElement {
   }
 
   focus() {
-    this.shadowRoot.getElementById('name-edit').focus();
+    setTimeout(() => this.shadowRoot.getElementById('name-edit').focus(), 100);
   }
 
   _open() {
