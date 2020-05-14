@@ -40,6 +40,10 @@
   justify-content: flex-end;
 }
 
+#tools-container[hidden] {
+  display: none;
+}
+
 #tools {
   --padding: calc((var(--div-size) - var(--abs-cap-size)) / 2);
   --count: 3;

@@ -51,7 +51,7 @@ export class ListElement extends LiveListElement {
     });
     this._start();
     this.addEventListener('new-record', () => this._applyChanges());
-    this.addEventListener('move-away', e => this._delete(e.target.record));
+    this.addEventListener('move-away', e => e.target.record.delete());
   }
 
   _applyChanges() {
@@ -74,13 +74,6 @@ export class ListElement extends LiveListElement {
       prevDay = day;
     });
     this._start();
-  }
-
-  _delete(record) {
-    this.dispatchEvent(new CustomEvent('db-request', {
-      detail: { store: 'log-rec', query: 'delete', record },
-      bubbles: true
-    }));
   }
 }
 

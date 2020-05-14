@@ -1,4 +1,5 @@
 import {timeFormat} from '../datetime.js';
+import {Record} from '../log-record.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -56,7 +57,6 @@ export class RecordElement extends HTMLElement {
     this.shadowRoot.getElementById('text').hidden = false;
     this.shadowRoot.getElementById('colorsel').remove();
     this._text.innerText = record.text;
-    this._rev = this._lastSave = 0;
     this.state = states.closed;
   }
 
@@ -73,8 +73,6 @@ export class RecordElement extends HTMLElement {
   set state(_state) {
     if(_state != states.closed)
       this.parentElement.querySelectorAll('log-record').forEach(elm => elm.close());
-    if(this._state == states.edit)
-      this._autosave();
     this._state = _state;
     this.toggleAttribute('data-protected', _state != states.closed);
     this.shadowRoot.getElementById('edit').hidden = _state != states.closed;
@@ -89,7 +87,6 @@ export class RecordElement extends HTMLElement {
     this._text.style.visibility = 'hidden';
     this._edit.hidden = false;
     this._edit.focus();
-    this._timer = setInterval(() => this._autosave(), 300);
   }
 
   _close() {
@@ -100,45 +97,18 @@ export class RecordElement extends HTMLElement {
   }
 
   _materialize(tag) {
-    let record = {
-      tag,
-      gid: +this.closest('log-list').getAttribute('data-gid'),
-      date: Date.now(),
-      text: ''
-    };
-    let callback = record => {
-      this.record = record;
-      this.state = states.edit;
-      this.dispatchEvent(new CustomEvent('new-record', { bubbles: true }));
-    };
-    this.dispatchEvent(new CustomEvent('db-request', {
-      detail: { store: 'log-rec', query: 'add', record, callback },
-      bubbles: true
-    }));
+    let gid = this.closest('log-list').getAttribute('data-gid');
+    this.record = new Record(gid, tag);
+    this.state = states.edit;
+    this.dispatchEvent(new CustomEvent('new-record', { bubbles: true }));
   }
 
   close() {
     this.state = states.closed;
   }
 
-  _autosave() {
-    if(this._lastSave == this._rev)
-      return;
-    let rev = this._rev;
-    let callback = () => {
-      if(rev === this._rev && this._state != states.edit)
-        clearInterval(this._timer);
-      this._lastSave = rev;
-    }
-    this.dispatchEvent(new CustomEvent('db-request', {
-      detail: { store: 'log-rec', query: 'update', record: this._record, callback },
-      bubbles: true
-    }));
-  }
-
   _input() {
     this._record.text = this._text.innerText = this._edit.value;
-    this._rev++;
   }
 
   _keydown(e) {

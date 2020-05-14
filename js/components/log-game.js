@@ -1,4 +1,5 @@
 import {dateFormat} from '../datetime.js';
+import {Game} from '../log-game.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -10,8 +11,8 @@ template.innerHTML = `
   <input type="text" id="name-edit" class="stop-click">
   <span id="date" hidden></span>
   <div id="confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
-  <div id="tools-container">
-    <div id="tools" class="color-border stop-click" hidden>
+  <div id="tools-container" hidden>
+    <div id="tools" class="color-border stop-click">
       <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
       <spa-color-patch id="colorsel" color="all" tabindex="0"></spa-color-patch>
       <img id="edit" alt="edit" src="images/edit.svg" tabindex="0"/>
@@ -46,8 +47,8 @@ export class GameRecordElement extends HTMLElement {
     this._state = states.empty;
   }
 
-  set record(_record) {
-    this._record = _record;
+  set record(record) {
+    this._record = record;
     this._update();
     this.state = states.closed;
   }
@@ -58,7 +59,7 @@ export class GameRecordElement extends HTMLElement {
 
   _update() {
     let root = this.shadowRoot;
-    root.getElementById('patch').setAttribute('color', this._record.color || 'none');
+    root.getElementById('patch').setAttribute('color', this._record.tag || 'none');
     root.getElementById('name').innerText = this._record.name;
     root.getElementById('date').innerText = '(' + dateFormat(this._record.date) + ')';
   }
@@ -67,23 +68,23 @@ export class GameRecordElement extends HTMLElement {
     return this._state;
   }
 
-  set state(_state) {
-    if(_state != states.closed)
+  set state(state) {
+    if(state != states.closed)
       this.parentElement.querySelectorAll('log-game').forEach(elm => elm.close());
-    if(this._state == states.empty)
+    if(this._state == states.empty && !this._record)
       this._materialize();
     if(this._state == states.edit)
       this._save();
-    this._state = _state;
+    this._state = state;
     let root = this.shadowRoot;
-    root.querySelector('spa-color-sel').hidden = _state != states.color;
-    root.querySelector('spa-color-patch').hidden = _state != states.closed && _state != states.edit;
-    root.getElementById('name').hidden = _state != states.closed;
-    root.getElementById('date').hidden = _state != states.closed;
-    root.getElementById('name-edit').hidden = _state != states.edit;
-    root.getElementById('confirm').hidden = _state != states.delete;
-    root.getElementById('tools').hidden = false;
-    if(_state == states.edit)
+    root.querySelector('spa-color-sel').hidden = state != states.color;
+    root.querySelector('spa-color-patch').hidden = state != states.closed && state != states.edit;
+    root.getElementById('name').hidden = state != states.closed;
+    root.getElementById('date').hidden = state != states.closed;
+    root.getElementById('name-edit').hidden = state != states.edit;
+    root.getElementById('confirm').hidden = state != states.delete;
+    root.getElementById('tools-container').hidden = false;
+    if(state == states.edit)
       this._open();
   }
 
@@ -106,30 +107,16 @@ export class GameRecordElement extends HTMLElement {
     let newName = this.shadowRoot.getElementById('name-edit').value;
     this._record.name = newName;
     this._update();
-    this._dbUpdate();
   }
 
   _materialize() {
-    let record = {
-      name: this.shadowRoot.getElementById('name-edit').value,
-      date: Date.now()
-    };
-    let callback = record => {
-      this.record = record;
-      this.state = states.closed;
-    }
-    this.dispatchEvent(new CustomEvent('db-request', {
-      detail: { store: 'log-gid', query: 'add', record, callback },
-      bubbles: true
-    }));
+    let name = this.shadowRoot.getElementById('name-edit').value;
+    this.record = new Game(name);
   }
 
   _delete() {
     if(this.state == states.delete) {
-      this.dispatchEvent(new CustomEvent('delete-game', {
-        detail: { gid: this._record.id },
-        bubbles: true
-      }));
+      this._record.delete();
       this.remove();
     } else
       this.state = states.delete;
@@ -137,23 +124,15 @@ export class GameRecordElement extends HTMLElement {
 
   _clicked() {
     this.dispatchEvent(new CustomEvent('game-clicked', {
-      detail: { gid: this._record.id },
+      detail: { game: this._record },
       bubbles: true
     }));
   }
 
   _colorClicked(color) {
-    this._record.color = color;
+    this._record.tag = color;
     this._update();
-    this._dbUpdate();
     this.close();
-  }
-
-  _dbUpdate() {
-    this.dispatchEvent(new CustomEvent('db-request', {
-      detail: { store: 'log-gid', query: 'update', record: this._record },
-      bubbles: true
-    }));
   }
 
   _keydown(e) {
