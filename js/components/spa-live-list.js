@@ -1,28 +1,29 @@
 export class LiveListElement extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({mode: 'open'});
-    this._slot = document.createElement('slot');
-    this._slot.addEventListener('slotchange', () => this._updateElements());
-    this.shadowRoot.appendChild(this._slot);
     this._tracking = {};
-    this._cb = {  // Need callback references for harmless reassigning
-      down: this._pDown.bind(this),
-      up: this._pUp.bind(this),
-      move: this._pMove.bind(this),
-      cancel: this._pCancel.bind(this)
+    this._cb = {  // Need callback references for lower memory footprint
+      down: e => this._pDown(e),
+      up: e => this._pUp(e),
+      move: e => this._pMove(e),
+      cancel: e => this._pCancel(e)
     };
+    let observer = new MutationObserver(list =>
+      this._update(list));
+    observer.observe(this, { childList: true });
   }
 
-  _updateElements() {
-    this._slot.assignedElements().forEach(elm => {
-      elm.addEventListener('pointerdown', this._cb.down);
-      elm.addEventListener('pointerup', this._cb.up);
-      elm.addEventListener('pointermove', this._cb.move);
-      elm.addEventListener('pointercancel', this._cb.cancel);
+  _update(list) {
+    list.forEach(record => {
+      record.addedNodes.forEach(elm => {
+        elm.addEventListener('pointerdown', this._cb.down);
+        elm.addEventListener('pointerup', this._cb.up);
+        elm.addEventListener('pointermove', this._cb.move);
+        elm.addEventListener('pointercancel', this._cb.cancel);
+      });
+      if(this._tracking.elm && record.removedNodes.includes(this._tracking.elm))
+        this._tracking = {};
     });
-    if(this._tracking.elm && !this._slot.assignedElements().includes(this._tracking.elm))
-      this._tracking = {};
   }
 
   _pDown(e) {
