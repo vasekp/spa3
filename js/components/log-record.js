@@ -21,9 +21,9 @@ template.innerHTML = `
 </div>`;
 
 let states = {
-  empty: 0,
-  closed: 1,
-  edit: 2
+  empty: 'empty',
+  closed: 'closed',
+  edit: 'edit'
 };
 
 export class RecordElement extends HTMLElement {
@@ -44,7 +44,7 @@ export class RecordElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['timediff'];
+    return ['timediff', 'state'];
   }
 
   set record(record) {
@@ -65,20 +65,30 @@ export class RecordElement extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    this.shadowRoot.getElementById('timediff').innerText = value
-      ? '(' + value + ')'
-      : '';
+    if(name === 'timediff')
+      this.shadowRoot.getElementById('timediff').innerText = value
+        ? '(' + value + ')'
+        : '';
+    else if(name === 'state')
+      this._stateChange(value);
   }
 
-  set state(_state) {
-    if(_state != states.closed)
-      this.parentElement.querySelectorAll('log-record').forEach(elm => elm.close());
-    this._state = _state;
-    this.toggleAttribute('data-protected', _state != states.closed);
-    this.shadowRoot.getElementById('edit').hidden = _state != states.closed;
-    if(_state == states.closed)
+  set state(state) {
+    this.setAttribute('state', state);
+  }
+
+  _stateChange(state) {
+    if(state != states.closed)
+      this.parentElement.querySelectorAll('log-record').forEach(elm => {
+        if(elm !== this)
+          elm.close();
+      });
+    this._state = state;
+    this.toggleAttribute('data-protected', state != states.closed);
+    this.shadowRoot.getElementById('edit').hidden = state != states.closed;
+    if(state == states.closed)
       this._close();
-    if(_state == states.edit)
+    if(state == states.edit)
       this._open();
   }
 
@@ -100,7 +110,6 @@ export class RecordElement extends HTMLElement {
     let gid = this.closest('log-list').getAttribute('data-gid');
     this.record = new Record(gid, tag);
     this.state = states.edit;
-    this.dispatchEvent(new CustomEvent('new-record', { bubbles: true }));
   }
 
   close() {

@@ -10,7 +10,6 @@ dateMarkerTemp.innerHTML = `
   <span class="line"></span>
 </div>`;
 
-
 function formatDiff(diff) {
   let diffText = '+';
   diff = Math.floor(diff / 1000);
@@ -46,11 +45,10 @@ export class ListElement extends LiveListElement {
     this._start = () => this._observer.observe(this, {
       childList: true,
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ['class', 'state'],
       subtree: true
     });
     this._start();
-    this.addEventListener('new-record', () => this._applyChanges());
     this.addEventListener('move-away', e => e.target.record.delete());
   }
 
