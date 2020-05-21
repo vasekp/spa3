@@ -9,7 +9,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0 .2em;
+  margin: 0 var(--margin-small);
 }
 
 #gdate {
@@ -17,7 +17,7 @@
 }
 
 #tag-filter {
-  margin-left: .25rem;
+  margin-left: var(--margin-small);
 }
 
 log-list {
@@ -28,7 +28,7 @@ log-list {
 
 log-list log-record {
   touch-action: pan-y;
-  margin: .5rem 0;
+  margin: var(--margin-base) 0;
 }
 
 log-list :last-child {
@@ -43,25 +43,6 @@ log-list :last-child {
   background: var(--color-bg-alt);
 }
 
-#plus {
-  width: 1.2em;
-  height: 1.2em;
-  background: hsl(100, 50%, 50%);
-  background-size: 1.2rem;
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  border-radius: 2rem;
-  box-shadow: .1rem .1rem .3rem rgba(0, 0, 0, .3);
-  text-align: center;
-  z-index: 1;
-  transform: translateZ(0);
-  font-size: 2.5rem;
-  font-weight: 600;
-  line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
-  color: white;
-}
-
 #game-select {
-  margin-left: .5rem;
+  margin-left: var(--margin-base);
 }

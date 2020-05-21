@@ -28,7 +28,7 @@
 
 #date {
   color: var(--color-text-light);
-  margin-left: .25em;
+  margin-left: var(--margin-small);
 }
 
 #tools-container {
@@ -76,7 +76,7 @@
 }
 
 #patch {
-  margin-right: .3rem;
+  margin-right: var(--margin-small);
 }
 
 #patch:not([color]), #patch[color="none"] {
@@ -101,7 +101,7 @@
 
 #confirm {
   background: #f006;
-  padding: 0 .2rem;
+  padding: 0 var(--margin-small);
   border-radius: .5rem;
   outline: none;
 }

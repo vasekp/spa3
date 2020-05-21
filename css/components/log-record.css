@@ -25,11 +25,11 @@
 }
 
 #header > * {
-  padding: 0 .5em;
+  padding: 0 var(--margin-base-scaled);
 }
 
 #container {
-  margin: .2rem;
+  margin: var(--margin-small);
   min-height: var(--abs-line-height);
   position: relative;
 }

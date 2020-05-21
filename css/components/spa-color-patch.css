@@ -10,8 +10,8 @@
 
 div {
   box-sizing: border-box;
-  width: calc(var(--rel-cap-size) * 1em);
-  height: calc(var(--rel-cap-size) * 1em);
+  width: var(--abs-cap-size);
+  height: var(--abs-cap-size);
   border: var(--border);
   border-radius: 2px;
 }

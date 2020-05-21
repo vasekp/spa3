@@ -13,7 +13,7 @@
 }
 
 spa-color-patch {
-  padding: 0 .25em;
+  padding: 0 var(--margin-small);
 }
 
 spa-color-patch:first-of-type {

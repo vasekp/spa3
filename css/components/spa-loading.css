@@ -1,7 +1,7 @@
 :host {
   display: flex;
   justify-content: center;
-  margin: 0 .25rem;
+  margin: 0 var(--margin-small);
 }
 
 :host([hidden]) {
