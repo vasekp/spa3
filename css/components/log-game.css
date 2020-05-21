@@ -13,6 +13,9 @@
   display: flex;
   align-items: center;
   height: 2rem;
+  margin: 0 calc(-1 * var(--margin-base));
+  padding: 0 var(--margin-base);
+  background: inherit;
 }
 
 #content > * {

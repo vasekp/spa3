@@ -24,6 +24,8 @@ log-list {
   flex: 1 1;
   overflow-x: hidden;
   overflow-y: auto;
+  margin: 0 calc(-1 * var(--margin-base));
+  padding: 0 var(--margin-base);
 }
 
 log-list log-record {
@@ -37,6 +39,10 @@ log-list :last-child {
 
 #game-list {
   flex: 1 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0 calc(-1 * var(--margin-base));
+  padding: 0 var(--margin-base);
 }
 
 #game-list > :nth-child(even) {
