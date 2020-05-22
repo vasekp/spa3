@@ -68,7 +68,9 @@ export class LiveListElement extends HTMLElement {
     if(!this._active(e))
       return;
     let elm = e.currentTarget;
-    elm.releasePointerCapture(e.pointerId);
+    try {
+      elm.releasePointerCapture(e.pointerId);
+    } catch(e) { }
     let dx = (e.x - this._tracking.x) / this._tracking.w;
     let vx = dx / (e.timeStamp - this._tracking.t) * 1000;
     if(Math.abs(dx) > .5 || (Math.abs(vx) > 1 && dx*vx > 0))
