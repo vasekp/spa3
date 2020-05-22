@@ -123,7 +123,7 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _clicked() {
-    this.dispatchEvent(new CustomEvent('game-clicked', {
+    this.dispatchEvent(new CustomEvent('game-click', {
       detail: { game: this._record },
       bubbles: true
     }));

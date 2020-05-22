@@ -1,5 +1,6 @@
 import './components/spa-loading.js';
 import './components/spa-colors.js';
+import './components/spa-plus-list.js';
 import './components/log-record.js';
 import './components/log-list.js';
 import './components/log-game.js';
@@ -18,10 +19,10 @@ let curView = views.records;
 
 window.addEventListener('DOMContentLoaded', () => {
   prepareDatabase(dbReady);
-  document.getElementById('plus').addEventListener('click', plus);
+  document.querySelector('spa-plus-list').addEventListener('plus-click', plus);
   document.getElementById('game-select').addEventListener('click', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
-  document.getElementById('game-list').addEventListener('game-clicked', e => gameClicked(e.detail.game));
+  document.getElementById('game-list').addEventListener('game-click', e => gameClicked(e.detail.game));
   document.getElementById('game-list').addEventListener('delete-game', e => deleteGame(e.detail.gid));
 });
 
@@ -52,19 +53,19 @@ function loadRecords(game) {
   list.appendChild(load);
   document.getElementById('gname').innerText = game.name;
   document.getElementById('gdate').innerText = '(' + dateFormat(game.date) + ')';
-  getAllRecords(game.id, records => {
-    while(list.firstChild)
-      list.removeChild(list.firstChild);
-    records.forEach(record => addRecord(record));
-  });
+  getAllRecords(game.id, addRecords);
   list.setAttribute('data-gid', game.id);
 }
 
-function addRecord(record) {
-  let elm = document.createElement('log-record');
-  elm.record = Record.from(record);
-  document.getElementById('log-list').appendChild(elm);
-  return elm;
+function addRecords(records) {
+  let list = document.getElementById('log-list');
+  while(list.firstChild)
+    list.removeChild(list.firstChild);
+  records.forEach(record => {
+    let elm = document.createElement('log-record');
+    elm.record = Record.from(record);
+    list.appendChild(elm);
+  });
 }
 
 function plus(e) {
@@ -95,19 +96,27 @@ function filter(e) {
   }
 }
 
+function hide(elm) {
+  elm.hidden = true;
+}
+
+function show(elm) {
+  elm.hidden = false;
+}
+
 function gameMenu() {
-  document.getElementById('log-list').classList.add('zeroheight');
-  document.getElementById('game-list').classList.remove('zeroheight');
-  document.getElementById('log-sel').classList.add('zeroheight');
+  hide(document.getElementById('log-list'));
+  hide(document.getElementById('log-sel'));
+  show(document.getElementById('game-list'));
   document.getElementById('tag-filter').selectAll();
   curView = views.games;
 }
 
 function gameClicked(game) {
   loadRecords(game);
-  document.getElementById('log-list').classList.remove('zeroheight');
-  document.getElementById('game-list').classList.add('zeroheight');
-  document.getElementById('log-sel').classList.remove('zeroheight');
+  hide(document.getElementById('game-list'));
+  show(document.getElementById('log-list'));
+  show(document.getElementById('log-sel'));
   document.getElementById('tag-filter').selectAll();
   curView = views.records;
 }

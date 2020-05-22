@@ -58,9 +58,7 @@ export class LiveListElement extends HTMLElement {
         this._tracking.zero = false;
         elm.setPointerCapture(e.pointerId);
         elm.style['user-select'] = 'none';
-        elm.dispatchEvent(new CustomEvent('move-start', {
-          bubbles: true
-        }));
+        elm.dispatchEvent(new CustomEvent('move-start', { bubbles: true }));
       }
     }
     elm.style.transform = dx ? `translateX(${dx}px)` : '';
@@ -97,9 +95,7 @@ export class LiveListElement extends HTMLElement {
     let cb = () => {
       elm.style.transition = '';
       elm.style['user-select'] = 'auto';
-      elm.dispatchEvent(new CustomEvent('move-cancel', {
-        bubbles: true
-      }));
+      elm.dispatchEvent(new CustomEvent('move-cancel', { bubbles: true }));
     };
     elm.addEventListener('transitionend', cb, { once: true });
   }
@@ -109,9 +105,7 @@ export class LiveListElement extends HTMLElement {
     elm.style.transform = `translateX(${dir > 0 ? '120%' : '-120%'})`;
     let cb = () => {
       elm.style.transition = '';
-      elm.dispatchEvent(new CustomEvent('move-away', {
-        bubbles: true
-      }));
+      elm.dispatchEvent(new CustomEvent('move-away', { bubbles: true }));
       elm.remove();
     };
     elm.addEventListener('transitionend', cb, { once: true });

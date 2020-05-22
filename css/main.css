@@ -37,18 +37,11 @@ main {
 }
 
 main > * {
-  transition: height .3s, flex-grow .3s;
   flex-shrink: 0;
 }
 
 .hide {
   display: none;
-}
-
-.zeroheight {
-  height: 0 !important;
-  flex-grow: 0 !important;
-  overflow: hidden !important;
 }
 
 :not(:defined) {
@@ -68,22 +61,4 @@ button {
   border: var(--line-width) solid #888;
   border-radius: var(--abs-line-height);
   background: var(--color-bg-alt);
-}
-
-#plus {
-  width: 3rem;
-  height: 3rem;
-  background: hsl(100, 50%, 50%);
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  border-radius: 1.5rem;
-  box-shadow: .1rem .1rem .3rem rgba(0, 0, 0, .3);
-  text-align: center;
-  z-index: 1;
-  transform: translateZ(0);
-  font-size: 2.5rem;
-  font-weight: 600;
-  line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
-  color: white;
 }

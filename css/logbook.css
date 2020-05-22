@@ -5,6 +5,10 @@
   align-items: baseline;
 }
 
+#log-sel[hidden] {
+  display: none;
+}
+
 #gname {
   white-space: nowrap;
   overflow: hidden;
@@ -20,7 +24,7 @@
   margin-left: var(--margin-small);
 }
 
-log-list {
+spa-plus-list {
   flex: 1 1;
   overflow-x: hidden;
   overflow-y: auto;
@@ -28,21 +32,13 @@ log-list {
   padding: 0 var(--margin-base);
 }
 
-log-list log-record {
+#log-list log-record {
   touch-action: pan-y;
   margin: var(--margin-base) 0;
 }
 
-log-list :last-child {
+#log-list :last-child {
   margin-bottom: 0;
-}
-
-#game-list {
-  flex: 1 1;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin: 0 calc(-1 * var(--margin-base));
-  padding: 0 var(--margin-base);
 }
 
 #game-list > :nth-child(even) {
