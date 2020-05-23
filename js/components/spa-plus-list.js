@@ -20,8 +20,9 @@ export class PlusListElement extends HTMLElement {
   }
 
   connectedCallback() {
-    let ro = new ResizeObserver(entries => this._resized(entries));
+    let ro = new ResizeObserver(() => this._resized());
     this.shadowRoot.querySelector('slot').assignedElements().forEach(elm => ro.observe(elm));
+    ro.observe(this);
     let io = new IntersectionObserver(entries => {
       let bigPlusVisible = entries[0].intersectionRatio <= 0;
       this._plusButton.hidden = !bigPlusVisible;
@@ -33,8 +34,9 @@ export class PlusListElement extends HTMLElement {
     mo.observe(this.shadowRoot.getElementById('content'), { childList: true });
   }
 
-  _resized(entries) {
-    entries.forEach(entry => this._do(entry.target));
+  _resized() {
+    this.shadowRoot.querySelector('slot').assignedElements().forEach(elm => {
+      if(!elm.hidden) this._do(elm); });
   }
 
   _do(elm) {
@@ -43,6 +45,7 @@ export class PlusListElement extends HTMLElement {
     let reservedSize = parseFloat(getComputedStyle(this._plusItem).height) + parseFloat(getComputedStyle(this._plusItem).marginTop);
     let smallPlusVisible = targetSize + reservedSize >= parentSize;
     this._plusItem.hidden = !smallPlusVisible;
+    document.activeElement.scrollIntoView();
   }
 }
 
