@@ -62,7 +62,8 @@ export class RecordElement extends HTMLElement {
     this.shadowRoot.getElementById('timestamp').innerText = timeFormat(record.date);
     this.shadowRoot.getElementById('header').hidden = false;
     this.shadowRoot.getElementById('textContainer').hidden = false;
-    this.shadowRoot.getElementById('geo').hidden = !record.geo;
+    if(record.geo)
+      this.shadowRoot.getElementById('geo').hidden = false;
     this._text.innerText = record.text;
     this.state = states.closed;
   }
@@ -104,6 +105,9 @@ export class RecordElement extends HTMLElement {
     if(navigator.geolocation) {
       let hasGeo = !!this._record.geo;
       this.shadowRoot.getElementById('geoSet').classList.toggle('reset', hasGeo);
+      this.shadowRoot.getElementById('geoSet').classList.remove('waiting');
+      this.shadowRoot.getElementById('geoSet').classList.remove('error');
+      this.shadowRoot.getElementById('geoSet').classList.remove('success');
     } else
       this.shadowRoot.getElementById('geoSet').hidden = true;
     this._edit.value = this._text.innerText;
@@ -131,7 +135,7 @@ export class RecordElement extends HTMLElement {
 
   _materialize(tag) {
     let gid = this.closest('log-list').getAttribute('data-gid');
-    this.record = new Record(gid, tag);
+    this.record = new Record(gid, tag, Date.now(), '', this._preGeo);
     this.state = states.firstEdit;
   }
 
@@ -161,28 +165,39 @@ export class RecordElement extends HTMLElement {
   }
 
   _geoSet() {
-    let geo = this.shadowRoot.getElementById('geo');
-    if(this._record.geo) {
+    let geoIcon = this.shadowRoot.getElementById('geo');
+    let geoButton = this.shadowRoot.getElementById('geoSet');
+    if(this._record && this._record.geo) {
       // delete
       this._record.geo = undefined;
-      geo.hidden = true;
+      geoIcon.hidden = true;
     } else {
-      geo.classList.remove('error');
-      geo.classList.add('waiting');
-      geo.hidden = false;
+      geoIcon.classList.remove('error');
+      geoButton.classList.remove('error');
+      geoIcon.classList.add('waiting');
+      geoButton.classList.add('waiting');
+      geoIcon.hidden = false;
       navigator.geolocation.getCurrentPosition(position => {
-        geo.classList.remove('waiting');
-        this._record.geo = [position.coords.latitude, position.coords.longitude];
+        geoIcon.classList.remove('waiting');
+        geoButton.classList.remove('waiting');
+        geoButton.classList.add('success');
+        if(this._record)
+          this._record.geo = [position.coords.latitude, position.coords.longitude];
+        else
+          this._preGeo = [position.coords.latitude, position.coords.longitude];
       }, error => {
-        geo.classList.remove('waiting');
-        geo.classList.add('error');
-        geo.setAttribute('data-error',
+        geoIcon.classList.remove('waiting');
+        geoButton.classList.remove('waiting');
+        geoIcon.classList.add('error');
+        geoButton.classList.add('error');
+        geoIcon.setAttribute('data-error',
           error.code == error.PERMISSION_DENIED ? 'Permission denied'
           : error.code == error.POSITION_UNAVAILABLE ? 'Location unavailable'
           : 'Unknown error');
       }, { enableHighAccuracy: true });
     }
-    this.close();
+    if(this._state != states.empty)
+      this.close();
   }
 }
 

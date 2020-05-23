@@ -1,7 +1,7 @@
 import {dbRequest} from './log-db.js';
 
 export class Record {
-  constructor(gid, tag, date = Date.now(), text = '', geo, id) {
+  constructor(gid, tag, date, text, geo, id) {
     this._static = { gid: +gid, tag, date, text, geo };
     this._rev = 0;
     this._lastSave = 0;
