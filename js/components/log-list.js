@@ -40,38 +40,76 @@ export class DateMarkerElement extends HTMLElement {
 export class ListElement extends LiveListElement {
   constructor() {
     super();
-    this._observer = new MutationObserver(() => this._applyChanges());
-    this._pause = () => this._observer.disconnect();
-    this._start = () => this._observer.observe(this, {
+    let mo = new MutationObserver(records => {
+      records.forEach(record => this._datesAddRemove(record));
+      this._datesShowHide();
+    });
+    mo.observe(this, {
       childList: true,
       attributes: true,
       attributeFilter: ['class', 'state'],
       subtree: true
     });
-    this._start();
     this.addEventListener('move-away', e => e.target.record.delete());
   }
 
-  _applyChanges() {
-    this._pause();
-    this.querySelectorAll('log-date-marker').forEach(elm => elm.remove());
+  _datesAddRemove(record) {
+    let insertMarker = (elm, day) => {
+      let marker = document.createElement('log-date-marker');
+      marker.setAttribute('data-protected', '');
+      marker.innerText = day;
+      this.insertBefore(marker, elm);
+    }
+    if(record.addedNodes.length > 0) {
+      let prevDay = record.previousSibling ? record.previousSibling.getAttribute('data-day') : null;
+      record.addedNodes.forEach(elm => {
+        if(elm.nodeName !== 'LOG-RECORD' || !elm.record)
+          return;
+        let day = dateFormat(elm.record.date);
+        elm.setAttribute('data-day', day);
+        if(day !== prevDay)
+          insertMarker(elm, day);
+        prevDay = day;
+      });
+    } else if(record.removedNodes.length > 0) {
+      if(record.previousSibling && record.previousSibling.nodeName == 'LOG-DATE-MARKER' &&
+          (!record.nextSibling || record.nextSibling.nodeName == 'LOG-DATE-MARKER'))
+        record.previousSibling.remove();
+    } else if(record.type == 'attributes' && record.attributeName == 'state') {
+      let elm = record.target;
+      if(elm.hasAttribute('data-day'))
+        return;
+      let day = dateFormat(elm.record.date);
+      elm.setAttribute('data-day', day);
+      let prev = elm.previousSibling;
+      if(!prev || prev.getAttribute('data-day') !== day)
+        insertMarker(elm, day);
+    }
+  }
+
+  _datesShowHide() {
+    // Time differences
     let prevDate = 0;
-    let prevDay = '';
     this.querySelectorAll('log-record:not(.hide)').forEach(elm => {
       if(!elm.record)
         return;
-      let day = dateFormat(elm.record.date);
-      if(day !== prevDay) {
-        let div = document.createElement('log-date-marker');
-        div.setAttribute('data-protected', '');
-        div.innerText = day;
-        this.insertBefore(div, elm);
-      }
       elm.setAttribute('timediff', prevDate ? formatDiff(elm.record.date - prevDate) : '');
       prevDate = elm.record.date;
-      prevDay = day;
     });
-    this._start();
+
+    // Date markers
+    let seenRecord = false;
+    let children = this.children;
+    for(let i = children.length - 1; i >= 0; i--) {
+      if(children[i].nodeName == 'LOG-RECORD' && children[i].classList.contains('hide'))
+        continue;
+      if(children[i].nodeName == 'LOG-RECORD')
+        seenRecord = true;
+      else {
+        children[i].hidden = !seenRecord;
+        seenRecord = false;
+      }
+    }
   }
 }
 
