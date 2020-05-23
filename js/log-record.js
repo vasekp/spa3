@@ -1,8 +1,8 @@
 import {dbRequest} from './log-db.js';
 
 export class Record {
-  constructor(gid, tag, date = Date.now(), text = '', id) {
-    this._static = { gid: +gid, tag, date, text };
+  constructor(gid, tag, date = Date.now(), text = '', geo, id) {
+    this._static = { gid: +gid, tag, date, text, geo };
     this._rev = 0;
     this._lastSave = 0;
     this._timer = null;
@@ -14,12 +14,13 @@ export class Record {
   }
 
   static from(record) {
-    return new Record(record.gid, record.tag, record.date, record.text, record.id);
+    return new Record(record.gid, record.tag, record.date, record.text, record.geo, record.id);
   }
 
   get text() { return this._static.text; }
   get date() { return this._static.date; }
   get tag() { return this._static.tag; }
+  get geo() { return this._static.geo; }
 
   set text(text) {
     this._static.text = text;
@@ -30,6 +31,11 @@ export class Record {
 
   set tag(tag) {
     this._static.tag = tag;
+    dbRequest({query: 'update', store: 'log-rec', record: this._static});
+  }
+
+  set geo(geo) {
+    this._static.geo = geo;
     dbRequest({query: 'update', store: 'log-rec', record: this._static});
   }
 

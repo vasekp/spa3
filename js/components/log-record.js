@@ -11,6 +11,7 @@ template.innerHTML = `
       <span id="timediff"></span>
     </span>
     <span id="fill"></span>
+    <span class="inline" id="geo" hidden></span>
     <img class="inline" id="edit" src="images/edit.svg">
   </div>
   <div id="textContainer" hidden>
@@ -19,6 +20,7 @@ template.innerHTML = `
   </div>
   <div id="props">
     <spa-color-sel id="colorsel"></spa-color-sel>
+    <span class="inline" id="geoSet" tabindex="0"/>
   </div>
 </div>`;
 
@@ -41,6 +43,8 @@ export class RecordElement extends HTMLElement {
     this.addEventListener('blur', () => this.close());
     this.shadowRoot.getElementById('edit').addEventListener('click', () => this.state = states.edit);
     this.shadowRoot.getElementById('colorsel').addEventListener('color-click', e => this._colorsel(e.detail.color));
+    this.shadowRoot.getElementById('geo').addEventListener('click', e => this._geoShow(e.currentTarget));
+    this.shadowRoot.getElementById('geoSet').addEventListener('click', () => this._geoSet());
     this.shadowRoot.querySelector('link').onload = () =>
       this.shadowRoot.getElementById('content').hidden = false;
     this._state = states.empty;
@@ -58,6 +62,7 @@ export class RecordElement extends HTMLElement {
     this.shadowRoot.getElementById('timestamp').innerText = timeFormat(record.date);
     this.shadowRoot.getElementById('header').hidden = false;
     this.shadowRoot.getElementById('textContainer').hidden = false;
+    this.shadowRoot.getElementById('geo').hidden = !record.geo;
     this._text.innerText = record.text;
     this.state = states.closed;
   }
@@ -87,7 +92,7 @@ export class RecordElement extends HTMLElement {
       });
     this._state = state;
     this.toggleAttribute('data-protected', state != states.closed);
-    this.shadowRoot.getElementById('edit').hidden = state != states.closed;
+    this.shadowRoot.getElementById('edit').style.visibility = state != states.closed ? 'hidden' : 'visible';
     this.shadowRoot.getElementById('props').hidden = state == states.closed || state == states.firstEdit;
     if(state == states.closed)
       this._close();
@@ -96,6 +101,11 @@ export class RecordElement extends HTMLElement {
   }
 
   _open() {
+    if(navigator.geolocation) {
+      let hasGeo = !!this._record.geo;
+      this.shadowRoot.getElementById('geoSet').classList.toggle('reset', hasGeo);
+    } else
+      this.shadowRoot.getElementById('geoSet').hidden = true;
     this._edit.value = this._text.innerText;
     this._text.style.visibility = 'hidden';
     this._edit.hidden = false;
@@ -138,6 +148,41 @@ export class RecordElement extends HTMLElement {
       this.close();
       e.preventDefault();
     }
+  }
+
+  _geoShow(elm) {
+    if(elm.classList.contains('waiting'))
+      return;
+    else if(elm.classList.contains('error')) {
+      alert('Error: ' + elm.getAttribute('data-error'));
+      elm.hidden = true;
+    } else
+      console.log(this._record.geo);
+  }
+
+  _geoSet() {
+    let geo = this.shadowRoot.getElementById('geo');
+    if(this._record.geo) {
+      // delete
+      this._record.geo = undefined;
+      geo.hidden = true;
+    } else {
+      geo.classList.remove('error');
+      geo.classList.add('waiting');
+      geo.hidden = false;
+      navigator.geolocation.getCurrentPosition(position => {
+        geo.classList.remove('waiting');
+        this._record.geo = [position.coords.latitude, position.coords.longitude];
+      }, error => {
+        geo.classList.remove('waiting');
+        geo.classList.add('error');
+        geo.setAttribute('data-error',
+          error.code == error.PERMISSION_DENIED ? 'Permission denied'
+          : error.code == error.POSITION_UNAVAILABLE ? 'Location unavailable'
+          : 'Unknown error');
+      }, { enableHighAccuracy: true });
+    }
+    this.close();
   }
 }
 
