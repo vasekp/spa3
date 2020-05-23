@@ -28,6 +28,11 @@ export class Record {
       this._timer = setInterval(this._autosaveRef, 300);
   }
 
+  set tag(tag) {
+    this._static.tag = tag;
+    dbRequest({query: 'update', store: 'log-rec', record: this._static});
+  }
+
   _autosave() {
     if(this._lastSave == this._rev || !this._static.id)
       return;

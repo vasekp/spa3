@@ -51,6 +51,7 @@ export class ColorSelElement extends HTMLElement {
   _addPatch(color) {
     let div = document.createElement('spa-color-patch');
     div.setAttribute('color', color);
+    div.setAttribute('tabindex', 0);
     div.addEventListener('click', () => this._click(color));
     this.shadowRoot.getElementById('container').appendChild(div);
   }

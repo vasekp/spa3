@@ -28,7 +28,7 @@
   padding: 0 var(--margin-base-scaled);
 }
 
-#container {
+#textContainer {
   margin: var(--margin-small);
   min-height: var(--abs-line-height);
   position: relative;
@@ -62,6 +62,16 @@
 
 #fill {
   flex-grow: 1;
+}
+
+#props {
+  margin: var(--margin-small) var(--margin-base);
+  display: flex;
+  align-items: center;
+}
+
+#props[hidden] {
+  display: none;
 }
 
 img.inline {
