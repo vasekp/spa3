@@ -161,7 +161,7 @@ export class RecordElement extends HTMLElement {
       alert('Error: ' + elm.getAttribute('data-error'));
       elm.hidden = true;
     } else
-      console.log(this._record.geo);
+      window.open(`https://www.openstreetmap.org/?mlat=${this._record.geo.lat}&mlon=${this._record.geo.lon}&zoom=18`);
   }
 
   _geoSet() {
@@ -182,9 +182,9 @@ export class RecordElement extends HTMLElement {
         geoButton.classList.remove('waiting');
         geoButton.classList.add('success');
         if(this._record)
-          this._record.geo = [position.coords.latitude, position.coords.longitude];
+          this._record.geo = { lat: position.coords.latitude, lon: position.coords.longitude };
         else
-          this._preGeo = [position.coords.latitude, position.coords.longitude];
+          this._preGeo = { lat: position.coords.latitude, lon: position.coords.longitude };
       }, error => {
         geoIcon.classList.remove('waiting');
         geoButton.classList.remove('waiting');
