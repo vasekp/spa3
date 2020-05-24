@@ -49,8 +49,7 @@ function loadRecords(game) {
   let list = document.getElementById('log-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
-  let load = document.createElement('spa-loading');
-  list.appendChild(load);
+  document.getElementById('load').hidden = false;
   document.getElementById('gname').innerText = game.name;
   document.getElementById('gdate').innerText = '(' + dateFormat(game.date) + ')';
   getAllRecords(game.id, addRecords);
@@ -59,13 +58,12 @@ function loadRecords(game) {
 
 function addRecords(records) {
   let list = document.getElementById('log-list');
-  while(list.firstChild)
-    list.removeChild(list.firstChild);
   records.forEach(record => {
     let elm = document.createElement('log-record');
     elm.record = Record.from(record);
     list.appendChild(elm);
   });
+  document.getElementById('load').hidden = true;
 }
 
 function plus(e) {

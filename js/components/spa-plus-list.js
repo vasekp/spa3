@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" href="css/components/spa-plus-list.css"/>
-<div id="content">
+<div id="content" hidden>
   <slot></slot>
   <div id="plus-item">+</div>
 </div>
@@ -17,6 +17,8 @@ export class PlusListElement extends HTMLElement {
     let cb = () => this.dispatchEvent(new CustomEvent('plus-click'), { bubbles: true });
     this._plusButton.addEventListener('click', cb);
     this._plusItem.addEventListener('click', cb);
+    this.shadowRoot.querySelector('link').onload = () =>
+      this.shadowRoot.getElementById('content').hidden = false;
   }
 
   connectedCallback() {
