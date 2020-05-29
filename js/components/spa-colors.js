@@ -14,7 +14,6 @@ export class ColorPatchElement extends HTMLElement {
     this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(patchTemplate.content.cloneNode(true));
     this._div = this.shadowRoot.querySelector('div');
-    this._div.classList.add('color-border');
   }
 
   static get observedAttributes() {
@@ -22,10 +21,8 @@ export class ColorPatchElement extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    this._div.classList.toggle('colors-rainbow', value === 'all');
-    this._div.classList.toggle('colors-cross', value === 'none');
-    this._div.classList.toggle('colors-param', value !== 'all' && value != 'none');
     this._div.style.setProperty('--color', value);
+    this._div.setAttribute('data-colors', value === 'all' ? 'rainbow' : value === 'none' ? 'cross' : 'param');
   }
 }
 

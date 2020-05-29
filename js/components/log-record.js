@@ -4,7 +4,7 @@ import {Record} from '../log-record.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" href="css/components/log-record.css"/>
-<div id="content" class="colors-grey color-border" hidden>
+<div id="content" data-colors="grey" hidden>
   <div id="header" class="color-fainter" hidden>
     <span>
       <span id="timestamp"></span>
@@ -56,8 +56,7 @@ export class RecordElement extends HTMLElement {
 
   set record(record) {
     this._record = record;
-    this.shadowRoot.getElementById('content').classList.remove('colors-grey');
-    this.shadowRoot.getElementById('content').classList.add('colors-param');
+    this.shadowRoot.getElementById('content').setAttribute('data-colors', 'param');
     this.shadowRoot.getElementById('content').style.setProperty('--color', record.tag);
     this.shadowRoot.getElementById('timestamp').innerText = timeFormat(record.date);
     this.shadowRoot.getElementById('header').hidden = false;

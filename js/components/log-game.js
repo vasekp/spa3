@@ -12,7 +12,7 @@ template.innerHTML = `
   <span id="date" hidden></span>
   <div id="confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
   <div id="tools-container" hidden>
-    <div id="tools" class="color-border stop-click">
+    <div id="tools" class="stop-click">
       <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
       <spa-color-patch id="colorsel" color="all" tabindex="0"></spa-color-patch>
       <img id="edit" alt="edit" src="images/edit.svg" tabindex="0"/>

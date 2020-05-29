@@ -4,7 +4,7 @@ import {dateFormat} from '../datetime.js';
 const dateMarkerTemp = document.createElement('template');
 dateMarkerTemp.innerHTML = `
 <link rel="stylesheet" href="css/components/log-date-marker.css"/>
-<div id="content" class="new-day colors-def" data-protected="true" hidden>
+<div id="content" class="new-day" data-protected="true" hidden>
   <span class="line"></span>
   <span class="text color-fainter"><slot></slot></span>
   <span class="line"></span>
