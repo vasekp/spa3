@@ -58,12 +58,19 @@ function loadRecords(game) {
 
 function addRecords(records) {
   let list = document.getElementById('log-list');
+  let frag = document.createDocumentFragment();
+  console.time('addRecords');
   records.forEach(record => {
-    let elm = document.createElement('log-record');
-    elm.record = Record.from(record);
-    list.appendChild(elm);
+    for(let i = 0; i < 1; i++) {
+      let elm = document.createElement('log-record');
+      elm.record = Record.from(record);
+      frag.appendChild(elm);
+    }
   });
   document.getElementById('load').hidden = true;
+  list.appendChild(frag);
+  list.offsetHeight;
+  console.timeEnd('addRecords');
 }
 
 function plus(e) {
