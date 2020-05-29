@@ -1,4 +1,5 @@
-@import "../../css/colors.css";
+@import "../colors.css";
+@import "spa-color-elements.css";
 
 :host {
   display: block;

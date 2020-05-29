@@ -47,7 +47,7 @@ export class PlusListElement extends HTMLElement {
     let reservedSize = parseFloat(getComputedStyle(this._plusItem).height) + parseFloat(getComputedStyle(this._plusItem).marginTop);
     let smallPlusVisible = targetSize + reservedSize >= parentSize;
     this._plusItem.hidden = !smallPlusVisible;
-    document.activeElement.scrollIntoView();
+    document.activeElement.scrollIntoView({block: 'nearest'});
   }
 }
 
