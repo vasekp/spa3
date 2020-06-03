@@ -62,3 +62,9 @@ button {
   border-radius: var(--abs-line-height);
   background: var(--color-bg-alt);
 }
+
+.inline {
+  height: 1em;
+  width: 1em;
+  vertical-align: top;
+}

@@ -47,8 +47,7 @@ export class ListElement extends LiveListElement {
     mo.observe(this, {
       childList: true,
       attributes: true,
-      attributeFilter: ['class', 'state'],
-      subtree: true
+      attributeFilter: ['class', 'state']
     });
     this.addEventListener('move-away', e => e.target.record.delete());
   }
