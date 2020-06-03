@@ -26,8 +26,7 @@ export class ColorSelElement extends HTMLElement {
     super();
     for(let color = 1; color <= 9; color++)
       this._addPatch(color);
-    this._addPatch('none');
-    this.querySelector('spa-color-patch[color="none"]').hidden = true;
+    this._addPatch('none', true);
   }
 
   static get observedAttributes() {
@@ -38,11 +37,13 @@ export class ColorSelElement extends HTMLElement {
     this.querySelector('spa-color-patch[color="none"]').hidden = !this.hasAttribute('zero');
   }
 
-  _addPatch(color) {
+  _addPatch(color, hidden = false) {
     let div = document.createElement('spa-color-patch');
     div.setAttribute('color', color);
     div.setAttribute('tabindex', 0);
     div.addEventListener('click', this._click);
+    if(hidden)
+      div.hidden = true;
     this.appendChild(div);
   }
 
