@@ -1,5 +1,6 @@
 @import "fonts.css";
 @import "colors.css";
+@import "components/spa-plus-list.css";
 
 :root {
   font-family: 'Source Sans Pro';
@@ -61,4 +62,10 @@ button {
   border: var(--line-width) solid #888;
   border-radius: var(--abs-line-height);
   background: var(--color-bg-alt);
+}
+
+.inline {
+  height: 1em;
+  width: 1em;
+  vertical-align: top;
 }

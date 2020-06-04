@@ -1,11 +1,10 @@
 const template = document.createElement('template');
 template.innerHTML = `
-<link rel="stylesheet" href="css/components/spa-plus-list.css"/>
 <div id="content">
   <slot></slot>
-  <div id="plus-item">+</div>
 </div>
-<div id="plus-button">+</div>`;
+<div part="plus-item" id="plus-item">+</div>
+<div part="plus-button" id="plus-button">+</div>`;
 
 export class PlusListElement extends HTMLElement {
   constructor() {
@@ -21,31 +20,22 @@ export class PlusListElement extends HTMLElement {
 
   connectedCallback() {
     let ro = new ResizeObserver(() => this._resized());
-    this.shadowRoot.querySelector('slot').assignedElements().forEach(elm => ro.observe(elm));
     ro.observe(this);
+    ro.observe(this.shadowRoot.getElementById('content'));
     let io = new IntersectionObserver(entries => {
       let bigPlusVisible = entries[0].intersectionRatio <= 0;
       this._plusButton.hidden = !bigPlusVisible;
     });
     io.observe(this._plusItem);
-    let mo = new MutationObserver(records =>
-      records.forEach(record =>
-        record.addedNodes.forEach(elm => this._do(elm))));
-    mo.observe(this.shadowRoot.getElementById('content'), { childList: true });
   }
 
   _resized() {
-    this.shadowRoot.querySelector('slot').assignedElements().forEach(elm => {
-      if(!elm.hidden) this._do(elm); });
-  }
-
-  _do(elm) {
     let parentSize = this.clientHeight;
-    let targetSize = elm.clientHeight;
+    let targetSize = this.shadowRoot.getElementById('content').clientHeight;
     let reservedSize = parseFloat(getComputedStyle(this._plusItem).height) + parseFloat(getComputedStyle(this._plusItem).marginTop);
     let smallPlusVisible = targetSize + reservedSize >= parentSize;
     this._plusItem.hidden = !smallPlusVisible;
-    document.activeElement.scrollIntoView();
+    document.activeElement.scrollIntoView({block: 'nearest'});
   }
 }
 

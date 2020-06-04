@@ -24,7 +24,7 @@ export class Game {
   }
 
   set tag(tag) {
-    this._static.tag = tag;
+    this._static.tag = tag != 'none' ? tag : '';
     dbRequest({query: 'update', store: 'log-gid', record: this._static});
   }
 

@@ -3,53 +3,81 @@ import {Game} from '../log-game.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<link rel="stylesheet" href="css/components/log-game.css"/>
-<div id="content" hidden>
-  <spa-color-patch id="patch" hidden></spa-color-patch>
-  <spa-color-sel class="stop-click" zero hidden></spa-color-sel>
-  <span id="name" hidden></span>
-  <input type="text" id="name-edit" class="stop-click">
-  <span id="date" hidden></span>
-  <div id="confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
-  <div id="tools-container" hidden>
-    <div id="tools" class="color-border stop-click">
-      <img id="delete" src="images/delete.svg" alt="delete" tabindex="0"/>
-      <spa-color-patch id="colorsel" color="all" tabindex="0"></spa-color-patch>
-      <img id="edit" alt="edit" src="images/edit.svg" tabindex="0"/>
-    </div>
+<spa-color-patch data-id="lg.color-patch" color="none" hidden></spa-color-patch>
+<spa-color-sel data-id="lg.color-sel" class="stop-click" zero hidden></spa-color-sel>
+<span data-id="lg.name" hidden></span>
+<input type="text" data-id="lg.name-edit" class="stop-click">
+<span data-id="lg.date" hidden></span>
+<div data-id="lg.confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
+<div data-id="lg.tools-container" hidden>
+  <div data-id="lg.tools" class="stop-click">
+    <img data-id="lg.delete" src="images/delete.svg" alt="delete" tabindex="0"/>
+    <spa-color-patch data-id="lg.color-edit" color="all" tabindex="0"></spa-color-patch>
+    <img data-id="lg.edit" alt="edit" src="images/edit.svg" tabindex="0"/>
   </div>
 </div>`;
 
-let states = {
+let states = Object.freeze({
   empty: 0,
   closed: 1,
   edit: 2,
-  color: 3
-};
+  color: 3,
+  delete: 4
+});
 
 export class GameRecordElement extends HTMLElement {
   constructor() {
     super();
-    let root = this.attachShadow({mode: 'open'});
-    root.appendChild(template.content.cloneNode(true));
-    root.querySelector('link').onload = () => this.shadowRoot.getElementById('content').hidden = false;
-    root.getElementById('edit').addEventListener('click', () => this.state = states.edit);
-    root.getElementById('colorsel').addEventListener('click', () =>
+    this._constructed = false;
+  }
+
+  connectedCallback() {
+    if(!this._constructed)
+      this._construct();
+  }
+
+  static get observedAttributes() {
+    return ['state'];
+  }
+
+  _construct() {
+    this.appendChild(template.content.cloneNode(true));
+    let id = id => this.querySelector(`[data-id="lg.${id}"]`);
+    this._id = id;
+    id('edit').addEventListener('click', () => this.state = states.edit);
+    id('color-edit').addEventListener('click', () =>
       this.state = (this.state == states.color ? states.closed : states.color));
-    root.getElementById('delete').addEventListener('click', () => this._delete());
-    root.getElementById('delete').addEventListener('blur', () => this.close());
-    root.getElementById('name-edit').addEventListener('blur', () => this.close());
-    root.getElementById('name-edit').addEventListener('keydown', e => this._keydown(e));
-    root.querySelector('spa-color-sel').addEventListener('color-click', e => this._colorClicked(e.detail.color));
+    id('delete').addEventListener('click', () => this._delete());
+    id('delete').addEventListener('blur', () => this.close());
+    id('name-edit').addEventListener('blur', () => this.close());
+    id('name-edit').addEventListener('keydown', e => this._keydown(e));
+    id('color-sel').addEventListener('color-click', e => this._colorClicked(e.detail.color));
     this.addEventListener('click', () => this._clicked());
-    root.querySelectorAll('.stop-click').forEach(
+    this.querySelectorAll('.stop-click').forEach(
       elm => elm.addEventListener('click', e => e.stopPropagation()));
-    this._state = states.empty;
+    if(this._record)
+      this._update();
+    this._stateChange(this.state, states.empty);
+    this._constructed = true;
+  }
+
+  _update() {
+    this._id('color-patch').setAttribute('color', this._record.tag || 'none');
+    this._id('name').innerText = this._record.name;
+    this._id('date').innerText = '(' + dateFormat(this._record.date) + ')';
+  }
+
+  attributeChangedCallback(name, oldValue, value) {
+    if(!this._constructed)
+      return;
+    if(name === 'state')
+      this._stateChange(value, oldValue);
   }
 
   set record(record) {
     this._record = record;
-    this._update();
+    if(this._constructed)
+      this._update();
     this.state = states.closed;
   }
 
@@ -57,33 +85,31 @@ export class GameRecordElement extends HTMLElement {
     return this._record;
   }
 
-  _update() {
-    let root = this.shadowRoot;
-    root.getElementById('patch').setAttribute('color', this._record.tag || 'none');
-    root.getElementById('name').innerText = this._record.name;
-    root.getElementById('date').innerText = '(' + dateFormat(this._record.date) + ')';
+  set state(state) {
+    this.setAttribute('state', state);
   }
 
   get state() {
-    return this._state;
+    return this.getAttribute('state') || states.empty;
   }
 
-  set state(state) {
+  _stateChange(state, oldState) {
     if(state != states.closed)
-      this.parentElement.querySelectorAll('log-game').forEach(elm => elm.close());
-    if(this._state == states.empty && !this._record)
+      this.parentElement.querySelectorAll('log-game').forEach(elm => {
+        if(elm != this)
+          elm.close()
+      });
+    if(oldState == states.empty && !this._record)
       this._materialize();
-    if(this._state == states.edit)
+    if(oldState == states.edit)
       this._save();
-    this._state = state;
-    let root = this.shadowRoot;
-    root.querySelector('spa-color-sel').hidden = state != states.color;
-    root.querySelector('spa-color-patch').hidden = state != states.closed && state != states.edit;
-    root.getElementById('name').hidden = state != states.closed;
-    root.getElementById('date').hidden = state != states.closed;
-    root.getElementById('name-edit').hidden = state != states.edit;
-    root.getElementById('confirm').hidden = state != states.delete;
-    root.getElementById('tools-container').hidden = false;
+    this._id('color-sel').hidden = state != states.color;
+    this._id('color-patch').hidden = state != states.closed && state != states.edit;
+    this._id('name').hidden = state != states.closed;
+    this._id('date').hidden = state != states.closed;
+    this._id('name-edit').hidden = state != states.edit;
+    this._id('confirm').hidden = state != states.delete;
+    this._id('tools-container').hidden = false;
     if(state == states.edit)
       this._open();
   }
@@ -93,24 +119,24 @@ export class GameRecordElement extends HTMLElement {
   }
 
   focus() {
-    setTimeout(() => this.shadowRoot.getElementById('name-edit').focus(), 100);
+    setTimeout(() => this._id('name-edit').focus(), 100);
   }
 
   _open() {
-    let ta = this.shadowRoot.getElementById('name-edit');
+    let ta = this._id('name-edit');
     ta.value = this._record.name;
     ta.hidden = false;
     ta.focus();
   }
 
   _save() {
-    let newName = this.shadowRoot.getElementById('name-edit').value;
+    let newName = this._id('name-edit').value;
     this._record.name = newName;
     this._update();
   }
 
   _materialize() {
-    let name = this.shadowRoot.getElementById('name-edit').value;
+    let name = this._id('name-edit').value;
     this.record = new Game(name);
   }
 

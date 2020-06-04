@@ -9,14 +9,14 @@
 }
 
 @keyframes loading {
-  0% { color: transparent; }
-  40% { color: black; }
-  80% { color: transparent; }
-  100% { color: transparent; }
+  0% { opacity: 0.2; }
+  40% { opacity: 1; }
+  80% { opacity: 0.2; }
+  100% { opacity: 0.2; }
 }
 
 span {
-  color: transparent;
+  opacity: 0.2;
   animation: 3s loading ease-in-out infinite running;
   margin: 0 .1em;
 }

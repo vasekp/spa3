@@ -1,16 +1,6 @@
-@import "../../css/colors.css";
-
-:host {
-  display: block;
-  outline: none;
-}
-
-:host([hidden]) {
-  display: none;
-}
-
-#content {
+log-game {
   display: flex;
+  outline: none;
   align-items: center;
   height: 2rem;
   margin: 0 calc(-1 * var(--margin-base));
@@ -18,23 +8,27 @@
   background: inherit;
 }
 
-#content > * {
+log-game[hidden] {
+  display: none;
+}
+
+[data-id="lg.content"] > * {
   flex-shrink: 0;
 }
 
-#name {
+[data-id="lg.name"] {
   flex-shrink: 1;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 
-#date {
+[data-id="lg.date"] {
   color: var(--color-text-light);
   margin-left: var(--margin-small);
 }
 
-#tools-container {
+[data-id="lg.tools-container"] {
   --div-size: 1.2rem;
   width: calc(var(--div-size) + 2*var(--line-width));
   height: calc(var(--div-size) + 2*var(--line-width));
@@ -44,11 +38,11 @@
   justify-content: flex-end;
 }
 
-#tools-container[hidden] {
+[data-id="lg.tools-container"][hidden] {
   display: none;
 }
 
-#tools {
+[data-id="lg.tools"] {
   --padding: calc((var(--div-size) - var(--abs-cap-size)) / 2);
   --count: 3;
   width: var(--div-size);
@@ -64,29 +58,29 @@
   justify-content: flex-end;
 }
 
-#tools:hover, #tools:focus-within, :focus ~ #tools {
+[data-id="lg.tools"]:hover, [data-id="lg.tools"]:focus-within, :focus ~ [data-id="lg.tools"] {
   width: calc(var(--count) * var(--div-size));
 }
 
-#tools img {
+[data-id="lg.tools"] img {
   width: var(--abs-cap-size);
   height: var(--abs-cap-size);
 }
 
-#tools > * {
-  padding: var(--padding);
+[data-id="lg.tools"] > * {
+  margin: var(--padding);
   flex-shrink: 0;
 }
 
-#patch {
+[data-id="lg.color-patch"] {
   margin-right: var(--margin-small);
 }
 
-#patch:not([color]), #patch[color="none"] {
+[data-id="lg.color-patch"][color="none"] {
   display: none;
 }
 
-#name-edit {
+[data-id="lg.name-edit"] {
   border: none;
   margin: 0;
   background: inherit;
@@ -98,11 +92,11 @@
   height: var(--abs-line-height);
 }
 
-#name-edit:focus {
-  box-shadow: 0 0 .2rem #888;
+[data-id="lg.name-edit"]:focus {
+  box-shadow: 0 0 .2rem [data-id="lg."]888;
 }
 
-#confirm {
+[data-id="lg.confirm"] {
   background: #f006;
   padding: 0 var(--margin-small);
   border-radius: .5rem;

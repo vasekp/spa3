@@ -9,20 +9,19 @@
   </head>
   <body>
     <main>
-      <div id="log-sel">
+      <div class="header-line" id="log-sel">
         <span>Záznam:</span>
         <span id="gname"></span>
         <span id="gdate"></span>
         <button id="game-select">···</button>
       </div>
-      <div id="color-filter">
+      <div class="header-line">
         <span>Filtr:</span>
         <spa-color-filter id="tag-filter"></spa-color-filter>
       </div>
       <spa-plus-list>
-        <log-list id="log-list">
-          <spa-loading></spa-loading>
-        </log-list>
+        <spa-loading id="load" hidden></spa-loading>
+        <log-list id="log-list"></log-list>
         <div id="game-list" hidden></div>
       </spa-plus-list>
     </main>

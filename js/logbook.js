@@ -49,8 +49,7 @@ function loadRecords(game) {
   let list = document.getElementById('log-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
-  let load = document.createElement('spa-loading');
-  list.appendChild(load);
+  document.getElementById('load').hidden = false;
   document.getElementById('gname').innerText = game.name;
   document.getElementById('gdate').innerText = '(' + dateFormat(game.date) + ')';
   getAllRecords(game.id, addRecords);
@@ -59,13 +58,19 @@ function loadRecords(game) {
 
 function addRecords(records) {
   let list = document.getElementById('log-list');
-  while(list.firstChild)
-    list.removeChild(list.firstChild);
+  let frag = document.createDocumentFragment();
+  console.time('addRecords');
   records.forEach(record => {
-    let elm = document.createElement('log-record');
-    elm.record = Record.from(record);
-    list.appendChild(elm);
+    for(let i = 0; i < 1; i++) {
+      let elm = document.createElement('log-record');
+      elm.record = Record.from(record);
+      frag.appendChild(elm);
+    }
   });
+  document.getElementById('load').hidden = true;
+  list.appendChild(frag);
+  list.offsetHeight;
+  console.timeEnd('addRecords');
 }
 
 function plus(e) {
@@ -86,12 +91,14 @@ function plus(e) {
 function filter(e) {
   let sel = e.detail.selected;
   if(curView == views.records) {
-    document.getElementById('log-list').querySelectorAll('log-record').forEach(elm =>
-      elm.classList.toggle('hide', !sel[elm.record.tag]));
+    document.getElementById('log-list').querySelectorAll('log-record').forEach(elm => {
+      let show = elm.record ? sel[elm.record.tag] : true;
+      elm.hidden = !show;
+    });
   } else {
     document.getElementById('game-list').querySelectorAll('log-game').forEach(elm => {
-      let show = elm.record.color ? sel[elm.record.color] : sel.all;
-      elm.classList.toggle('hide', !show);
+      let show = elm.record.tag ? sel[elm.record.tag] : sel.all;
+      elm.hidden = !show;
     });
   }
 }

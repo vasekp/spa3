@@ -1,9 +1,4 @@
-#content {
-  display: flex;
-  flex-direction: column;
-}
-
-#plus-button {
+spa-plus-list::part(plus-button) {
   width: 3rem;
   height: 3rem;
   background: hsl(100, 50%, 50%);
@@ -21,7 +16,7 @@
   color: white;
 }
 
-#plus-item {
+spa-plus-list::part(plus-item) {
   width: 2rem;
   height: 2rem;
   background: hsl(100, 50%, 50%);
@@ -35,4 +30,3 @@
   line-height: 1.018;
   color: white;
 }
-

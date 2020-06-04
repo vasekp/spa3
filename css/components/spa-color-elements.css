@@ -1,0 +1,28 @@
+spa-color-sel, spa-color-filter {
+  margin: 0 calc(-1 * var(--margin-small));
+}
+
+spa-color-sel[hidden], spa-color-filter[hidden] {
+  display: none;
+}
+
+spa-color-sel > *, spa-color-filter > * {
+  margin: 0 var(--margin-small);
+}
+
+spa-color-patch.filter:not(.selected) {
+  opacity: .5;
+}
+
+spa-color-patch {
+  display: inline-block;
+  box-sizing: border-box;
+  width: var(--abs-cap-size);
+  height: var(--abs-cap-size);
+  border: var(--border);
+  border-radius: 2px;
+}
+
+spa-color-patch[hidden] {
+  display: none;
+}

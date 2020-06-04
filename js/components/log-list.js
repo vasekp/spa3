@@ -1,15 +1,6 @@
 import {LiveListElement} from './spa-live-list.js';
 import {dateFormat} from '../datetime.js';
 
-const dateMarkerTemp = document.createElement('template');
-dateMarkerTemp.innerHTML = `
-<link rel="stylesheet" href="css/components/log-date-marker.css"/>
-<div id="content" class="new-day colors-def" data-protected="true" hidden>
-  <span class="line"></span>
-  <span class="text color-fainter"><slot></slot></span>
-  <span class="line"></span>
-</div>`;
-
 function formatDiff(diff) {
   let diffText = '+';
   diff = Math.floor(diff / 1000);
@@ -27,53 +18,68 @@ function formatDiff(diff) {
   return diffText;
 }
 
-export class DateMarkerElement extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({mode: 'open'});
-    this.shadowRoot.appendChild(dateMarkerTemp.content.cloneNode(true));
-    this.shadowRoot.querySelector('link').onload = () =>
-      this.shadowRoot.getElementById('content').hidden = false;
-  }
-}
-
 export class ListElement extends LiveListElement {
   constructor() {
     super();
-    this._observer = new MutationObserver(() => this._applyChanges());
-    this._pause = () => this._observer.disconnect();
-    this._start = () => this._observer.observe(this, {
-      childList: true,
-      attributes: true,
-      attributeFilter: ['class', 'state'],
-      subtree: true
+    this._mo = new MutationObserver(records => {
+      records.forEach(record => this._datesAddRemove(record));
+      this._datesShowHide();
     });
-    this._start();
+    this._mo.observe(this, {childList: true});
     this.addEventListener('move-away', e => e.target.record.delete());
   }
 
-  _applyChanges() {
-    this._pause();
-    this.querySelectorAll('log-date-marker').forEach(elm => elm.remove());
-    let prevDate = 0;
-    let prevDay = '';
-    this.querySelectorAll('log-record:not(.hide)').forEach(elm => {
-      if(!elm.record)
+  _datesAddRemove(record) {
+    let insertMarker = (elm, day) => {
+      let marker = document.createElement('div');
+      marker.classList.add('date-marker');
+      marker.setAttribute('data-protected', '');
+      marker.innerText = day;
+      this.insertBefore(marker, elm);
+    }
+    if(record.addedNodes.length > 0) {
+      let prevDay = record.previousSibling ? record.previousSibling.getAttribute('data-day') : null;
+      record.addedNodes.forEach(elm => {
+        if(elm.nodeName !== 'LOG-RECORD')
+          return;
+        this._mo.observe(elm, { attributes: true, attributeFilter: ['state', 'hidden'] });
+        if(!elm.record)
+          return;
+        let day = dateFormat(elm.record.date);
+        elm.setAttribute('data-day', day);
+        if(day !== prevDay)
+          insertMarker(elm, day);
+        prevDay = day;
+      });
+    } else if(record.type == 'attributes' && record.attributeName == 'state') {
+      let elm = record.target;
+      if(elm.hasAttribute('data-day'))
         return;
       let day = dateFormat(elm.record.date);
-      if(day !== prevDay) {
-        let div = document.createElement('log-date-marker');
-        div.setAttribute('data-protected', '');
-        div.innerText = day;
-        this.insertBefore(div, elm);
-      }
+      elm.setAttribute('data-day', day);
+      let prev = elm.previousSibling;
+      if(!prev || prev.getAttribute('data-day') !== day)
+        insertMarker(elm, day);
+    }
+  }
+
+  _datesShowHide() {
+    let set = new Set();
+
+    // Time differences
+    let prevDate = 0;
+    this.querySelectorAll('log-record:not([hidden])').forEach(elm => {
+      if(!elm.record)
+        return;
+      set.add(elm.getAttribute('data-day'));
       elm.setAttribute('timediff', prevDate ? formatDiff(elm.record.date - prevDate) : '');
       prevDate = elm.record.date;
-      prevDay = day;
     });
-    this._start();
+
+    // Date markers
+    this.querySelectorAll('div.date-marker').forEach(elm =>
+      elm.hidden = !set.has(elm.textContent));
   }
 }
 
-window.customElements.define('log-date-marker', DateMarkerElement);
 window.customElements.define('log-list', ListElement);

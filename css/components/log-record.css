@@ -1,50 +1,41 @@
-@import "../../css/colors.css";
-
-:host {
+log-record {
   display: block;
-}
-
-:host([hidden]) {
-  display: none;
-}
-
-#content {
   border: var(--border);
   border-radius: .5rem;
 }
 
-#header {
+log-record[hidden] {
+  display: none;
+}
+
+[data-id="lr.header"] {
   display: flex;
   border-bottom: var(--border);
   font-size: 80%;
   line-height: 100%;
 }
 
-#header[hidden] {
+[data-id="lr.header"][hidden] {
   display: none;
 }
 
-#header > * {
+[data-id="lr.header"] > * {
   padding: 0 var(--margin-base-scaled);
 }
 
-/*#header > * + * {
-  border-left: var(--border);
-}*/
-
-#textContainer {
+[data-id="lr.textContainer"] {
   margin: var(--margin-small);
   min-height: var(--abs-line-height);
   position: relative;
 }
 
-#text {
+[data-id="lr.text"] {
   padding: 0;
   overflow: hidden;
   white-space: pre-wrap;
 }
 
-#tedit {
+[data-id="lr.area"] {
   border: none;
   outline: none;
   margin: 0;
@@ -60,41 +51,25 @@
   height: 100%;
 }
 
-#tedit:focus {
+[data-id="lr.area"]:focus {
   box-shadow: 0 0 .2rem #888;
 }
 
-#fill {
+[data-id="lr.fill"] {
   flex-grow: 1;
 }
 
-#props {
+[data-id="lr.props"] {
   margin: var(--margin-small) var(--margin-base);
   display: flex;
   align-items: center;
 }
 
-#props[hidden] {
+[data-id="lr.props"][hidden] {
   display: none;
 }
 
-.inline {
-  height: 1em;
-  width: 1em;
-  vertical-align: top;
-}
-
-#props {
-  margin: var(--margin-small) var(--margin-base);
-  display: flex;
-  align-items: center;
-}
-
-#props[hidden] {
-  display: none;
-}
-
-@keyframes waiting {
+@keyframes geo-waiting {
   0% { opacity: 1; }
   30% { opacity: 1; }
   50% { opacity: .2; }
@@ -102,22 +77,22 @@
   100% { opacity: 1; }
 }
 
-.waiting {
-  animation: 1s waiting infinite running;
-}
-
-#geo, #geoSet {
+[data-geo-state] {
   content: url("../../images/geo.svg");
 }
 
-#geo.error, #geoSet.error, #geoSet.reset {
+[data-geo-state="waiting"] {
+  animation: 1s geo-waiting infinite running;
+}
+
+[data-geo-state="success"] {
+  content: url("../../images/geo-succ.svg");
+}
+
+[data-geo-state="error"], [data-geo-state="remove"] {
   content: url("../../images/geo-fail.svg");
 }
 
-#geoSet {
+[data-id="lr.geoButton"] {
   margin-left: auto;
-}
-
-#geoSet.success {
-  content: url("../../images/geo-succ.svg");
 }
