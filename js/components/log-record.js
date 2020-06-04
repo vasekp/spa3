@@ -44,6 +44,7 @@ export class RecordElement extends HTMLElement {
 
   connectedCallback() {
     this._construct(construct.base);
+    this._stateChange();
   }
 
   _construct(level) {
@@ -51,6 +52,7 @@ export class RecordElement extends HTMLElement {
       return;
     this._construct(level - 1);
     if(level == construct.base) {
+      this.setAttribute('data-colors', 'grey');
       this.appendChild(templateBase.content.cloneNode(true));
       let id = id => this.querySelector(`[data-id="lr.${id}"]`);
       let refs = {
@@ -68,7 +70,6 @@ export class RecordElement extends HTMLElement {
       this.addEventListener('blur', () => this.close());
       if(this._record)
         this._bindData();
-      this._stateChange();
     } else if(level == construct.props) {
       this._id('props').appendChild(templateProps.content.cloneNode(true));
       this._refs.geoButton = this._id('geoButton');
@@ -84,8 +85,10 @@ export class RecordElement extends HTMLElement {
     this._id('timestamp').innerText = timeFormat(record.date);
     this._id('header').hidden = false;
     this._id('textContainer').hidden = false;
-    if(record.geo)
+    if(record.geo) {
+      this._refs['geoIcon'].setAttribute('data-geo-state', 'ok');
       this._refs['geoIcon'].hidden = false;
+    }
     this._refs['text'].innerText = record.text;
   }
 
@@ -106,6 +109,8 @@ export class RecordElement extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, value) {
     if(!this._constructed)
+      return;
+    if(value === oldValue)
       return;
     if(name === 'timediff')
       this._id('timediff').innerText = value ? '(' + value + ')' : '';
@@ -130,7 +135,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _stateChange(state = this.state) {
-    if(state == states.edit || state == states.firstEdit)
+    if(state == states.empty || state == states.edit || state == states.firstEdit)
       this._construct(construct.props);
     if(state != states.closed)
       this.parentElement.querySelectorAll('log-record').forEach(elm => {

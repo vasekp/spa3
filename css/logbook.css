@@ -41,7 +41,7 @@ spa-plus-list {
   margin: var(--margin-base) 0;
 }
 
-#log-list :last-child {
+#log-list > :last-child {
   margin-bottom: 0;
 }
 
@@ -59,6 +59,10 @@ spa-plus-list {
   font-size: 80%;
   line-height: 100%;
   margin: 0 calc(-1 * var(--margin-small));
+}
+
+.date-marker[hidden] {
+  display: none;
 }
 
 .date-marker::before, .date-marker::after {

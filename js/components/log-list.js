@@ -21,15 +21,11 @@ function formatDiff(diff) {
 export class ListElement extends LiveListElement {
   constructor() {
     super();
-    let mo = new MutationObserver(records => {
+    this._mo = new MutationObserver(records => {
       records.forEach(record => this._datesAddRemove(record));
       this._datesShowHide();
     });
-    mo.observe(this, {
-      childList: true,
-      attributes: true,
-      attributeFilter: ['class', 'state']
-    });
+    this._mo.observe(this, {childList: true});
     this.addEventListener('move-away', e => e.target.record.delete());
   }
 
@@ -44,7 +40,10 @@ export class ListElement extends LiveListElement {
     if(record.addedNodes.length > 0) {
       let prevDay = record.previousSibling ? record.previousSibling.getAttribute('data-day') : null;
       record.addedNodes.forEach(elm => {
-        if(elm.nodeName !== 'LOG-RECORD' || !elm.record)
+        if(elm.nodeName !== 'LOG-RECORD')
+          return;
+        this._mo.observe(elm, { attributes: true, attributeFilter: ['state', 'hidden'] });
+        if(!elm.record)
           return;
         let day = dateFormat(elm.record.date);
         elm.setAttribute('data-day', day);
@@ -52,10 +51,6 @@ export class ListElement extends LiveListElement {
           insertMarker(elm, day);
         prevDay = day;
       });
-    } else if(record.removedNodes.length > 0) {
-      if(record.previousSibling && record.previousSibling.nodeName == 'LOG-DATE-MARKER' &&
-          (!record.nextSibling || record.nextSibling.nodeName == 'LOG-DATE-MARKER'))
-        record.previousSibling.remove();
     } else if(record.type == 'attributes' && record.attributeName == 'state') {
       let elm = record.target;
       if(elm.hasAttribute('data-day'))
@@ -69,28 +64,21 @@ export class ListElement extends LiveListElement {
   }
 
   _datesShowHide() {
+    let set = new Set();
+
     // Time differences
     let prevDate = 0;
-    this.querySelectorAll('log-record:not(.hide)').forEach(elm => {
+    this.querySelectorAll('log-record:not([hidden])').forEach(elm => {
       if(!elm.record)
         return;
+      set.add(elm.getAttribute('data-day'));
       elm.setAttribute('timediff', prevDate ? formatDiff(elm.record.date - prevDate) : '');
       prevDate = elm.record.date;
     });
 
     // Date markers
-    let seenRecord = false;
-    let children = this.children;
-    for(let i = children.length - 1; i >= 0; i--) {
-      if(children[i].nodeName == 'LOG-RECORD' && children[i].classList.contains('hide'))
-        continue;
-      if(children[i].nodeName == 'LOG-RECORD')
-        seenRecord = true;
-      else {
-        children[i].hidden = !seenRecord;
-        seenRecord = false;
-      }
-    }
+    this.querySelectorAll('div.date-marker').forEach(elm =>
+      elm.hidden = !set.has(elm.textContent));
   }
 }
 

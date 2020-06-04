@@ -3,7 +3,7 @@ import {Game} from '../log-game.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<spa-color-patch data-id="lg.color-patch" hidden></spa-color-patch>
+<spa-color-patch data-id="lg.color-patch" color="none" hidden></spa-color-patch>
 <spa-color-sel data-id="lg.color-sel" class="stop-click" zero hidden></spa-color-sel>
 <span data-id="lg.name" hidden></span>
 <input type="text" data-id="lg.name-edit" class="stop-click">
@@ -21,7 +21,8 @@ let states = Object.freeze({
   empty: 0,
   closed: 1,
   edit: 2,
-  color: 3
+  color: 3,
+  delete: 4
 });
 
 export class GameRecordElement extends HTMLElement {
