@@ -1,5 +1,6 @@
 @import "components/spa-color-elements.css";
 @import "components/log-record.css";
+@import "components/log-game.css";
 
 #log-sel {
   height: var(--abs-line-height);

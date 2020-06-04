@@ -92,11 +92,11 @@ function filter(e) {
   let sel = e.detail.selected;
   if(curView == views.records) {
     document.getElementById('log-list').querySelectorAll('log-record').forEach(elm =>
-      elm.classList.toggle('hide', !sel[elm.record.tag]));
+      elm.hidden = !sel[elm.record.tag]);
   } else {
     document.getElementById('game-list').querySelectorAll('log-game').forEach(elm => {
       let show = elm.record.color ? sel[elm.record.color] : sel.all;
-      elm.classList.toggle('hide', !show);
+      elm.hidden = !show;
     });
   }
 }

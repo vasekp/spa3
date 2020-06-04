@@ -7,6 +7,10 @@ log-record {
   border-radius: .5rem;
 }
 
+log-record[hidden] {
+  display: none;
+}
+
 [data-id="lr.header"] {
   display: flex;
   border-bottom: var(--border);
