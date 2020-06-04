@@ -1,5 +1,6 @@
 @import "fonts.css";
 @import "colors.css";
+@import "components/spa-plus-list.css";
 
 :root {
   font-family: 'Source Sans Pro';
