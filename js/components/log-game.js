@@ -17,14 +17,6 @@ template.innerHTML = `
   </div>
 </div>`;
 
-let states = Object.freeze({
-  empty: 0,
-  closed: 1,
-  edit: 2,
-  color: 3,
-  delete: 4
-});
-
 export class GameRecordElement extends HTMLElement {
   constructor() {
     super();
@@ -44,9 +36,9 @@ export class GameRecordElement extends HTMLElement {
     this.appendChild(template.content.cloneNode(true));
     let id = id => this.querySelector(`[data-id="lg.${id}"]`);
     this._id = id;
-    id('edit').addEventListener('click', () => this.state = states.edit);
+    id('edit').addEventListener('click', () => this.state = 'edit');
     id('color-edit').addEventListener('click', () =>
-      this.state = (this.state == states.color ? states.closed : states.color));
+      this.state = (this.state == 'color' ? 'closed' : 'color'));
     id('delete').addEventListener('click', () => this._delete());
     id('delete').addEventListener('blur', () => this.close());
     id('name-edit').addEventListener('blur', () => this.close());
@@ -57,7 +49,7 @@ export class GameRecordElement extends HTMLElement {
       elm => elm.addEventListener('click', e => e.stopPropagation()));
     if(this._record)
       this._update();
-    this._stateChange(this.state, states.empty);
+    this._stateChange(this.state, 'empty');
     this._constructed = true;
   }
 
@@ -78,7 +70,7 @@ export class GameRecordElement extends HTMLElement {
     this._record = record;
     if(this._constructed)
       this._update();
-    this.state = states.closed;
+    this.state = 'closed';
   }
 
   get record() {
@@ -90,36 +82,32 @@ export class GameRecordElement extends HTMLElement {
   }
 
   get state() {
-    return this.getAttribute('state') || states.empty;
+    return this.getAttribute('state') || 'empty';
   }
 
   _stateChange(state, oldState) {
-    if(state != states.closed)
+    if(state != 'closed')
       this.parentElement.querySelectorAll('log-game').forEach(elm => {
         if(elm != this)
           elm.close()
       });
-    if(oldState == states.empty && !this._record)
+    if(oldState == 'empty' && !this._record)
       this._materialize();
-    if(oldState == states.edit)
+    if(oldState == 'edit')
       this._save();
-    this._id('color-sel').hidden = state != states.color;
-    this._id('color-patch').hidden = state != states.closed && state != states.edit;
-    this._id('name').hidden = state != states.closed;
-    this._id('date').hidden = state != states.closed;
-    this._id('name-edit').hidden = state != states.edit;
-    this._id('confirm').hidden = state != states.delete;
+    this._id('color-sel').hidden = state != 'color';
+    this._id('color-patch').hidden = state != 'closed' && state != 'edit';
+    this._id('name').hidden = state != 'closed';
+    this._id('date').hidden = state != 'closed';
+    this._id('name-edit').hidden = state != 'edit';
+    this._id('confirm').hidden = state != 'delete';
     this._id('tools-container').hidden = false;
-    if(state == states.edit)
+    if(state == 'edit')
       this._open();
   }
 
   close() {
-    this.state = states.closed;
-  }
-
-  focus() {
-    setTimeout(() => this._id('name-edit').focus(), 100);
+    this.state = 'closed';
   }
 
   _open() {
@@ -141,11 +129,11 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _delete() {
-    if(this.state == states.delete) {
+    if(this.state == 'delete') {
       this._record.delete();
       this.remove();
     } else
-      this.state = states.delete;
+      this.state = 'delete';
   }
 
   _clicked() {

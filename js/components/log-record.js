@@ -23,13 +23,6 @@ templateProps.innerHTML = `
 <spa-color-sel data-id="lr.colorsel"></spa-color-sel>
 <span class="inline" data-id="lr.geoButton" tabindex="0"/>`;
 
-let states = Object.freeze({
-  empty: 'empty',
-  closed: 'closed',
-  edit: 'edit',
-  firstEdit: 'firstedit'
-});
-
 let construct = Object.freeze({
   empty: 0,
   base: 1,
@@ -65,7 +58,7 @@ export class RecordElement extends HTMLElement {
       this._refs = refs;
       refs['area'].addEventListener('input', () => this._input());
       refs['area'].addEventListener('keydown', e => this._keydown(e));
-      refs['edit'].addEventListener('click', () => this.state = states.edit);
+      refs['edit'].addEventListener('click', () => this.state = 'edit');
       refs['geoIcon'].addEventListener('click', e => this._geoShow(e.currentTarget));
       this.addEventListener('blur', () => this.close());
       if(this._record)
@@ -100,7 +93,7 @@ export class RecordElement extends HTMLElement {
     this._record = record;
     if(this._constructed)
       this._bindData(record);
-    this.state = states.closed;
+    this.state = 'closed';
   }
 
   get record() {
@@ -123,7 +116,7 @@ export class RecordElement extends HTMLElement {
   }
 
   get state() {
-    return this.getAttribute('state') || states.empty;
+    return this.getAttribute('state') || 'empty';
   }
 
   set timediff(diff) {
@@ -135,19 +128,19 @@ export class RecordElement extends HTMLElement {
   }
 
   _stateChange(state = this.state) {
-    if(state == states.empty || state == states.edit || state == states.firstEdit)
+    if(state == 'empty' || state == 'edit' || state == 'firstEdit')
       this._construct(construct.props);
-    if(state != states.closed)
+    if(state != 'closed')
       this.parentElement.querySelectorAll('log-record').forEach(elm => {
         if(elm !== this)
           elm.close();
       });
-    this.toggleAttribute('data-protected', state != states.closed);
-    this._id('edit').style.visibility = state != states.closed ? 'hidden' : 'visible';
-    this._id('props').hidden = state == states.closed || state == states.firstEdit;
-    if(state == states.closed)
+    this.toggleAttribute('data-protected', state != 'closed');
+    this._id('edit').style.visibility = state != 'closed' ? 'hidden' : 'visible';
+    this._id('props').hidden = state == 'closed' || state == 'firstEdit';
+    if(state == 'closed')
       this._close();
-    if(state == states.edit || state == states.firstEdit)
+    if(state == 'edit' || state == 'firstEdit')
       this._open();
   }
 
@@ -171,7 +164,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _colorsel(tag) {
-    if(this.state == states.empty)
+    if(this.state == 'empty')
       this._materialize(tag);
     else {
       this._record.tag = tag;
@@ -183,11 +176,11 @@ export class RecordElement extends HTMLElement {
   _materialize(tag) {
     let gid = this.closest('log-list').getAttribute('data-gid');
     this.record = new Record(gid, tag, Date.now(), '', this._preGeo);
-    this.state = states.firstEdit;
+    this.state = 'firstEdit';
   }
 
   close() {
-    this.state = states.closed;
+    this.state = 'closed';
   }
 
   _input() {
@@ -227,7 +220,7 @@ export class RecordElement extends HTMLElement {
         error => this._geoError(error),
         { enableHighAccuracy: true });
     }
-    if(this.state != states.empty)
+    if(this.state != 'empty')
       this.close();
   }
 

@@ -84,7 +84,7 @@ function plus(e) {
     let elm = document.createElement('log-game');
     document.getElementById('game-list').appendChild(elm);
     elm.scrollIntoView();
-    elm.focus();
+    elm.state = 'edit';
   }
 }
 
