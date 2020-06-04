@@ -1,6 +1,3 @@
-@import "../colors.css";
-@import "spa-color-elements.css";
-
 log-game {
   display: block flex;
   outline: none;
