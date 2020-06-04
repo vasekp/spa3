@@ -1,5 +1,4 @@
 spa-color-sel, spa-color-filter {
-  display: inline flex;
   margin: 0 calc(-1 * var(--margin-small));
 }
 

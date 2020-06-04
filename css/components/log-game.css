@@ -1,5 +1,5 @@
 log-game {
-  display: block flex;
+  display: flex;
   outline: none;
   align-items: center;
   height: 2rem;

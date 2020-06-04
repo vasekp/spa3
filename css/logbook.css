@@ -2,14 +2,14 @@
 @import "components/log-record.css";
 @import "components/log-game.css";
 
-#log-sel {
+.header-line {
   height: var(--abs-line-height);
   overflow: hidden;
   display: flex;
   align-items: baseline;
 }
 
-#log-sel[hidden] {
+.header-line[hidden] {
   display: none;
 }
 
