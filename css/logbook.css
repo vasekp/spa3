@@ -52,3 +52,19 @@ spa-plus-list {
 #game-select {
   margin-left: var(--margin-base);
 }
+
+.date-marker {
+  color: var(--color-text-fainter);
+  display: flex;
+  font-size: 80%;
+  line-height: 100%;
+  margin: 0 calc(-1 * var(--margin-small));
+}
+
+.date-marker::before, .date-marker::after {
+  height: var(--line-width);
+  background: var(--color-line);
+  flex: 1;
+  content: '';
+  margin: auto var(--margin-small);
+}

@@ -1,15 +1,6 @@
 import {LiveListElement} from './spa-live-list.js';
 import {dateFormat} from '../datetime.js';
 
-const dateMarkerTemp = document.createElement('template');
-dateMarkerTemp.innerHTML = `
-<link rel="stylesheet" href="css/components/log-date-marker.css"/>
-<div id="content" class="new-day" data-protected="true" hidden>
-  <span class="line"></span>
-  <span class="text color-fainter"><slot></slot></span>
-  <span class="line"></span>
-</div>`;
-
 function formatDiff(diff) {
   let diffText = '+';
   diff = Math.floor(diff / 1000);
@@ -25,16 +16,6 @@ function formatDiff(diff) {
     diffText += min;
   diffText += ':' + sec.toString().padStart(2, '0');
   return diffText;
-}
-
-export class DateMarkerElement extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({mode: 'open'});
-    this.shadowRoot.appendChild(dateMarkerTemp.content.cloneNode(true));
-    this.shadowRoot.querySelector('link').onload = () =>
-      this.shadowRoot.getElementById('content').hidden = false;
-  }
 }
 
 export class ListElement extends LiveListElement {
@@ -54,7 +35,8 @@ export class ListElement extends LiveListElement {
 
   _datesAddRemove(record) {
     let insertMarker = (elm, day) => {
-      let marker = document.createElement('log-date-marker');
+      let marker = document.createElement('div');
+      marker.classList.add('date-marker');
       marker.setAttribute('data-protected', '');
       marker.innerText = day;
       this.insertBefore(marker, elm);
@@ -112,5 +94,4 @@ export class ListElement extends LiveListElement {
   }
 }
 
-window.customElements.define('log-date-marker', DateMarkerElement);
 window.customElements.define('log-list', ListElement);
