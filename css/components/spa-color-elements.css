@@ -1,13 +1,5 @@
-spa-color-sel, spa-color-filter {
-  margin: 0 calc(-1 * var(--margin-small));
-}
-
 spa-color-sel[hidden], spa-color-filter[hidden] {
   display: none;
-}
-
-spa-color-sel > *, spa-color-filter > * {
-  margin: 0 var(--margin-small);
 }
 
 spa-color-patch.filter:not(.selected) {
@@ -16,13 +8,25 @@ spa-color-patch.filter:not(.selected) {
 
 spa-color-patch {
   display: inline-block;
-  box-sizing: border-box;
-  width: var(--abs-cap-size);
-  height: var(--abs-cap-size);
+  width: var(--font-cap-size);
+  height: var(--font-cap-size);
+  line-height: var(--font-cap-size);
+  text-align: center;
+  padding: var(--pad-around-text);
   border: var(--border);
-  border-radius: 2px;
+  border-radius: calc(1.5*var(--pad-around-text));
+}
+
+spa-color-patch::after {
+  content: "\200B";
 }
 
 spa-color-patch[hidden] {
   display: none;
+}
+
+spa-color-sel, spa-color-filter {
+  display: flex;
+  max-width: calc(var(--count)*(1em + var(--margin-base)) - var(--margin-base));
+  justify-content: space-between;
 }

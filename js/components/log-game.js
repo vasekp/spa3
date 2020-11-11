@@ -11,9 +11,9 @@ template.innerHTML = `
 <div data-id="lg.confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
 <div data-id="lg.tools-container" hidden>
   <div data-id="lg.tools" class="stop-click">
-    <img data-id="lg.delete" src="images/delete.svg" alt="delete" tabindex="0"/>
+    <img data-id="lg.delete" src="images/delete.svg" alt="delete" class="inline" tabindex="0"/>
     <spa-color-patch data-id="lg.color-edit" color="all" tabindex="0"></spa-color-patch>
-    <img data-id="lg.edit" alt="edit" src="images/edit.svg" tabindex="0"/>
+    <img data-id="lg.edit" alt="edit" src="images/edit.svg" class="inline" tabindex="0"/>
   </div>
 </div>`;
 

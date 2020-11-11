@@ -45,6 +45,7 @@ export class ColorSelElement extends HTMLElement {
     if(hidden)
       div.hidden = true;
     this.appendChild(div);
+    this.style.setProperty('--count', this.children.length);
   }
 
   _click(e) {

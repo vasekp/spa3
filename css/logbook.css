@@ -3,10 +3,15 @@
 @import "components/log-game.css";
 
 .header-line {
-  height: var(--abs-line-height);
+  height: var(--font-line-height);
   overflow: hidden;
   display: flex;
+  width: 100%;
   align-items: baseline;
+}
+
+.header-line > * + * {
+  margin-left: var(--font-space);
 }
 
 .header-line[hidden] {
@@ -17,7 +22,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0 var(--margin-small);
 }
 
 #gdate {
@@ -25,7 +29,8 @@
 }
 
 #tag-filter {
-  margin-left: var(--margin-small);
+  flex-shrink: 1;
+  flex-grow: 1;
 }
 
 spa-plus-list {
@@ -33,6 +38,7 @@ spa-plus-list {
   overflow-x: hidden;
   overflow-y: auto;
   margin: 0 calc(-1 * var(--margin-base));
+  margin-top: var(--margin-small);
   padding: 0 var(--margin-base);
 }
 
@@ -47,10 +53,6 @@ spa-plus-list {
 
 #game-list > :nth-child(even) {
   background: var(--color-bg-alt);
-}
-
-#game-select {
-  margin-left: var(--margin-base);
 }
 
 .date-marker {

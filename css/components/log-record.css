@@ -13,6 +13,7 @@ log-record[hidden] {
   border-bottom: var(--border);
   font-size: 80%;
   line-height: 100%;
+  align-items: center;
 }
 
 [data-id="lr.header"][hidden] {
@@ -20,12 +21,12 @@ log-record[hidden] {
 }
 
 [data-id="lr.header"] > * {
-  padding: 0 var(--margin-base-scaled);
+  padding: 0 var(--margin-small);
 }
 
 [data-id="lr.textContainer"] {
   margin: var(--margin-small);
-  min-height: var(--abs-line-height);
+  min-height: var(--font-line-height);
   position: relative;
 }
 
@@ -67,6 +68,11 @@ log-record[hidden] {
 
 [data-id="lr.props"][hidden] {
   display: none;
+}
+
+[data-id="lr.colorsel"] {
+  flex: 1;
+  margin-right: var(--margin-small);
 }
 
 @keyframes geo-waiting {

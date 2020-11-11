@@ -25,11 +25,12 @@ log-game[hidden] {
 
 [data-id="lg.date"] {
   color: var(--color-text-light);
-  margin-left: var(--margin-small);
+  margin: 0 var(--font-space);
+  white-space: nowrap;
 }
 
 [data-id="lg.tools-container"] {
-  --div-size: 1.2rem;
+  --div-size: var(--font-line-height);
   width: calc(var(--div-size) + 2*var(--line-width));
   height: calc(var(--div-size) + 2*var(--line-width));
   overflow: visible;
@@ -43,7 +44,7 @@ log-game[hidden] {
 }
 
 [data-id="lg.tools"] {
-  --padding: calc((var(--div-size) - var(--abs-cap-size)) / 2);
+  --padding: calc((var(--div-size) - 1em) / 2);
   --count: 3;
   width: var(--div-size);
   height: var(--div-size);
@@ -62,11 +63,6 @@ log-game[hidden] {
   width: calc(var(--count) * var(--div-size));
 }
 
-[data-id="lg.tools"] img {
-  width: var(--abs-cap-size);
-  height: var(--abs-cap-size);
-}
-
 [data-id="lg.tools"] > * {
   margin: var(--padding);
   flex-shrink: 0;
@@ -80,6 +76,10 @@ log-game[hidden] {
   display: none;
 }
 
+[data-id="lg.color-sel"] {
+  flex: 1;
+}
+
 [data-id="lg.name-edit"] {
   border: none;
   margin: 0;
@@ -89,7 +89,7 @@ log-game[hidden] {
   resize: none;
   padding: 0;
   flex-grow: 1;
-  height: var(--abs-line-height);
+  height: var(--font-line-height);
 }
 
 [data-id="lg.name-edit"]:focus {

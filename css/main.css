@@ -7,15 +7,13 @@
   font-size: 13pt;
   width: 100%;
   height: 100%;
-  --rel-cap-size: 0.66;
-  --abs-cap-size: calc(var(--rel-cap-size) * 1em);
-  --rel-line-height: 1.424;
-  --abs-line-height: calc(var(--rel-line-height) * 1em);
+  --font-cap-size: 0.66em;
+  --font-line-height: 1.424em;
+  --font-space: 0.2em;
   --line-width: 1px;
-  --margin-base: .5rem;
-  --margin-small: .25rem;
-  --margin-base-scaled: .5em;
-  --margin-small-scaled: .25em;
+  --margin-base: 10px;
+  --margin-small: 5px;
+  --pad-around-text: calc((1em - var(--font-cap-size))/2 - var(--line-width));
 }
 
 body {
@@ -53,14 +51,14 @@ button {
   font-family: inherit;
   font-size: inherit;
   outline: none;
-  line-height: var(--abs-cap-size);
   display: inline-block;
-  height: var(--abs-cap-size);
-  min-width: var(--abs-cap-size);
+  min-width: var(--font-cap-size);
+  height: var(--font-cap-size);
+  line-height: var(--font-cap-size);
   box-sizing: content-box;
-  padding: var(--margin-small);
-  border: var(--line-width) solid #888;
-  border-radius: var(--abs-line-height);
+  padding: var(--pad-around-text);
+  border: var(--border);
+  border-radius: var(--font-cap-size);
   background: var(--color-bg-alt);
 }
 
@@ -68,4 +66,5 @@ button {
   height: 1em;
   width: 1em;
   vertical-align: top;
+  flex-shrink: 0;
 }
