@@ -8,12 +8,11 @@
     <script type="module" src="js/logbook.js"></script>
   </head>
   <body>
-    <main>
+    <main data-view="rec-list">
       <div class="header-line" id="log-sel">
         <span>Záznam:</span>
         <span id="gname"></span>
         <span id="gdate"></span>
-        <button id="game-select">···</button>
       </div>
       <div class="header-line">
         <span>Filtr:</span>
@@ -22,7 +21,7 @@
       <spa-plus-list>
         <spa-loading id="load" hidden></spa-loading>
         <log-list id="log-list"></log-list>
-        <div id="game-list" hidden></div>
+        <div id="game-list"></div>
       </spa-plus-list>
     </main>
   </body>

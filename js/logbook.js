@@ -20,7 +20,7 @@ let curView = views.records;
 window.addEventListener('DOMContentLoaded', () => {
   prepareDatabase(dbReady);
   document.querySelector('spa-plus-list').addEventListener('plus-click', plus);
-  document.getElementById('game-select').addEventListener('click', gameMenu);
+  document.getElementById('log-sel').addEventListener('click', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
   document.getElementById('game-list').addEventListener('game-click', e => gameClicked(e.detail.game));
   document.getElementById('game-list').addEventListener('delete-game', e => deleteGame(e.detail.gid));
@@ -103,27 +103,15 @@ function filter(e) {
   }
 }
 
-function hide(elm) {
-  elm.hidden = true;
-}
-
-function show(elm) {
-  elm.hidden = false;
-}
-
 function gameMenu() {
-  hide(document.getElementById('log-list'));
-  hide(document.getElementById('log-sel'));
-  show(document.getElementById('game-list'));
+  document.querySelector('main').setAttribute('data-view', 'game-list');
   document.getElementById('tag-filter').selectAll();
   curView = views.games;
 }
 
 function gameClicked(game) {
   loadRecords(game);
-  hide(document.getElementById('game-list'));
-  show(document.getElementById('log-list'));
-  show(document.getElementById('log-sel'));
+  document.querySelector('main').setAttribute('data-view', 'rec-list');
   document.getElementById('tag-filter').selectAll();
   curView = views.records;
 }

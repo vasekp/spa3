@@ -8,6 +8,7 @@
   display: flex;
   width: 100%;
   align-items: baseline;
+  transition: height .5s;
 }
 
 .header-line > * + * {
@@ -39,7 +40,35 @@ spa-plus-list {
   overflow-y: auto;
   margin: 0 calc(-1 * var(--margin-base));
   margin-top: var(--margin-small);
+  scrollbar-width: none;
+  position: relative;
+}
+
+spa-plus-list::-webkit-scrollbar {
+  display: none;
+}
+
+#log-list, #game-list {
+  display: block;
+  position: relative;
+  transition: opacity .5s;
+  opacity: 1;
+  z-index: 1;
+  width: 100%;
   padding: 0 var(--margin-base);
+  box-sizing: border-box;
+}
+
+[data-view="game-list"] #log-list, [data-view="rec-list"] #game-list {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  z-index: 0;
+}
+
+[data-view="game-list"] #log-sel {
+  height: 0;
 }
 
 #log-list log-record {
