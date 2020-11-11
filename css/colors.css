@@ -19,9 +19,12 @@
 
 [data-color] {
   --hue: calc(160 + 80 * var(--color-index));
-  background: hsl(var(--hue), 90%, 85%);
-  --color-line: hsl(var(--hue), 90%, 50%);
-  --color-text-fainter: hsl(var(--hue), 50%, 25%);
+  --sat: 90%;
+  --ltn: 100%;
+  background: hsl(var(--hue), var(--sat), calc((50% + 2*var(--ltn))/3));
+  --color-line: hsl(var(--hue), var(--sat), 50%);
+  --color-text-fainter: hsl(var(--hue), calc(var(--sat)/2), calc((3*50% - var(--ltn))/4));
+  --border: var(--line-width) solid var(--color-line);
 }
 
 [data-color="all"] {
@@ -32,25 +35,15 @@
     hsl(120, 90%, 85%),
     hsl(190, 90%, 85%),
     hsl(240, 90%, 85%));
-  --color-line: hsl(0, 0%, 50%);
-  --color-text-fainter: hsl(0, 0%, 25%);
 }
 
 [data-color="cross"] {
   background: linear-gradient(.125turn, transparent 42%, red 45% 55%, transparent 58%),
               linear-gradient(-.125turn, transparent 42%, red 45% 55%, transparent 58%);
-  --color-line: hsl(0, 0%, 50%);
-  --color-text-fainter: hsl(0, 0%, 25%);
 }
 
 [data-color="grey"] {
-  background: hsl(0, 0%, 85%);
-  --color-line: hsl(0, 0%, 50%);
-  --color-text-fainter: hsl(0, 0%, 25%);
-}
-
-[data-color] {
-  --border: var(--line-width) solid var(--color-line);
+  --sat: 0%;
 }
 
 .color-fainter {
