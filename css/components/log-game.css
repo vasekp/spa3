@@ -8,10 +8,6 @@ log-game {
   background: inherit;
 }
 
-log-game[hidden] {
-  display: none;
-}
-
 [data-id="lg.content"] > * {
   flex-shrink: 0;
 }
@@ -37,10 +33,6 @@ log-game[hidden] {
   margin-left: auto;
   display: flex;
   justify-content: flex-end;
-}
-
-[data-id="lg.tools-container"][hidden] {
-  display: none;
 }
 
 [data-id="lg.tools"] {

@@ -4,20 +4,12 @@ log-record {
   border-radius: .5rem;
 }
 
-log-record[hidden] {
-  display: none;
-}
-
 [data-id="lr.header"] {
   display: flex;
   border-bottom: var(--border);
   font-size: 80%;
   line-height: 100%;
   align-items: center;
-}
-
-[data-id="lr.header"][hidden] {
-  display: none;
 }
 
 [data-id="lr.header"] > * {
@@ -64,10 +56,6 @@ log-record[hidden] {
   margin: var(--margin-small) var(--margin-base);
   display: flex;
   align-items: center;
-}
-
-[data-id="lr.props"][hidden] {
-  display: none;
 }
 
 [data-id="lr.colorsel"] {

@@ -39,8 +39,8 @@ main > * {
   flex-shrink: 0;
 }
 
-.hide {
-  display: none;
+*[hidden] {
+  display: none !important;
 }
 
 :not(:defined) {

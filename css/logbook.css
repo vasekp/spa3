@@ -15,10 +15,6 @@
   margin-left: var(--font-space);
 }
 
-.header-line[hidden] {
-  display: none;
-}
-
 #gname {
   white-space: nowrap;
   overflow: hidden;
@@ -90,10 +86,6 @@ spa-plus-list::-webkit-scrollbar {
   font-size: 80%;
   line-height: 100%;
   margin: 0 calc(-1 * var(--margin-small));
-}
-
-.date-marker[hidden] {
-  display: none;
 }
 
 .date-marker::before, .date-marker::after {
