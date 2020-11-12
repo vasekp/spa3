@@ -1,9 +1,11 @@
+import './spa-scroll.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
-<div id="content">
+<spa-scroll id="content">
   <slot></slot>
-</div>
-<div part="plus-item" id="plus-item">+</div>
+  <div part="plus-item" id="plus-item">+</div>
+</spa-scroll>
 <div part="plus-button" id="plus-button">+</div>`;
 
 export class PlusListElement extends HTMLElement {
@@ -36,6 +38,10 @@ export class PlusListElement extends HTMLElement {
     let smallPlusVisible = targetSize + reservedSize >= parentSize;
     this._plusItem.hidden = !smallPlusVisible;
     document.activeElement.scrollIntoView({block: 'nearest'});
+  }
+
+  scrollToTop() {
+    this.shadowRoot.getElementById('content').scrollTo({ left: 0, top: 0, behavior: 'smooth' });
   }
 }
 

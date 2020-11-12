@@ -1,3 +1,8 @@
+spa-plus-list {
+  position: relative;
+  overflow: hidden;
+}
+
 spa-plus-list::part(plus-button) {
   width: 3rem;
   height: 3rem;
@@ -8,7 +13,7 @@ spa-plus-list::part(plus-button) {
   border-radius: 1.5rem;
   box-shadow: .1rem .1rem .2rem #0004;
   text-align: center;
-  z-index: 1;
+  z-index: 3;
   transform: translateZ(0);
   font-size: 2.5rem;
   font-weight: 600;

@@ -32,16 +32,8 @@
 
 spa-plus-list {
   flex: 1 1;
-  overflow-x: hidden;
-  overflow-y: auto;
   margin: 0 calc(-1 * var(--margin-base));
   margin-top: var(--margin-small);
-  scrollbar-width: none;
-  position: relative;
-}
-
-spa-plus-list::-webkit-scrollbar {
-  display: none;
 }
 
 #log-list, #game-list {
