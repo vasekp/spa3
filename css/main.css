@@ -43,6 +43,16 @@ main > * {
   display: none !important;
 }
 
+*:focus {
+  outline: none;
+  box-shadow: 0 0 2px 1px #888;
+}
+
+*.innerOutline:focus {
+  outline: none;
+  box-shadow: inset 0 0 2px 1px #888;
+}
+
 :not(:defined) {
   display: none;
 }

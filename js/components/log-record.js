@@ -9,8 +9,8 @@ templateBase.innerHTML = `
     <span data-id="lr.timediff"></span>
   </span>
   <span data-id="lr.fill"></span>
-  <span class="inline" data-id="lr.geo" hidden></span>
-  <img class="inline" data-id="lr.edit" src="images/edit.svg">
+  <span class="inline geo" data-id="lr.geo" tabindex="0" hidden></span>
+  <img class="inline" data-id="lr.edit" tabindex="0" src="images/edit.svg">
 </div>
 <div data-id="lr.textContainer" hidden>
   <span data-id="lr.text"></span>
@@ -21,7 +21,7 @@ templateBase.innerHTML = `
 const templateProps = document.createElement('template');
 templateProps.innerHTML = `
 <spa-color-sel data-id="lr.colorsel"></spa-color-sel>
-<span class="inline" data-id="lr.geoButton" tabindex="0"/>`;
+<span class="inline geo" data-id="lr.geoButton" tabindex="0"/>`;
 
 let construct = Object.freeze({
   empty: 0,

@@ -109,6 +109,7 @@ function gameMenu() {
   document.querySelector('main').setAttribute('data-view', 'game-list');
   document.getElementById('game-list').hidden = false;
   document.getElementById('log-list').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
+  document.getElementById('log-sel').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
   curView = views.games;
 }
 
@@ -118,6 +119,7 @@ function gameClicked(game) {
   document.querySelector('spa-plus-list').scrollToTop();
   document.querySelector('main').setAttribute('data-view', 'rec-list');
   document.getElementById('log-list').hidden = false;
+  document.getElementById('log-sel').hidden = false;
   document.getElementById('game-list').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
   curView = views.records;
 }

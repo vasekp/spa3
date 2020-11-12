@@ -2,16 +2,16 @@ import './spa-scroll.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
+<div part="plus-button" id="plus-button" tabindex="0">+</div>
 <spa-scroll id="content">
   <slot></slot>
-  <div part="plus-item" id="plus-item">+</div>
-</spa-scroll>
-<div part="plus-button" id="plus-button">+</div>`;
+  <div part="plus-item" id="plus-item" tabindex="0">+</div>
+</spa-scroll>`;
 
 export class PlusListElement extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({mode: 'open'});
+    this.attachShadow({mode: 'open', delegatesFocus: true});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this._plusButton = this.shadowRoot.getElementById('plus-button');
     this._plusItem = this.shadowRoot.getElementById('plus-item');

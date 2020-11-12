@@ -85,10 +85,6 @@ log-game {
   height: var(--font-line-height);
 }
 
-[data-id="lg.name-edit"]:focus {
-  box-shadow: 0 0 .2rem [data-id="lg."]888;
-}
-
 [data-id="lg.confirm"] {
   background: #f006;
   padding: 0 var(--margin-small);

@@ -50,6 +50,9 @@ export class GameRecordElement extends HTMLElement {
     if(this._record)
       this._update();
     this._stateChange(this.state, 'empty');
+    if (!this.hasAttribute('tabindex'))
+      this.setAttribute('tabindex', 0);
+    this.classList.add('innerOutline');
     this._constructed = true;
   }
 
