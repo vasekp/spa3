@@ -9,11 +9,10 @@ log-game {
 }
 
 [data-id="lg.content"] > * {
-  flex-shrink: 0;
+  flex: none;
 }
 
 [data-id="lg.name"] {
-  flex-shrink: 1;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -40,7 +39,7 @@ log-game {
   --count: 3;
   width: var(--div-size);
   height: var(--div-size);
-  flex-shrink: 0;
+  flex: none;
   overflow: hidden;
   transition: width .5s;
   background: white;
@@ -57,11 +56,12 @@ log-game {
 
 [data-id="lg.tools"] > * {
   margin: var(--padding);
-  flex-shrink: 0;
+  flex: none;
 }
 
 [data-id="lg.color-patch"] {
   margin-right: var(--margin-small);
+  flex: none;
 }
 
 [data-id="lg.color-patch"][color="none"] {
@@ -70,6 +70,7 @@ log-game {
 
 [data-id="lg.color-sel"] {
   flex: 1;
+  margin-right: var(--margin-small);
 }
 
 [data-id="lg.name-edit"] {
@@ -80,7 +81,7 @@ log-game {
   box-sizing: border-box;
   resize: none;
   padding: 0;
-  flex-grow: 1;
+  flex: 1;
   height: var(--font-line-height);
 }
 

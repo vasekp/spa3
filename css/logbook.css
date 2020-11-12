@@ -22,12 +22,11 @@
 }
 
 #gdate {
-  flex-shrink: 0;
+  flex: none;
 }
 
 #tag-filter {
-  flex-shrink: 1;
-  flex-grow: 1;
+  flex: 1;
 }
 
 spa-plus-list {

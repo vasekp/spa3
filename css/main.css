@@ -36,7 +36,7 @@ main {
 }
 
 main > * {
-  flex-shrink: 0;
+  flex: none;
 }
 
 *[hidden] {
@@ -66,5 +66,5 @@ button {
   height: 1em;
   width: 1em;
   vertical-align: top;
-  flex-shrink: 0;
+  flex: none;
 }
