@@ -58,16 +58,16 @@ export class RecordElement extends HTMLElement {
       this._refs = refs;
       refs['area'].addEventListener('input', () => this._input());
       refs['area'].addEventListener('keydown', e => this._keydown(e));
-      refs['edit'].addEventListener('click', () => this.state = 'edit');
-      refs['geoIcon'].addEventListener('click', e => this._geoShow(e.currentTarget));
+      refs['edit'].addEventListener('action', () => this.state = 'edit');
+      refs['geoIcon'].addEventListener('action', e => this._geoShow(e.currentTarget));
       this.addEventListener('blur', () => this.close());
       if(this._record)
         this._bindData();
     } else if(level == construct.props) {
       this._id('props').appendChild(templateProps.content.cloneNode(true));
       this._refs.geoButton = this._id('geoButton');
-      this._refs['geoButton'].addEventListener('click', () => this._geoSet());
-      this._id('colorsel').addEventListener('color-click', e => this._colorsel(e.detail.color));
+      this._refs['geoButton'].addEventListener('action', () => this._geoSet());
+      this._id('colorsel').addEventListener('color-action', e => this._colorsel(e.detail.color));
     }
     this._constructed = level;
   }

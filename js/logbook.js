@@ -19,10 +19,10 @@ let curView = views.records;
 
 window.addEventListener('DOMContentLoaded', () => {
   prepareDatabase(dbReady);
-  document.querySelector('spa-plus-list').addEventListener('plus-click', plus);
-  document.getElementById('log-sel').addEventListener('click', gameMenu);
+  document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
+  document.getElementById('log-sel').addEventListener('action', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
-  document.getElementById('game-list').addEventListener('game-click', e => gameClicked(e.detail.game));
+  document.getElementById('game-list').addEventListener('game-chosen', e => gameClicked(e.detail.game));
   document.getElementById('game-list').addEventListener('delete-game', e => deleteGame(e.detail.gid));
 });
 

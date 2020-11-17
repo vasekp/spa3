@@ -15,9 +15,9 @@ export class PlusListElement extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this._plusButton = this.shadowRoot.getElementById('plus-button');
     this._plusItem = this.shadowRoot.getElementById('plus-item');
-    let cb = () => this.dispatchEvent(new CustomEvent('plus-click'), { bubbles: true });
-    this._plusButton.addEventListener('click', cb);
-    this._plusItem.addEventListener('click', cb);
+    let cb = () => this.dispatchEvent(new CustomEvent('plus-action'), { bubbles: true });
+    this._plusButton.addEventListener('action', cb);
+    this._plusItem.addEventListener('action', cb);
   }
 
   connectedCallback() {

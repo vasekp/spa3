@@ -4,13 +4,13 @@ import {Game} from '../log-game.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <spa-color-patch data-id="lg.color-patch" color="none" hidden></spa-color-patch>
-<spa-color-sel data-id="lg.color-sel" class="stop-click" zero hidden></spa-color-sel>
+<spa-color-sel data-id="lg.color-sel" class="lg_stop" zero hidden></spa-color-sel>
 <span data-id="lg.name" hidden></span>
-<input type="text" data-id="lg.name-edit" class="stop-click">
+<input type="text" data-id="lg.name-edit" class="lg_stop">
 <span data-id="lg.date" hidden></span>
 <div data-id="lg.confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
 <div data-id="lg.tools-container" hidden>
-  <div data-id="lg.tools" class="stop-click">
+  <div data-id="lg.tools" class="lg_stop">
     <img data-id="lg.delete" src="images/delete.svg" alt="delete" class="inline" tabindex="0"/>
     <spa-color-patch data-id="lg.color-edit" color="all" tabindex="0"></spa-color-patch>
     <img data-id="lg.edit" alt="edit" src="images/edit.svg" class="inline" tabindex="0"/>
@@ -36,17 +36,17 @@ export class GameRecordElement extends HTMLElement {
     this.appendChild(template.content.cloneNode(true));
     let id = id => this.querySelector(`[data-id="lg.${id}"]`);
     this._id = id;
-    id('edit').addEventListener('click', () => this.state = 'edit');
-    id('color-edit').addEventListener('click', () =>
+    id('edit').addEventListener('action', () => this.state = 'edit');
+    id('color-edit').addEventListener('action', () =>
       this.state = (this.state == 'color' ? 'closed' : 'color'));
-    id('delete').addEventListener('click', () => this._delete());
+    id('delete').addEventListener('action', () => this._delete());
     id('delete').addEventListener('blur', () => this.close());
     id('name-edit').addEventListener('blur', () => this.close());
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
-    id('color-sel').addEventListener('color-click', e => this._colorClicked(e.detail.color));
-    this.addEventListener('click', () => this._clicked());
-    this.querySelectorAll('.stop-click').forEach(
-      elm => elm.addEventListener('click', e => e.stopPropagation()));
+    id('color-sel').addEventListener('color-action', e => this._colorClicked(e.detail.color));
+    this.addEventListener('action', e => this._action(e));
+    this.querySelectorAll('.lg_stop').forEach(
+      elm => elm.addEventListener('action', e => e.preventDefault()));
     if(this._record)
       this._update();
     this._stateChange(this.state, 'empty');
@@ -139,11 +139,12 @@ export class GameRecordElement extends HTMLElement {
       this.state = 'delete';
   }
 
-  _clicked() {
-    this.dispatchEvent(new CustomEvent('game-click', {
-      detail: { game: this._record },
-      bubbles: true
-    }));
+  _action(e) {
+    if(!e.defaultPrevented)
+      this.dispatchEvent(new CustomEvent('game-chosen', {
+        detail: { game: this._record },
+        bubbles: true
+      }));
   }
 
   _colorClicked(color) {

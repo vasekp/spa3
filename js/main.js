@@ -1,8 +1,4 @@
-window.addEventListener('keydown', e => {
-  console.log(e.target);
-  if(e.key === 'Enter') {
-    e.preventDefault();
-    e.target.dispatchEvent(new MouseEvent('click'), {});
-  }
-});
-
+let sendAction = e => e.target.dispatchEvent(new CustomEvent('action', { bubbles: true, cancelable: true }));
+window.addEventListener('mousedown', sendAction);
+window.addEventListener('keydown', e => { if(e.key === 'Enter') sendAction(e) });
+window.addEventListener('touchstart', sendAction);
