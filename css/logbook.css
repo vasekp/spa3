@@ -30,6 +30,10 @@
   flex: 1;
 }
 
+#log-sel {
+  cursor: pointer;
+}
+
 spa-scroll {
   margin: 0 calc(-1 * var(--margin-base));
   flex: 1;
