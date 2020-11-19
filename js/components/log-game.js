@@ -3,17 +3,17 @@ import {Game} from '../log-game.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<spa-color-patch data-id="lg.color-patch" color="none"></spa-color-patch>
-<spa-color-sel data-id="lg.color-sel" class="lg_stop" zero></spa-color-sel>
-<span data-id="lg.name"></span>
-<input type="text" data-id="lg.name-edit" class="lg_stop">
-<span data-id="lg.date"></span>
-<div data-id="lg.confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
-<div data-id="lg.tools-container">
-  <div data-id="lg.tools" class="lg_stop" tabIndex="0">
-    <img data-id="lg.delete" src="images/delete.svg" alt="delete" class="inline" tabindex="0"/>
-    <spa-color-patch data-id="lg.color-edit" color="all" tabindex="0"></spa-color-patch>
-    <img data-id="lg.edit" alt="edit" src="images/edit.svg" class="inline" tabindex="0"/>
+<spa-color-patch class="log-game-color-patch" color="none"></spa-color-patch>
+<spa-color-sel class="log-game-color-sel log-game-stop-action" zero></spa-color-sel>
+<span class="log-game-name"></span>
+<input type="text" class="log-game-name-edit log-game-stop-action">
+<span class="log-game-date"></span>
+<div class="log-game-confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
+<div class="log-game-tools-container">
+  <div class="log-game-tools log-game-stop-action" tabIndex="0">
+    <img class="log-game-delete inline" src="images/delete.svg" alt="delete" tabindex="0"/>
+    <spa-color-patch class="log-game-color-edit" color="all" tabindex="0"></spa-color-patch>
+    <img class="log-game-edit inline" alt="edit" src="images/edit.svg" tabindex="0"/>
   </div>
 </div>`;
 
@@ -34,8 +34,7 @@ export class GameRecordElement extends HTMLElement {
 
   _construct() {
     this.appendChild(template.content.cloneNode(true));
-    let id = id => this.querySelector(`[data-id="lg.${id}"]`);
-    this._id = id;
+    let id = this._id = id => this.querySelector(`.log-game-${id}`);
     id('edit').addEventListener('action', () => this.state = 'edit');
     id('color-edit').addEventListener('action', e => {
       this.state = (this.state == 'color' ? 'closed' : 'color')
@@ -62,7 +61,7 @@ export class GameRecordElement extends HTMLElement {
       }
     });
     this.addEventListener('action', e => this._action(e));
-    this.querySelectorAll('.lg_stop').forEach(
+    this.querySelectorAll('.log-game-stop-action').forEach(
       elm => elm.addEventListener('action', e => e.preventDefault()));
     if(this._record)
       this._update();

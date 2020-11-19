@@ -3,25 +3,25 @@ import {Record} from '../log-record.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
-<div data-id="lr.header" class="color-fainter">
+<div class="log-record-header color-fainter">
   <span>
-    <span data-id="lr.timestamp"></span>
-    <span data-id="lr.timediff"></span>
+    <span class="log-record-timestamp"></span>
+    <span class="log-record-timediff"></span>
   </span>
-  <span data-id="lr.fill"></span>
-  <span class="inline" data-id="lr.geoIcon" tabindex="0"></span>
-  <img class="inline" data-id="lr.edit" tabindex="0" src="images/edit.svg">
+  <span class="log-record-fill"></span>
+  <span class="log-record-geo-icon inline" tabindex="0"></span>
+  <img class="log-record-edit inline" tabindex="0" src="images/edit.svg">
 </div>
-<div data-id="lr.textContainer">
-  <span data-id="lr.text"></span>
-  <textarea data-id="lr.area"></textarea>
+<div class="log-record-text-container">
+  <span class="log-record-text"></span>
+  <textarea class="log-record-area"></textarea>
 </div>
-<div data-id="lr.props"></div>`;
+<div class="log-record-props"></div>`;
 
 const templateProps = document.createElement('template');
 templateProps.innerHTML = `
-<spa-color-sel data-id="lr.colorsel"></spa-color-sel>
-<span class="inline" data-id="lr.geoButton" tabindex="0"/>`;
+<spa-color-sel class="log-record-colorsel"></spa-color-sel>
+<span class="log-record-geo-button inline" tabindex="0"/>`;
 
 let construct = Object.freeze({
   empty: 0,
@@ -47,11 +47,11 @@ export class RecordElement extends HTMLElement {
     if(level == construct.base) {
       this.setAttribute('data-colors', 'grey');
       this.appendChild(templateBase.content.cloneNode(true));
-      let id = this._id = id => this.querySelector(`[data-id="lr.${id}"]`);
+      let id = this._id = id => this.querySelector(`.log-record-${id}`);
       id('area').addEventListener('input', () => this._input());
       id('area').addEventListener('keydown', e => this._keydown(e));
       id('edit').addEventListener('action', e => { this.state = 'edit'; e.preventDefault(); });
-      id('geoIcon').addEventListener('action', () => this._geoShow());
+      id('geo-icon').addEventListener('action', () => this._geoShow());
       this.addEventListener('focusout', e => {
         if(!this.contains(e.relatedTarget))
           this.close();
@@ -60,7 +60,7 @@ export class RecordElement extends HTMLElement {
         this._bindData();
     } else if(level == construct.props) {
       this._id('props').appendChild(templateProps.content.cloneNode(true));
-      this._id('geoButton').addEventListener('action', () => this._geoSet());
+      this._id('geo-button').addEventListener('action', () => this._geoSet());
       this._id('colorsel').addEventListener('action', e => this._colorsel(e));
     }
     this._constructed = level;

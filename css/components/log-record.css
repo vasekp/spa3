@@ -4,22 +4,22 @@ log-record {
   border-radius: .5rem;
 }
 
-log-record[state="firstEdit"] [data-id="lr.header"],
-log-record[state="firstEdit"] [data-id="lr.textContainer"] {
+log-record[state="firstEdit"] .log-record-header,
+log-record[state="firstEdit"] .log-record-text-container {
   display: none;
 }
 
-log-record:not([state="edit"]):not([state="firstEdit"]) [data-id="lr.area"],
-log-record:not([state="edit"]):not([state="firstEdit"]) [data-id="lr.props"] {
+log-record:not([state="edit"]):not([state="firstEdit"]) .log-record-area,
+log-record:not([state="edit"]):not([state="firstEdit"]) .log-record-props {
   display: none;
 }
 
-log-record[state="edit"] [data-id="lr.text"],
-log-record[state="firstEdit"] [data-id="lr.text"] {
+log-record[state="edit"] .log-record-text,
+log-record[state="firstEdit"] .log-record-text {
   visibility: hidden;
 }
 
-[data-id="lr.header"] {
+.log-record-header {
   display: flex;
   border-bottom: var(--border);
   font-size: 80%;
@@ -27,23 +27,23 @@ log-record[state="firstEdit"] [data-id="lr.text"] {
   align-items: center;
 }
 
-[data-id="lr.header"] > * {
+.log-record-header > * {
   padding: 0 var(--margin-small);
 }
 
-[data-id="lr.textContainer"] {
+.log-record-text-container {
   margin: var(--margin-small);
   min-height: var(--font-line-height);
   position: relative;
 }
 
-[data-id="lr.text"] {
+.log-record-text {
   padding: 0;
   overflow: hidden;
   white-space: pre-wrap;
 }
 
-[data-id="lr.area"] {
+.log-record-area {
   border: none;
   outline: none;
   margin: 0;
@@ -59,17 +59,17 @@ log-record[state="firstEdit"] [data-id="lr.text"] {
   height: 100%;
 }
 
-[data-id="lr.fill"] {
+.log-record-fill {
   flex: 1;
 }
 
-[data-id="lr.props"] {
+.log-record-props {
   margin: var(--margin-small) var(--margin-base);
   display: flex;
   align-items: center;
 }
 
-[data-id="lr.colorsel"] {
+.log-record-colorsel {
   flex: 1;
   margin-right: var(--margin-small);
 }
@@ -82,36 +82,36 @@ log-record[state="firstEdit"] [data-id="lr.text"] {
   100% { opacity: 1; }
 }
 
-[data-id="lr.geoButton"] {
+.log-record-geo-button {
   margin-left: auto;
 }
 
-[data-id="lr.geoIcon"], [data-id="lr.geoButton"] {
+.log-record-geo-icon, .log-record-geo-button {
   content: url("../../images/geo.svg");
 }
 
-log-record[data-geo-state="none"] [data-id="lr.geoIcon"] {
+log-record[data-geo-state="none"] .log-record-geo-icon {
   display: none;
 }
 
-log-record[data-geo-state="n/a"] [data-id="lr.geoButton"] {
+log-record[data-geo-state="n/a"] .log-record-geo-button {
   display: none;
 }
 
-log-record[data-geo-state="ok"] [data-id="lr.geoButton"] {
+log-record[data-geo-state="ok"] .log-record-geo-button {
   content: url("../../images/geo-fail.svg");
 }
 
-log-record[data-geo-state="success"] [data-id="lr.geoButton"] {
+log-record[data-geo-state="success"] .log-record-geo-button {
   content: url("../../images/geo-succ.svg");
 }
 
-log-record[data-geo-state="waiting"] [data-id="lr.geoIcon"],
-log-record[data-geo-state="waiting"] [data-id="lr.geoButton"] {
+log-record[data-geo-state="waiting"] .log-record-geo-icon,
+log-record[data-geo-state="waiting"] .log-record-geo-button {
   animation: 1s geo-waiting infinite running;
 }
 
-log-record[data-geo-state="error"] [data-id="lr.geoIcon"],
-log-record[data-geo-state="error"] [data-id="lr.geoButton"] {
+log-record[data-geo-state="error"] .log-record-geo-icon,
+log-record[data-geo-state="error"] .log-record-geo-button {
   content: url("../../images/geo-fail.svg");
 }
