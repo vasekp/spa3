@@ -5,7 +5,9 @@ let sendAction = e => {
 
 window.addEventListener('mousedown', sendAction);
 window.addEventListener('keydown', e => { if(e.key === 'Enter') sendAction(e) });
-window.addEventListener('touchstart', sendAction);
+// mousedown seems to always be fired along with touchstart (I'm yet to see a browser that doesn't do that)
+// so we ignore the latter to prevent double action
+// window.addEventListener('touchstart', sendAction);
 
 window.addEventListener('action', e => {
   if(e.defaultPrevented)
