@@ -50,7 +50,7 @@ log-game {
   justify-content: flex-end;
 }
 
-[data-id="lg.tools"]:hover, [data-id="lg.tools"]:focus-within, :focus ~ [data-id="lg.tools"] {
+[data-id="lg.tools"]:hover, [data-id="lg.tools"]:focus, [data-id="lg.tools"]:focus-within {
   width: calc(var(--count) * var(--div-size));
 }
 

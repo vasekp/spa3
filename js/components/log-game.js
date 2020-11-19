@@ -10,7 +10,7 @@ template.innerHTML = `
 <span data-id="lg.date" hidden></span>
 <div data-id="lg.confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
 <div data-id="lg.tools-container" hidden>
-  <div data-id="lg.tools" class="lg_stop">
+  <div data-id="lg.tools" class="lg_stop" tabIndex="0">
     <img data-id="lg.delete" src="images/delete.svg" alt="delete" class="inline" tabindex="0"/>
     <spa-color-patch data-id="lg.color-edit" color="all" tabindex="0"></spa-color-patch>
     <img data-id="lg.edit" alt="edit" src="images/edit.svg" class="inline" tabindex="0"/>
@@ -48,6 +48,19 @@ export class GameRecordElement extends HTMLElement {
     });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
     id('color-sel').addEventListener('action', e => this._colorClicked(e.target.color));
+    id('tools').addEventListener('touchstart', e => {
+      if(!e.currentTarget.contains(document.activeElement)) {
+        e.currentTarget.focus();
+        // In the ideal world we could just e.preventDefault() the mousedown event on touch devices.
+        // However, with Samsung Internet this would mean the simulated mouse would stay hovering
+        // over whatever it was before, which has side effects with lg.tools. So we do need the
+        // mousemove the happen but need to capture and kill the expected mousedown :-(
+        e.currentTarget.addEventListener('mousedown', e => {
+          e.preventDefault();
+          e.stopPropagation()
+        }, { once: true });
+      }
+    });
     this.addEventListener('action', e => this._action(e));
     this.querySelectorAll('.lg_stop').forEach(
       elm => elm.addEventListener('action', e => e.preventDefault()));
