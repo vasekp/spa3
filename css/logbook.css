@@ -9,6 +9,7 @@
   width: 100%;
   align-items: baseline;
   transition: height .5s;
+  flex: none;
 }
 
 .header-line > * + * {
@@ -29,9 +30,13 @@
   flex: 1;
 }
 
-spa-plus-list {
-  flex: 1 1;
+spa-scroll {
   margin: 0 calc(-1 * var(--margin-base));
+  flex: 1;
+}
+
+spa-plus-list {
+  /*margin: 0 calc(-1 * var(--margin-base));*/
   margin-top: var(--margin-small);
 }
 
@@ -61,10 +66,6 @@ spa-plus-list {
 #log-list log-record {
   touch-action: pan-y;
   margin: var(--margin-base) 0;
-}
-
-#log-list > :last-child {
-  margin-bottom: 0;
 }
 
 #game-list > :nth-child(even) {

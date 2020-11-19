@@ -21,11 +21,13 @@
         <span>Filtr:</span>
         <spa-color-filter id="tag-filter"></spa-color-filter>
       </div>
-      <spa-plus-list>
-        <spa-loading id="load" hidden></spa-loading>
-        <log-list id="log-list"></log-list>
-        <div id="game-list" hidden></div>
-      </spa-plus-list>
+      <spa-scroll>
+        <spa-plus-list>
+          <div class="spa-loading" id="load" hidden></div>
+          <log-list id="log-list"></log-list>
+          <div id="game-list" hidden></div>
+        </spa-plus-list>
+      </spa-scroll>
     </main>
   </body>
 </html>

@@ -1,9 +1,9 @@
-import './components/spa-loading.js';
 import './components/spa-colors.js';
 import './components/spa-plus-list.js';
 import './components/log-record.js';
 import './components/log-list.js';
 import './components/log-game.js';
+import './components/spa-scroll.js';
 import {dateFormat} from './datetime.js';
 import {prepareDatabase, getAllGames, getAllRecords} from './log-db.js';
 import {Record} from './log-record.js';
@@ -105,7 +105,6 @@ function filter(e) {
 
 function gameMenu() {
   document.getElementById('tag-filter').selectAll();
-  document.querySelector('spa-plus-list').scrollToTop();
   document.querySelector('main').setAttribute('data-view', 'game-list');
   document.getElementById('game-list').hidden = false;
   document.getElementById('log-list').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
@@ -116,7 +115,6 @@ function gameMenu() {
 function gameClicked(game) {
   loadRecords(game);
   document.getElementById('tag-filter').selectAll();
-  document.querySelector('spa-plus-list').scrollToTop();
   document.querySelector('main').setAttribute('data-view', 'rec-list');
   document.getElementById('log-list').hidden = false;
   document.getElementById('log-sel').hidden = false;

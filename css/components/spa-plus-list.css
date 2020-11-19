@@ -1,37 +1,40 @@
 spa-plus-list {
-  position: relative;
-  overflow: hidden;
+  display: block;
 }
 
-spa-plus-list::part(plus-button) {
+.spa-plus-button, .spa-plus-item {
+  background: hsl(100, 50%, 50%);
+  font-weight: 600;
+  color: white;
+  text-align: center;
+}
+
+.spa-plus-button::after, .spa-plus-item::after {
+  content: '+';
+}
+
+.spa-plus-button {
   width: 3rem;
   height: 3rem;
-  background: hsl(100, 50%, 50%);
   position: absolute;
   right: 1rem;
   bottom: calc(1rem - var(--margin-base));
   border-radius: 1.5rem;
   box-shadow: .1rem .1rem .2rem #0004;
-  text-align: center;
   z-index: 3;
   transform: translateZ(0);
   font-size: 2.5rem;
-  font-weight: 600;
   line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
-  color: white;
 }
 
-spa-plus-list::part(plus-item) {
+.spa-plus-item {
+  order: 10;
   width: 2rem;
   height: 2rem;
-  background: hsl(100, 50%, 50%);
   margin: var(--margin-base) auto;
   margin-bottom: 0;
   overflow: hidden;
   border-radius: 1rem;
-  text-align: center;
   font-size: 2rem;
-  font-weight: 600;
   line-height: 1.018;
-  color: white;
 }
