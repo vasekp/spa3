@@ -58,9 +58,12 @@ export class RecordElement extends HTMLElement {
       this._refs = refs;
       refs['area'].addEventListener('input', () => this._input());
       refs['area'].addEventListener('keydown', e => this._keydown(e));
-      refs['edit'].addEventListener('action', () => this.state = 'edit');
+      refs['edit'].addEventListener('action', e => { this.state = 'edit'; e.preventDefault(); });
       refs['geoIcon'].addEventListener('action', e => this._geoShow(e.currentTarget));
-      this.addEventListener('blur', () => this.close());
+      this.addEventListener('focusout', e => {
+        if(!this.contains(e.relatedTarget))
+          this.close();
+      });
       if(this._record)
         this._bindData();
     } else if(level == construct.props) {
@@ -130,11 +133,6 @@ export class RecordElement extends HTMLElement {
   _stateChange(state = this.state) {
     if(state == 'empty' || state == 'edit' || state == 'firstEdit')
       this._construct(construct.props);
-    if(state != 'closed')
-      this.parentElement.querySelectorAll('log-record').forEach(elm => {
-        if(elm !== this)
-          elm.close();
-      });
     this.toggleAttribute('data-protected', state != 'closed');
     this._id('edit').style.visibility = state != 'closed' ? 'hidden' : 'visible';
     this._id('props').hidden = state == 'closed' || state == 'firstEdit';
