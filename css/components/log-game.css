@@ -50,7 +50,7 @@ log-game {
   justify-content: flex-end;
 }
 
-[data-id="lg.tools"]:hover, [data-id="lg.tools"]:focus-within, :focus ~ [data-id="lg.tools"] {
+[data-id="lg.tools"]:hover, [data-id="lg.tools"]:focus, [data-id="lg.tools"]:focus-within {
   width: calc(var(--count) * var(--div-size));
 }
 
@@ -83,10 +83,6 @@ log-game {
   padding: 0;
   flex: 1;
   height: var(--font-line-height);
-}
-
-[data-id="lg.name-edit"]:focus {
-  box-shadow: 0 0 .2rem [data-id="lg."]888;
 }
 
 [data-id="lg.confirm"] {

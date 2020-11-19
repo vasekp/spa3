@@ -4,13 +4,13 @@ import {Game} from '../log-game.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <spa-color-patch data-id="lg.color-patch" color="none" hidden></spa-color-patch>
-<spa-color-sel data-id="lg.color-sel" class="stop-click" zero hidden></spa-color-sel>
+<spa-color-sel data-id="lg.color-sel" class="lg_stop" zero hidden></spa-color-sel>
 <span data-id="lg.name" hidden></span>
-<input type="text" data-id="lg.name-edit" class="stop-click">
+<input type="text" data-id="lg.name-edit" class="lg_stop">
 <span data-id="lg.date" hidden></span>
 <div data-id="lg.confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
 <div data-id="lg.tools-container" hidden>
-  <div data-id="lg.tools" class="stop-click">
+  <div data-id="lg.tools" class="lg_stop" tabIndex="0">
     <img data-id="lg.delete" src="images/delete.svg" alt="delete" class="inline" tabindex="0"/>
     <spa-color-patch data-id="lg.color-edit" color="all" tabindex="0"></spa-color-patch>
     <img data-id="lg.edit" alt="edit" src="images/edit.svg" class="inline" tabindex="0"/>
@@ -36,20 +36,44 @@ export class GameRecordElement extends HTMLElement {
     this.appendChild(template.content.cloneNode(true));
     let id = id => this.querySelector(`[data-id="lg.${id}"]`);
     this._id = id;
-    id('edit').addEventListener('click', () => this.state = 'edit');
-    id('color-edit').addEventListener('click', () =>
-      this.state = (this.state == 'color' ? 'closed' : 'color'));
-    id('delete').addEventListener('click', () => this._delete());
-    id('delete').addEventListener('blur', () => this.close());
-    id('name-edit').addEventListener('blur', () => this.close());
+    id('edit').addEventListener('action', () => this.state = 'edit');
+    id('color-edit').addEventListener('action', e => {
+      this.state = (this.state == 'color' ? 'closed' : 'color')
+      e.target.focus()
+    });
+    id('delete').addEventListener('action', e => {
+      this._delete();
+      e.target.focus();
+      e.preventDefault();
+    });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
-    id('color-sel').addEventListener('color-click', e => this._colorClicked(e.detail.color));
-    this.addEventListener('click', () => this._clicked());
-    this.querySelectorAll('.stop-click').forEach(
-      elm => elm.addEventListener('click', e => e.stopPropagation()));
+    id('color-sel').addEventListener('action', e => this._colorClicked(e.target.color));
+    id('tools').addEventListener('touchstart', e => {
+      if(!e.currentTarget.contains(document.activeElement)) {
+        e.currentTarget.focus();
+        // In the ideal world we could just e.preventDefault() the mousedown event on touch devices.
+        // However, with Samsung Internet this would mean the simulated mouse would stay hovering
+        // over whatever it was before, which has side effects with lg.tools. So we do need the
+        // mousemove the happen but need to capture and kill the expected mousedown :-(
+        e.currentTarget.addEventListener('mousedown', e => {
+          e.preventDefault();
+          e.stopPropagation()
+        }, { once: true });
+      }
+    });
+    this.addEventListener('action', e => this._action(e));
+    this.querySelectorAll('.lg_stop').forEach(
+      elm => elm.addEventListener('action', e => e.preventDefault()));
     if(this._record)
       this._update();
     this._stateChange(this.state, 'empty');
+    if (!this.hasAttribute('tabindex'))
+      this.setAttribute('tabindex', 0);
+    this.classList.add('innerOutline');
+    this.addEventListener('focusout', e => {
+      if(!this.contains(e.relatedTarget))
+        this.close();
+    });
     this._constructed = true;
   }
 
@@ -86,24 +110,21 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _stateChange(state, oldState) {
-    if(state != 'closed')
-      this.parentElement.querySelectorAll('log-game').forEach(elm => {
-        if(elm != this)
-          elm.close()
-      });
     if(oldState == 'empty' && !this._record)
       this._materialize();
-    if(oldState == 'edit')
+    if(oldState == 'edit' || oldState == 'firstEdit')
       this._save();
     this._id('color-sel').hidden = state != 'color';
-    this._id('color-patch').hidden = state != 'closed' && state != 'edit';
+    this._id('color-patch').hidden = state != 'closed' && state != 'edit' && state != 'firstEdit';
     this._id('name').hidden = state != 'closed';
     this._id('date').hidden = state != 'closed';
-    this._id('name-edit').hidden = state != 'edit';
+    this._id('name-edit').hidden = state != 'edit' && state != 'firstEdit';
     this._id('confirm').hidden = state != 'delete';
-    this._id('tools-container').hidden = false;
-    if(state == 'edit')
+    this._id('tools-container').hidden = state == 'edit' || state == 'firstEdit';
+    if(state == 'edit' || state == 'firstEdit')
       this._open();
+    if(state == 'closed' && oldState == 'firstEdit')
+      this._choose();
   }
 
   close() {
@@ -136,8 +157,13 @@ export class GameRecordElement extends HTMLElement {
       this.state = 'delete';
   }
 
-  _clicked() {
-    this.dispatchEvent(new CustomEvent('game-click', {
+  _action(e) {
+    if(!e.defaultPrevented)
+      this._choose();
+  }
+
+  _choose() {
+    this.dispatchEvent(new CustomEvent('game-chosen', {
       detail: { game: this._record },
       bubbles: true
     }));

@@ -1,9 +1,9 @@
-import './components/spa-loading.js';
 import './components/spa-colors.js';
 import './components/spa-plus-list.js';
 import './components/log-record.js';
 import './components/log-list.js';
 import './components/log-game.js';
+import './components/spa-scroll.js';
 import {dateFormat} from './datetime.js';
 import {prepareDatabase, getAllGames, getAllRecords} from './log-db.js';
 import {Record} from './log-record.js';
@@ -19,10 +19,10 @@ let curView = views.records;
 
 window.addEventListener('DOMContentLoaded', () => {
   prepareDatabase(dbReady);
-  document.querySelector('spa-plus-list').addEventListener('plus-click', plus);
-  document.getElementById('log-sel').addEventListener('click', gameMenu);
+  document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
+  document.getElementById('log-sel').addEventListener('action', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
-  document.getElementById('game-list').addEventListener('game-click', e => gameClicked(e.detail.game));
+  document.getElementById('game-list').addEventListener('game-chosen', e => gameClicked(e.detail.game));
   document.getElementById('game-list').addEventListener('delete-game', e => deleteGame(e.detail.gid));
 });
 
@@ -84,8 +84,9 @@ function plus(e) {
     let elm = document.createElement('log-game');
     document.getElementById('game-list').appendChild(elm);
     elm.scrollIntoView();
-    elm.state = 'edit';
+    elm.state = 'firstEdit';
   }
+  e.preventDefault();
 }
 
 function filter(e) {
@@ -105,19 +106,19 @@ function filter(e) {
 
 function gameMenu() {
   document.getElementById('tag-filter').selectAll();
-  document.querySelector('spa-plus-list').scrollToTop();
   document.querySelector('main').setAttribute('data-view', 'game-list');
   document.getElementById('game-list').hidden = false;
   document.getElementById('log-list').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
+  document.getElementById('log-sel').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
   curView = views.games;
 }
 
 function gameClicked(game) {
   loadRecords(game);
   document.getElementById('tag-filter').selectAll();
-  document.querySelector('spa-plus-list').scrollToTop();
   document.querySelector('main').setAttribute('data-view', 'rec-list');
   document.getElementById('log-list').hidden = false;
+  document.getElementById('log-sel').hidden = false;
   document.getElementById('game-list').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
   curView = views.records;
 }

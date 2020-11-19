@@ -41,19 +41,14 @@ export class ColorSelElement extends HTMLElement {
     let div = document.createElement('spa-color-patch');
     div.setAttribute('color', color);
     div.setAttribute('tabindex', 0);
-    div.addEventListener('click', this._click);
+    div.addEventListener('action', this._action);
     if(hidden)
       div.hidden = true;
     this.appendChild(div);
     this.style.setProperty('--count', this.children.length);
   }
 
-  _click(e) {
-    this.dispatchEvent(new CustomEvent('color-click', {
-      detail: { color: e.currentTarget.color },
-      bubbles: true
-    }));
-  }
+  _action(e) { }
 }
 
 export class ColorFilterElement extends ColorSelElement {
@@ -64,7 +59,7 @@ export class ColorFilterElement extends ColorSelElement {
     this.selectAll(true);
   }
 
-  _click(e) {
+  _action(e) {
     let elm = e.currentTarget.parentElement;
     let color = e.currentTarget.color;
     let sel = elm._sel;

@@ -44,10 +44,6 @@ log-record {
   height: 100%;
 }
 
-[data-id="lr.area"]:focus {
-  box-shadow: 0 0 .2rem #888;
-}
-
 [data-id="lr.fill"] {
   flex: 1;
 }
@@ -71,7 +67,7 @@ log-record {
   100% { opacity: 1; }
 }
 
-[data-geo-state] {
+.geo {
   content: url("../../images/geo.svg");
 }
 

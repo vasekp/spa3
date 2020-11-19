@@ -9,8 +9,8 @@ templateBase.innerHTML = `
     <span data-id="lr.timediff"></span>
   </span>
   <span data-id="lr.fill"></span>
-  <span class="inline" data-id="lr.geo" hidden></span>
-  <img class="inline" data-id="lr.edit" src="images/edit.svg">
+  <span class="inline geo" data-id="lr.geo" tabindex="0" hidden></span>
+  <img class="inline" data-id="lr.edit" tabindex="0" src="images/edit.svg">
 </div>
 <div data-id="lr.textContainer" hidden>
   <span data-id="lr.text"></span>
@@ -21,7 +21,7 @@ templateBase.innerHTML = `
 const templateProps = document.createElement('template');
 templateProps.innerHTML = `
 <spa-color-sel data-id="lr.colorsel"></spa-color-sel>
-<span class="inline" data-id="lr.geoButton" tabindex="0"/>`;
+<span class="inline geo" data-id="lr.geoButton" tabindex="0"/>`;
 
 let construct = Object.freeze({
   empty: 0,
@@ -58,16 +58,19 @@ export class RecordElement extends HTMLElement {
       this._refs = refs;
       refs['area'].addEventListener('input', () => this._input());
       refs['area'].addEventListener('keydown', e => this._keydown(e));
-      refs['edit'].addEventListener('click', () => this.state = 'edit');
-      refs['geoIcon'].addEventListener('click', e => this._geoShow(e.currentTarget));
-      this.addEventListener('blur', () => this.close());
+      refs['edit'].addEventListener('action', e => { this.state = 'edit'; e.preventDefault(); });
+      refs['geoIcon'].addEventListener('action', e => this._geoShow(e.currentTarget));
+      this.addEventListener('focusout', e => {
+        if(!this.contains(e.relatedTarget))
+          this.close();
+      });
       if(this._record)
         this._bindData();
     } else if(level == construct.props) {
       this._id('props').appendChild(templateProps.content.cloneNode(true));
       this._refs.geoButton = this._id('geoButton');
-      this._refs['geoButton'].addEventListener('click', () => this._geoSet());
-      this._id('colorsel').addEventListener('color-click', e => this._colorsel(e.detail.color));
+      this._refs['geoButton'].addEventListener('action', () => this._geoSet());
+      this._id('colorsel').addEventListener('action', e => this._colorsel(e));
     }
     this._constructed = level;
   }
@@ -130,11 +133,6 @@ export class RecordElement extends HTMLElement {
   _stateChange(state = this.state) {
     if(state == 'empty' || state == 'edit' || state == 'firstEdit')
       this._construct(construct.props);
-    if(state != 'closed')
-      this.parentElement.querySelectorAll('log-record').forEach(elm => {
-        if(elm !== this)
-          elm.close();
-      });
     this.toggleAttribute('data-protected', state != 'closed');
     this._id('edit').style.visibility = state != 'closed' ? 'hidden' : 'visible';
     this._id('props').hidden = state == 'closed' || state == 'firstEdit';
@@ -163,10 +161,12 @@ export class RecordElement extends HTMLElement {
     this._refs['area'].hidden = true;
   }
 
-  _colorsel(tag) {
-    if(this.state == 'empty')
+  _colorsel(e) {
+    let tag = e.target.color;
+    if(this.state == 'empty') {
       this._materialize(tag);
-    else {
+      e.preventDefault();
+    } else {
       this._record.tag = tag;
       this.style.setProperty('--color', tag);
       this.close();
