@@ -3,13 +3,13 @@ import {Game} from '../log-game.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<spa-color-patch data-id="lg.color-patch" color="none" hidden></spa-color-patch>
-<spa-color-sel data-id="lg.color-sel" class="lg_stop" zero hidden></spa-color-sel>
-<span data-id="lg.name" hidden></span>
+<spa-color-patch data-id="lg.color-patch" color="none"></spa-color-patch>
+<spa-color-sel data-id="lg.color-sel" class="lg_stop" zero></spa-color-sel>
+<span data-id="lg.name"></span>
 <input type="text" data-id="lg.name-edit" class="lg_stop">
-<span data-id="lg.date" hidden></span>
-<div data-id="lg.confirm" tabindex="0" hidden>Klikněte znovu pro potvrzení.</div>
-<div data-id="lg.tools-container" hidden>
+<span data-id="lg.date"></span>
+<div data-id="lg.confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
+<div data-id="lg.tools-container">
   <div data-id="lg.tools" class="lg_stop" tabIndex="0">
     <img data-id="lg.delete" src="images/delete.svg" alt="delete" class="inline" tabindex="0"/>
     <spa-color-patch data-id="lg.color-edit" color="all" tabindex="0"></spa-color-patch>
@@ -79,8 +79,8 @@ export class GameRecordElement extends HTMLElement {
 
   _update() {
     this._id('color-patch').setAttribute('color', this._record.tag || 'none');
-    this._id('name').innerText = this._record.name;
-    this._id('date').innerText = '(' + dateFormat(this._record.date) + ')';
+    this._id('name').textContent = this._id('name-edit').value = this._record.name;
+    this._id('date').textContent = '(' + dateFormat(this._record.date) + ')';
   }
 
   attributeChangedCallback(name, oldValue, value) {
@@ -114,13 +114,6 @@ export class GameRecordElement extends HTMLElement {
       this._materialize();
     if(oldState == 'edit' || oldState == 'firstEdit')
       this._save();
-    this._id('color-sel').hidden = state != 'color';
-    this._id('color-patch').hidden = state != 'closed' && state != 'edit' && state != 'firstEdit';
-    this._id('name').hidden = state != 'closed';
-    this._id('date').hidden = state != 'closed';
-    this._id('name-edit').hidden = state != 'edit' && state != 'firstEdit';
-    this._id('confirm').hidden = state != 'delete';
-    this._id('tools-container').hidden = state == 'edit' || state == 'firstEdit';
     if(state == 'edit' || state == 'firstEdit')
       this._open();
     if(state == 'closed' && oldState == 'firstEdit')
@@ -132,15 +125,11 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _open() {
-    let ta = this._id('name-edit');
-    ta.value = this._record.name;
-    ta.hidden = false;
-    ta.focus();
+    this._id('name-edit').focus();
   }
 
   _save() {
-    let newName = this._id('name-edit').value;
-    this._record.name = newName;
+    this._record.name = this._id('name-edit').value;
     this._update();
   }
 

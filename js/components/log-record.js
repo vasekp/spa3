@@ -3,25 +3,25 @@ import {Record} from '../log-record.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
-<div data-id="lr.header" class="color-fainter" hidden>
+<div data-id="lr.header" class="color-fainter">
   <span>
     <span data-id="lr.timestamp"></span>
     <span data-id="lr.timediff"></span>
   </span>
   <span data-id="lr.fill"></span>
-  <span class="inline geo" data-id="lr.geo" tabindex="0" hidden></span>
+  <span class="inline" data-id="lr.geoIcon" tabindex="0"></span>
   <img class="inline" data-id="lr.edit" tabindex="0" src="images/edit.svg">
 </div>
-<div data-id="lr.textContainer" hidden>
+<div data-id="lr.textContainer">
   <span data-id="lr.text"></span>
-  <textarea data-id="lr.area" hidden></textarea>
+  <textarea data-id="lr.area"></textarea>
 </div>
 <div data-id="lr.props"></div>`;
 
 const templateProps = document.createElement('template');
 templateProps.innerHTML = `
 <spa-color-sel data-id="lr.colorsel"></spa-color-sel>
-<span class="inline geo" data-id="lr.geoButton" tabindex="0"/>`;
+<span class="inline" data-id="lr.geoButton" tabindex="0"/>`;
 
 let construct = Object.freeze({
   empty: 0,
@@ -47,19 +47,11 @@ export class RecordElement extends HTMLElement {
     if(level == construct.base) {
       this.setAttribute('data-colors', 'grey');
       this.appendChild(templateBase.content.cloneNode(true));
-      let id = id => this.querySelector(`[data-id="lr.${id}"]`);
-      let refs = {
-        text: id('text'),
-        area: id('area'),
-        edit: id('edit'),
-        geoIcon: id('geo')
-      };
-      this._id = id;
-      this._refs = refs;
-      refs['area'].addEventListener('input', () => this._input());
-      refs['area'].addEventListener('keydown', e => this._keydown(e));
-      refs['edit'].addEventListener('action', e => { this.state = 'edit'; e.preventDefault(); });
-      refs['geoIcon'].addEventListener('action', e => this._geoShow(e.currentTarget));
+      let id = this._id = id => this.querySelector(`[data-id="lr.${id}"]`);
+      id('area').addEventListener('input', () => this._input());
+      id('area').addEventListener('keydown', e => this._keydown(e));
+      id('edit').addEventListener('action', e => { this.state = 'edit'; e.preventDefault(); });
+      id('geoIcon').addEventListener('action', () => this._geoShow());
       this.addEventListener('focusout', e => {
         if(!this.contains(e.relatedTarget))
           this.close();
@@ -68,8 +60,7 @@ export class RecordElement extends HTMLElement {
         this._bindData();
     } else if(level == construct.props) {
       this._id('props').appendChild(templateProps.content.cloneNode(true));
-      this._refs.geoButton = this._id('geoButton');
-      this._refs['geoButton'].addEventListener('action', () => this._geoSet());
+      this._id('geoButton').addEventListener('action', () => this._geoSet());
       this._id('colorsel').addEventListener('action', e => this._colorsel(e));
     }
     this._constructed = level;
@@ -78,14 +69,9 @@ export class RecordElement extends HTMLElement {
   _bindData(record = this._record) {
     this.setAttribute('data-colors', 'param');
     this.style.setProperty('--color', record.tag);
-    this._id('timestamp').innerText = timeFormat(record.date);
-    this._id('header').hidden = false;
-    this._id('textContainer').hidden = false;
-    if(record.geo) {
-      this._refs['geoIcon'].setAttribute('data-geo-state', 'ok');
-      this._refs['geoIcon'].hidden = false;
-    }
-    this._refs['text'].innerText = record.text;
+    this._id('timestamp').textContent = timeFormat(record.date);
+    this.setAttribute('data-geo-state', record.geo ? 'ok' : 'none');
+    this._id('area').value = this._id('text').textContent = record.text;
   }
 
   static get observedAttributes() {
@@ -109,7 +95,7 @@ export class RecordElement extends HTMLElement {
     if(value === oldValue)
       return;
     if(name === 'timediff')
-      this._id('timediff').innerText = value ? '(' + value + ')' : '';
+      this._id('timediff').textContent = value ? '(' + value + ')' : '';
     else if(name === 'state')
       this._stateChange(value);
   }
@@ -134,8 +120,6 @@ export class RecordElement extends HTMLElement {
     if(state == 'empty' || state == 'edit' || state == 'firstEdit')
       this._construct(construct.props);
     this.toggleAttribute('data-protected', state != 'closed');
-    this._id('edit').style.visibility = state != 'closed' ? 'hidden' : 'visible';
-    this._id('props').hidden = state == 'closed' || state == 'firstEdit';
     if(state == 'closed')
       this._close();
     if(state == 'edit' || state == 'firstEdit')
@@ -143,22 +127,12 @@ export class RecordElement extends HTMLElement {
   }
 
   _open() {
-    if(navigator.geolocation) {
-      let hasGeo = !!this._record.geo;
-      this._refs['geoButton'].setAttribute('data-geo-state', hasGeo ? 'remove' : 'add');
-    } else
-      this._refs['geoButton'].hidden = true;
-    this._refs['area'].value = this._refs['text'].innerText;
-    this._refs['text'].style.visibility = 'hidden';
-    this._refs['area'].hidden = false;
-    this._refs['area'].focus();
+    this._id('area').focus();
   }
 
   _close() {
     if(!this._record)
       this.remove();
-    this._refs['text'].style.visibility = 'visible';
-    this._refs['area'].hidden = true;
   }
 
   _colorsel(e) {
@@ -184,7 +158,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _input() {
-    this._record.text = this._refs['text'].innerText = this._refs['area'].value;
+    this._record.text = this._id('text').textContent = this._id('area').value;
   }
 
   _keydown(e) {
@@ -194,27 +168,22 @@ export class RecordElement extends HTMLElement {
     }
   }
 
-  _geoShow(elm) {
-    if(elm.getAttribute('data-geo-state') == 'waiting')
+  _geoShow() {
+    if(this.getAttribute('data-geo-state') == 'waiting')
       return;
-    else if(elm.getAttribute('data-geo-state') == 'error') {
-      alert('Error: ' + elm.getAttribute('data-geo-error'));
-      elm.hidden = true;
+    else if(this.getAttribute('data-geo-state') == 'error') {
+      alert('Error: ' + this.getAttribute('data-geo-error'));
     } else
       window.open(`https://www.openstreetmap.org/?mlat=${this._record.geo.lat}&mlon=${this._record.geo.lon}&zoom=18`);
   }
 
   _geoSet() {
-    let geoIcon = this._refs['geoIcon'];
-    let geoButton = this._refs['geoButton'];
     if(this._record && this._record.geo) {
       // delete
       this._record.geo = undefined;
-      geoIcon.hidden = true;
+      this.setAttribute('data-geo-state', 'none');
     } else {
-      geoIcon.setAttribute('data-geo-state', 'waiting');
-      geoButton.setAttribute('data-geo-state', 'waiting');
-      geoIcon.hidden = false;
+      this.setAttribute('data-geo-state', 'waiting');
       navigator.geolocation.getCurrentPosition(
         position => this._geoCallback(position),
         error => this._geoError(error),
@@ -225,10 +194,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _geoCallback(position) {
-    let geoIcon = this._refs['geoIcon'];
-    let geoButton = this._refs['geoButton'];
-    geoIcon.setAttribute('data-geo-state', '');
-    geoButton.setAttribute('data-geo-state', 'success');
+    this.setAttribute('data-geo-state', 'success');
     if(this._record)
       this._record.geo = { lat: position.coords.latitude, lon: position.coords.longitude };
     else
@@ -236,11 +202,8 @@ export class RecordElement extends HTMLElement {
   }
 
   _geoError(error) {
-    let geoIcon = this._refs['geoIcon'];
-    let geoButton = this._refs['geoButton'];
-    geoIcon.setAttribute('data-geo-state', 'error');
-    geoButton.setAttribute('data-geo-state', 'error');
-    geoIcon.setAttribute('data-geo-error',
+    this.setAttribute('data-geo-state', 'error');
+    this.setAttribute('data-geo-error',
       error.code == error.PERMISSION_DENIED ? 'Permission denied'
       : error.code == error.POSITION_UNAVAILABLE ? 'Location unavailable'
       : 'Unknown error');

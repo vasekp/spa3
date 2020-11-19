@@ -4,6 +4,21 @@ log-record {
   border-radius: .5rem;
 }
 
+log-record[state="firstEdit"] [data-id="lr.header"],
+log-record[state="firstEdit"] [data-id="lr.textContainer"] {
+  display: none;
+}
+
+log-record:not([state="edit"]):not([state="firstEdit"]) [data-id="lr.area"],
+log-record:not([state="edit"]):not([state="firstEdit"]) [data-id="lr.props"] {
+  display: none;
+}
+
+log-record[state="edit"] [data-id="lr.text"],
+log-record[state="firstEdit"] [data-id="lr.text"] {
+  visibility: hidden;
+}
+
 [data-id="lr.header"] {
   display: flex;
   border-bottom: var(--border);
@@ -67,22 +82,36 @@ log-record {
   100% { opacity: 1; }
 }
 
-.geo {
+[data-id="lr.geoButton"] {
+  margin-left: auto;
+}
+
+[data-id="lr.geoIcon"], [data-id="lr.geoButton"] {
   content: url("../../images/geo.svg");
 }
 
-[data-geo-state="waiting"] {
-  animation: 1s geo-waiting infinite running;
+log-record[data-geo-state="none"] [data-id="lr.geoIcon"] {
+  display: none;
 }
 
-[data-geo-state="success"] {
-  content: url("../../images/geo-succ.svg");
+log-record[data-geo-state="n/a"] [data-id="lr.geoButton"] {
+  display: none;
 }
 
-[data-geo-state="error"], [data-geo-state="remove"] {
+log-record[data-geo-state="ok"] [data-id="lr.geoButton"] {
   content: url("../../images/geo-fail.svg");
 }
 
-[data-id="lr.geoButton"] {
-  margin-left: auto;
+log-record[data-geo-state="success"] [data-id="lr.geoButton"] {
+  content: url("../../images/geo-succ.svg");
+}
+
+log-record[data-geo-state="waiting"] [data-id="lr.geoIcon"],
+log-record[data-geo-state="waiting"] [data-id="lr.geoButton"] {
+  animation: 1s geo-waiting infinite running;
+}
+
+log-record[data-geo-state="error"] [data-id="lr.geoIcon"],
+log-record[data-geo-state="error"] [data-id="lr.geoButton"] {
+  content: url("../../images/geo-fail.svg");
 }

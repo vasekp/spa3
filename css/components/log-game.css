@@ -8,6 +8,32 @@ log-game {
   background: inherit;
 }
 
+log-game:not([state="delete"]) [data-id="lg.confirm"] {
+  display: none;
+}
+
+log-game:not([state="edit"]):not([state="firstEdit"]) [data-id="lg.name-edit"] {
+  display: none;
+}
+
+log-game:not([state="edit"]):not([state="firstEdit"]):not([state="closed"]) [data-id="lg.color-patch"] {
+  display: none;
+}
+
+log-game:not([state="color"]) [data-id="lg.color-sel"] {
+  display: none;
+}
+
+log-game:not([state="closed"]) [data-id="lg.date"],
+log-game:not([state="closed"]) [data-id="lg.name"] {
+  display: none;
+}
+
+log-game[state="edit"] [data-id="lg.tools-container"],
+log-game[state="firstEdit"] [data-id="lg.tools-container"] {
+  display: none;
+}
+
 [data-id="lg.content"] > * {
   flex: none;
 }
