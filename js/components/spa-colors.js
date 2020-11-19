@@ -48,12 +48,7 @@ export class ColorSelElement extends HTMLElement {
     this.style.setProperty('--count', this.children.length);
   }
 
-  _action(e) {
-    this.dispatchEvent(new CustomEvent('color-action', {
-      detail: { color: e.currentTarget.color },
-      bubbles: true
-    }));
-  }
+  _action(e) { }
 }
 
 export class ColorFilterElement extends ColorSelElement {

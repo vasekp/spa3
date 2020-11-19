@@ -86,6 +86,7 @@ function plus(e) {
     elm.scrollIntoView();
     elm.state = 'edit';
   }
+  e.preventDefault();
 }
 
 function filter(e) {

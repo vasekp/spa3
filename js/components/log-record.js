@@ -70,7 +70,7 @@ export class RecordElement extends HTMLElement {
       this._id('props').appendChild(templateProps.content.cloneNode(true));
       this._refs.geoButton = this._id('geoButton');
       this._refs['geoButton'].addEventListener('action', () => this._geoSet());
-      this._id('colorsel').addEventListener('color-action', e => this._colorsel(e.detail.color));
+      this._id('colorsel').addEventListener('action', e => this._colorsel(e));
     }
     this._constructed = level;
   }
@@ -161,10 +161,12 @@ export class RecordElement extends HTMLElement {
     this._refs['area'].hidden = true;
   }
 
-  _colorsel(tag) {
-    if(this.state == 'empty')
+  _colorsel(e) {
+    let tag = e.target.color;
+    if(this.state == 'empty') {
       this._materialize(tag);
-    else {
+      e.preventDefault();
+    } else {
       this._record.tag = tag;
       this.style.setProperty('--color', tag);
       this.close();

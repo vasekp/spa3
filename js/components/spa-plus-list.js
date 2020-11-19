@@ -1,7 +1,10 @@
 export class PlusListElement extends HTMLElement {
   connectedCallback() {
     if(!this._constructed) {
-      const plusAction = () => this.dispatchEvent(new CustomEvent('plus-action'), { bubbles: true });
+      const plusAction = e => {
+        this.dispatchEvent(new CustomEvent('plus-action'), { bubbles: true });
+        e.preventDefault();
+      };
       for(name of ['spa-plus-button', 'spa-plus-item']) {
         const d = document.createElement('div');
         d.classList.add(name);

@@ -43,7 +43,7 @@ export class GameRecordElement extends HTMLElement {
     id('delete').addEventListener('blur', () => this.close());
     id('name-edit').addEventListener('blur', () => this.close());
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
-    id('color-sel').addEventListener('color-action', e => this._colorClicked(e.detail.color));
+    id('color-sel').addEventListener('action', e => this._colorClicked(e.target.color));
     this.addEventListener('action', e => this._action(e));
     this.querySelectorAll('.lg_stop').forEach(
       elm => elm.addEventListener('action', e => e.preventDefault()));
