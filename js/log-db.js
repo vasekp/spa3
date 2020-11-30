@@ -13,9 +13,10 @@ export function prepareDatabase(callback) {
       newDB = true;
     }
   };
-  rq.onerror = console.log;
+  rq.onerror = e => window.alert(e.target.error);
   rq.onsuccess = e => {
     db = e.target.result;
+    db.onerror = e => window.alert(e.target.error);
     if(newDB)
       addTestData(callback);
     else
@@ -32,7 +33,6 @@ function addTestData(callback) {
   };
 
   let rq = os.add(rec);
-  rq.onerror = console.log;
   rq.onsuccess = e => {
     let gid = e.target.result;
     rec.id = gid;
@@ -48,7 +48,6 @@ function addTestData(callback) {
     ];
     records.forEach(i => os.add(i));
     tx.oncomplete = callback;
-    tx.onerror = console.log;
   }
 }
 
@@ -57,17 +56,14 @@ export function dbRequest(r, callback) {
   let os = tx.objectStore(r.store);
   if(r.query === 'update') {
     let rq = os.put(r.record);
-    rq.onerror = console.log;
     if(callback)
       rq.onsuccess = () => callback();
   } else if(r.query === 'delete') {
     let rq = os.delete(r.record.id);
-    rq.onerror = console.log;
     if(callback)
       rq.onsuccess = () => callback();
   } else if(r.query === 'add') {
     let rq = os.add(r.record);
-    rq.onerror = console.log;
     if(callback)
       rq.onsuccess = e => callback(e.target.result);
   }
@@ -78,7 +74,6 @@ export function deleteGame(_gid) {
   let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
   let os = tx.objectStore('log-gid');
   let rq = os.delete(gid);
-  rq.onerror = console.log;
   os = tx.objectStore('log-rec');
   let ix = os.index('gid');
   rq = ix.openKeyCursor(IDBKeyRange.only(gid));
@@ -95,7 +90,6 @@ export function getAllGames(callback) {
   let tx = db.transaction('log-gid', 'readonly');
   let os = tx.objectStore('log-gid');
   let rq = os.getAll();
-  rq.onerror = console.log;
   rq.onsuccess = e => callback(e.target.result);
 }
 
@@ -104,6 +98,5 @@ export function getAllRecords(gid, callback) {
   let os = tx.objectStore('log-rec');
   let ix = os.index('gid');
   let rq = ix.getAll(+gid);
-  rq.onerror = console.log;
   rq.onsuccess = e => callback(e.target.result);
 }
