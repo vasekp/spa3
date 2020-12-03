@@ -20,6 +20,8 @@ export class Record {
   get geo() { return this._static.geo; }
 
   set text(text) {
+    if(this.view)
+      this.view.text = text;
     this._static.text = text;
     this._rev++;
     if(!this._timer)
@@ -27,13 +29,35 @@ export class Record {
   }
 
   set tag(tag) {
+    if(this.view)
+      this.view.tag = tag;
     this._static.tag = tag;
     dbRequest({query: 'update', store: 'log-rec', record: this._static});
   }
 
   set geo(geo) {
+    if(this.view)
+      this.view.geo = geo;
     this._static.geo = geo;
     dbRequest({query: 'update', store: 'log-rec', record: this._static});
+  }
+
+  set view(elm) {
+    this._view = elm;
+    elm.date = this.date;
+    elm.text = this.text;
+    elm.tag = this.tag;
+    elm.geo = this.geo;
+  }
+
+  get view() {
+    if(this._view) {
+      if(this._view.isConnected)
+        return this._view;
+      else
+        return this._view = null;
+    } else
+      return null;
   }
 
   _autosave() {
