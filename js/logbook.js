@@ -76,7 +76,7 @@ function plus(e) {
   if(curView == views.records) {
     let elm = document.createElement('log-record');
     document.getElementById('log-list').appendChild(elm);
-    elm.state = 'firstEdit';
+    elm.state = 'empty';
     elm.setAttribute('data-protected', '');
     elm.scrollIntoView();
   } else {
