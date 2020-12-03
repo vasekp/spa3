@@ -48,4 +48,9 @@ export class Game {
     } else
       return null;
   }
+
+  notifyRemoved() {
+    if(this.view)
+      this.view.remove();
+  }
 };

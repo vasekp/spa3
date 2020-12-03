@@ -73,4 +73,9 @@ export class Record {
     }
     dbRequest({query: 'update', store: 'log-rec', record: this._static}, callback);
   }
+
+  notifyRemoved() {
+    if(this.view)
+      this.view.remove();
+  }
 };

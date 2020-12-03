@@ -83,6 +83,7 @@ export function deleteGame(game) {
   let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
   let os = tx.objectStore('log-gid');
   let rq = os.delete(gid);
+  rq.onsuccess = () => game.notifyRemoved();
   os = tx.objectStore('log-rec');
   let ix = os.index('gid');
   rq = ix.openKeyCursor(IDBKeyRange.only(gid));
@@ -102,7 +103,7 @@ export function newRecord(gid, tag, geo) {
 }
 
 export function deleteRecord(record) {
-  dbRequest({query: 'delete', store: 'log-rec', record});
+  dbRequest({query: 'delete', store: 'log-rec', record}, () => record.notifyRemoved());
 }
 
 export function getAllGames(callback) {

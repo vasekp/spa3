@@ -108,7 +108,6 @@ export class LiveListElement extends HTMLElement {
     let cb = () => {
       elm.style.transition = '';
       elm.dispatchEvent(new CustomEvent('move-away', { bubbles: true }));
-      elm.remove();
     };
     elm.addEventListener('transitionend', cb, { once: true });
   }
