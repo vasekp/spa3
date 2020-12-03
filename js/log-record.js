@@ -1,22 +1,19 @@
 import {dbRequest} from './log-db.js';
 
 export class Record {
-  constructor(gid, tag, date, text, geo, id) {
-    this._static = { gid: +gid, tag, date, text, geo };
+  constructor(record) {
+    this._static = record;
     this._rev = 0;
     this._lastSave = 0;
     this._timer = null;
     this._autosaveRef = () => this._autosave();
-    if(id)
-      this._static.id = id;
-    else
-      dbRequest({query: 'add', store: 'log-rec', record: this._static}, id => this._static.id = id);
   }
 
   static from(record) {
-    return new Record(record.gid, record.tag, record.date, record.text, record.geo, record.id);
+    return new Record(record);
   }
 
+  get id() { return this._static.id; }
   get text() { return this._static.text; }
   get date() { return this._static.date; }
   get tag() { return this._static.tag; }
@@ -51,9 +48,5 @@ export class Record {
       }
     }
     dbRequest({query: 'update', store: 'log-rec', record: this._static}, callback);
-  }
-
-  delete() {
-    dbRequest({query: 'delete', store: 'log-rec', record: this._static});
   }
 };

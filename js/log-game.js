@@ -1,16 +1,12 @@
-import {dbRequest, deleteGame} from './log-db.js';
+import {dbRequest} from './log-db.js';
 
 export class Game {
-  constructor(name, date = Date.now(), tag, id) {
-    this._static = { name, date, tag };
-    if(id)
-      this._static.id = id;
-    else
-      dbRequest({query: 'add', store: 'log-gid', record: this._static}, id => this._static.id = id);
+  constructor(record) {
+    this._static = record;
   }
 
   static from(record) {
-    return new Game(record.name, record.date, record.tag, record.id);
+    return new Game(record);
   }
 
   get name() { return this._static.name; }
@@ -26,9 +22,5 @@ export class Game {
   set tag(tag) {
     this._static.tag = tag != 'none' ? tag : '';
     dbRequest({query: 'update', store: 'log-gid', record: this._static});
-  }
-
-  delete() {
-    deleteGame(this._static.id);
   }
 };

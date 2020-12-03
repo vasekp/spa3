@@ -1,3 +1,6 @@
+import {Game} from './log-game.js';
+import {Record} from './log-record.js';
+
 let db;
 
 export function prepareDatabase(callback) {
@@ -69,8 +72,14 @@ export function dbRequest(r, callback) {
   }
 }
 
-export function deleteGame(_gid) {
-  let gid = +_gid;
+export function newGame(name) {
+  let record = { name, date: Date.now() };
+  dbRequest({ query: 'add', store: 'log-gid', record }, id => record.id = id);
+  return Game.from(record);
+}
+
+export function deleteGame(game) {
+  let gid = game.id;
   let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
   let os = tx.objectStore('log-gid');
   let rq = os.delete(gid);
@@ -84,6 +93,16 @@ export function deleteGame(_gid) {
       cursor.continue();
     }
   }
+}
+
+export function newRecord(gid, tag, geo) {
+  let record = { gid: +gid, tag, date: Date.now(), text: '', geo };
+  dbRequest({query: 'add', store: 'log-rec', record }, id => record.id = id);
+  return Record.from(record);
+}
+
+export function deleteRecord(record) {
+  dbRequest({query: 'delete', store: 'log-rec', record});
 }
 
 export function getAllGames(callback) {

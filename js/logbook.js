@@ -9,8 +9,6 @@ import {prepareDatabase, getAllGames, getAllRecords} from './log-db.js';
 import {Record} from './log-record.js';
 import {Game} from './log-game.js';
 
-var db;
-
 let views = {
   records: 0,
   games: 1

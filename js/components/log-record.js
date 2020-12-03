@@ -1,5 +1,6 @@
 import {timeFormat} from '../datetime.js';
 import {Record} from '../log-record.js';
+import {newRecord} from '../log-db.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -149,7 +150,7 @@ export class RecordElement extends HTMLElement {
 
   _materialize(tag) {
     let gid = this.closest('log-list').getAttribute('data-gid');
-    this.record = new Record(gid, tag, Date.now(), '', this._preGeo);
+    this.record = newRecord(gid, tag, this._preGeo);
     this.state = 'firstEdit';
   }
 
