@@ -1,6 +1,5 @@
 import {dateFormat} from '../datetime.js';
-import {Game} from '../log-game.js';
-import {newGame, deleteGame} from '../log-db.js';
+import {Game, gameStore} from '../log-game.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -131,12 +130,12 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _materialize() {
-    this.record = newGame(this._id('name-edit').value);
+    this.record = gameStore.create(this._id('name-edit').value);
   }
 
   _delete() {
     if(this.state == 'delete') {
-      deleteGame(this.record);
+      gameStore.delete(this.record);
     } else
       this.state = 'delete';
   }

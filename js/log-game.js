@@ -1,4 +1,25 @@
-import {dbRequest} from './log-db.js';
+import {db, ObjectStore} from './log-db.js';
+import {recordStore} from './log-record.js';
+
+export const gameStore = new ObjectStore('log-gid');
+
+gameStore.create = function(name) {
+  let record = { name, date: Date.now() };
+  gameStore.add(record);
+  return new Game(record);
+}
+
+gameStore.delete = function(game) {
+  let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
+  ObjectStore.prototype.delete.call(this, game, null, tx);
+  recordStore.deleteWhere('gid', +game.id, null, tx);
+  tx.oncomplete = () => game.notifyRemoved();
+  tx.onerror = window.alert;
+}
+
+gameStore.getAll = function(callback) {
+  ObjectStore.prototype.getAll.call(this, results => callback(results.map(g => new Game(g))));
+}
 
 export class Game {
   constructor(record) {
@@ -18,7 +39,7 @@ export class Game {
     if(this.view)
       this.view.name = name;
     this._static.name = name;
-    dbRequest({query: 'update', store: 'log-gid', record: this._static});
+    gameStore.update(this._static);
   }
 
   set date(date) {
@@ -30,7 +51,7 @@ export class Game {
     if(this.view)
       this.view.tag = tag;
     this._static.tag = tag != 'none' ? tag : '';
-    dbRequest({query: 'update', store: 'log-gid', record: this._static});
+    gameStore.update(this._static);
   }
 
   set view(elm) {

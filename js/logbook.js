@@ -5,9 +5,9 @@ import './components/log-list.js';
 import './components/log-game.js';
 import './components/spa-scroll.js';
 import {dateFormat} from './datetime.js';
-import {prepareDatabase, getAllGames, getAllRecords} from './log-db.js';
-import {Record} from './log-record.js';
-import {Game} from './log-game.js';
+import {prepareDatabase} from './log-db.js';
+import {gameStore} from './log-game.js';
+import {recordStore} from './log-record.js';
 
 let views = {
   records: 0,
@@ -21,11 +21,11 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('log-sel').addEventListener('action', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
   document.getElementById('game-list').addEventListener('game-chosen', e => gameClicked(e.detail.game));
-  document.getElementById('game-list').addEventListener('delete-game', e => deleteGame(e.detail.gid));
+  document.getElementById('game-list').addEventListener('delete-game', e => gameStore.delete(e.detail.gid));
 });
 
 function dbReady() {
-  getAllGames(games => {
+  gameStore.getAll(games => {
     populateGList(games);
     if(games.length > 0)
       loadRecords(games[0]);
@@ -38,7 +38,7 @@ function populateGList(games) {
   let glist = document.getElementById('game-list');
   games.forEach(game => {
     let elm = document.createElement('log-game');
-    elm.record = Game.from(game);
+    elm.record = game;
     glist.appendChild(elm);
   });
 }
@@ -50,7 +50,7 @@ function loadRecords(game) {
   document.getElementById('load').hidden = false;
   document.getElementById('gname').innerText = game.name;
   document.getElementById('gdate').innerText = '(' + dateFormat(game.date) + ')';
-  getAllRecords(game.id, addRecords);
+  recordStore.getAll(game.id, addRecords);
   list.setAttribute('data-gid', game.id);
 }
 
@@ -61,7 +61,7 @@ function addRecords(records) {
   records.forEach(record => {
     for(let i = 0; i < 1; i++) {
       let elm = document.createElement('log-record');
-      elm.record = Record.from(record);
+      elm.record = record;
       frag.appendChild(elm);
     }
   });

@@ -1,4 +1,17 @@
-import {dbRequest} from './log-db.js';
+import {ObjectStore} from './log-db.js';
+
+export const recordStore = new ObjectStore('log-rec');
+
+recordStore.create = function(gid, tag, geo) {
+  let record = { gid: +gid, tag, date: Date.now(), text: '', geo };
+  recordStore.add(record);
+  return new Record(record);
+}
+
+recordStore.getAll = function(gid, callback) {
+  ObjectStore.prototype.getAllWhere.call(this, 'gid', +gid,
+    results => callback(results.map(r => new Record(r))));
+}
 
 export class Record {
   constructor(record) {
@@ -32,14 +45,14 @@ export class Record {
     if(this.view)
       this.view.tag = tag;
     this._static.tag = tag;
-    dbRequest({query: 'update', store: 'log-rec', record: this._static});
+    recordStore.update(this._static);
   }
 
   set geo(geo) {
     if(this.view)
       this.view.geo = geo;
     this._static.geo = geo;
-    dbRequest({query: 'update', store: 'log-rec', record: this._static});
+    recordStore.update(this._static);
   }
 
   set view(elm) {
@@ -71,7 +84,7 @@ export class Record {
         this._timer = null;
       }
     }
-    dbRequest({query: 'update', store: 'log-rec', record: this._static}, callback);
+    recordStore.update(this._static, callback);
   }
 
   notifyRemoved() {

@@ -1,7 +1,4 @@
-import {Game} from './log-game.js';
-import {Record} from './log-record.js';
-
-let db;
+export let db;
 
 export function prepareDatabase(callback) {
   //indexedDB.deleteDatabase('spa');
@@ -54,69 +51,66 @@ function addTestData(callback) {
   }
 }
 
-export function dbRequest(r, callback) {
-  let tx = db.transaction(r.store, 'readwrite');
-  let os = tx.objectStore(r.store);
-  if(r.query === 'update') {
-    let rq = os.put(r.record);
-    if(callback)
-      rq.onsuccess = () => callback();
-  } else if(r.query === 'delete') {
-    let rq = os.delete(r.record.id);
-    if(callback)
-      rq.onsuccess = () => callback();
-  } else if(r.query === 'add') {
-    let rq = os.add(r.record);
-    if(callback)
-      rq.onsuccess = e => callback(e.target.result);
+export class ObjectStore {
+  constructor(name) {
+    this.name = name;
   }
-}
 
-export function newGame(name) {
-  let record = { name, date: Date.now() };
-  dbRequest({ query: 'add', store: 'log-gid', record }, id => record.id = id);
-  return Game.from(record);
-}
-
-export function deleteGame(game) {
-  let gid = game.id;
-  let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
-  let os = tx.objectStore('log-gid');
-  let rq = os.delete(gid);
-  rq.onsuccess = () => game.notifyRemoved();
-  os = tx.objectStore('log-rec');
-  let ix = os.index('gid');
-  rq = ix.openKeyCursor(IDBKeyRange.only(gid));
-  rq.onsuccess = () => {
-    let cursor = rq.result;
-    if(cursor) {
-      os.delete(cursor.primaryKey);
-      cursor.continue();
+  _request(type, record, callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readwrite');
+    let os = tx.objectStore(this.name);
+    let rq = os[type](record);
+    rq.onsuccess = (e) => {
+      if(type === 'add')
+        record.id = e.target.result;
+      if(callback)
+        callback(e.target.result);
     }
   }
-}
 
-export function newRecord(gid, tag, geo) {
-  let record = { gid: +gid, tag, date: Date.now(), text: '', geo };
-  dbRequest({query: 'add', store: 'log-rec', record }, id => record.id = id);
-  return Record.from(record);
-}
+  add(record, callback, tx) {
+    this._request('add', record, callback, tx);
+  }
 
-export function deleteRecord(record) {
-  dbRequest({query: 'delete', store: 'log-rec', record}, () => record.notifyRemoved());
-}
+  update(record, callback, tx) {
+    this._request('put', record, callback, tx);
+  }
 
-export function getAllGames(callback) {
-  let tx = db.transaction('log-gid', 'readonly');
-  let os = tx.objectStore('log-gid');
-  let rq = os.getAll();
-  rq.onsuccess = e => callback(e.target.result);
-}
+  delete(record, callback, tx) {
+    this._request('delete', record.id, callback, tx);
+  }
 
-export function getAllRecords(gid, callback) {
-  let tx = db.transaction('log-rec', 'readonly');
-  let os = tx.objectStore('log-rec');
-  let ix = os.index('gid');
-  let rq = ix.getAll(+gid);
-  rq.onsuccess = e => callback(e.target.result);
+  deleteWhere(index, value, callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readwrite');
+    let os = tx.objectStore(this.name);
+    let ix = os.index(index);
+    let rq = ix.openKeyCursor(IDBKeyRange.only(value));
+    rq.onsuccess = () => {
+      let cursor = rq.result;
+      if(cursor) {
+        os.delete(cursor.primaryKey);
+        cursor.continue();
+      } else if(callback)
+        callback();
+    }
+  }
+
+  getAll(callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readonly');
+    let os = tx.objectStore(this.name);
+    let rq = os.getAll();
+    rq.onsuccess = e => callback(e.target.result);
+  }
+
+  getAllWhere(index, value, callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readonly');
+    let os = tx.objectStore(this.name);
+    let ix = os.index(index);
+    let rq = ix.getAll(value);
+    rq.onsuccess = e => callback(e.target.result);
+  }
 }
