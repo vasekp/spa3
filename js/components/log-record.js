@@ -1,5 +1,5 @@
 import {timeFormat} from '../datetime.js';
-import {Record, recordStore} from '../log-record.js';
+import {recordStore} from '../log-record-store.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `

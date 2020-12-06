@@ -1,5 +1,5 @@
 import {dateFormat} from '../datetime.js';
-import {Game, gameStore} from '../log-game.js';
+import {gameStore} from '../log-game-store.js';
 
 const template = document.createElement('template');
 template.innerHTML = `

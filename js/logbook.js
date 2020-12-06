@@ -6,8 +6,8 @@ import './components/log-game.js';
 import './components/spa-scroll.js';
 import {dateFormat} from './datetime.js';
 import {prepareDatabase} from './log-db.js';
-import {gameStore} from './log-game.js';
-import {recordStore} from './log-record.js';
+import {gameStore} from './log-game-store.js';
+import {recordStore} from './log-record-store.js';
 
 let views = {
   records: 0,

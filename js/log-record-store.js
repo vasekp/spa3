@@ -13,7 +13,7 @@ recordStore.getAll = function(gid, callback) {
     results => callback(results.map(r => new Record(r))));
 }
 
-export class Record {
+class Record {
   constructor(record) {
     this._static = record;
     this._rev = 0;

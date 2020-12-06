@@ -1,5 +1,5 @@
 import {db, ObjectStore} from './log-db.js';
-import {recordStore} from './log-record.js';
+import {recordStore} from './log-record-store.js';
 
 export const gameStore = new ObjectStore('log-gid');
 
@@ -21,7 +21,7 @@ gameStore.getAll = function(callback) {
   ObjectStore.prototype.getAll.call(this, results => callback(results.map(g => new Game(g))));
 }
 
-export class Game {
+class Game {
   constructor(record) {
     this._static = record;
   }
