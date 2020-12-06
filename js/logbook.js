@@ -5,7 +5,7 @@ import './components/log-list.js';
 import './components/log-game.js';
 import './components/spa-scroll.js';
 import {dateFormat} from './datetime.js';
-import {prepareDatabase} from './log-db.js';
+import {db} from './log-db.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 
@@ -16,12 +16,12 @@ let views = {
 let curView = views.records;
 
 window.addEventListener('DOMContentLoaded', () => {
-  prepareDatabase(dbReady);
   document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
   document.getElementById('log-sel').addEventListener('action', gameMenu);
   document.getElementById('tag-filter').addEventListener('change', filter);
   document.getElementById('game-list').addEventListener('game-chosen', e => gameClicked(e.detail.game));
   document.getElementById('game-list').addEventListener('delete-game', e => gameStore.delete(e.detail.gid));
+  db.then(dbReady);
 });
 
 function dbReady() {
