@@ -7,9 +7,9 @@ export function prepareDatabase(callback) {
   rq.onupgradeneeded = e => {
     db = e.target.result;
     if(e.oldVersion === 0) {
-      let sGames = db.createObjectStore('log-gid', { keyPath: 'id', autoIncrement: true });
-      let sNotes = db.createObjectStore('log-rec', { keyPath: 'id', autoIncrement: true });
-      sNotes.createIndex('gid', 'gid', { unique: false });
+      db.createObjectStore('log-gid', { keyPath: 'id', autoIncrement: true });
+      db.createObjectStore('log-rec', { keyPath: 'id', autoIncrement: true })
+        .createIndex('gid', 'gid', { unique: false });
       newDB = true;
     }
   };
