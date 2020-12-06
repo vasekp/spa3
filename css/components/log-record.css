@@ -4,13 +4,16 @@ log-record {
   border-radius: .5rem;
 }
 
-log-record[state="firstEdit"] .log-record-header,
-log-record[state="firstEdit"] .log-record-text-container {
+log-record[state="empty"] .log-record-header,
+log-record[state="empty"] .log-record-text-container {
   display: none;
 }
 
-log-record:not([state="edit"]):not([state="firstEdit"]) .log-record-area,
-log-record:not([state="edit"]):not([state="firstEdit"]) .log-record-props {
+log-record:not([state="edit"]):not([state="firstEdit"]) .log-record-area {
+  display: none;
+}
+
+log-record[state="closed"] .log-record-props {
   display: none;
 }
 

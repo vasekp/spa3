@@ -1,4 +1,4 @@
-let db;
+export let db;
 
 export function prepareDatabase(callback) {
   //indexedDB.deleteDatabase('spa');
@@ -7,15 +7,16 @@ export function prepareDatabase(callback) {
   rq.onupgradeneeded = e => {
     db = e.target.result;
     if(e.oldVersion === 0) {
-      let sGames = db.createObjectStore('log-gid', { keyPath: 'id', autoIncrement: true });
-      let sNotes = db.createObjectStore('log-rec', { keyPath: 'id', autoIncrement: true });
-      sNotes.createIndex('gid', 'gid', { unique: false });
+      db.createObjectStore('log-gid', { keyPath: 'id', autoIncrement: true });
+      db.createObjectStore('log-rec', { keyPath: 'id', autoIncrement: true })
+        .createIndex('gid', 'gid', { unique: false });
       newDB = true;
     }
   };
-  rq.onerror = console.log;
+  rq.onerror = e => window.alert(e.target.error);
   rq.onsuccess = e => {
     db = e.target.result;
+    db.onerror = e => window.alert(e.target.error);
     if(newDB)
       addTestData(callback);
     else
@@ -32,7 +33,6 @@ function addTestData(callback) {
   };
 
   let rq = os.add(rec);
-  rq.onerror = console.log;
   rq.onsuccess = e => {
     let gid = e.target.result;
     rec.id = gid;
@@ -48,62 +48,69 @@ function addTestData(callback) {
     ];
     records.forEach(i => os.add(i));
     tx.oncomplete = callback;
-    tx.onerror = console.log;
   }
 }
 
-export function dbRequest(r, callback) {
-  let tx = db.transaction(r.store, 'readwrite');
-  let os = tx.objectStore(r.store);
-  if(r.query === 'update') {
-    let rq = os.put(r.record);
-    rq.onerror = console.log;
-    if(callback)
-      rq.onsuccess = () => callback();
-  } else if(r.query === 'delete') {
-    let rq = os.delete(r.record.id);
-    rq.onerror = console.log;
-    if(callback)
-      rq.onsuccess = () => callback();
-  } else if(r.query === 'add') {
-    let rq = os.add(r.record);
-    rq.onerror = console.log;
-    if(callback)
-      rq.onsuccess = e => callback(e.target.result);
+export class ObjectStore {
+  constructor(name) {
+    this.name = name;
   }
-}
 
-export function deleteGame(_gid) {
-  let gid = +_gid;
-  let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
-  let os = tx.objectStore('log-gid');
-  let rq = os.delete(gid);
-  rq.onerror = console.log;
-  os = tx.objectStore('log-rec');
-  let ix = os.index('gid');
-  rq = ix.openKeyCursor(IDBKeyRange.only(gid));
-  rq.onsuccess = () => {
-    let cursor = rq.result;
-    if(cursor) {
-      os.delete(cursor.primaryKey);
-      cursor.continue();
+  _request(type, record, callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readwrite');
+    let os = tx.objectStore(this.name);
+    let rq = os[type](record);
+    rq.onsuccess = (e) => {
+      if(type === 'add')
+        record.id = e.target.result;
+      if(callback)
+        callback(e.target.result);
     }
   }
-}
 
-export function getAllGames(callback) {
-  let tx = db.transaction('log-gid', 'readonly');
-  let os = tx.objectStore('log-gid');
-  let rq = os.getAll();
-  rq.onerror = console.log;
-  rq.onsuccess = e => callback(e.target.result);
-}
+  add(record, callback, tx) {
+    this._request('add', record, callback, tx);
+  }
 
-export function getAllRecords(gid, callback) {
-  let tx = db.transaction('log-rec', 'readonly');
-  let os = tx.objectStore('log-rec');
-  let ix = os.index('gid');
-  let rq = ix.getAll(+gid);
-  rq.onerror = console.log;
-  rq.onsuccess = e => callback(e.target.result);
+  update(record, callback, tx) {
+    this._request('put', record, callback, tx);
+  }
+
+  delete(record, callback, tx) {
+    this._request('delete', record.id, callback, tx);
+  }
+
+  deleteWhere(index, value, callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readwrite');
+    let os = tx.objectStore(this.name);
+    let ix = os.index(index);
+    let rq = ix.openKeyCursor(IDBKeyRange.only(value));
+    rq.onsuccess = () => {
+      let cursor = rq.result;
+      if(cursor) {
+        os.delete(cursor.primaryKey);
+        cursor.continue();
+      } else if(callback)
+        callback();
+    }
+  }
+
+  getAll(callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readonly');
+    let os = tx.objectStore(this.name);
+    let rq = os.getAll();
+    rq.onsuccess = e => callback(e.target.result);
+  }
+
+  getAllWhere(index, value, callback, tx) {
+    if(!tx)
+      tx = db.transaction(this.name, 'readonly');
+    let os = tx.objectStore(this.name);
+    let ix = os.index(index);
+    let rq = ix.getAll(value);
+    rq.onsuccess = e => callback(e.target.result);
+  }
 }

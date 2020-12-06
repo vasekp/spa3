@@ -1,5 +1,6 @@
 import {LiveListElement} from './spa-live-list.js';
 import {dateFormat} from '../datetime.js';
+import {recordStore} from '../log-record-store.js';
 
 function formatDiff(diff) {
   let diffText = '+';
@@ -26,7 +27,8 @@ export class ListElement extends LiveListElement {
       this._datesShowHide();
     });
     this._mo.observe(this, {childList: true});
-    this.addEventListener('move-away', e => e.target.record.delete());
+    this.addEventListener('move-away', e =>
+      recordStore.delete(e.target.record, () => e.target.remove()));
   }
 
   _datesAddRemove(record) {

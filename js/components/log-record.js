@@ -1,5 +1,5 @@
 import {timeFormat} from '../datetime.js';
-import {Record} from '../log-record.js';
+import {recordStore} from '../log-record-store.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -56,8 +56,6 @@ export class RecordElement extends HTMLElement {
         if(!this.contains(e.relatedTarget))
           this.close();
       });
-      if(this._record)
-        this._bindData();
     } else if(level == construct.props) {
       this._id('props').appendChild(templateProps.content.cloneNode(true));
       this._id('geo-button').addEventListener('action', () => this._geoSet());
@@ -66,12 +64,21 @@ export class RecordElement extends HTMLElement {
     this._constructed = level;
   }
 
-  _bindData(record = this._record) {
+  set text(text) {
+    this._id('area').value = this._id('text').textContent = text;
+  }
+
+  set tag(tag) {
     this.setAttribute('data-colors', 'param');
-    this.style.setProperty('--color', record.tag);
-    this._id('timestamp').textContent = timeFormat(record.date);
-    this.setAttribute('data-geo-state', record.geo ? 'ok' : 'none');
-    this._id('area').value = this._id('text').textContent = record.text;
+    this.style.setProperty('--color', tag);
+  }
+
+  set date(date) {
+    this._id('timestamp').textContent = timeFormat(date);
+  }
+
+  set geo(geo) {
+    this.setAttribute('data-geo-state', geo ? 'ok' : 'none');
   }
 
   static get observedAttributes() {
@@ -80,8 +87,8 @@ export class RecordElement extends HTMLElement {
 
   set record(record) {
     this._record = record;
-    if(this._constructed)
-      this._bindData(record);
+    this._construct(construct.base);
+    record.view = this;
     this.state = 'closed';
   }
 
@@ -142,14 +149,13 @@ export class RecordElement extends HTMLElement {
       e.preventDefault();
     } else {
       this._record.tag = tag;
-      this.style.setProperty('--color', tag);
       this.close();
     }
   }
 
   _materialize(tag) {
     let gid = this.closest('log-list').getAttribute('data-gid');
-    this.record = new Record(gid, tag, Date.now(), '', this._preGeo);
+    this.record = recordStore.create(gid, tag, this._preGeo);
     this.state = 'firstEdit';
   }
 
@@ -158,7 +164,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _input() {
-    this._record.text = this._id('text').textContent = this._id('area').value;
+    this._record.text = this._id('area').value;
   }
 
   _keydown(e) {
@@ -181,7 +187,6 @@ export class RecordElement extends HTMLElement {
     if(this._record && this._record.geo) {
       // delete
       this._record.geo = undefined;
-      this.setAttribute('data-geo-state', 'none');
     } else {
       this.setAttribute('data-geo-state', 'waiting');
       navigator.geolocation.getCurrentPosition(
@@ -194,11 +199,12 @@ export class RecordElement extends HTMLElement {
   }
 
   _geoCallback(position) {
-    this.setAttribute('data-geo-state', 'success');
     if(this._record)
       this._record.geo = { lat: position.coords.latitude, lon: position.coords.longitude };
-    else
+    else {
+      this.setAttribute('data-geo-state', 'success');
       this._preGeo = { lat: position.coords.latitude, lon: position.coords.longitude };
+    }
   }
 
   _geoError(error) {

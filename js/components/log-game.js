@@ -1,5 +1,5 @@
 import {dateFormat} from '../datetime.js';
-import {Game} from '../log-game.js';
+import {gameStore} from '../log-game-store.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -18,14 +18,8 @@ template.innerHTML = `
 </div>`;
 
 export class GameRecordElement extends HTMLElement {
-  constructor() {
-    super();
-    this._constructed = false;
-  }
-
   connectedCallback() {
-    if(!this._constructed)
-      this._construct();
+    this._construct();
   }
 
   static get observedAttributes() {
@@ -33,6 +27,9 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _construct() {
+    if(this._constructed)
+      return;
+    this._constructed = true;
     this.appendChild(template.content.cloneNode(true));
     let id = this._id = id => this.querySelector(`.log-game-${id}`);
     id('edit').addEventListener('action', () => this.state = 'edit');
@@ -63,8 +60,6 @@ export class GameRecordElement extends HTMLElement {
     this.addEventListener('action', e => this._action(e));
     this.querySelectorAll('.log-game-stop-action').forEach(
       elm => elm.addEventListener('action', e => e.preventDefault()));
-    if(this._record)
-      this._update();
     this._stateChange(this.state, 'empty');
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
@@ -73,27 +68,30 @@ export class GameRecordElement extends HTMLElement {
       if(!this.contains(e.relatedTarget))
         this.close();
     });
-    this._constructed = true;
   }
 
-  _update() {
-    this._id('color-patch').setAttribute('color', this._record.tag || 'none');
-    this._id('name').textContent = this._id('name-edit').value = this._record.name;
-    this._id('date').textContent = '(' + dateFormat(this._record.date) + ')';
+  set name(name) {
+    this._id('name').textContent = this._id('name-edit').value = name;
+  }
+
+  set tag(tag) {
+    this._id('color-patch').setAttribute('color', tag || 'none');
+  }
+
+  set date(date) {
+    this._id('date').textContent = '(' + dateFormat(date) + ')';
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    if(!this._constructed)
-      return;
+    this._construct();
     if(name === 'state')
       this._stateChange(value, oldValue);
   }
 
   set record(record) {
     this._record = record;
-    if(this._constructed)
-      this._update();
     this.state = 'closed';
+    record.view = this;
   }
 
   get record() {
@@ -129,18 +127,15 @@ export class GameRecordElement extends HTMLElement {
 
   _save() {
     this._record.name = this._id('name-edit').value;
-    this._update();
   }
 
   _materialize() {
-    let name = this._id('name-edit').value;
-    this.record = new Game(name);
+    this.record = gameStore.create(this._id('name-edit').value);
   }
 
   _delete() {
     if(this.state == 'delete') {
-      this._record.delete();
-      this.remove();
+      gameStore.delete(this.record, () => this.remove());
     } else
       this.state = 'delete';
   }
@@ -159,7 +154,6 @@ export class GameRecordElement extends HTMLElement {
 
   _colorClicked(color) {
     this._record.tag = color;
-    this._update();
     this.close();
   }
 
