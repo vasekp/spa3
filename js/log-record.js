@@ -86,9 +86,4 @@ export class Record {
     }
     recordStore.update(this._static, callback);
   }
-
-  notifyRemoved() {
-    if(this.view)
-      this.view.remove();
-  }
 };

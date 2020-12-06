@@ -27,7 +27,8 @@ export class ListElement extends LiveListElement {
       this._datesShowHide();
     });
     this._mo.observe(this, {childList: true});
-    this.addEventListener('move-away', e => recordStore.delete(e.target.record));
+    this.addEventListener('move-away', e =>
+      recordStore.delete(e.target.record, () => e.target.remove()));
   }
 
   _datesAddRemove(record) {

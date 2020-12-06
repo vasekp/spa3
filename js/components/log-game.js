@@ -135,7 +135,7 @@ export class GameRecordElement extends HTMLElement {
 
   _delete() {
     if(this.state == 'delete') {
-      gameStore.delete(this.record);
+      gameStore.delete(this.record, () => this.remove());
     } else
       this.state = 'delete';
   }

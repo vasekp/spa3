@@ -3,17 +3,17 @@ import {recordStore} from './log-record.js';
 
 export const gameStore = new ObjectStore('log-gid');
 
-gameStore.create = function(name) {
+gameStore.create = function(name, callback) {
   let record = { name, date: Date.now() };
-  gameStore.add(record);
+  gameStore.add(record, callback);
   return new Game(record);
 }
 
-gameStore.delete = function(game) {
+gameStore.delete = function(game, callback) {
   let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
   ObjectStore.prototype.delete.call(this, game, null, tx);
   recordStore.deleteWhere('gid', +game.id, null, tx);
-  tx.oncomplete = () => game.notifyRemoved();
+  tx.oncomplete = callback;
   tx.onerror = window.alert;
 }
 
@@ -68,10 +68,5 @@ export class Game {
         return this._view = null;
     } else
       return null;
-  }
-
-  notifyRemoved() {
-    if(this.view)
-      this.view.remove();
   }
 };
