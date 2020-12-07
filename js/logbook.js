@@ -24,14 +24,13 @@ window.addEventListener('DOMContentLoaded', () => {
   db.then(dbReady);
 });
 
-function dbReady() {
-  gameStore.getAll().then(games => {
-    populateGList(games);
-    if(games.length > 0)
-      loadRecords(games[0]);
-    else
-      gameMenu();
-  });
+async function dbReady() {
+  let games = await gameStore.getAll();
+  populateGList(games);
+  if(games.length > 0)
+    loadRecords(games[0]);
+  else
+    gameMenu();
 }
 
 function populateGList(games) {
@@ -43,15 +42,15 @@ function populateGList(games) {
   });
 }
 
-function loadRecords(game) {
+async function loadRecords(game) {
   let list = document.getElementById('log-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
   document.getElementById('load').hidden = false;
   document.getElementById('gname').innerText = game.name;
   document.getElementById('gdate').innerText = '(' + dateFormat(game.date) + ')';
-  recordStore.getAll(game.id).then(records => addRecords(records));
   list.setAttribute('data-gid', game.id);
+  addRecords(await recordStore.getAll(game.id));
 }
 
 function addRecords(records) {
