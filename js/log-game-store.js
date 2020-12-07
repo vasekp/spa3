@@ -3,22 +3,23 @@ import {recordStore} from './log-record-store.js';
 
 export const gameStore = new ObjectStore('log-gid');
 
-gameStore.create = function(name, callback) {
+gameStore.create = async function(name) {
   let record = { name, date: Date.now() };
-  gameStore.add(record, callback);
+  await gameStore.add(record);
   return new Game(record);
 }
 
-gameStore.delete = function(game, callback) {
-  let tx = db.transaction(['log-gid', 'log-rec'], 'readwrite');
-  ObjectStore.prototype.delete.call(this, game, null, tx);
-  recordStore.deleteWhere('gid', +game.id, null, tx);
-  tx.oncomplete = callback;
+gameStore.delete = async function(game) {
+  let tx = (await db).transaction(['log-gid', 'log-rec'], 'readwrite');
+  ObjectStore.prototype.delete.call(this, game, tx);
+  recordStore.deleteWhere('gid', +game.id, tx);
   tx.onerror = window.alert;
+  return new Promise(resolve => tx.oncomplete = resolve);
 }
 
-gameStore.getAll = function(callback) {
-  ObjectStore.prototype.getAll.call(this, results => callback(results.map(g => new Game(g))));
+gameStore.getAll = async function() {
+  let results = await ObjectStore.prototype.getAll.call(this);
+  return results.map(g => new Game(g));
 }
 
 class Game {

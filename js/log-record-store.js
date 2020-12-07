@@ -2,15 +2,15 @@ import {ObjectStore} from './log-db.js';
 
 export const recordStore = new ObjectStore('log-rec');
 
-recordStore.create = function(gid, tag, geo) {
+recordStore.create = async function(gid, tag, geo) {
   let record = { gid: +gid, tag, date: Date.now(), text: '', geo };
-  recordStore.add(record);
+  await recordStore.add(record);
   return new Record(record);
 }
 
-recordStore.getAll = function(gid, callback) {
-  ObjectStore.prototype.getAllWhere.call(this, 'gid', +gid,
-    results => callback(results.map(r => new Record(r))));
+recordStore.getAll = async function(gid) {
+  let results = await ObjectStore.prototype.getAllWhere.call(this, 'gid', +gid);
+  return results.map(r => new Record(r));
 }
 
 class Record {
@@ -73,17 +73,15 @@ class Record {
       return null;
   }
 
-  _autosave() {
+  async _autosave() {
     if(this._lastSave == this._rev || !this._static.id)
       return;
     let rev = this._rev;
-    let callback = () => {
-      this._lastSave = rev;
-      if(rev === this._rev) {
-        clearInterval(this._timer);
-        this._timer = null;
-      }
+    await recordStore.update(this._static);
+    this._lastSave = rev;
+    if(rev === this._rev) {
+      clearInterval(this._timer);
+      this._timer = null;
     }
-    recordStore.update(this._static, callback);
   }
 };

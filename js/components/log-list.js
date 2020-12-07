@@ -28,7 +28,7 @@ export class ListElement extends LiveListElement {
     });
     this._mo.observe(this, {childList: true});
     this.addEventListener('move-away', e =>
-      recordStore.delete(e.target.record, () => e.target.remove()));
+      recordStore.delete(e.target.record).then(() => e.target.remove()));
   }
 
   _datesAddRemove(record) {

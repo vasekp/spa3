@@ -153,9 +153,9 @@ export class RecordElement extends HTMLElement {
     }
   }
 
-  _materialize(tag) {
+  async _materialize(tag) {
     let gid = this.closest('log-list').getAttribute('data-gid');
-    this.record = recordStore.create(gid, tag, this._preGeo);
+    this.record = await recordStore.create(gid, tag, this._preGeo);
     this.state = 'firstEdit';
   }
 

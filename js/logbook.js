@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function dbReady() {
-  gameStore.getAll(games => {
+  gameStore.getAll().then(games => {
     populateGList(games);
     if(games.length > 0)
       loadRecords(games[0]);
@@ -50,7 +50,7 @@ function loadRecords(game) {
   document.getElementById('load').hidden = false;
   document.getElementById('gname').innerText = game.name;
   document.getElementById('gdate').innerText = '(' + dateFormat(game.date) + ')';
-  recordStore.getAll(game.id, addRecords);
+  recordStore.getAll(game.id).then(records => addRecords(records));
   list.setAttribute('data-gid', game.id);
 }
 
