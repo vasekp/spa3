@@ -3,9 +3,9 @@ import {recordStore} from './log-record-store.js';
 
 export const gameStore = new ObjectStore('log-gid');
 
-gameStore.create = async function(name) {
+gameStore.create = async function(name, tx) {
   let record = { name, date: Date.now() };
-  await gameStore.add(record);
+  await gameStore.add(record, tx);
   return new Game(record);
 }
 

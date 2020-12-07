@@ -2,9 +2,9 @@ import {ObjectStore} from './log-db.js';
 
 export const recordStore = new ObjectStore('log-rec');
 
-recordStore.create = async function(gid, tag, geo) {
-  let record = { gid: +gid, tag, date: Date.now(), text: '', geo };
-  await recordStore.add(record);
+recordStore.create = async function(record, tx) {
+  record.date = Date.now();
+  await recordStore.add(record, tx);
   return new Record(record);
 }
 

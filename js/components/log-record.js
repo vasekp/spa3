@@ -154,8 +154,8 @@ export class RecordElement extends HTMLElement {
   }
 
   async _materialize(tag) {
-    let gid = this.closest('log-list').getAttribute('data-gid');
-    this.record = await recordStore.create(gid, tag, this._preGeo);
+    let gid = +this.closest('log-list').getAttribute('data-gid');
+    this.record = await recordStore.create({ gid, tag, text: '', geo: this._preGeo });
     this.state = 'firstEdit';
   }
 

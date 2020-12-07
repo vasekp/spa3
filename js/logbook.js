@@ -24,13 +24,26 @@ window.addEventListener('DOMContentLoaded', () => {
   db.then(dbReady);
 });
 
-async function dbReady() {
+async function dbReady(adb) {
+  if(adb.dataOldVersion === 0)
+    await addTestData(adb);
   let games = await gameStore.getAll();
   populateGList(games);
   if(games.length > 0)
     loadRecords(games[0]);
   else
     gameMenu();
+}
+
+async function addTestData(adb) {
+  let tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
+  let gid = (await gameStore.create('Příklad', tx)).id;
+  recordStore.create({ gid, tag: 1, text: 'Příklad' }, tx);
+  recordStore.create({ gid, tag: 2, text: 'Upřesnítko' }, tx);
+  recordStore.create({ gid, tag: 3, text: 'Mezitajenka' }, tx);
+  recordStore.create({ gid, tag: 4, text: 'Nápověda' }, tx);
+  recordStore.create({ gid, tag: 5, text: 'Adresa' }, tx);
+  return new Promise(resolve => tx.oncomplete = resolve);
 }
 
 function populateGList(games) {
