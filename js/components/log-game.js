@@ -129,13 +129,13 @@ export class GameRecordElement extends HTMLElement {
     this._record.name = this._id('name-edit').value;
   }
 
-  _materialize() {
-    this.record = gameStore.create(this._id('name-edit').value);
+  async _materialize() {
+    this.record = await gameStore.create(this._id('name-edit').value);
   }
 
   _delete() {
     if(this.state == 'delete') {
-      gameStore.delete(this.record, () => this.remove());
+      gameStore.delete(this.record).then(() => this.remove());
     } else
       this.state = 'delete';
   }
