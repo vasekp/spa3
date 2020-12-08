@@ -91,7 +91,7 @@ export class GameRecordElement extends HTMLElement {
   set record(record) {
     this._record = record;
     this.state = 'closed';
-    record.view = this;
+    record.addView(this);
   }
 
   get record() {

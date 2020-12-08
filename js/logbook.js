@@ -14,6 +14,7 @@ let views = {
   games: 1
 };
 let curView = views.records;
+let curGame;
 
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
@@ -55,13 +56,18 @@ function populateGList(games) {
   });
 }
 
+let gameNameView = {
+  set name(name) { document.getElementById('gname').innerText = name; },
+  set date(date) { document.getElementById('gdate').innerText = '(' + dateFormat(date) + ')'; }
+};
+
 async function loadRecords(game) {
   let list = document.getElementById('log-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
+  curGame = game;
+  game.addView(gameNameView);
   document.getElementById('load').hidden = false;
-  document.getElementById('gname').innerText = game.name;
-  document.getElementById('gdate').innerText = '(' + dateFormat(game.date) + ')';
   list.setAttribute('data-gid', game.id);
   addRecords(await recordStore.getAll(game.id));
 }
@@ -121,6 +127,8 @@ function gameMenu() {
   document.getElementById('game-list').hidden = false;
   document.getElementById('log-list').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
   document.getElementById('log-sel').addEventListener('transitionend', e => { e.currentTarget.hidden = true; }, { once: true });
+  if(curGame)
+    curGame.removeView(gameNameView);
   curView = views.games;
 }
 

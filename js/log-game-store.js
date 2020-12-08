@@ -25,6 +25,7 @@ gameStore.getAll = async function() {
 class Game {
   constructor(record) {
     this._static = record;
+    this._views = new Set();
   }
 
   static from(record) {
@@ -37,37 +38,32 @@ class Game {
   get id() { return this._static.id; }
 
   set name(name) {
-    if(this.view)
-      this.view.name = name;
+    for(let view of this._views)
+      view.name = name;
     this._static.name = name;
     gameStore.update(this._static);
   }
 
   set date(date) {
-    if(this.view)
-      this.view.date = date;
+    for(let view of this._views)
+      view.date = date;
   }
 
   set tag(tag) {
-    if(this.view)
-      this.view.tag = tag;
+    for(let view of this._views)
+      view.tag = tag;
     this._static.tag = tag != 'none' ? tag : '';
     gameStore.update(this._static);
   }
 
-  set view(elm) {
-    this._view = elm;
+  addView(elm) {
+    this._views.add(elm);
     elm.name = this.name;
+    elm.date = this.date;
     elm.tag = this.tag;
   }
 
-  get view() {
-    if(this._view) {
-      if(this._view.isConnected)
-        return this._view;
-      else
-        return this._view = null;
-    } else
-      return null;
+  removeView(elm) {
+    this._views.delete(elm);
   }
 };

@@ -20,6 +20,7 @@ class Record {
     this._lastSave = 0;
     this._timer = null;
     this._autosaveRef = () => this._autosave();
+    this._views = new Set();
   }
 
   static from(record) {
@@ -33,8 +34,8 @@ class Record {
   get geo() { return this._static.geo; }
 
   set text(text) {
-    if(this.view)
-      this.view.text = text;
+    for(let view of this._views)
+      view.text = text;
     this._static.text = text;
     this._rev++;
     if(!this._timer)
@@ -42,35 +43,29 @@ class Record {
   }
 
   set tag(tag) {
-    if(this.view)
-      this.view.tag = tag;
+    for(let view of this._views)
+      view.tag = tag;
     this._static.tag = tag;
     recordStore.update(this._static);
   }
 
   set geo(geo) {
-    if(this.view)
-      this.view.geo = geo;
+    for(let view of this._views)
+      view.geo = geo;
     this._static.geo = geo;
     recordStore.update(this._static);
   }
 
-  set view(elm) {
-    this._view = elm;
+  addView(elm) {
+    this._views.add(elm);
     elm.date = this.date;
     elm.text = this.text;
     elm.tag = this.tag;
     elm.geo = this.geo;
   }
 
-  get view() {
-    if(this._view) {
-      if(this._view.isConnected)
-        return this._view;
-      else
-        return this._view = null;
-    } else
-      return null;
+  removeView(elm) {
+    this._views.delete(elm);
   }
 
   async _autosave() {

@@ -88,7 +88,7 @@ export class RecordElement extends HTMLElement {
   set record(record) {
     this._record = record;
     this._construct(construct.base);
-    record.view = this;
+    record.addView(this);
     this.state = 'closed';
   }
 
