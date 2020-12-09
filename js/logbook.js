@@ -23,14 +23,32 @@ state.views = Object.freeze({
   games: 'game-list'
 });
 
+let gameNameView = {
+  set name(name) { document.getElementById('gname').innerText = name; },
+  set date(date) { document.getElementById('gdate').innerText = '(' + dateFormat(date) + ')'; }
+};
+
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
-  document.getElementById('log-sel').addEventListener('action', gameMenu);
+  document.getElementById('log-sel').addEventListener('action', gameList);
   document.getElementById('tag-filter').addEventListener('change', filter);
-  document.getElementById('game-list').addEventListener('game-chosen', e => gameClicked(e.detail.game));
-  document.getElementById('game-list').addEventListener('delete-game', e => gameStore.delete(e.detail.gid));
+  document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.game));
   db.then(dbReady);
 });
+
+function gameList() {
+  let curGame = document.getElementById('record-list').game;
+  if(curGame)
+    curGame.removeView(gameNameView);
+  state.view = state.views.games;
+  document.getElementById('tag-filter').selectAll();
+}
+
+function recordList(game) {
+  loadRecords(game);
+  state.view = state.views.records;
+  document.getElementById('tag-filter').selectAll();
+}
 
 async function dbReady(adb) {
   if(adb.dataOldVersion === 0)
@@ -38,9 +56,9 @@ async function dbReady(adb) {
   let games = await gameStore.getAll();
   populateGameList(games);
   if(games.length > 0)
-    loadRecords(games[0]);
+    recordList(games[0]);
   else
-    gameMenu();
+    gameList();
 }
 
 async function addExampleData(adb) {
@@ -54,20 +72,6 @@ async function addExampleData(adb) {
   return new Promise(resolve => tx.oncomplete = resolve);
 }
 
-function populateGameList(games) {
-  let glist = document.getElementById('game-list');
-  games.forEach(game => {
-    let elm = document.createElement('log-game');
-    elm.record = game;
-    glist.appendChild(elm);
-  });
-}
-
-let gameNameView = {
-  set name(name) { document.getElementById('gname').innerText = name; },
-  set date(date) { document.getElementById('gdate').innerText = '(' + dateFormat(date) + ')'; }
-};
-
 async function loadRecords(game) {
   let list = document.getElementById('record-list');
   while(list.firstChild)
@@ -76,6 +80,15 @@ async function loadRecords(game) {
   game.addView(gameNameView);
   document.getElementById('load').hidden = false;
   populateRecList(await recordStore.getAll(game.id));
+}
+
+function populateGameList(games) {
+  let glist = document.getElementById('game-list');
+  games.forEach(game => {
+    let elm = document.createElement('log-game');
+    elm.record = game;
+    glist.appendChild(elm);
+  });
 }
 
 function populateRecList(records) {
@@ -121,18 +134,4 @@ function filter(e) {
       elm.hidden = !show;
     });
   }
-}
-
-function gameMenu() {
-  let curGame = document.getElementById('record-list').game;
-  if(curGame)
-    curGame.removeView(gameNameView);
-  state.view = state.views.games;
-  document.getElementById('tag-filter').selectAll();
-}
-
-function gameClicked(game) {
-  loadRecords(game);
-  state.view = state.views.records;
-  document.getElementById('tag-filter').selectAll();
 }
