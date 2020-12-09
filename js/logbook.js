@@ -25,7 +25,7 @@ state.views = Object.freeze({
 
 let gameNameView = {
   set name(name) { document.getElementById('gname').innerText = name; },
-  set date(date) { document.getElementById('gdate').innerText = '(' + dateFormat(date) + ')'; }
+  set date(date) { document.getElementById('gdate').innerText = dateFormat(date); }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

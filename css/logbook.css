@@ -25,6 +25,14 @@
   flex: none;
 }
 
+#gdate::before {
+  content: '(';
+}
+
+#gdate::after {
+  content: ')';
+}
+
 #tag-filter {
   flex: 1;
 }
@@ -39,7 +47,6 @@ spa-scroll {
 }
 
 spa-plus-list {
-  /*margin: 0 calc(-1 * var(--margin-base));*/
   margin-top: var(--margin-small);
 }
 
@@ -72,6 +79,10 @@ spa-plus-list {
   height: 0;
   visibility: hidden;
   transition: height .5s, visibility .5s step-end;
+}
+
+[data-view="init"] #log-sel, [data-view="init"] #game-list {
+  display: none;
 }
 
 log-record {
