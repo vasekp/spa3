@@ -75,18 +75,14 @@ async function loadRecords(game) {
 function populateRecList(records) {
   let list = document.getElementById('record-list');
   let frag = document.createDocumentFragment();
-  console.time('populateRecList');
   records.forEach(record => {
-    for(let i = 0; i < 1; i++) {
-      let elm = document.createElement('log-record');
-      elm.record = record;
-      frag.appendChild(elm);
-    }
+    let elm = document.createElement('log-record');
+    elm.record = record;
+    frag.appendChild(elm);
   });
   document.getElementById('load').hidden = true;
   list.appendChild(frag);
   list.offsetHeight;
-  console.timeEnd('populateRecList');
 }
 
 function plus(e) {
