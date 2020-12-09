@@ -84,4 +84,4 @@ export class ListElement extends LiveListElement {
   }
 }
 
-window.customElements.define('log-list', ListElement);
+window.customElements.define('log-record-list', ListElement);

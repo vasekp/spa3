@@ -1,7 +1,7 @@
 import './components/spa-colors.js';
 import './components/spa-plus-list.js';
 import './components/log-record.js';
-import './components/log-list.js';
+import './components/log-record-list.js';
 import './components/log-game.js';
 import './components/spa-scroll.js';
 import {dateFormat} from './datetime.js';
@@ -27,16 +27,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function dbReady(adb) {
   if(adb.dataOldVersion === 0)
-    await addTestData(adb);
+    await addExampleData(adb);
   let games = await gameStore.getAll();
-  populateGList(games);
+  populateGameList(games);
   if(games.length > 0)
     loadRecords(games[0]);
   else
     gameMenu();
 }
 
-async function addTestData(adb) {
+async function addExampleData(adb) {
   let tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
   let gid = (await gameStore.create('Příklad', tx)).id;
   recordStore.create({ gid, tag: 1, text: 'Příklad' }, tx);
@@ -47,7 +47,7 @@ async function addTestData(adb) {
   return new Promise(resolve => tx.oncomplete = resolve);
 }
 
-function populateGList(games) {
+function populateGameList(games) {
   let glist = document.getElementById('game-list');
   games.forEach(game => {
     let elm = document.createElement('log-game');
@@ -62,20 +62,20 @@ let gameNameView = {
 };
 
 async function loadRecords(game) {
-  let list = document.getElementById('log-list');
+  let list = document.getElementById('record-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
   curGame = game;
   game.addView(gameNameView);
   document.getElementById('load').hidden = false;
   list.setAttribute('data-gid', game.id);
-  addRecords(await recordStore.getAll(game.id));
+  populateRecList(await recordStore.getAll(game.id));
 }
 
-function addRecords(records) {
-  let list = document.getElementById('log-list');
+function populateRecList(records) {
+  let list = document.getElementById('record-list');
   let frag = document.createDocumentFragment();
-  console.time('addRecords');
+  console.time('populateRecList');
   records.forEach(record => {
     for(let i = 0; i < 1; i++) {
       let elm = document.createElement('log-record');
@@ -86,14 +86,14 @@ function addRecords(records) {
   document.getElementById('load').hidden = true;
   list.appendChild(frag);
   list.offsetHeight;
-  console.timeEnd('addRecords');
+  console.timeEnd('populateRecList');
 }
 
 function plus(e) {
   document.getElementById('tag-filter').selectAll();
   if(curView == views.records) {
     let elm = document.createElement('log-record');
-    document.getElementById('log-list').appendChild(elm);
+    document.getElementById('record-list').appendChild(elm);
     elm.state = 'empty';
     elm.setAttribute('data-protected', '');
     elm.scrollIntoView();
@@ -109,7 +109,7 @@ function plus(e) {
 function filter(e) {
   let sel = e.detail.selected;
   if(curView == views.records) {
-    document.getElementById('log-list').querySelectorAll('log-record').forEach(elm => {
+    document.getElementById('record-list').querySelectorAll('log-record').forEach(elm => {
       let show = elm.record ? sel[elm.record.tag] : true;
       elm.hidden = !show;
     });

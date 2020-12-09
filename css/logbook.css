@@ -43,7 +43,7 @@ spa-plus-list {
   margin-top: var(--margin-small);
 }
 
-#log-list, #game-list {
+#record-list, #game-list {
   display: block;
   position: relative;
   transition: opacity .5s, visibility .5s step-start;
@@ -58,7 +58,7 @@ spa-plus-list {
   transition: height .5s, visibility .5s step-start;
 }
 
-[data-view="game-list"] #log-list, [data-view="rec-list"] #game-list {
+[data-view="game-list"] #record-list, [data-view="rec-list"] #game-list {
   position: absolute;
   left: 0;
   top: 0;
@@ -74,7 +74,7 @@ spa-plus-list {
   transition: height .5s, visibility .5s step-end;
 }
 
-#log-list log-record {
+log-record {
   touch-action: pan-y;
   margin: var(--margin-base) 0;
 }
