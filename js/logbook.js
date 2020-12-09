@@ -9,12 +9,19 @@ import {db} from './log-db.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 
-let views = {
-  records: 0,
-  games: 1
+let state = {
+  set view(view) {
+    document.querySelector('main').setAttribute('data-view', view);
+  },
+  get view() {
+    return document.querySelector('main').getAttribute('data-view');
+  }
 };
-let curView = views.records;
-let curGame;
+
+state.views = Object.freeze({
+  records: 'rec-list',
+  games: 'game-list'
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
@@ -65,10 +72,9 @@ async function loadRecords(game) {
   let list = document.getElementById('record-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
-  curGame = game;
+  list.game = game;
   game.addView(gameNameView);
   document.getElementById('load').hidden = false;
-  list.setAttribute('data-gid', game.id);
   populateRecList(await recordStore.getAll(game.id));
 }
 
@@ -87,7 +93,7 @@ function populateRecList(records) {
 
 function plus(e) {
   document.getElementById('tag-filter').selectAll();
-  if(curView == views.records) {
+  if(state.view === state.views.records) {
     let elm = document.createElement('log-record');
     document.getElementById('record-list').appendChild(elm);
     elm.state = 'empty';
@@ -104,7 +110,7 @@ function plus(e) {
 
 function filter(e) {
   let sel = e.detail.selected;
-  if(curView == views.records) {
+  if(state.view === state.views.records) {
     document.getElementById('record-list').querySelectorAll('log-record').forEach(elm => {
       let show = elm.record ? sel[elm.record.tag] : true;
       elm.hidden = !show;
@@ -118,16 +124,15 @@ function filter(e) {
 }
 
 function gameMenu() {
-  document.getElementById('tag-filter').selectAll();
-  document.querySelector('main').setAttribute('data-view', 'game-list');
+  let curGame = document.getElementById('record-list').game;
   if(curGame)
     curGame.removeView(gameNameView);
-  curView = views.games;
+  state.view = state.views.games;
+  document.getElementById('tag-filter').selectAll();
 }
 
 function gameClicked(game) {
   loadRecords(game);
+  state.view = state.views.records;
   document.getElementById('tag-filter').selectAll();
-  document.querySelector('main').setAttribute('data-view', 'rec-list');
-  curView = views.records;
 }

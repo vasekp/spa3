@@ -82,6 +82,18 @@ export class ListElement extends LiveListElement {
     this.querySelectorAll('div.date-marker').forEach(elm =>
       elm.hidden = !set.has(elm.textContent));
   }
+
+  set game(game) {
+    this._game = game;
+  }
+
+  get game() {
+    return this._game;
+  }
+
+  get gid() {
+    return this._game ? this._game.id : null;
+  }
 }
 
 window.customElements.define('log-record-list', ListElement);
