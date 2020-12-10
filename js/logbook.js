@@ -4,8 +4,9 @@ import './components/log-record.js';
 import './components/log-record-list.js';
 import './components/log-game.js';
 import './components/spa-scroll.js';
-import {dateFormat} from './datetime.js';
 import {db} from './log-db.js';
+import {Enum} from './util/enum.js';
+import {dateFormat} from './datetime.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 
@@ -18,7 +19,7 @@ const state = {
   }
 };
 
-state.views = Object.freeze({
+state.views = Enum.fromObj({
   records: 'rec-list',
   games: 'game-list'
 });
