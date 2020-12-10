@@ -11,10 +11,10 @@ import {recordStore} from './log-record-store.js';
 
 let state = {
   set view(view) {
-    document.querySelector('main').setAttribute('data-view', view);
+    document.querySelector('main').dataset.view = view;
   },
   get view() {
-    return document.querySelector('main').getAttribute('data-view');
+    return document.querySelector('main').dataset.view;
   }
 };
 
@@ -110,7 +110,7 @@ function plus(e) {
     let elm = document.createElement('log-record');
     document.getElementById('record-list').appendChild(elm);
     elm.state = 'empty';
-    elm.setAttribute('data-protected', '');
+    elm.dataset.protected = 1;
     elm.scrollIntoView();
   } else {
     let elm = document.createElement('log-game');

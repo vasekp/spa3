@@ -35,32 +35,32 @@ export class ListElement extends LiveListElement {
     let insertMarker = (elm, day) => {
       let marker = document.createElement('div');
       marker.classList.add('date-marker');
-      marker.setAttribute('data-protected', '');
+      marker.dataset.protected = 1;
       marker.innerText = day;
       this.insertBefore(marker, elm);
     }
     if(record.addedNodes.length > 0) {
-      let prevDay = record.previousSibling ? record.previousSibling.getAttribute('data-day') : null;
+      let prevDay = record.previousSibling ? record.previousSibling.dataset.day : null;
       record.addedNodes.forEach(elm => {
         if(elm.nodeName !== 'LOG-RECORD')
           return;
-        this._mo.observe(elm, { attributes: true, attributeFilter: ['state', 'hidden'] });
+        this._mo.observe(elm, { attributes: true, attributeFilter: ['data-state', 'hidden'] });
         if(!elm.record)
           return;
         let day = dateFormat(elm.record.date);
-        elm.setAttribute('data-day', day);
+        elm.dataset.day = day;
         if(day !== prevDay)
           insertMarker(elm, day);
         prevDay = day;
       });
-    } else if(record.type == 'attributes' && record.attributeName == 'state') {
+    } else if(record.type == 'attributes' && record.attributeName == 'data-state') {
       let elm = record.target;
-      if(elm.hasAttribute('data-day'))
+      if(elm.dataset.day)
         return;
       let day = dateFormat(elm.record.date);
-      elm.setAttribute('data-day', day);
+      elm.dataset.day = day;
       let prev = elm.previousSibling;
-      if(!prev || prev.getAttribute('data-day') !== day)
+      if(!prev || prev.dataset.day !== day)
         insertMarker(elm, day);
     }
   }
@@ -73,8 +73,8 @@ export class ListElement extends LiveListElement {
     this.querySelectorAll('log-record:not([hidden])').forEach(elm => {
       if(!elm.record)
         return;
-      set.add(elm.getAttribute('data-day'));
-      elm.setAttribute('timediff', prevDate ? formatDiff(elm.record.date - prevDate) : '');
+      set.add(elm.dataset.day);
+      elm.dataset.timeDiff = prevDate ? formatDiff(elm.record.date - prevDate) : '';
       prevDate = elm.record.date;
     });
 

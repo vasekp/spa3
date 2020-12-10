@@ -8,7 +8,7 @@ export class PlusListElement extends HTMLElement {
       for(name of ['spa-plus-button', 'spa-plus-item']) {
         const d = document.createElement('div');
         d.classList.add(name);
-        d.setAttribute('tabIndex', 0);
+        d.setAttribute('tabindex', 0);
         d.addEventListener('action', plusAction);
         this.insertBefore(d, name === 'spa-plus-button' ? this.firstChild : null);
         this[name] = d;

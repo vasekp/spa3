@@ -30,7 +30,7 @@ export class LiveListElement extends HTMLElement {
     let elm = e.currentTarget;
     if(this._tracking.elm)
       return;
-    if(elm.hasAttribute('data-protected'))
+    if(elm.dataset.protected)
       return;
     this._tracking = {
       elm,

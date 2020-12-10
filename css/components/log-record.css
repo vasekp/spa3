@@ -4,21 +4,21 @@ log-record {
   border-radius: .5rem;
 }
 
-log-record[state="empty"] .log-record-header,
-log-record[state="empty"] .log-record-text-container {
+log-record[data-state="empty"] .log-record-header,
+log-record[data-state="empty"] .log-record-text-container {
   display: none;
 }
 
-log-record:not([state="edit"]):not([state="firstEdit"]) .log-record-area {
+log-record:not([data-state="edit"]):not([data-state="firstEdit"]) .log-record-area {
   display: none;
 }
 
-log-record[state="closed"] .log-record-props {
+log-record[data-state="closed"] .log-record-props {
   display: none;
 }
 
-log-record[state="edit"] .log-record-text,
-log-record[state="firstEdit"] .log-record-text {
+log-record[data-state="edit"] .log-record-text,
+log-record[data-state="firstEdit"] .log-record-text {
   visibility: hidden;
 }
 
