@@ -1,4 +1,4 @@
-let sendAction = e => {
+const sendAction = e => {
   e.target.dispatchEvent(new CustomEvent('action', { bubbles: true, cancelable: true }));
   e.preventDefault();
 }

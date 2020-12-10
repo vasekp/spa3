@@ -9,7 +9,7 @@ import {db} from './log-db.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 
-let state = {
+const state = {
   set view(view) {
     document.querySelector('main').dataset.view = view;
   },
@@ -23,7 +23,7 @@ state.views = Object.freeze({
   games: 'game-list'
 });
 
-let gameNameView = {
+const gameNameView = {
   set name(name) { document.getElementById('gname').innerText = name; },
   set date(date) { document.getElementById('gdate').innerText = `(${dateFormat(date)})`; }
 };

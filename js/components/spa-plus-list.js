@@ -15,9 +15,9 @@ export class PlusListElement extends HTMLElement {
       }
       this._constructed = true;
     }
-    let ro = new ResizeObserver(() => this._resized());
+    const ro = new ResizeObserver(() => this._resized());
     ro.observe(this);
-    let io = new IntersectionObserver(entries => {
+    const io = new IntersectionObserver(entries => {
       let bigPlusVisible = entries[0].intersectionRatio <= 0;
       this['spa-plus-button'].hidden = !bigPlusVisible;
     });

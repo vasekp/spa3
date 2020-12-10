@@ -31,7 +31,7 @@ export class GameRecordElement extends HTMLElement {
       return;
     this._constructed = true;
     this.appendChild(template.content.cloneNode(true));
-    let id = this._id = id => this.querySelector(`.log-game-${id}`);
+    const id = this._id = id => this.querySelector(`.log-game-${id}`);
     id('edit').addEventListener('action', () => this.state = 'edit');
     id('color-edit').addEventListener('action', e => {
       this.state = (this.state == 'color' ? 'closed' : 'color')

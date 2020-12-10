@@ -33,7 +33,7 @@ export class ListElement extends LiveListElement {
   }
 
   _datesAddRemove(record) {
-    let insertMarker = (elm, day) => {
+    const insertMarker = (elm, day) => {
       let marker = document.createElement('div');
       marker.classList.add('date-marker');
       marker.dataset.protected = 1;
