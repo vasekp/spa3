@@ -79,7 +79,7 @@ export class GameRecordElement extends HTMLElement {
   }
 
   set date(date) {
-    this._id('date').textContent = '(' + dateFormat(date) + ')';
+    this._id('date').textContent = `(${dateFormat(date)})`;
   }
 
   attributeChangedCallback(name, oldValue, value) {

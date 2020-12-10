@@ -64,6 +64,32 @@ export class RecordElement extends HTMLElement {
     this._constructed = level;
   }
 
+  static get observedAttributes() {
+    return ['data-time-diff', 'data-state'];
+  }
+
+  attributeChangedCallback(name, oldValue, value) {
+    if(!this._constructed)
+      return;
+    if(value === oldValue)
+      return;
+    else if(name === 'data-time-diff')
+      this._id('timediff').textContent = value ? `(${value})` : '';
+    else if(name === 'data-state')
+      this._stateChange(value);
+  }
+
+  set record(record) {
+    this._record = record;
+    this._construct(construct.base);
+    record.addView(this);
+    this.state = 'closed';
+  }
+
+  get record() {
+    return this._record;
+  }
+
   set text(text) {
     this._id('area').value = this._id('text').textContent = text;
   }
@@ -81,46 +107,12 @@ export class RecordElement extends HTMLElement {
     this.dataset.geoState = geo ? 'ok' : 'none';
   }
 
-  static get observedAttributes() {
-    return ['data-time-diff', 'data-state'];
-  }
-
-  set record(record) {
-    this._record = record;
-    this._construct(construct.base);
-    record.addView(this);
-    this.state = 'closed';
-  }
-
-  get record() {
-    return this._record;
-  }
-
-  attributeChangedCallback(name, oldValue, value) {
-    if(!this._constructed)
-      return;
-    if(value === oldValue)
-      return;
-    if(name === 'data-time-diff')
-      this._id('timediff').textContent = value ? '(' + value + ')' : '';
-    else if(name === 'data-state')
-      this._stateChange(value);
-  }
-
   set state(state) {
     this.dataset.state = state;
   }
 
   get state() {
     return this.dataset.state || 'empty';
-  }
-
-  set timediff(diff) {
-    this.dataset.timeDiff = diff;
-  }
-
-  get timediff() {
-    return this.dataset.timeDiff;
   }
 
   _stateChange(state = this.state) {
@@ -178,7 +170,7 @@ export class RecordElement extends HTMLElement {
     if(this.dataset.geoState == 'waiting')
       return;
     else if(this.dataset.geoState == 'error') {
-      alert('Error: ' + this.dataset.geoError);
+      alert(`Error: ${this.dataset.geoError}`);
     } else
       window.open(`https://www.openstreetmap.org/?mlat=${this._record.geo.lat}&mlon=${this._record.geo.lon}&zoom=18`);
   }
