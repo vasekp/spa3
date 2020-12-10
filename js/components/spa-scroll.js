@@ -21,13 +21,13 @@ export class ScrollElement extends HTMLElement {
   }
 
   connectedCallback() {
-    let cb = () => {
+    const cb = () => {
       let up = this._div.scrollTop > 0;
       let down = this._div.scrollHeight - this._div.scrollTop > this._div.clientHeight;
-      this.setAttribute('data-scroll', (up ? 'up ' : '') + (down ? 'down' : ''));
+      this.dataset.scroll = (up ? 'up ' : '') + (down ? 'down' : '');
     };
     this._div.addEventListener('scroll', cb);
-    let ro = new ResizeObserver(cb);
+    const ro = new ResizeObserver(cb);
     ro.observe(this);
     ro.observe(this.shadowRoot.querySelector('#content'));
     cb();

@@ -4,20 +4,25 @@ export class ColorPatchElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['color'];
+    return ['data-color'];
   }
 
   set color(color) {
-    this.setAttribute('color', color);
+    this.dataset.color = color;
   }
 
   get color() {
-    return this.getAttribute('color');
+    return this.dataset.color;
   }
 
   attributeChangedCallback(name, oldValue, value) {
     this.style.setProperty('--color', value);
-    this.setAttribute('data-colors', value === 'all' ? 'rainbow' : value === 'none' ? 'cross' : 'param');
+    this.dataset.colors =
+      value === 'all'
+        ? 'rainbow'
+      : value === 'none'
+        ? 'cross'
+        : 'param';
   }
 }
 
@@ -30,16 +35,16 @@ export class ColorSelElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['zero'];
+    return ['data-zero'];
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    this.querySelector('spa-color-patch[color="none"]').hidden = !this.hasAttribute('zero');
+    this.querySelector('spa-color-patch[data-color="none"]').hidden = !this.dataset.zero;
   }
 
   _addPatch(color, hidden = false) {
     let div = document.createElement('spa-color-patch');
-    div.setAttribute('color', color);
+    div.dataset.color = color;
     div.setAttribute('tabindex', 0);
     div.addEventListener('action', this._action);
     if(hidden)
@@ -82,17 +87,16 @@ export class ColorFilterElement extends ColorSelElement {
       // All colors selected: also mark 'all'
       sel.all = sel.every(x => x);
     }
-    elm.querySelectorAll('spa-color-patch').forEach(elm => {
-      elm.classList.toggle('selected', sel[elm.getAttribute('color')]);
-    });
+    for(let elm2 of elm.querySelectorAll('spa-color-patch'))
+      elm2.classList.toggle('selected', sel[elm.dataset.color]);
     elm._notify();
   }
 
   selectAll(noEvent) {
-    this.querySelectorAll('spa-color-patch').forEach(elm => {
+    for(let elm of this.querySelectorAll('spa-color-patch')) {
       elm.classList.add('filter', 'selected');
-      this._sel[elm.getAttribute('color')] = true;
-    });
+      this._sel[elm.dataset.color] = true;
+    }
     if(!noEvent)
       this._notify();
   }

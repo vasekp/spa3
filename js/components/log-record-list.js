@@ -3,27 +3,29 @@ import {dateFormat} from '../datetime.js';
 import {recordStore} from '../log-record-store.js';
 
 function formatDiff(diff) {
-  let diffText = '+';
   diff = Math.floor(diff / 1000);
   let sec = diff % 60;
+  let sec02 = sec.toString().padStart(2, '0');
   diff = Math.floor(diff / 60);
   let min = diff % 60;
-  let hrs = Math.floor(diff / 60);
-  if(hrs >= 24)
-    diffText += Math.floor(hrs / 24) + 'd ';
-  if(hrs >= 1)
-    diffText += (hrs % 24) + ':' + min.toString().padStart(2, '0');
+  let min02 = min.toString().padStart(2, '0');
+  diff = Math.floor(diff / 60);
+  let hrs = diff % 24;
+  let days = Math.floor(diff / 24);
+  if(days > 0)
+    return `+${days}d ${hrs}:${min02}:${sec02}`;
+  else if(hrs > 0)
+    return `+${hrs}:${min02}:${sec02}`;
   else
-    diffText += min;
-  diffText += ':' + sec.toString().padStart(2, '0');
-  return diffText;
+    return `+${min}:${sec02}`;
 }
 
 export class ListElement extends LiveListElement {
   constructor() {
     super();
     this._mo = new MutationObserver(records => {
-      records.forEach(record => this._datesAddRemove(record));
+      for(let record of records)
+        this._datesAddRemove(record);
       this._datesShowHide();
     });
     this._mo.observe(this, {childList: true});
@@ -32,35 +34,35 @@ export class ListElement extends LiveListElement {
   }
 
   _datesAddRemove(record) {
-    let insertMarker = (elm, day) => {
+    const insertMarker = (elm, day) => {
       let marker = document.createElement('div');
       marker.classList.add('date-marker');
-      marker.setAttribute('data-protected', '');
+      marker.dataset.protected = 1;
       marker.innerText = day;
       this.insertBefore(marker, elm);
     }
     if(record.addedNodes.length > 0) {
-      let prevDay = record.previousSibling ? record.previousSibling.getAttribute('data-day') : null;
-      record.addedNodes.forEach(elm => {
+      let prevDay = record.previousSibling ? record.previousSibling.dataset.day : null;
+      for(let elm of record.addedNodes) {
         if(elm.nodeName !== 'LOG-RECORD')
           return;
-        this._mo.observe(elm, { attributes: true, attributeFilter: ['state', 'hidden'] });
+        this._mo.observe(elm, { attributes: true, attributeFilter: ['data-state', 'hidden'] });
         if(!elm.record)
           return;
         let day = dateFormat(elm.record.date);
-        elm.setAttribute('data-day', day);
+        elm.dataset.day = day;
         if(day !== prevDay)
           insertMarker(elm, day);
         prevDay = day;
-      });
-    } else if(record.type == 'attributes' && record.attributeName == 'state') {
+      }
+    } else if(record.type == 'attributes' && record.attributeName == 'data-state') {
       let elm = record.target;
-      if(elm.hasAttribute('data-day'))
+      if(elm.dataset.day)
         return;
       let day = dateFormat(elm.record.date);
-      elm.setAttribute('data-day', day);
+      elm.dataset.day = day;
       let prev = elm.previousSibling;
-      if(!prev || prev.getAttribute('data-day') !== day)
+      if(!prev || prev.dataset.day !== day)
         insertMarker(elm, day);
     }
   }
@@ -70,17 +72,17 @@ export class ListElement extends LiveListElement {
 
     // Time differences
     let prevDate = 0;
-    this.querySelectorAll('log-record:not([hidden])').forEach(elm => {
+    for(let elm of this.querySelectorAll('log-record:not([hidden])')) {
       if(!elm.record)
         return;
-      set.add(elm.getAttribute('data-day'));
-      elm.setAttribute('timediff', prevDate ? formatDiff(elm.record.date - prevDate) : '');
+      set.add(elm.dataset.day);
+      elm.dataset.timeDiff = prevDate ? formatDiff(elm.record.date - prevDate) : '';
       prevDate = elm.record.date;
-    });
+    }
 
     // Date markers
-    this.querySelectorAll('div.date-marker').forEach(elm =>
-      elm.hidden = !set.has(elm.textContent));
+    for(let elm of this.querySelectorAll('div.date-marker'))
+      elm.hidden = !set.has(elm.textContent);
   }
 
   set game(game) {

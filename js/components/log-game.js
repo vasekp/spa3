@@ -4,15 +4,15 @@ import {gameStore} from '../log-game-store.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <spa-color-patch class="log-game-color-patch" color="none"></spa-color-patch>
-<spa-color-sel class="log-game-color-sel log-game-stop-action" zero></spa-color-sel>
+<spa-color-sel class="log-game-color-sel log-game-stop-action" data-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
 <input type="text" class="log-game-name-edit log-game-stop-action">
 <span class="log-game-date"></span>
 <div class="log-game-confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
 <div class="log-game-tools-container">
-  <div class="log-game-tools log-game-stop-action" tabIndex="0">
+  <div class="log-game-tools log-game-stop-action" tabindex="0">
     <img class="log-game-delete inline" src="images/delete.svg" alt="delete" tabindex="0"/>
-    <spa-color-patch class="log-game-color-edit" color="all" tabindex="0"></spa-color-patch>
+    <spa-color-patch class="log-game-color-edit" data-color="all" tabindex="0"></spa-color-patch>
     <img class="log-game-edit inline" alt="edit" src="images/edit.svg" tabindex="0"/>
   </div>
 </div>`;
@@ -23,7 +23,7 @@ export class GameRecordElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['state'];
+    return ['data-state'];
   }
 
   _construct() {
@@ -31,7 +31,7 @@ export class GameRecordElement extends HTMLElement {
       return;
     this._constructed = true;
     this.appendChild(template.content.cloneNode(true));
-    let id = this._id = id => this.querySelector(`.log-game-${id}`);
+    const id = this._id = id => this.querySelector(`.log-game-${id}`);
     id('edit').addEventListener('action', () => this.state = 'edit');
     id('color-edit').addEventListener('action', e => {
       this.state = (this.state == 'color' ? 'closed' : 'color')
@@ -58,8 +58,8 @@ export class GameRecordElement extends HTMLElement {
       }
     });
     this.addEventListener('action', e => this._action(e));
-    this.querySelectorAll('.log-game-stop-action').forEach(
-      elm => elm.addEventListener('action', e => e.preventDefault()));
+    for(let elm of this.querySelectorAll('.log-game-stop-action'))
+      elm.addEventListener('action', e => e.preventDefault());
     this._stateChange(this.state, 'empty');
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
@@ -75,16 +75,16 @@ export class GameRecordElement extends HTMLElement {
   }
 
   set tag(tag) {
-    this._id('color-patch').setAttribute('color', tag || 'none');
+    this._id('color-patch').dataset.color = tag || 'none';
   }
 
   set date(date) {
-    this._id('date').textContent = '(' + dateFormat(date) + ')';
+    this._id('date').textContent = `(${dateFormat(date)})`;
   }
 
   attributeChangedCallback(name, oldValue, value) {
     this._construct();
-    if(name === 'state')
+    if(name === 'data-state')
       this._stateChange(value, oldValue);
   }
 
@@ -99,11 +99,11 @@ export class GameRecordElement extends HTMLElement {
   }
 
   set state(state) {
-    this.setAttribute('state', state);
+    this.dataset.state = state;
   }
 
   get state() {
-    return this.getAttribute('state') || 'empty';
+    return this.dataset.state || 'empty';
   }
 
   _stateChange(state, oldState) {

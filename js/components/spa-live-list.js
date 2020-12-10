@@ -8,29 +8,29 @@ export class LiveListElement extends HTMLElement {
       move: e => this._pMove(e),
       cancel: e => this._pCancel(e)
     };
-    let observer = new MutationObserver(list =>
+    const observer = new MutationObserver(list =>
       this._update(list));
     observer.observe(this, { childList: true });
   }
 
   _update(list) {
-    list.forEach(record => {
-      record.addedNodes.forEach(elm => {
+    for(let record of list) {
+      for(let elm of record.addedNodes) {
         elm.addEventListener('pointerdown', this._cb.down);
         elm.addEventListener('pointerup', this._cb.up);
         elm.addEventListener('pointermove', this._cb.move);
         elm.addEventListener('pointercancel', this._cb.cancel);
-      });
+      }
       if(this._tracking.elm && record.removedNodes.includes(this._tracking.elm))
         this._tracking = {};
-    });
+    }
   }
 
   _pDown(e) {
     let elm = e.currentTarget;
     if(this._tracking.elm)
       return;
-    if(elm.hasAttribute('data-protected'))
+    if(elm.dataset.protected)
       return;
     this._tracking = {
       elm,
@@ -94,23 +94,27 @@ export class LiveListElement extends HTMLElement {
       return;
     elm.style.transition = 'transform .5s';
     elm.style.transform = '';
-    let cb = () => {
-      elm.style.transition = '';
-      elm.style['user-select'] = 'auto';
-      elm.dispatchEvent(new CustomEvent('move-cancel', { bubbles: true }));
-    };
-    elm.addEventListener('transitionend', cb, { once: true });
+    elm.addEventListener('transitionend', swipeCancelCallback, { once: true });
   }
 
   _finishMove(elm, dir) {
     elm.style.transition = 'transform .5s';
     elm.style.transform = `translateX(${dir > 0 ? '120%' : '-120%'})`;
-    let cb = () => {
-      elm.style.transition = '';
-      elm.dispatchEvent(new CustomEvent('move-away', { bubbles: true }));
-    };
-    elm.addEventListener('transitionend', cb, { once: true });
+    elm.addEventListener('transitionend', swipeFinishCallback, { once: true });
   }
 }
+
+const swipeCancelCallback = e => {
+  let elm = e.currentTarget;
+  elm.style.transition = '';
+  elm.style['user-select'] = 'auto';
+  elm.dispatchEvent(new CustomEvent('move-cancel', { bubbles: true }));
+};
+
+const swipeFinishCallback = e => {
+  let elm = e.currentTarget;
+  elm.style.transition = '';
+  elm.dispatchEvent(new CustomEvent('move-away', { bubbles: true }));
+};
 
 window.customElements.define('spa-live-list', LiveListElement);

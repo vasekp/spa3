@@ -45,7 +45,7 @@ export class RecordElement extends HTMLElement {
       return;
     this._construct(level - 1);
     if(level == construct.base) {
-      this.setAttribute('data-colors', 'grey');
+      this.dataset.colors = 'grey';
       this.appendChild(templateBase.content.cloneNode(true));
       let id = this._id = id => this.querySelector(`.log-record-${id}`);
       id('area').addEventListener('input', () => this._input());
@@ -64,25 +64,19 @@ export class RecordElement extends HTMLElement {
     this._constructed = level;
   }
 
-  set text(text) {
-    this._id('area').value = this._id('text').textContent = text;
-  }
-
-  set tag(tag) {
-    this.setAttribute('data-colors', 'param');
-    this.style.setProperty('--color', tag);
-  }
-
-  set date(date) {
-    this._id('timestamp').textContent = timeFormat(date);
-  }
-
-  set geo(geo) {
-    this.setAttribute('data-geo-state', geo ? 'ok' : 'none');
-  }
-
   static get observedAttributes() {
-    return ['timediff', 'state'];
+    return ['data-time-diff', 'data-state'];
+  }
+
+  attributeChangedCallback(name, oldValue, value) {
+    if(!this._constructed)
+      return;
+    if(value === oldValue)
+      return;
+    else if(name === 'data-time-diff')
+      this._id('timediff').textContent = value ? `(${value})` : '';
+    else if(name === 'data-state')
+      this._stateChange(value);
   }
 
   set record(record) {
@@ -96,37 +90,35 @@ export class RecordElement extends HTMLElement {
     return this._record;
   }
 
-  attributeChangedCallback(name, oldValue, value) {
-    if(!this._constructed)
-      return;
-    if(value === oldValue)
-      return;
-    if(name === 'timediff')
-      this._id('timediff').textContent = value ? '(' + value + ')' : '';
-    else if(name === 'state')
-      this._stateChange(value);
+  set text(text) {
+    this._id('area').value = this._id('text').textContent = text;
+  }
+
+  set tag(tag) {
+    this.dataset.colors = 'param';
+    this.style.setProperty('--color', tag);
+  }
+
+  set date(date) {
+    this._id('timestamp').textContent = timeFormat(date);
+  }
+
+  set geo(geo) {
+    this.dataset.geoState = geo ? 'ok' : 'none';
   }
 
   set state(state) {
-    this.setAttribute('state', state);
+    this.dataset.state = state;
   }
 
   get state() {
-    return this.getAttribute('state') || 'empty';
-  }
-
-  set timediff(diff) {
-    this.setAttribute('timediff', diff);
-  }
-
-  get timediff() {
-    return this.getAttribute('timediff');
+    return this.dataset.state || 'empty';
   }
 
   _stateChange(state = this.state) {
     if(state == 'empty' || state == 'edit' || state == 'firstEdit')
       this._construct(construct.props);
-    this.toggleAttribute('data-protected', state != 'closed');
+    this.dataset.protected = state === 'closed' ? '' : '1';
     if(state == 'closed')
       this._close();
     if(state == 'edit' || state == 'firstEdit')
@@ -175,10 +167,10 @@ export class RecordElement extends HTMLElement {
   }
 
   _geoShow() {
-    if(this.getAttribute('data-geo-state') == 'waiting')
+    if(this.dataset.geoState == 'waiting')
       return;
-    else if(this.getAttribute('data-geo-state') == 'error') {
-      alert('Error: ' + this.getAttribute('data-geo-error'));
+    else if(this.dataset.geoState == 'error') {
+      alert(`Error: ${this.dataset.geoError}`);
     } else
       window.open(`https://www.openstreetmap.org/?mlat=${this._record.geo.lat}&mlon=${this._record.geo.lon}&zoom=18`);
   }
@@ -188,7 +180,7 @@ export class RecordElement extends HTMLElement {
       // delete
       this._record.geo = undefined;
     } else {
-      this.setAttribute('data-geo-state', 'waiting');
+      this.dataset.geoState = 'waiting';
       navigator.geolocation.getCurrentPosition(
         position => this._geoCallback(position),
         error => this._geoError(error),
@@ -202,17 +194,17 @@ export class RecordElement extends HTMLElement {
     if(this._record)
       this._record.geo = { lat: position.coords.latitude, lon: position.coords.longitude };
     else {
-      this.setAttribute('data-geo-state', 'success');
+      this.dataset.geoState = 'success';
       this._preGeo = { lat: position.coords.latitude, lon: position.coords.longitude };
     }
   }
 
   _geoError(error) {
-    this.setAttribute('data-geo-state', 'error');
-    this.setAttribute('data-geo-error',
+    this.dataset.geoState = 'error';
+    this.dataset.geoError =
       error.code == error.PERMISSION_DENIED ? 'Permission denied'
       : error.code == error.POSITION_UNAVAILABLE ? 'Location unavailable'
-      : 'Unknown error');
+      : 'Unknown error';
   }
 }
 
