@@ -53,7 +53,7 @@ export class RecordElement extends HTMLElement {
       id('edit').addEventListener('action', e => { this.state = 'edit'; e.preventDefault(); });
       id('geo-icon').addEventListener('action', () => this._geoShow());
       this.addEventListener('focusout', e => {
-        if(!this.contains(e.relatedTarget))
+        if(this.state != 'firstEdit' && !this.contains(e.relatedTarget))
           this.close();
       });
     } else if(level == construct.props) {

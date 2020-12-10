@@ -53,14 +53,14 @@ export class GameRecordElement extends HTMLElement {
         // mousemove the happen but need to capture and kill the expected mousedown :-(
         e.currentTarget.addEventListener('mousedown', e => {
           e.preventDefault();
-          e.stopPropagation()
+          e.stopPropagation();
         }, { once: true });
       }
     });
     this.addEventListener('action', e => this._action(e));
     for(let elm of this.querySelectorAll('.log-game-stop-action'))
       elm.addEventListener('action', e => e.preventDefault());
-    this._stateChange(this.state, 'empty');
+    //this._stateChange(this.state, 'empty');
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
     this.classList.add('innerOutline');
@@ -107,14 +107,13 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _stateChange(state, oldState) {
-    if(oldState == 'empty' && !this._record)
+    console.log(`${oldState} → ${state}`);
+    if(oldState == 'firstEdit' && !this._record)
       this._materialize();
     if(oldState == 'edit' || oldState == 'firstEdit')
       this._save();
     if(state == 'edit' || state == 'firstEdit')
       this._open();
-    if(state == 'closed' && oldState == 'firstEdit')
-      this._choose();
   }
 
   close() {
@@ -126,11 +125,13 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _save() {
-    this._record.name = this._id('name-edit').value;
+    if(this._record)
+      this._record.name = this._id('name-edit').value;
   }
 
   async _materialize() {
     this.record = await gameStore.create(this._id('name-edit').value);
+    this._choose();
   }
 
   _delete() {
