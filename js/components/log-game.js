@@ -58,8 +58,8 @@ export class GameRecordElement extends HTMLElement {
       }
     });
     this.addEventListener('action', e => this._action(e));
-    this.querySelectorAll('.log-game-stop-action').forEach(
-      elm => elm.addEventListener('action', e => e.preventDefault()));
+    for(let elm of this.querySelectorAll('.log-game-stop-action'))
+      elm.addEventListener('action', e => e.preventDefault());
     this._stateChange(this.state, 'empty');
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);

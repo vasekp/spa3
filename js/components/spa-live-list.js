@@ -14,16 +14,16 @@ export class LiveListElement extends HTMLElement {
   }
 
   _update(list) {
-    list.forEach(record => {
-      record.addedNodes.forEach(elm => {
+    for(let record of list) {
+      for(let elm of record.addedNodes) {
         elm.addEventListener('pointerdown', this._cb.down);
         elm.addEventListener('pointerup', this._cb.up);
         elm.addEventListener('pointermove', this._cb.move);
         elm.addEventListener('pointercancel', this._cb.cancel);
-      });
+      }
       if(this._tracking.elm && record.removedNodes.includes(this._tracking.elm))
         this._tracking = {};
-    });
+    }
   }
 
   _pDown(e) {

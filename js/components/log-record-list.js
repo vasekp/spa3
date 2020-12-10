@@ -24,7 +24,8 @@ export class ListElement extends LiveListElement {
   constructor() {
     super();
     this._mo = new MutationObserver(records => {
-      records.forEach(record => this._datesAddRemove(record));
+      for(let record of records)
+        this._datesAddRemove(record);
       this._datesShowHide();
     });
     this._mo.observe(this, {childList: true});
@@ -42,7 +43,7 @@ export class ListElement extends LiveListElement {
     }
     if(record.addedNodes.length > 0) {
       let prevDay = record.previousSibling ? record.previousSibling.dataset.day : null;
-      record.addedNodes.forEach(elm => {
+      for(let elm of record.addedNodes) {
         if(elm.nodeName !== 'LOG-RECORD')
           return;
         this._mo.observe(elm, { attributes: true, attributeFilter: ['data-state', 'hidden'] });
@@ -53,7 +54,7 @@ export class ListElement extends LiveListElement {
         if(day !== prevDay)
           insertMarker(elm, day);
         prevDay = day;
-      });
+      }
     } else if(record.type == 'attributes' && record.attributeName == 'data-state') {
       let elm = record.target;
       if(elm.dataset.day)
@@ -71,17 +72,17 @@ export class ListElement extends LiveListElement {
 
     // Time differences
     let prevDate = 0;
-    this.querySelectorAll('log-record:not([hidden])').forEach(elm => {
+    for(let elm of this.querySelectorAll('log-record:not([hidden])')) {
       if(!elm.record)
         return;
       set.add(elm.dataset.day);
       elm.dataset.timeDiff = prevDate ? formatDiff(elm.record.date - prevDate) : '';
       prevDate = elm.record.date;
-    });
+    }
 
     // Date markers
-    this.querySelectorAll('div.date-marker').forEach(elm =>
-      elm.hidden = !set.has(elm.textContent));
+    for(let elm of this.querySelectorAll('div.date-marker'))
+      elm.hidden = !set.has(elm.textContent);
   }
 
   set game(game) {
