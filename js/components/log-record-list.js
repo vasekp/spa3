@@ -1,5 +1,5 @@
 import {LiveListElement} from './spa-live-list.js';
-import {dateFormat} from '../datetime.js';
+import {dateFormat} from '../util/datetime.js';
 import {recordStore} from '../log-record-store.js';
 
 function formatDiff(diff) {

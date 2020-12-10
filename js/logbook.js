@@ -6,7 +6,7 @@ import './components/log-game.js';
 import './components/spa-scroll.js';
 import {db} from './log-db.js';
 import {Enum} from './util/enum.js';
-import {dateFormat} from './datetime.js';
+import {dateFormat} from './util/datetime.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 

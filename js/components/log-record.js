@@ -1,4 +1,4 @@
-import {timeFormat} from '../datetime.js';
+import {timeFormat} from '../util/datetime.js';
 import {recordStore} from '../log-record-store.js';
 
 const templateBase = document.createElement('template');
