@@ -68,7 +68,7 @@ export class RecordElement extends HTMLElement {
     this._constructBase();
     this._id('props').appendChild(templateProps.content.cloneNode(true));
     this._id('geo-button').addEventListener('action', () => this._geoSet());
-    this._id('colorsel').addEventListener('action', e => this._colorsel(e));
+    this._id('colorsel').addEventListener('color-action', e => this._colorsel(e));
     this._constructed = construct.props;
   }
 
@@ -135,10 +135,9 @@ export class RecordElement extends HTMLElement {
 
   _colorsel(e) {
     let tag = e.target.color;
-    if(this.state === states.nascent) {
+    if(this.state === states.nascent)
       this._materialize(tag);
-      e.preventDefault();
-    } else {
+    else {
       this._record.tag = tag;
       this.state = states.base;
     }

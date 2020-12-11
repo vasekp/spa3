@@ -47,7 +47,7 @@ export class GameRecordElement extends HTMLElement {
       e.preventDefault();
     });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
-    id('color-sel').addEventListener('action', e => this._colorClicked(e.target.color));
+    id('color-sel').addEventListener('color-action', e => this._colorClicked(e.detail.color));
     id('tools').addEventListener('touchstart', e => {
       if(!e.currentTarget.contains(document.activeElement)) {
         e.currentTarget.focus();

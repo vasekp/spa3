@@ -53,7 +53,13 @@ export class ColorSelElement extends HTMLElement {
     this.style.setProperty('--count', this.children.length);
   }
 
-  _action(e) { }
+  _action(e) {
+    this.dispatchEvent(new CustomEvent('color-action', {
+      detail: { color: e.target.color },
+      bubbles: true
+    }));
+    e.preventDefault();
+  }
 }
 
 export class ColorFilterElement extends ColorSelElement {
