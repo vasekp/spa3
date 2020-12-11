@@ -111,8 +111,6 @@ function plus(e) {
   if(state.view === state.views.records) {
     let elm = document.createElement('log-record');
     document.getElementById('record-list').appendChild(elm);
-    elm.state = 'empty';
-    elm.dataset.protected = 1;
     elm.scrollIntoView();
   } else {
     let elm = document.createElement('log-game');

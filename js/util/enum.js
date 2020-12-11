@@ -1,6 +1,6 @@
 const enumHandler = {
   get(target, prop) {
-    if(target[prop])
+    if(typeof target[prop] !== 'undefined')
       return target[prop];
     else
       throw new RangeError(`${prop} not defined`);

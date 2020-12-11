@@ -24,7 +24,7 @@ export class GameRecordElement extends HTMLElement {
   connectedCallback() {
     this._construct();
     if(!this.state)
-      this.state = this.record ? states.default : states.nascent;
+      this.state = states.nascent;
   }
 
   static get observedAttributes() {

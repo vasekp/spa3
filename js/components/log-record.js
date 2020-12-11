@@ -1,3 +1,4 @@
+import {Enum} from '../util/enum.js';
 import {timeFormat} from '../util/datetime.js';
 import {recordStore} from '../log-record-store.js';
 
@@ -23,11 +24,8 @@ templateProps.innerHTML = `
 <spa-color-sel class="log-record-colorsel"></spa-color-sel>
 <span class="log-record-geo-button inline" tabindex="0"/>`;
 
-let construct = Object.freeze({
-  empty: 0,
-  base: 1,
-  props: 2
-});
+const construct = Enum.fromObj({ empty: 0, base: 1, props: 2 });
+const states = Enum.fromArray(['nascent', 'base', 'edit']);
 
 export class RecordElement extends HTMLElement {
   constructor() {
@@ -36,54 +34,56 @@ export class RecordElement extends HTMLElement {
   }
 
   connectedCallback() {
-    this._construct(construct.base);
-    this._stateChange();
-  }
-
-  _construct(level) {
-    if(this._constructed >= level)
-      return;
-    this._construct(level - 1);
-    if(level == construct.base) {
-      this.dataset.colors = 'grey';
-      this.appendChild(templateBase.content.cloneNode(true));
-      let id = this._id = id => this.querySelector(`.log-record-${id}`);
-      id('area').addEventListener('input', () => this._input());
-      id('area').addEventListener('keydown', e => this._keydown(e));
-      id('edit').addEventListener('action', e => { this.state = 'edit'; e.preventDefault(); });
-      id('geo-icon').addEventListener('action', () => this._geoShow());
-      this.addEventListener('focusout', e => {
-        if(this.state != 'firstEdit' && !this.contains(e.relatedTarget))
-          this.close();
-      });
-    } else if(level == construct.props) {
-      this._id('props').appendChild(templateProps.content.cloneNode(true));
-      this._id('geo-button').addEventListener('action', () => this._geoSet());
-      this._id('colorsel').addEventListener('action', e => this._colorsel(e));
-    }
-    this._constructed = level;
+    if(!this.state) {
+      this._constructProps();
+      this.state = states.nascent;
+    } else
+      this._constructBase();
   }
 
   static get observedAttributes() {
     return ['data-time-diff', 'data-state'];
   }
 
+  _constructBase() {
+    if(this._constructed >= construct.base)
+      return;
+    this.dataset.colors = 'grey';
+    this.appendChild(templateBase.content.cloneNode(true));
+    let id = this._id = id => this.querySelector(`.log-record-${id}`);
+    id('area').addEventListener('input', () => this._input());
+    id('area').addEventListener('keydown', e => this._keydown(e));
+    id('edit').addEventListener('action', e => { this.state = states.edit; e.preventDefault(); });
+    id('geo-icon').addEventListener('action', () => this._geoShow());
+    this.addEventListener('focusout', e => {
+      if(this.state !== states.nascent && !this.contains(e.relatedTarget))
+        this._close();
+    });
+    this._constructed = construct.base;
+  }
+
+  _constructProps() {
+    if(this._constructed >= construct.props)
+      return;
+    this._constructBase();
+    this._id('props').appendChild(templateProps.content.cloneNode(true));
+    this._id('geo-button').addEventListener('action', () => this._geoSet());
+    this._id('colorsel').addEventListener('action', e => this._colorsel(e));
+    this._constructed = construct.props;
+  }
+
   attributeChangedCallback(name, oldValue, value) {
-    if(!this._constructed)
-      return;
-    if(value === oldValue)
-      return;
-    else if(name === 'data-time-diff')
+    if(name === 'data-time-diff')
       this._id('timediff').textContent = value ? `(${value})` : '';
     else if(name === 'data-state')
       this._stateChange(value);
   }
 
   set record(record) {
+    this._constructBase();
     this._record = record;
-    this._construct(construct.base);
     record.addView(this);
-    this.state = 'closed';
+    this.state = states.base;
   }
 
   get record() {
@@ -112,47 +112,42 @@ export class RecordElement extends HTMLElement {
   }
 
   get state() {
-    return this.dataset.state || 'empty';
+    return this.dataset.state;
   }
 
   _stateChange(state = this.state) {
-    if(state == 'empty' || state == 'edit' || state == 'firstEdit')
-      this._construct(construct.props);
-    this.dataset.protected = state === 'closed' ? '' : '1';
-    if(state == 'closed')
-      this._close();
-    if(state == 'edit' || state == 'firstEdit')
+    this.dataset.protected = state === states.base ? '' : '1'; // Must be a falsy / truthy string
+    if(state === states.edit)
       this._open();
   }
 
   _open() {
+    this._constructProps();
     this._id('area').focus();
   }
 
   _close() {
-    if(!this._record)
+    if(this._record)
+      this.state = states.base;
+    else
       this.remove();
   }
 
   _colorsel(e) {
     let tag = e.target.color;
-    if(this.state == 'empty') {
+    if(this.state === states.nascent) {
       this._materialize(tag);
       e.preventDefault();
     } else {
       this._record.tag = tag;
-      this.close();
+      this.state = states.base;
     }
   }
 
   async _materialize(tag) {
     let gid = this.closest('log-record-list').gid;
     this.record = await recordStore.create({ gid, tag, text: '', geo: this._preGeo });
-    this.state = 'firstEdit';
-  }
-
-  close() {
-    this.state = 'closed';
+    this.state = states.edit;
   }
 
   _input() {
@@ -161,7 +156,7 @@ export class RecordElement extends HTMLElement {
 
   _keydown(e) {
     if(e.key === 'Enter') {
-      this.close();
+      this.state = states.base;
       e.preventDefault();
     }
   }
@@ -186,8 +181,8 @@ export class RecordElement extends HTMLElement {
         error => this._geoError(error),
         { enableHighAccuracy: true });
     }
-    if(this.state != 'empty')
-      this.close();
+    if(this.state !== states.nascent)
+      this.state = states.base;
   }
 
   _geoCallback(position) {
