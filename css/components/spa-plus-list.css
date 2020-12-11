@@ -2,39 +2,39 @@ spa-plus-list {
   display: block;
 }
 
-.spa-plus-button, .spa-plus-item {
+.spa-plus-button {
+  margin: 0 auto;
+  transform: translateZ(0);
   background: hsl(100, 50%, 50%);
   font-weight: 600;
   color: white;
   text-align: center;
+  width: 2rem;
+  height: 2rem;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  font-size: 2rem;
+  line-height: 1.018;
+  overflow-y: hidden;
 }
 
-.spa-plus-button::after, .spa-plus-item::after {
-  content: '+';
-}
-
-.spa-plus-button {
-  width: 3rem;
-  height: 3rem;
+.spa-plus-button[data-size="big"] {
   position: absolute;
+  z-index: 3;
   right: 1rem;
   bottom: calc(1rem - var(--margin-base));
+  width: 3rem;
+  height: 3rem;
   border-radius: 1.5rem;
   box-shadow: .1rem .1rem .2rem #0004;
-  z-index: 3;
-  transform: translateZ(0);
   font-size: 2.5rem;
   line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
 }
 
+.spa-plus-button::after {
+  content: '+';
+}
+
 .spa-plus-item {
-  order: 10;
-  width: 2rem;
-  height: 2rem;
-  margin: var(--margin-base) auto;
-  margin-bottom: 0;
-  overflow: hidden;
-  border-radius: 1rem;
-  font-size: 2rem;
-  line-height: 1.018;
+  height: calc(2rem + 1px);
 }
