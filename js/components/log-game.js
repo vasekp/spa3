@@ -18,7 +18,7 @@ template.innerHTML = `
   </div>
 </div>`;
 
-const states = Enum.fromArray(['nascent', 'base', 'edit', 'color', 'confirm']);
+const states = Enum.fromArray(['nascent', 'disabled', 'base', 'edit', 'color', 'confirm']);
 
 export class GameRecordElement extends HTMLElement {
   connectedCallback() {
@@ -52,7 +52,7 @@ export class GameRecordElement extends HTMLElement {
       if(!e.currentTarget.contains(document.activeElement)) {
         e.currentTarget.focus();
         // In the ideal world we could just e.preventDefault() the mousedown event on touch devices.
-        // However, with Samsung Internet this would mean the simulated mouse would stay hovering
+        // However, with touch devices this would mean the simulated mouse would stay hovering
         // over whatever it was before, which has side effects with lg.tools. So we do need the
         // mousemove the happen but need to capture and kill the expected mousedown :-(
         e.currentTarget.addEventListener('mousedown', e => {
@@ -69,11 +69,12 @@ export class GameRecordElement extends HTMLElement {
     this.classList.add('innerOutline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
-        this.state = states.base;
+        this.close();
     });
     this._constructed = true;
   }
 
+  // Called only after record.addView: guaranteed to be _constructed
   set name(name) {
     this._id('name').textContent = this._id('name-edit').value = name;
   }
@@ -91,10 +92,10 @@ export class GameRecordElement extends HTMLElement {
   }
 
   set record(record) {
-    this._record = record;
     this._construct();
-    this.state = states.base;
+    this._record = record;
     record.addView(this);
+    this.state = states.base;
   }
 
   get record() {
@@ -110,24 +111,27 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _stateChange(state, oldState) {
-    if(oldState === states.nascent)
-      this._materialize();
-    else if(oldState === states.edit)
-      this._save();
-    console.log(`${oldState} → ${state}`);
-    if(oldState === states.nascent && !this._record)
-      this._materialize();
     if(state === states.nascent || state === states.edit)
       this._id('name-edit').focus();
   }
 
-  _save() {
-    this._record.name = this._id('name-edit').value;
+  close() {
+    if(this.state === states.nascent)
+      this._materialize();
+    else if(this.state === states.edit) {
+      this.record.name = this._id('name-edit').value;
+      this.state = states.base;
+    }
   }
 
-  async _materialize() {
-    this.record = await gameStore.create(this._id('name-edit').value);
-    this._choose();
+  _materialize() {
+    this.dataset.disabled = 1;
+    let promise = gameStore.create(this._id('name-edit').value);
+    promise.then(record => {
+      this.record = record;
+      delete this.dataset.disabled;
+    });
+    return promise;
   }
 
   _delete() {
@@ -137,26 +141,33 @@ export class GameRecordElement extends HTMLElement {
       this.state = states.confirm;
   }
 
-  _action(e) {
-    if(!e.defaultPrevented)
-      this._choose();
+  _keydown(e) {
+    if(e.key === 'Enter') {
+      if(this.state === states.nascent) {
+        let promise = this._materialize(true);
+        this._choose(promise);
+      } else
+        this.close();
+    }
   }
 
-  _choose() {
+  _action(e) {
+    if(e.defaultPrevented)
+      return;
+    this.close();
+    this._choose();
+  }
+
+  _choose(gameAwaitable = this.record) {
     this.dispatchEvent(new CustomEvent('game-chosen', {
-      detail: { game: this._record },
+      detail: { gameAwaitable },
       bubbles: true
     }));
   }
 
   _colorClicked(color) {
-    this._record.tag = color;
-    this.state = states.base;
-  }
-
-  _keydown(e) {
-    if(e.key === 'Enter')
-      this.state = states.base;
+    this.record.tag = color;
+    this.close();
   }
 }
 

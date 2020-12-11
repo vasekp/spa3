@@ -34,6 +34,11 @@ log-game[data-state="nascent"] .log-game-tools-container {
   display: none;
 }
 
+log-game[data-disabled] {
+  opacity: .5;
+  pointer-events: none;
+}
+
 .log-game-content > * {
   flex: none;
 }

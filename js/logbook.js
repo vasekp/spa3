@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
   document.getElementById('log-sel').addEventListener('action', gameList);
   document.getElementById('tag-filter').addEventListener('change', filter);
-  document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.game));
+  document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
   db.then(dbReady);
 });
 
@@ -45,8 +45,8 @@ function gameList() {
   document.getElementById('tag-filter').selectAll();
 }
 
-function recordList(game) {
-  loadRecords(game);
+function recordList(gameAwaitable) {
+  loadRecords(gameAwaitable);
   state.view = state.views.records;
   document.getElementById('tag-filter').selectAll();
 }
@@ -73,13 +73,14 @@ async function addExampleData(adb) {
   return new Promise(resolve => tx.oncomplete = resolve);
 }
 
-async function loadRecords(game) {
+async function loadRecords(gameAwaitable) {
   let list = document.getElementById('record-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
+  document.getElementById('load').hidden = false;
+  let game = await gameAwaitable;
   list.game = game;
   game.addView(gameNameView);
-  document.getElementById('load').hidden = false;
   populateRecList(await recordStore.getAll(game.id));
 }
 
