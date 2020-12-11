@@ -23,66 +23,57 @@ function formatDiff(diff) {
 export class ListElement extends LiveListElement {
   constructor() {
     super();
-    this._mo = new MutationObserver(records => {
-      for(let record of records)
-        this._datesAddRemove(record);
-      this._datesShowHide();
-    });
-    this._mo.observe(this, {childList: true});
+    this._mo = new MutationObserver(() => this._updateDates());
+    this._mo.observe(this, { childList: true });
     this.addEventListener('move-away', e =>
       recordStore.delete(e.target.record).then(() => e.target.remove()));
   }
 
-  _datesAddRemove(record) {
+  _updateDates() {
     const insertMarker = (elm, day) => {
       let marker = document.createElement('div');
       marker.classList.add('date-marker');
       marker.dataset.protected = 1;
+      marker.dataset.day = day;
       marker.innerText = day;
       this.insertBefore(marker, elm);
     }
-    if(record.addedNodes.length > 0) {
-      let prevDay = record.previousSibling ? record.previousSibling.dataset.day : null;
-      for(let elm of record.addedNodes) {
-        if(elm.nodeName !== 'LOG-RECORD')
-          return;
-        this._mo.observe(elm, { attributes: true, attributeFilter: ['data-state', 'hidden'] });
-        if(!elm.record)
-          return;
-        let day = dateFormat(elm.record.date);
-        elm.dataset.day = day;
+    let prevDate, prevDay, nonempty, prevMarker;
+    for(let elm of this.childNodes) {
+      if(elm.nodeName === 'LOG-RECORD') {
+        if(!elm.dataset.day) {
+          // newly added element
+          this._mo.observe(elm, { attributes: true, attributeFilter: ['data-state', 'hidden'] });
+          if(elm.record)
+            elm.dataset.day = dateFormat(elm.record.date);
+          else
+            continue;
+        }
+        if(elm.hidden)
+          continue;
+        let day = elm.dataset.day;
         if(day !== prevDay)
           insertMarker(elm, day);
         prevDay = day;
+        elm.dataset.timeDiff = prevDate ? formatDiff(elm.record.date - prevDate) : '';
+        prevDate = elm.record.date;
+        nonempty = true;
+      } else {
+        // date marker
+        let day = elm.dataset.day;
+        if(day === prevDay) {
+          elm.remove();
+          continue;
+        }
+        if(!nonempty && prevMarker)
+          prevMarker.remove();
+        prevMarker = elm;
+        prevDay = day;
+        nonempty = false;
       }
-    } else if(record.type == 'attributes' && record.attributeName == 'data-state') {
-      let elm = record.target;
-      if(elm.dataset.day)
-        return;
-      let day = dateFormat(elm.record.date);
-      elm.dataset.day = day;
-      let prev = elm.previousSibling;
-      if(!prev || prev.dataset.day !== day)
-        insertMarker(elm, day);
     }
-  }
-
-  _datesShowHide() {
-    let set = new Set();
-
-    // Time differences
-    let prevDate = 0;
-    for(let elm of this.querySelectorAll('log-record:not([hidden])')) {
-      if(!elm.record)
-        return;
-      set.add(elm.dataset.day);
-      elm.dataset.timeDiff = prevDate ? formatDiff(elm.record.date - prevDate) : '';
-      prevDate = elm.record.date;
-    }
-
-    // Date markers
-    for(let elm of this.querySelectorAll('div.date-marker'))
-      elm.hidden = !set.has(elm.textContent);
+    if(!nonempty && prevMarker)
+      prevMarker.remove();
   }
 
   set game(game) {
