@@ -88,14 +88,14 @@ export class ColorFilterElement extends ColorSelElement {
       sel.all = sel.every(x => x);
     }
     for(let elm2 of elm.querySelectorAll('spa-color-patch'))
-      elm2.classList.toggle('selected', sel[elm.dataset.color]);
+      elm2.classList.toggle('selected', sel[elm2.color]);
     elm._notify();
   }
 
   selectAll(noEvent) {
     for(let elm of this.querySelectorAll('spa-color-patch')) {
       elm.classList.add('filter', 'selected');
-      this._sel[elm.dataset.color] = true;
+      this._sel[elm.color] = true;
     }
     if(!noEvent)
       this._notify();
