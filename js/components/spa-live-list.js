@@ -21,7 +21,7 @@ export class LiveListElement extends HTMLElement {
         elm.addEventListener('pointermove', this._cb.move);
         elm.addEventListener('pointercancel', this._cb.cancel);
       }
-      if(this._tracking.elm && record.removedNodes.includes(this._tracking.elm))
+      if(this._tracking.elm && [...record.removedNodes].includes(this._tracking.elm))
         this._tracking = {};
     }
   }
