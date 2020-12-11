@@ -13,6 +13,8 @@
   --line-width: 1px;
   --margin-base: 10px;
   --margin-small: 5px;
+  --margin-base-neg: calc(-1 * var(--margin-base));
+  --margin-small-neg: calc(-1 * var(--margin-small));
   --pad-around-text: calc((1em - var(--font-cap-size))/2 - var(--line-width));
   --focus-shadow: 0 0 2px 1px #888;
 }

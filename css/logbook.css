@@ -34,7 +34,7 @@
 }
 
 spa-scroll {
-  margin: 0 calc(-1 * var(--margin-base));
+  margin: 0 var(--margin-base-neg);
   flex: 1;
 }
 
@@ -95,7 +95,7 @@ log-record:last-child {
   display: flex;
   font-size: 80%;
   line-height: 100%;
-  margin: 0 calc(-1 * var(--margin-small));
+  margin: 0 var(--margin-small-neg);
 }
 
 .date-marker::before, .date-marker::after {
