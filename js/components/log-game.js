@@ -117,11 +117,12 @@ export class GameRecordElement extends HTMLElement {
 
   close() {
     if(this.state === states.nascent)
-      this._materialize();
+      return this._materialize();
     else {
       if(this.state === states.edit)
         this.record.name = this._id('name-edit').value;
       this.state = states.base;
+      return this.record;
     }
   }
 
@@ -143,23 +144,18 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _keydown(e) {
-    if(e.key === 'Enter') {
-      if(this.state === states.nascent) {
-        let promise = this._materialize(true);
-        this._choose(promise);
-      } else
-        this.close();
-    }
+    if(e.key === 'Enter')
+      this._choose();
   }
 
   _action(e) {
     if(e.defaultPrevented)
       return;
-    this.close();
     this._choose();
   }
 
-  _choose(gameAwaitable = this.record) {
+  _choose() {
+    let gameAwaitable = this.close();
     this.dispatchEvent(new CustomEvent('game-chosen', {
       detail: { gameAwaitable },
       bubbles: true
