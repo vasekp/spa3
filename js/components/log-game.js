@@ -118,8 +118,9 @@ export class GameRecordElement extends HTMLElement {
   close() {
     if(this.state === states.nascent)
       this._materialize();
-    else if(this.state === states.edit) {
-      this.record.name = this._id('name-edit').value;
+    else {
+      if(this.state === states.edit)
+        this.record.name = this._id('name-edit').value;
       this.state = states.base;
     }
   }
