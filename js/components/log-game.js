@@ -1,3 +1,4 @@
+import {Enum} from '../util/enum.js';
 import {dateFormat} from '../util/datetime.js';
 import {gameStore} from '../log-game-store.js';
 
@@ -17,9 +18,13 @@ template.innerHTML = `
   </div>
 </div>`;
 
+const states = Enum.fromArray(['nascent', 'base', 'edit', 'color', 'confirm']);
+
 export class GameRecordElement extends HTMLElement {
   connectedCallback() {
     this._construct();
+    if(!this.state)
+      this.state = this.record ? states.default : states.nascent;
   }
 
   static get observedAttributes() {
@@ -29,12 +34,11 @@ export class GameRecordElement extends HTMLElement {
   _construct() {
     if(this._constructed)
       return;
-    this._constructed = true;
     this.appendChild(template.content.cloneNode(true));
     const id = this._id = id => this.querySelector(`.log-game-${id}`);
-    id('edit').addEventListener('action', () => this.state = 'edit');
+    id('edit').addEventListener('action', () => this.state = states.edit);
     id('color-edit').addEventListener('action', e => {
-      this.state = (this.state == 'color' ? 'closed' : 'color')
+      this.state = states.color;
       e.target.focus()
     });
     id('delete').addEventListener('action', e => {
@@ -60,14 +64,14 @@ export class GameRecordElement extends HTMLElement {
     this.addEventListener('action', e => this._action(e));
     for(let elm of this.querySelectorAll('.log-game-stop-action'))
       elm.addEventListener('action', e => e.preventDefault());
-    //this._stateChange(this.state, 'empty');
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
     this.classList.add('innerOutline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
-        this.close();
+        this.state = states.base;
     });
+    this._constructed = true;
   }
 
   set name(name) {
@@ -83,14 +87,13 @@ export class GameRecordElement extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    this._construct();
-    if(name === 'data-state')
-      this._stateChange(value, oldValue);
+    this._stateChange(value, oldValue);
   }
 
   set record(record) {
     this._record = record;
-    this.state = 'closed';
+    this._construct();
+    this.state = states.base;
     record.addView(this);
   }
 
@@ -103,30 +106,23 @@ export class GameRecordElement extends HTMLElement {
   }
 
   get state() {
-    return this.dataset.state || 'empty';
+    return this.dataset.state;
   }
 
   _stateChange(state, oldState) {
-    console.log(`${oldState} → ${state}`);
-    if(oldState == 'firstEdit' && !this._record)
+    if(oldState === states.nascent)
       this._materialize();
-    if(oldState == 'edit' || oldState == 'firstEdit')
+    else if(oldState === states.edit)
       this._save();
-    if(state == 'edit' || state == 'firstEdit')
-      this._open();
-  }
-
-  close() {
-    this.state = 'closed';
-  }
-
-  _open() {
-    this._id('name-edit').focus();
+    console.log(`${oldState} → ${state}`);
+    if(oldState === states.nascent && !this._record)
+      this._materialize();
+    if(state === states.nascent || state === states.edit)
+      this._id('name-edit').focus();
   }
 
   _save() {
-    if(this._record)
-      this._record.name = this._id('name-edit').value;
+    this._record.name = this._id('name-edit').value;
   }
 
   async _materialize() {
@@ -135,10 +131,10 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _delete() {
-    if(this.state == 'delete') {
+    if(this.state === states.confirm) {
       gameStore.delete(this.record).then(() => this.remove());
     } else
-      this.state = 'delete';
+      this.state = states.confirm;
   }
 
   _action(e) {
@@ -155,12 +151,12 @@ export class GameRecordElement extends HTMLElement {
 
   _colorClicked(color) {
     this._record.tag = color;
-    this.close();
+    this.state = states.base;
   }
 
   _keydown(e) {
     if(e.key === 'Enter')
-      this.close();
+      this.state = states.base;
   }
 }
 

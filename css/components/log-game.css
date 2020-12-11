@@ -8,15 +8,15 @@ log-game {
   background: inherit;
 }
 
-log-game:not([data-state="delete"]) .log-game-confirm {
+log-game:not([data-state="confirm"]) .log-game-confirm {
   display: none;
 }
 
-log-game:not([data-state="edit"]):not([data-state="firstEdit"]) .log-game-name-edit {
+log-game:not([data-state="edit"]):not([data-state="nascent"]) .log-game-name-edit {
   display: none;
 }
 
-log-game:not([data-state="edit"]):not([data-state="firstEdit"]):not([data-state="closed"]) .log-game-color-patch {
+log-game:not([data-state="edit"]):not([data-state="base"]) .log-game-color-patch {
   display: none;
 }
 
@@ -24,13 +24,13 @@ log-game:not([data-state="color"]) .log-game-color-sel {
   display: none;
 }
 
-log-game:not([data-state="closed"]) .log-game-date,
-log-game:not([data-state="closed"]) .log-game-name {
+log-game:not([data-state="base"]) .log-game-date,
+log-game:not([data-state="base"]) .log-game-name {
   display: none;
 }
 
 log-game[data-state="edit"] .log-game-tools-container,
-log-game[data-state="firstEdit"] .log-game-tools-container {
+log-game[data-state="nascent"] .log-game-tools-container {
   display: none;
 }
 
