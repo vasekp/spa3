@@ -69,7 +69,7 @@ export class GameRecordElement extends HTMLElement {
     this.classList.add('innerOutline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
-        this._closeOrCancel();
+        this._close();
     });
     this._constructed = true;
   }
@@ -119,40 +119,37 @@ export class GameRecordElement extends HTMLElement {
       this._id('name-edit').focus();
   }
 
-  _close() {
-    if(this.state === states.edit) {
-      let newName = this._id('name-edit').value;
-      if(newName)
-        this.record.name = newName;
-      else // cancel change
-        this._id('name-edit').value = this.record.name;
-    }
-    this.state = states.base;
-  }
-
-  _closeOrCancel() {
+  _setName(name) {
     if(this.state === states.nascent)
-      this.remove();
-    else
-      this._close();
-  }
-
-  _closeOrCreate() {
-    if(this.state === states.nascent) {
-      if(!this._id('name-edit').value) {
-        this.remove();
-        return null;
-      } else
-        return this._materialize();
-    } else {
-      this._close();
+      return this._materialize(name);
+    else {
+      this.record.name = name;
+      this.state = states.base;
       return this.record;
     }
   }
 
-  _materialize() {
+  _close() {
+    let newName = this._id('name-edit').value;
+    if(!newName)
+      return this._cancel();
+    else
+      return this._setName(newName);
+  }
+
+  _cancel() {
+    if(this.state === states.nascent) {
+      this.remove();
+      return null;
+    } else {
+      this._id('name-edit').value = this.record.name;
+      return this.record;
+    }
+  }
+
+  _materialize(name) {
     this.dataset.disabled = 1;
-    let promise = gameStore.create(this._id('name-edit').value);
+    let promise = gameStore.create(name);
     promise.then(record => {
       this.record = record;
       delete this.dataset.disabled;
@@ -180,7 +177,7 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _choose() {
-    let gameAwaitable = this._closeOrCreate();
+    let gameAwaitable = this._close();
     if(!gameAwaitable) // cancelled
       return;
     this.dispatchEvent(new CustomEvent('game-chosen', {
@@ -191,7 +188,7 @@ export class GameRecordElement extends HTMLElement {
 
   _colorClicked(color) {
     this.record.tag = color;
-    this._closeOrCancel();
+    this._close();
   }
 }
 
