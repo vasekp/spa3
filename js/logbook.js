@@ -4,8 +4,9 @@ import './components/log-record.js';
 import './components/log-record-list.js';
 import './components/log-game.js';
 import './components/spa-scroll.js';
-import {dateFormat} from './datetime.js';
 import {db} from './log-db.js';
+import {Enum} from './util/enum.js';
+import {dateFormat} from './util/datetime.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 
@@ -18,7 +19,7 @@ const state = {
   }
 };
 
-state.views = Object.freeze({
+state.views = Enum.fromObj({
   records: 'rec-list',
   games: 'game-list'
 });
@@ -32,7 +33,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
   document.getElementById('log-sel').addEventListener('action', gameList);
   document.getElementById('tag-filter').addEventListener('change', filter);
-  document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.game));
+  document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
   db.then(dbReady);
 });
 
@@ -44,8 +45,8 @@ function gameList() {
   document.getElementById('tag-filter').selectAll();
 }
 
-function recordList(game) {
-  loadRecords(game);
+function recordList(gameAwaitable) {
+  loadRecords(gameAwaitable);
   state.view = state.views.records;
   document.getElementById('tag-filter').selectAll();
 }
@@ -72,13 +73,14 @@ async function addExampleData(adb) {
   return new Promise(resolve => tx.oncomplete = resolve);
 }
 
-async function loadRecords(game) {
+async function loadRecords(gameAwaitable) {
   let list = document.getElementById('record-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
+  document.getElementById('load').hidden = false;
+  let game = await gameAwaitable;
   list.game = game;
   game.addView(gameNameView);
-  document.getElementById('load').hidden = false;
   populateRecList(await recordStore.getAll(game.id));
 }
 
@@ -109,14 +111,11 @@ function plus(e) {
   if(state.view === state.views.records) {
     let elm = document.createElement('log-record');
     document.getElementById('record-list').appendChild(elm);
-    elm.state = 'empty';
-    elm.dataset.protected = 1;
     elm.scrollIntoView();
   } else {
     let elm = document.createElement('log-game');
     document.getElementById('game-list').appendChild(elm);
     elm.scrollIntoView();
-    elm.state = 'firstEdit';
   }
   e.preventDefault();
 }
