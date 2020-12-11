@@ -51,12 +51,13 @@ export class RecordElement extends HTMLElement {
     this.dataset.colors = 'grey';
     this.appendChild(templateBase.content.cloneNode(true));
     let id = this._id = id => this.querySelector(`.log-record-${id}`);
+    this.addEventListener('action', e => e.preventDefault());
     id('area').addEventListener('input', () => this._input());
     id('area').addEventListener('keydown', e => this._keydown(e));
     id('edit').addEventListener('action', e => { this.state = states.edit; e.preventDefault(); });
     id('geo-icon').addEventListener('action', () => this._geoShow());
     this.addEventListener('focusout', e => {
-      if(this.state !== states.nascent && !this.contains(e.relatedTarget))
+      if(!this.contains(e.relatedTarget))
         this._close();
     });
     this._constructed = construct.base;
@@ -67,7 +68,7 @@ export class RecordElement extends HTMLElement {
       return;
     this._constructBase();
     this._id('props').appendChild(templateProps.content.cloneNode(true));
-    this._id('geo-button').addEventListener('action', () => this._geoSet());
+    this._id('geo-button').addEventListener('action', e => { this._geoSet(); e.preventDefault(); });
     this._id('colorsel').addEventListener('color-action', e => this._colorsel(e));
     this._constructed = construct.props;
   }

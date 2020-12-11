@@ -112,6 +112,7 @@ function plus(e) {
     let elm = document.createElement('log-record');
     document.getElementById('record-list').appendChild(elm);
     elm.scrollIntoView();
+    elm.querySelector('spa-color-patch').focus();
   } else {
     let elm = document.createElement('log-game');
     document.getElementById('game-list').appendChild(elm);
