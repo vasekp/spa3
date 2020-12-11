@@ -117,7 +117,14 @@ export class RecordElement extends HTMLElement {
   }
 
   _stateChange(state = this.state) {
-    this.dataset.protected = state === states.base ? '' : '1'; // Must be a falsy / truthy string
+    if(state === states.base)
+      delete this.dataset.protected;
+    else
+      this.dataset.protected = true;
+    if(state === states.nascent)
+      this.dataset.hidePlus = true;
+    else
+      delete this.dataset.hidePlus;
     if(state === states.edit)
       this._open();
   }

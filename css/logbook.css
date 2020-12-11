@@ -82,6 +82,10 @@ log-record {
   margin: var(--margin-base) 0;
 }
 
+log-record:last-child {
+  margin-bottom: 0;
+}
+
 #game-list > :nth-child(even) {
   background: var(--color-bg-alt);
 }

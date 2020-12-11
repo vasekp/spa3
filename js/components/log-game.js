@@ -111,6 +111,10 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _stateChange(state, oldState) {
+    if(state === states.nascent)
+      this.dataset.hidePlus = true;
+    else
+      delete this.dataset.hidePlus;
     if(state === states.nascent || state === states.edit)
       this._id('name-edit').focus();
   }

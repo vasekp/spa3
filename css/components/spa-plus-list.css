@@ -36,5 +36,6 @@ spa-plus-list {
 }
 
 .spa-plus-item {
+  margin-top: var(--margin-base);
   height: calc(2rem + 1px);
 }

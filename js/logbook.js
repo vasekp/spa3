@@ -111,12 +111,12 @@ function plus(e) {
   if(state.view === state.views.records) {
     let elm = document.createElement('log-record');
     document.getElementById('record-list').appendChild(elm);
-    elm.scrollIntoView();
+    elm.scrollIntoView(false);
     elm.querySelector('spa-color-patch').focus();
   } else {
     let elm = document.createElement('log-game');
     document.getElementById('game-list').appendChild(elm);
-    elm.scrollIntoView();
+    elm.scrollIntoView(false);
   }
   e.preventDefault();
 }
