@@ -69,7 +69,7 @@ export class GameRecordElement extends HTMLElement {
     this.classList.add('innerOutline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
-        this.close();
+        this._closeOrCancel();
     });
     this._constructed = true;
   }
@@ -115,13 +115,33 @@ export class GameRecordElement extends HTMLElement {
       this._id('name-edit').focus();
   }
 
-  close() {
+  _close() {
+    if(this.state === states.edit) {
+      let newName = this._id('name-edit').value;
+      if(newName)
+        this.record.name = newName;
+      else // cancel change
+        this._id('name-edit').value = this.record.name;
+    }
+    this.state = states.base;
+  }
+
+  _closeOrCancel() {
     if(this.state === states.nascent)
-      return this._materialize();
-    else {
-      if(this.state === states.edit)
-        this.record.name = this._id('name-edit').value;
-      this.state = states.base;
+      this.remove();
+    else
+      this._close();
+  }
+
+  _closeOrCreate() {
+    if(this.state === states.nascent) {
+      if(!this._id('name-edit').value) {
+        this.remove();
+        return null;
+      } else
+        return this._materialize();
+    } else {
+      this._close();
       return this.record;
     }
   }
@@ -144,8 +164,9 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _keydown(e) {
-    if(e.key === 'Enter')
+    if(e.key === 'Enter') {
       this._choose();
+    }
   }
 
   _action(e) {
@@ -155,7 +176,9 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _choose() {
-    let gameAwaitable = this.close();
+    let gameAwaitable = this._closeOrCreate();
+    if(!gameAwaitable) // cancelled
+      return;
     this.dispatchEvent(new CustomEvent('game-chosen', {
       detail: { gameAwaitable },
       bubbles: true
@@ -164,7 +187,7 @@ export class GameRecordElement extends HTMLElement {
 
   _colorClicked(color) {
     this.record.tag = color;
-    this.close();
+    this._closeOrCancel();
   }
 }
 

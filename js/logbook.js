@@ -130,7 +130,7 @@ function filter(e) {
     }
   } else {
     for(let elm of document.getElementById('game-list').querySelectorAll('log-game')) {
-      let show = elm.record.tag ? sel[elm.record.tag] : sel.all;
+      let show = elm.record && elm.record.tag ? sel[elm.record.tag] : sel.all;
       elm.hidden = !show;
     }
   }
