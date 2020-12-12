@@ -5,13 +5,13 @@ import {gameStore} from '../log-game-store.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <spa-color-patch class="log-game-color-patch" color="none"></spa-color-patch>
-<spa-color-sel class="log-game-color-sel log-game-stop-action" data-zero="1"></spa-color-sel>
+<spa-color-sel class="log-game-color-sel log-game-stop-click" data-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
-<input type="text" class="log-game-name-edit log-game-stop-action">
+<input type="text" class="log-game-name-edit log-game-stop-click">
 <span class="log-game-date"></span>
 <div class="log-game-confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
 <div class="log-game-tools-container">
-  <div class="log-game-tools log-game-stop-action" tabindex="0">
+  <div class="log-game-tools log-game-stop-click" tabindex="0">
     <img class="log-game-delete inline" src="images/delete.svg" alt="delete" tabindex="0"/>
     <spa-color-patch class="log-game-color-edit" data-color="all" tabindex="0"></spa-color-patch>
     <img class="log-game-edit inline" alt="edit" src="images/edit.svg" tabindex="0"/>
@@ -36,18 +36,18 @@ export class GameRecordElement extends HTMLElement {
       return;
     this.appendChild(template.content.cloneNode(true));
     const id = this._id = id => this.querySelector(`.log-game-${id}`);
-    id('edit').addEventListener('action', () => this.state = states.edit);
-    id('color-edit').addEventListener('action', e => {
+    id('edit').addEventListener('click', () => this.state = states.edit);
+    id('color-edit').addEventListener('click', e => {
       this.state = states.color;
       e.target.focus()
     });
-    id('delete').addEventListener('action', e => {
+    id('delete').addEventListener('click', e => {
       this._delete();
       e.target.focus();
       e.preventDefault();
     });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
-    id('color-sel').addEventListener('color-action', e => this._colorClicked(e.detail.color));
+    id('color-sel').addEventListener('color-click', e => this._colorClicked(e.detail.color));
     id('tools').addEventListener('touchend', e => {
       if(!e.currentTarget.contains(document.activeElement)) {
         e.currentTarget.focus();
@@ -61,9 +61,7 @@ export class GameRecordElement extends HTMLElement {
         }, { once: true });
       }
     });
-    this.addEventListener('action', e => this._action(e));
-    for(let elm of this.querySelectorAll('.log-game-stop-action'))
-      elm.addEventListener('action', e => e.preventDefault());
+    this.addEventListener('click', e => this._click(e));
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
     this.classList.add('innerOutline');
@@ -173,9 +171,11 @@ export class GameRecordElement extends HTMLElement {
     }
   }
 
-  _action(e) {
-    if(e.defaultPrevented)
+  _click(e) {
+    if(this.contains(e.target.closest('.log-game-stop-click'))) {
+      console.log(e.target.closest('.log-game-stop-click'));
       return;
+    }
     this._choose();
   }
 

@@ -32,16 +32,11 @@ export class PlusListElement extends HTMLElement {
   _construct() {
     if(this._constructed)
       return;
-    const plusAction = e => {
-      this.dispatchEvent(new CustomEvent('plus-action'), { bubbles: true });
-      e.preventDefault();
-    };
     const item = document.createElement('div');
     item.classList.add('spa-plus-item');
     this.appendChild(item);
     const button = document.createElement('div');
     button.classList.add('spa-plus-button');
-    button.addEventListener('action', plusAction);
     item.appendChild(button);
     this._item = item;
     this._button = button;
@@ -54,6 +49,10 @@ export class PlusListElement extends HTMLElement {
     const cstyle = getComputedStyle(this._item);
     let reservedSize = parseFloat(cstyle.height) + parseFloat(cstyle.marginTop);
     this._state.scrolling = targetSize + reservedSize >= parentSize;
+  }
+
+  get button() {
+    return this._button;
   }
 }
 
