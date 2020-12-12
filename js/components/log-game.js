@@ -5,13 +5,13 @@ import {gameStore} from '../log-game-store.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <spa-color-patch class="log-game-color-patch" color="none"></spa-color-patch>
-<spa-color-sel class="log-game-color-sel log-game-stop-click" data-zero="1"></spa-color-sel>
+<spa-color-sel class="log-game-color-sel" data-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
-<input type="text" class="log-game-name-edit log-game-stop-click">
+<input type="text" class="log-game-name-edit">
 <span class="log-game-date"></span>
 <div class="log-game-confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
 <div class="log-game-tools-container">
-  <div class="log-game-tools log-game-stop-click" tabindex="0">
+  <div class="log-game-tools" tabindex="0">
     <img class="log-game-delete inline" src="images/delete.svg" alt="delete" tabindex="0"/>
     <spa-color-patch class="log-game-color-edit" data-color="all" tabindex="0"></spa-color-patch>
     <img class="log-game-edit inline" alt="edit" src="images/edit.svg" tabindex="0"/>
@@ -51,16 +51,10 @@ export class GameRecordElement extends HTMLElement {
     id('tools').addEventListener('touchend', e => {
       if(!e.currentTarget.contains(document.activeElement)) {
         e.currentTarget.focus();
-        // In an ideal world we could just e.preventDefault() the mouse events on touch devices.
-        // However, with touch devices this would mean the simulated mouse would stay hovering
-        // over whatever it was before, which has side effects with lg.tools. So we do need the
-        // mousemove to happen but need to capture and kill the expected mousedown :-(
-        e.currentTarget.addEventListener('mousedown', e => {
-          e.preventDefault();
-          e.stopPropagation();
-        }, { once: true });
+        e.preventDefault();
       }
     });
+    id('tools').addEventListener('click', e => e.preventDefault());
     this.addEventListener('click', e => this._click(e));
     if (!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
@@ -172,11 +166,8 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _click(e) {
-    if(this.contains(e.target.closest('.log-game-stop-click'))) {
-      console.log(e.target.closest('.log-game-stop-click'));
-      return;
-    }
-    this._choose();
+    if(this.state === states.base)
+      this._choose();
   }
 
   _choose() {
