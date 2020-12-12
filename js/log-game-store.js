@@ -22,6 +22,11 @@ gameStore.getAll = async function() {
   return results.map(g => new Game(g));
 }
 
+gameStore.get = async function(id) {
+  let result = await ObjectStore.prototype.get.call(this, id);
+  return new Game(result);
+}
+
 class Game {
   constructor(record) {
     this._static = record;

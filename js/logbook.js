@@ -24,6 +24,10 @@ state.views = Enum.fromObj({
   games: 'game-list'
 });
 
+const lsKeys = Enum.fromObj({
+  gid: 'log-gid'
+});
+
 const gameNameView = {
   set name(name) { document.getElementById('gname').innerText = name; },
   set date(date) { document.getElementById('gdate').innerText = `(${dateFormat(date)})`; }
@@ -43,6 +47,7 @@ function gameList() {
   if(curGame)
     curGame.removeView(gameNameView);
   state.view = state.views.games;
+  delete localStorage[lsKeys.gid];
   document.getElementById('tag-filter').selectAll();
 }
 
@@ -57,10 +62,9 @@ async function dbReady(adb) {
     await addExampleData(adb);
   let games = await gameStore.getAll();
   populateGameList(games);
-  if(games.length > 0)
-    recordList(games[0]);
-  else
-    gameList();
+  gameStore.get(+localStorage[lsKeys.gid])
+    .then(game => recordList(game))
+    .catch(err => gameList());
 }
 
 async function addExampleData(adb) {
@@ -71,6 +75,7 @@ async function addExampleData(adb) {
   recordStore.create({ gid, tag: 3, text: 'Mezitajenka' }, tx);
   recordStore.create({ gid, tag: 4, text: 'Nápověda' }, tx);
   recordStore.create({ gid, tag: 5, text: 'Adresa' }, tx);
+  localStorage[lsKeys.gid] = gid;
   return new Promise(resolve => tx.oncomplete = resolve);
 }
 
@@ -80,6 +85,7 @@ async function loadRecords(gameAwaitable) {
     list.removeChild(list.firstChild);
   document.getElementById('load').hidden = false;
   let game = await gameAwaitable;
+  localStorage[lsKeys.gid] = game.id;
   list.game = game;
   game.addView(gameNameView);
   populateRecList(await recordStore.getAll(game.id));

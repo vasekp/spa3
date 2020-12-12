@@ -51,6 +51,13 @@ export class ObjectStore {
     return this._request('delete', record.id, tx);
   }
 
+  get(id, tx) {
+    return new Promise((resolve, reject) =>
+      this._request('get', id, tx)
+        .then(record => record ? resolve(record) : reject())
+        .catch(err => reject(err)));
+  }
+
   async deleteWhere(index, value, tx) {
     if(!tx)
       tx = (await db).transaction(this.name, 'readwrite');
