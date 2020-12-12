@@ -48,13 +48,13 @@ export class GameRecordElement extends HTMLElement {
     });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
     id('color-sel').addEventListener('color-action', e => this._colorClicked(e.detail.color));
-    id('tools').addEventListener('touchstart', e => {
+    id('tools').addEventListener('touchend', e => {
       if(!e.currentTarget.contains(document.activeElement)) {
         e.currentTarget.focus();
-        // In the ideal world we could just e.preventDefault() the mousedown event on touch devices.
+        // In an ideal world we could just e.preventDefault() the mouse events on touch devices.
         // However, with touch devices this would mean the simulated mouse would stay hovering
         // over whatever it was before, which has side effects with lg.tools. So we do need the
-        // mousemove the happen but need to capture and kill the expected mousedown :-(
+        // mousemove to happen but need to capture and kill the expected mousedown :-(
         e.currentTarget.addEventListener('mousedown', e => {
           e.preventDefault();
           e.stopPropagation();
