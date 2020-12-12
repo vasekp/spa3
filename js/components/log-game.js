@@ -161,12 +161,15 @@ export class GameRecordElement extends HTMLElement {
 
   _keydown(e) {
     if(e.key === 'Enter') {
-      this._choose();
+      if(this.state === states.nascent)
+        this._choose();
+      else
+        this._close();
     }
   }
 
   _click(e) {
-    if(this.state === states.base)
+    if(this.state === states.base && !e.defaultPrevented)
       this._choose();
   }
 
@@ -184,6 +187,8 @@ export class GameRecordElement extends HTMLElement {
   _colorClicked(color) {
     this.record.tag = color;
     this._close();
+    if(document.activeElement)
+      document.activeElement.blur();
   }
 }
 

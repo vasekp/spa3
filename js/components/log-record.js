@@ -142,7 +142,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _colorsel(e) {
-    let tag = e.target.color;
+    let tag = e.detail.color;
     if(this.state === states.nascent)
       this._materialize(tag);
     else {
