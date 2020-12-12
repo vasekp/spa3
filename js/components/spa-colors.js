@@ -54,11 +54,13 @@ export class ColorSelElement extends HTMLElement {
   }
 
   _click(e) {
-    this.dispatchEvent(new CustomEvent('color-click', {
+    let stop = !this.dispatchEvent(new CustomEvent('color-click', {
       detail: { color: e.target.color },
+      cancelable: true,
       bubbles: true
     }));
-    e.preventDefault();
+    if(stop)
+      e.preventDefault();
   }
 }
 
