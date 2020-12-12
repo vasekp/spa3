@@ -86,10 +86,6 @@ log-record:last-child {
   margin-bottom: 0;
 }
 
-#game-list > :nth-child(even) {
-  background: var(--color-bg-alt);
-}
-
 .date-marker {
   color: var(--color-text-fainter);
   display: flex;
@@ -104,4 +100,23 @@ log-record:last-child {
   flex: 1;
   content: '';
   margin: auto var(--margin-small);
+}
+
+#game-list > :nth-child(even) {
+  background: var(--color-bg-alt);
+}
+
+#no-games {
+  display: none;
+}
+
+#no-games:only-child {
+  display: flex;
+  justify-content: center;
+}
+
+#no-games > span {
+  border: var(--line-width) solid #44F;
+  border-radius: 1rem;
+  padding: .5rem;
 }

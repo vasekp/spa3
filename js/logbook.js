@@ -34,6 +34,7 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('log-sel').addEventListener('action', gameList);
   document.getElementById('tag-filter').addEventListener('change', filter);
   document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
+  document.getElementById('no-games').addEventListener('action', plus);
   db.then(dbReady);
 });
 
@@ -91,6 +92,7 @@ function populateGameList(games) {
     elm.record = game;
     glist.appendChild(elm);
   }
+  document.getElementById('load').hidden = true;
 }
 
 function populateRecList(records) {
