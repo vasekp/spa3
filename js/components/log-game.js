@@ -119,35 +119,38 @@ export class GameRecordElement extends HTMLElement {
       this._id('name-edit').focus();
   }
 
-  _setName(name) {
-    if(this.state === states.nascent)
-      return this._materialize(name);
-    else {
-      this.record.name = name;
-      this.state = states.base;
-      return this.record;
-    }
-  }
-
   _close() {
-    let newName = this._id('name-edit').value;
-    if(!newName)
-      return this._cancel();
-    else
-      return this._setName(newName);
+    let name = this._id('name-edit').value;
+    switch(this.state) {
+      case states.nascent:
+        if(name)
+          this._materialize(name);
+        else
+          this.remove();
+        break;
+      case states.edit:
+        if(name) {
+          this.record.name = name;
+          this.state = states.base;
+        } else // revert edit
+          this._id('name-edit').value = this.record.name;
+        // fall through
+      default:
+        this.state = states.base;
+    }
   }
 
-  _cancel() {
+  _gameRecord() {
     if(this.state === states.nascent) {
-      this.remove();
-      return null;
-    } else {
-      this._id('name-edit').value = this.record.name;
+      let name = this._id('name-edit').value;
+      return name ? this._materialize(name) : null;
+    } else
       return this.record;
-    }
   }
 
   _materialize(name) {
+    if(this.dataset.disabled) // already in progress
+      return;
     this.dataset.disabled = 1;
     let promise = gameStore.create(name);
     promise.then(record => {
@@ -177,7 +180,8 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _choose() {
-    let gameAwaitable = this._close();
+    let gameAwaitable = this._gameRecord();
+    document.activeElement.blur();
     if(!gameAwaitable) // cancelled
       return;
     this.dispatchEvent(new CustomEvent('game-chosen', {
