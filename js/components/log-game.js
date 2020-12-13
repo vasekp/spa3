@@ -9,12 +9,12 @@ template.innerHTML = `
 <span class="log-game-name"></span>
 <input type="text" class="log-game-name-edit">
 <span class="log-game-date"></span>
-<div class="log-game-confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
+<div class="log-game-confirm">Klikněte znovu pro potvrzení.</div>
 <div class="log-game-tools-container">
-  <div class="log-game-tools" tabindex="0">
-    <img class="log-game-delete inline" src="images/delete.svg" alt="delete" tabindex="0"/>
+  <div class="log-game-tools" tabindex="-1">
+    <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
     <spa-color-patch class="log-game-color-edit" data-color="all" tabindex="0"></spa-color-patch>
-    <img class="log-game-edit inline" alt="edit" src="images/edit.svg" tabindex="0"/>
+    <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
   </div>
 </div>`;
 

@@ -10,8 +10,8 @@ templateBase.innerHTML = `
     <span class="log-record-timediff"></span>
   </span>
   <span class="log-record-fill"></span>
-  <span class="log-record-geo-icon inline" tabindex="0"></span>
-  <img class="log-record-edit inline" tabindex="0" src="images/edit.svg">
+  <button class="log-record-geo-icon inline"></button>
+  <button class="log-record-edit"><img class="inline" src="images/edit.svg"></button>
 </div>
 <div class="log-record-text-container">
   <span class="log-record-text"></span>
@@ -22,7 +22,7 @@ templateBase.innerHTML = `
 const templateProps = document.createElement('template');
 templateProps.innerHTML = `
 <spa-color-sel class="log-record-colorsel"></spa-color-sel>
-<span class="log-record-geo-button inline" tabindex="0"/>`;
+<button class="log-record-geo-button inline"></button>`;
 
 const construct = Enum.fromObj({ empty: 0, base: 1, props: 2 });
 const states = Enum.fromArray(['nascent', 'base', 'edit']);
