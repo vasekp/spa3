@@ -16,6 +16,8 @@
   --margin-base-neg: calc(-1 * var(--margin-base));
   --margin-small-neg: calc(-1 * var(--margin-small));
   --pad-around-text: calc((1em - var(--font-cap-size))/2 - var(--line-width));
+  --radius-full: 5px;
+  --radius-small: 3px;
   --focus-shadow: 0 0 2px 1px #888;
 }
 

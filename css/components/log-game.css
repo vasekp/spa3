@@ -88,6 +88,7 @@ log-game[data-disabled] {
 .log-game-tools > * {
   margin: var(--padding);
   flex: none;
+  border-radius: var(--radius-small);
 }
 
 .log-game-color-patch {

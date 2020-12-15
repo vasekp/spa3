@@ -1,7 +1,7 @@
 log-record {
   display: block;
   border: var(--border);
-  border-radius: .5rem;
+  border-radius: var(--radius-full);
 }
 
 log-record[data-state="nascent"] .log-record-header,
@@ -31,6 +31,10 @@ log-record[data-state="edit"] .log-record-text {
 
 .log-record-header > * {
   padding: 0 var(--margin-small);
+}
+
+.log-record-header > button:last-of-type {
+  border-top-right-radius: var(--radius-full);
 }
 
 .log-record-text-container {

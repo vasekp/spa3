@@ -6,7 +6,7 @@
   text-align: center;
   padding: var(--pad-around-text);
   border: var(--border);
-  border-radius: calc(1.5*var(--pad-around-text));
+  border-radius: var(--radius-small);
   box-sizing: content-box;
 }
 
