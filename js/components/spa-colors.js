@@ -1,17 +1,3 @@
-export class ColorPatchElement extends HTMLElement {
-  constructor() {
-    super();
-  }
-
-  set color(color) {
-    this.dataset.color = color;
-  }
-
-  get color() {
-    return this.dataset.color;
-  }
-}
-
 export class ColorSelElement extends HTMLElement {
   constructor() {
     super();
@@ -25,14 +11,13 @@ export class ColorSelElement extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    this.querySelector('spa-color-patch[data-color="cross"]').hidden = !this.dataset.zero;
+    this.querySelector('.color-patch[data-color="cross"]').hidden = !this.dataset.zero;
   }
 
   _addPatch(color, hidden = false) {
-    let div = document.createElement('spa-color-patch');
+    let div = document.createElement('button');
+    div.classList.add('color-patch');
     div.dataset.color = color;
-    div.setAttribute('tabindex', 0);
-    div.dataset.active = 1;
     div.addEventListener('click', e => this._click(e));
     if(hidden)
       div.hidden = true;
@@ -42,7 +27,7 @@ export class ColorSelElement extends HTMLElement {
 
   _click(e) {
     let stop = !this.dispatchEvent(new CustomEvent('color-click', {
-      detail: { color: e.target.color },
+      detail: { color: e.target.dataset.color },
       cancelable: true,
       bubbles: true
     }));
@@ -61,7 +46,7 @@ export class ColorFilterElement extends ColorSelElement {
 
   _click(e) {
     let elm = e.currentTarget.parentElement;
-    let color = e.currentTarget.color;
+    let color = e.currentTarget.dataset.color;
     let sel = elm._sel;
     if(color === 'all') {
       // "All" clicked
@@ -82,15 +67,15 @@ export class ColorFilterElement extends ColorSelElement {
       // All colors selected: also mark 'all'
       sel.all = sel.every(x => x);
     }
-    for(let elm2 of elm.querySelectorAll('spa-color-patch'))
-      elm2.classList.toggle('selected', sel[elm2.color]);
+    for(let elm2 of elm.querySelectorAll('.color-patch'))
+      elm2.classList.toggle('selected', sel[elm2.dataset.color]);
     elm._notify();
   }
 
   selectAll(noEvent) {
-    for(let elm of this.querySelectorAll('spa-color-patch')) {
+    for(let elm of this.querySelectorAll('.color-patch')) {
       elm.classList.add('filter', 'selected');
-      this._sel[elm.color] = true;
+      this._sel[elm.dataset.color] = true;
     }
     if(!noEvent)
       this._notify();
@@ -104,6 +89,5 @@ export class ColorFilterElement extends ColorSelElement {
   }
 }
 
-window.customElements.define('spa-color-patch', ColorPatchElement);
 window.customElements.define('spa-color-sel', ColorSelElement);
 window.customElements.define('spa-color-filter', ColorFilterElement);
