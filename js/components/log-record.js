@@ -132,6 +132,7 @@ export class RecordElement extends HTMLElement {
 
   _open() {
     this._constructProps();
+    this._oldText = this._record.text;
     this._id('area').focus();
   }
 
@@ -166,6 +167,9 @@ export class RecordElement extends HTMLElement {
     if(e.key === 'Enter') {
       this.state = states.base;
       e.preventDefault();
+    } else if(e.key === 'Escape') {
+      this._record.text = this._oldText;
+      this.state = states.base;
     }
   }
 

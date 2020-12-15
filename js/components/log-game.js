@@ -114,24 +114,33 @@ export class GameRecordElement extends HTMLElement {
 
   _close() {
     let name = this._id('name-edit').value;
+    if(!name)
+      return this._cancel();
     switch(this.state) {
       case states.nascent:
-        if(name)
-          this._materialize(name);
-        else
-          this.remove();
+        this._materialize(name);
         break;
       case states.edit:
-        if(name) {
-          this.record.name = name;
-          this.state = states.base;
-        } else // revert edit
-          this._id('name-edit').value = this.record.name;
+        this.record.name = name;
         // fall through
       default:
         this.state = states.base;
     }
   }
+
+  _cancel() {
+    switch(this.state) {
+      case states.nascent:
+        this.remove();
+        break;
+      case states.edit:
+        this._id('name-edit').value = this.record.name;
+        // fall through
+      default:
+        this.state = states.base;
+    }
+  }
+
 
   _gameRecord() {
     if(this.state === states.nascent) {
@@ -166,7 +175,8 @@ export class GameRecordElement extends HTMLElement {
         this._choose();
       else
         this._close();
-    }
+    } else if(e.key === 'Escape')
+      this._cancel();
   }
 
   _click(e) {
