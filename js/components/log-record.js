@@ -53,7 +53,7 @@ export class RecordElement extends HTMLElement {
     let id = this._id = id => this.querySelector(`.log-record-${id}`);
     id('area').addEventListener('input', () => this._input());
     id('area').addEventListener('keydown', e => this._keydown(e));
-    id('edit').addEventListener('click', e => { this.state = states.edit; e.preventDefault(); });
+    id('edit').addEventListener('click', e => this.state = states.edit);
     id('geo-icon').addEventListener('click', () => this._geoShow());
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
@@ -70,7 +70,7 @@ export class RecordElement extends HTMLElement {
       return;
     this._constructBase();
     this._id('props').appendChild(templateProps.content.cloneNode(true));
-    this._id('geo-button').addEventListener('click', e => { this._geoSet(); e.preventDefault(); });
+    this._id('geo-button').addEventListener('click', e => this._geoSet());
     this._id('colorsel').addEventListener('color-click', e => this._colorsel(e));
     this._constructed = construct.props;
   }

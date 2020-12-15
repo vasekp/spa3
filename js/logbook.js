@@ -126,7 +126,6 @@ function plus(e) {
     document.getElementById('game-list').appendChild(elm);
     elm.scrollIntoView(false);
   }
-  e.preventDefault();
 }
 
 function filter(e) {
