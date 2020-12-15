@@ -16,10 +16,8 @@ recordStore.getAll = async function(gid) {
 class Record {
   constructor(record) {
     this._static = record;
-    this._rev = 0;
-    this._lastSave = 0;
-    this._timer = null;
-    this._autosaveRef = () => this._autosave();
+    this._saveTimer = null;
+    this._save = () => recordStore.update(this._static);
     this._views = new Set();
   }
 
@@ -37,9 +35,8 @@ class Record {
     for(let view of this._views)
       view.text = text;
     this._static.text = text;
-    this._rev++;
-    if(!this._timer)
-      this._timer = setInterval(this._autosaveRef, 300);
+    clearTimeout(this._saveTimer);
+    this._saveTimer = setTimeout(this._save, 300);
   }
 
   set tag(tag) {
@@ -66,17 +63,5 @@ class Record {
 
   removeView(elm) {
     this._views.delete(elm);
-  }
-
-  async _autosave() {
-    if(this._lastSave == this._rev || !this._static.id)
-      return;
-    let rev = this._rev;
-    await recordStore.update(this._static);
-    this._lastSave = rev;
-    if(rev === this._rev) {
-      clearInterval(this._timer);
-      this._timer = null;
-    }
   }
 };
