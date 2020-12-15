@@ -3,26 +3,12 @@ export class ColorPatchElement extends HTMLElement {
     super();
   }
 
-  static get observedAttributes() {
-    return ['data-color'];
-  }
-
   set color(color) {
     this.dataset.color = color;
   }
 
   get color() {
     return this.dataset.color;
-  }
-
-  attributeChangedCallback(name, oldValue, value) {
-    this.style.setProperty('--color', value);
-    this.dataset.colors =
-      value === 'all'
-        ? 'rainbow'
-      : value === 'none'
-        ? 'cross'
-        : 'param';
   }
 }
 
@@ -31,7 +17,7 @@ export class ColorSelElement extends HTMLElement {
     super();
     for(let color = 1; color <= 9; color++)
       this._addPatch(color);
-    this._addPatch('none', true);
+    this._addPatch('cross', true);
   }
 
   static get observedAttributes() {
@@ -39,7 +25,7 @@ export class ColorSelElement extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    this.querySelector('spa-color-patch[data-color="none"]').hidden = !this.dataset.zero;
+    this.querySelector('spa-color-patch[data-color="cross"]').hidden = !this.dataset.zero;
   }
 
   _addPatch(color, hidden = false) {

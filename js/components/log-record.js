@@ -48,7 +48,7 @@ export class RecordElement extends HTMLElement {
   _constructBase() {
     if(this._constructed >= construct.base)
       return;
-    this.dataset.colors = 'grey';
+    this.dataset.color = 'grey';
     this.appendChild(templateBase.content.cloneNode(true));
     let id = this._id = id => this.querySelector(`.log-record-${id}`);
     id('area').addEventListener('input', () => this._input());
@@ -97,8 +97,7 @@ export class RecordElement extends HTMLElement {
   }
 
   set tag(tag) {
-    this.dataset.colors = 'param';
-    this.style.setProperty('--color', tag);
+    this.dataset.color = tag;
   }
 
   set date(date) {
