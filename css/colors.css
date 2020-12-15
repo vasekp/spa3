@@ -3,6 +3,7 @@
   --color-text-fainter: #444;
   --color-text-light: #888;
   --color-bg-alt: #eee;
+  --color-plus: hsl(100, 50%, 50%);
   --border: var(--line-width) solid var(--color-line);
 }
 

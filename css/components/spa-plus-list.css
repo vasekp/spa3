@@ -5,7 +5,7 @@ spa-plus-list {
 .spa-plus-button {
   margin: 0 auto;
   transform: translateZ(0);
-  background: hsl(100, 50%, 50%);
+  background: var(--color-plus);
   font-weight: 600;
   color: white;
   text-align: center;
@@ -26,9 +26,13 @@ spa-plus-list {
   width: 3rem;
   height: 3rem;
   border-radius: 1.5rem;
-  box-shadow: .1rem .1rem .2rem #0004;
+  box-shadow: 2px 2px 4px #0004;
   font-size: 2.5rem;
   line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
+}
+
+.spa-plus-button[data-size="big"]:focus {
+  box-shadow: 2px 2px 4px #0004, 0px 0px 5px var(--color-plus);
 }
 
 .spa-plus-button::after {
