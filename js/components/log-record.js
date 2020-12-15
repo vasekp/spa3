@@ -51,7 +51,6 @@ export class RecordElement extends HTMLElement {
     this.dataset.colors = 'grey';
     this.appendChild(templateBase.content.cloneNode(true));
     let id = this._id = id => this.querySelector(`.log-record-${id}`);
-    this.addEventListener('click', e => e.preventDefault());
     id('area').addEventListener('input', () => this._input());
     id('area').addEventListener('keydown', e => this._keydown(e));
     id('edit').addEventListener('click', e => { this.state = states.edit; e.preventDefault(); });
@@ -60,6 +59,8 @@ export class RecordElement extends HTMLElement {
       if(!this.contains(e.relatedTarget))
         this._close();
     });
+    if(!this.hasAttribute('tabindex'))
+      this.setAttribute('tabindex', -1);
     this._constructed = construct.base;
   }
 

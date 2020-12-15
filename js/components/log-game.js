@@ -56,7 +56,7 @@ export class GameRecordElement extends HTMLElement {
     });
     id('tools').addEventListener('click', e => e.preventDefault());
     this.addEventListener('click', e => this._click(e));
-    if (!this.hasAttribute('tabindex'))
+    if(!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
     this.classList.add('innerOutline');
     this.addEventListener('focusout', e => {
