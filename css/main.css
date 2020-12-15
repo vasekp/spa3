@@ -60,16 +60,12 @@ main {
 button {
   font-family: inherit;
   font-size: inherit;
+  line-height: inherit;
   outline: none;
-  display: inline-block;
-  min-width: var(--font-cap-size);
-  height: var(--font-cap-size);
-  line-height: var(--font-cap-size);
-  box-sizing: content-box;
-  padding: var(--pad-around-text);
-  border: var(--border);
-  border-radius: var(--font-cap-size);
-  background: var(--color-bg-alt);
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: none;
 }
 
 .inline {
@@ -77,6 +73,7 @@ button {
   width: 1em;
   vertical-align: top;
   flex: none;
+  box-sizing: content-box;
 }
 
 @keyframes loading {

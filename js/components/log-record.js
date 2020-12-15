@@ -10,8 +10,8 @@ templateBase.innerHTML = `
     <span class="log-record-timediff"></span>
   </span>
   <span class="log-record-fill"></span>
-  <span class="log-record-geo-icon inline" tabindex="0"></span>
-  <img class="log-record-edit inline" tabindex="0" src="images/edit.svg">
+  <button class="log-record-geo-icon inline"></button>
+  <button class="log-record-edit"><img class="inline" src="images/edit.svg"></button>
 </div>
 <div class="log-record-text-container">
   <span class="log-record-text"></span>
@@ -22,7 +22,7 @@ templateBase.innerHTML = `
 const templateProps = document.createElement('template');
 templateProps.innerHTML = `
 <spa-color-sel class="log-record-colorsel"></spa-color-sel>
-<span class="log-record-geo-button inline" tabindex="0"/>`;
+<button class="log-record-geo-button inline"></button>`;
 
 const construct = Enum.fromObj({ empty: 0, base: 1, props: 2 });
 const states = Enum.fromArray(['nascent', 'base', 'edit']);
@@ -48,18 +48,20 @@ export class RecordElement extends HTMLElement {
   _constructBase() {
     if(this._constructed >= construct.base)
       return;
-    this.dataset.colors = 'grey';
+    this.dataset.color = 'grey';
     this.appendChild(templateBase.content.cloneNode(true));
     let id = this._id = id => this.querySelector(`.log-record-${id}`);
-    this.addEventListener('action', e => e.preventDefault());
     id('area').addEventListener('input', () => this._input());
     id('area').addEventListener('keydown', e => this._keydown(e));
-    id('edit').addEventListener('action', e => { this.state = states.edit; e.preventDefault(); });
-    id('geo-icon').addEventListener('action', () => this._geoShow());
+    id('edit').addEventListener('click', e => this.state = states.edit);
+    id('geo-icon').addEventListener('click', () => this._geoShow());
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
         this._close();
     });
+    if(!this.hasAttribute('tabindex'))
+      this.setAttribute('tabindex', -1);
+    this.dataset.focusContainer = 1;
     this._constructed = construct.base;
   }
 
@@ -68,8 +70,8 @@ export class RecordElement extends HTMLElement {
       return;
     this._constructBase();
     this._id('props').appendChild(templateProps.content.cloneNode(true));
-    this._id('geo-button').addEventListener('action', e => { this._geoSet(); e.preventDefault(); });
-    this._id('colorsel').addEventListener('color-action', e => this._colorsel(e));
+    this._id('geo-button').addEventListener('click', e => this._geoSet());
+    this._id('colorsel').addEventListener('color-click', e => this._colorsel(e));
     this._constructed = construct.props;
   }
 
@@ -96,8 +98,7 @@ export class RecordElement extends HTMLElement {
   }
 
   set tag(tag) {
-    this.dataset.colors = 'param';
-    this.style.setProperty('--color', tag);
+    this.dataset.color = tag;
   }
 
   set date(date) {
@@ -142,7 +143,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _colorsel(e) {
-    let tag = e.target.color;
+    let tag = e.detail.color;
     if(this.state === states.nascent)
       this._materialize(tag);
     else {

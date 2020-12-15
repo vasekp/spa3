@@ -4,17 +4,17 @@ import {gameStore} from '../log-game-store.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<spa-color-patch class="log-game-color-patch" color="none"></spa-color-patch>
-<spa-color-sel class="log-game-color-sel log-game-stop-action" data-zero="1"></spa-color-sel>
+<span class="color-patch log-game-color-patch" color="none"></span>
+<spa-color-sel class="log-game-color-sel" data-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
-<input type="text" class="log-game-name-edit log-game-stop-action">
+<input type="text" class="log-game-name-edit">
 <span class="log-game-date"></span>
-<div class="log-game-confirm" tabindex="0">Klikněte znovu pro potvrzení.</div>
+<div class="log-game-confirm">Klikněte znovu pro potvrzení.</div>
 <div class="log-game-tools-container">
-  <div class="log-game-tools log-game-stop-action" tabindex="0">
-    <img class="log-game-delete inline" src="images/delete.svg" alt="delete" tabindex="0"/>
-    <spa-color-patch class="log-game-color-edit" data-color="all" tabindex="0"></spa-color-patch>
-    <img class="log-game-edit inline" alt="edit" src="images/edit.svg" tabindex="0"/>
+  <div class="log-game-tools" tabindex="-1">
+    <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
+    <button class="color-patch log-game-color-edit" data-color="all" tabindex="0" data-active="1"></button>
+    <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
   </div>
 </div>`;
 
@@ -36,36 +36,29 @@ export class GameRecordElement extends HTMLElement {
       return;
     this.appendChild(template.content.cloneNode(true));
     const id = this._id = id => this.querySelector(`.log-game-${id}`);
-    id('edit').addEventListener('action', () => this.state = states.edit);
-    id('color-edit').addEventListener('action', e => {
+    id('edit').addEventListener('click', () => this.state = states.edit);
+    id('color-edit').addEventListener('click', e => {
       this.state = states.color;
       e.target.focus()
     });
-    id('delete').addEventListener('action', e => {
+    id('delete').addEventListener('click', e => {
       this._delete();
-      e.target.focus();
-      e.preventDefault();
+      e.currentTarget.focus();
     });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
-    id('color-sel').addEventListener('color-action', e => this._colorClicked(e.detail.color));
+    id('color-sel').addEventListener('color-click', e => { this._colorClicked(e.detail.color); e.preventDefault(); });
     id('tools').addEventListener('touchend', e => {
       if(!e.currentTarget.contains(document.activeElement)) {
         e.currentTarget.focus();
-        // In an ideal world we could just e.preventDefault() the mouse events on touch devices.
-        // However, with touch devices this would mean the simulated mouse would stay hovering
-        // over whatever it was before, which has side effects with lg.tools. So we do need the
-        // mousemove to happen but need to capture and kill the expected mousedown :-(
-        e.currentTarget.addEventListener('mousedown', e => {
-          e.preventDefault();
-          e.stopPropagation();
-        }, { once: true });
+        e.preventDefault();
       }
     });
-    this.addEventListener('action', e => this._action(e));
-    for(let elm of this.querySelectorAll('.log-game-stop-action'))
-      elm.addEventListener('action', e => e.preventDefault());
-    if (!this.hasAttribute('tabindex'))
+    id('tools').addEventListener('click', e => e.preventDefault());
+    this.addEventListener('click', e => this._click(e));
+    if(!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
+    this.dataset.focusContainer = 1;
+    this.dataset.active = 1;
     this.classList.add('innerOutline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
@@ -169,14 +162,16 @@ export class GameRecordElement extends HTMLElement {
 
   _keydown(e) {
     if(e.key === 'Enter') {
-      this._choose();
+      if(this.state === states.nascent)
+        this._choose();
+      else
+        this._close();
     }
   }
 
-  _action(e) {
-    if(e.defaultPrevented)
-      return;
-    this._choose();
+  _click(e) {
+    if(this.state === states.base && !e.defaultPrevented)
+      this._choose();
   }
 
   _choose() {
@@ -193,6 +188,8 @@ export class GameRecordElement extends HTMLElement {
   _colorClicked(color) {
     this.record.tag = color;
     this._close();
+    if(document.activeElement)
+      document.activeElement.blur();
   }
 }
 

@@ -34,11 +34,11 @@ const gameNameView = {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('spa-plus-list').addEventListener('plus-action', plus);
-  document.getElementById('log-sel').addEventListener('action', gameList);
+  document.querySelector('spa-plus-list').button.addEventListener('click', plus);
+  document.getElementById('log-sel').addEventListener('click', gameList);
   document.getElementById('tag-filter').addEventListener('change', filter);
   document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
-  document.getElementById('no-games').addEventListener('action', plus);
+  document.getElementById('no-games').addEventListener('click', plus);
   db.then(dbReady);
 });
 
@@ -120,13 +120,12 @@ function plus(e) {
     let elm = document.createElement('log-record');
     document.getElementById('record-list').appendChild(elm);
     elm.scrollIntoView(false);
-    elm.querySelector('spa-color-patch').focus();
+    elm.focus();
   } else {
     let elm = document.createElement('log-game');
     document.getElementById('game-list').appendChild(elm);
     elm.scrollIntoView(false);
   }
-  e.preventDefault();
 }
 
 function filter(e) {

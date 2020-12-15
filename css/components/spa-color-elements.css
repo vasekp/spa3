@@ -1,8 +1,4 @@
-spa-color-patch.filter:not(.selected) {
-  opacity: .5;
-}
-
-spa-color-patch {
+.color-patch {
   display: inline-block;
   width: var(--font-cap-size);
   height: var(--font-cap-size);
@@ -11,9 +7,14 @@ spa-color-patch {
   padding: var(--pad-around-text);
   border: var(--border);
   border-radius: calc(1.5*var(--pad-around-text));
+  box-sizing: content-box;
 }
 
-spa-color-patch::after {
+.color-patch.filter:not(.selected) {
+  opacity: .5;
+}
+
+.color-patch::after {
   content: "\200B";
 }
 

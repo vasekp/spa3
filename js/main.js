@@ -1,20 +1,29 @@
-const sendAction = e => {
-  e.target.dispatchEvent(new CustomEvent('action', { bubbles: true, cancelable: true }));
-  e.preventDefault();
-}
-
-window.addEventListener('mousedown', sendAction);
-window.addEventListener('keydown', e => { if(e.key === 'Enter') sendAction(e) });
-// mousedown seems to always be fired along with touchstart (I'm yet to see a browser that doesn't do that)
-// so we ignore the latter to prevent double action
-// window.addEventListener('touchstart', sendAction);
-
-window.addEventListener('action', e => {
-  if(e.defaultPrevented)
-    return;
-  // A click outside the active element blurs it. Granting focus is needless for click and for touch,
-  // and keyboard navigation should not be affected. This behaviour can be disabled by e.preventDefault(),
-  // primarily when moving focus to a different element in result of an action.
-  if(!document.activeElement.contains(e.target))
+/* Element focus handling.
+ *
+ * The idea is to allow tab navigation while preventing drawing outlines on everything
+ * when using mouse / touch. Nevertheless, we can't just globally preventDefault() the
+ * mousedown because that would break other default actions than just focus, namely,
+ * clicking and selecting within text fields.
+ *
+ * The situations we want to handle:
+ * body > tabbale > target: YES preventDefault()
+ * body > (tabbable) > input > target: NO
+ * all other: DON'T CARE
+ */
+window.addEventListener('mousedown', e => {
+  let e0 = e.target.closest('[data-focus-container]');
+  if(!e0 || !e0.contains(document.activeElement))
     document.activeElement.blur();
+  let e1 = e.target.closest('button, [tabindex]');
+  if(!e1)
+    return;
+  let e2 = e.target.closest('input, textarea');
+  if(!e1.contains(e2))
+    e.preventDefault();
+});
+
+window.addEventListener('keydown', e => {
+  if(e.target.dataset.active)
+    if(e.key === 'Enter' || e.key === ' ')
+      e.target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 });
