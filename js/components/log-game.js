@@ -13,7 +13,7 @@ template.innerHTML = `
 <div class="log-game-tools-container">
   <div class="log-game-tools" tabindex="-1">
     <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
-    <spa-color-patch class="log-game-color-edit" data-color="all" tabindex="0"></spa-color-patch>
+    <spa-color-patch class="log-game-color-edit" data-color="all" tabindex="0" data-active="1"></spa-color-patch>
     <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
   </div>
 </div>`;
@@ -58,6 +58,7 @@ export class GameRecordElement extends HTMLElement {
     this.addEventListener('click', e => this._click(e));
     if(!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
+    this.dataset.active = 1;
     this.classList.add('innerOutline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))

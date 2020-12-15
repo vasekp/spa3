@@ -20,3 +20,9 @@ window.addEventListener('mousedown', e => {
   if(!e1.contains(e2))
     e.preventDefault();
 });
+
+window.addEventListener('keydown', e => {
+  if(e.target.dataset.active)
+    if(e.key === 'Enter' || e.key === ' ')
+      e.target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+});

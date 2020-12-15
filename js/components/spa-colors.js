@@ -46,6 +46,7 @@ export class ColorSelElement extends HTMLElement {
     let div = document.createElement('spa-color-patch');
     div.dataset.color = color;
     div.setAttribute('tabindex', 0);
+    div.dataset.active = 1;
     div.addEventListener('click', e => this._click(e));
     if(hidden)
       div.hidden = true;
