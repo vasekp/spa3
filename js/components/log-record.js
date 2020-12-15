@@ -61,6 +61,7 @@ export class RecordElement extends HTMLElement {
     });
     if(!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', -1);
+    this.dataset.focusContainer = 1;
     this._constructed = construct.base;
   }
 

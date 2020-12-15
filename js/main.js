@@ -11,7 +11,8 @@
  * all other: DON'T CARE
  */
 window.addEventListener('mousedown', e => {
-  if(!document.activeElement.contains(e.target))
+  let e0 = e.target.closest('[data-focus-container]');
+  if(!e0 || !e0.contains(document.activeElement))
     document.activeElement.blur();
   let e1 = e.target.closest('button, [tabindex]');
   if(!e1)
