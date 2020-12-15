@@ -43,8 +43,7 @@ export class GameRecordElement extends HTMLElement {
     });
     id('delete').addEventListener('click', e => {
       this._delete();
-      e.target.focus();
-      e.preventDefault();
+      e.currentTarget.focus();
     });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
     id('color-sel').addEventListener('color-click', e => { this._colorClicked(e.detail.color); e.preventDefault(); });

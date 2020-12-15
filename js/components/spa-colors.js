@@ -26,8 +26,9 @@ export class ColorSelElement extends HTMLElement {
   }
 
   _click(e) {
+    let color = e.target.dataset.color !== 'cross' ? e.target.dataset.color : 'none';
     let stop = !this.dispatchEvent(new CustomEvent('color-click', {
-      detail: { color: e.target.dataset.color },
+      detail: { color },
       cancelable: true,
       bubbles: true
     }));
