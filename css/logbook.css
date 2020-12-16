@@ -27,6 +27,7 @@
 
 #tag-filter {
   flex: 1;
+  margin-left: var(--margin-small);
 }
 
 #log-sel {

@@ -126,6 +126,8 @@ export class RecordElement extends HTMLElement {
       this.dataset.hidePlus = true;
     else
       delete this.dataset.hidePlus;
+    if(state === states.edit || state === states.nascent)
+      this.querySelector('spa-color-sel').dataset.expanded = true;
     if(state === states.edit)
       this._open();
   }
@@ -145,6 +147,8 @@ export class RecordElement extends HTMLElement {
 
   _colorsel(e) {
     let tag = e.detail.color;
+    if(tag === 'all')
+      return;
     if(this.state === states.nascent)
       this._materialize(tag);
     else {

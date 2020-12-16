@@ -1,28 +1,71 @@
+import {Enum} from '../util/enum.js';
+
+const NumColors = 9;
+
+const construct = Enum.fromObj({ empty: 0, base: 1, full: 2});
+
 export class ColorSelElement extends HTMLElement {
   constructor() {
     super();
-    for(let color = 1; color <= 9; color++)
-      this._addPatch(color);
-    this._addPatch('cross', true);
+    this._constructed = construct.empty;
+  }
+
+  connectedCallback() {
+    this._constructBase();
+  }
+
+  _constructBase() {
+    if(this._constructed >= construct.base)
+      return;
+    let elm = this._addPatch('all');
+    elm.addEventListener('click', () => this.toggle());
+    this._constructed = construct.base;
+  }
+
+  _constructFull() {
+    if(this._constructed >= construct.full)
+      return;
+    this._constructBase();
+    for(let i = 1; i <= NumColors; i++)
+      this._addPatch(i);
+    if(this.dataset.zero !== undefined)
+      this._addPatch('cross');
+    this._constructed = construct.full;
+  }
+
+  toggle(force) {
+    if(this.dataset.expanded)
+      return;
+    this._constructFull();
+    this.offsetWidth;
+    this.classList.toggle('expanded', force);
   }
 
   static get observedAttributes() {
-    return ['data-zero'];
+    return ['data-zero', 'data-expanded'];
   }
 
   attributeChangedCallback(name, oldValue, value) {
-    this.querySelector('.color-patch[data-color="cross"]').hidden = !this.dataset.zero;
+    if(name === 'data-zero') {
+      if(this._constructed == construct.full && !this.querySelector('.color-patch[data-color="cross"]'))
+        this._addPatch('cross');
+    } else if(name === 'data-expanded') {
+      this._constructFull();
+      this.classList.add('expanded');
+      this.querySelector('.color-patch[data-color="all"]').hidden = true;
+    }
   }
 
-  _addPatch(color, hidden = false) {
-    let div = document.createElement('button');
-    div.classList.add('color-patch');
-    div.dataset.color = color;
-    div.addEventListener('click', e => this._click(e));
-    if(hidden)
-      div.hidden = true;
-    this.appendChild(div);
-    this.style.setProperty('--count', this.children.length);
+  _addPatch(color) {
+    let btn = document.createElement('button');
+    btn.classList.add('color-patch');
+    btn.dataset.color = color;
+    btn.addEventListener('click', e => this._click(e));
+    for(let elm of this.children)
+      elm.style.zIndex++;
+    btn.style.zIndex = 0;
+    this.appendChild(btn);
+    return btn;
   }
 
   _click(e) {
@@ -40,15 +83,16 @@ export class ColorSelElement extends HTMLElement {
 export class ColorFilterElement extends ColorSelElement {
   constructor() {
     super();
-    this._addPatch('all');
     this._sel = [];
-    this.selectAll(true);
+    for(let i = 1; i <= NumColors; i++)
+      this._sel[i] = true;
   }
 
   _click(e) {
-    let elm = e.currentTarget.parentElement;
+    if(this._constructed < construct.full)
+      return;
     let color = e.currentTarget.dataset.color;
-    let sel = elm._sel;
+    let sel = this._sel;
     if(color === 'all') {
       // "All" clicked
       for(let i in sel)
@@ -68,18 +112,23 @@ export class ColorFilterElement extends ColorSelElement {
       // All colors selected: also mark 'all'
       sel.all = sel.every(x => x);
     }
-    for(let elm2 of elm.querySelectorAll('.color-patch'))
+    for(let elm2 of this.querySelectorAll('.color-patch'))
       elm2.classList.toggle('selected', sel[elm2.dataset.color]);
-    elm._notify();
+    this._notify();
   }
 
-  selectAll(noEvent) {
+  _addPatch(c) {
+    let res = ColorSelElement.prototype._addPatch.call(this, ...arguments);
+    res.classList.add('filter', 'selected');
+    return res;
+  }
+
+  selectAll() {
     for(let elm of this.querySelectorAll('.color-patch')) {
       elm.classList.add('filter', 'selected');
       this._sel[elm.dataset.color] = true;
     }
-    if(!noEvent)
-      this._notify();
+    this._notify();
   }
 
   _notify() {

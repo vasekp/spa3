@@ -108,6 +108,8 @@ export class GameRecordElement extends HTMLElement {
       this.dataset.hidePlus = true;
     else
       delete this.dataset.hidePlus;
+    if(state === states.color)
+      this.querySelector('spa-color-sel').dataset.expanded = true;
     if(state === states.nascent || state === states.edit)
       this._id('name-edit').focus();
   }

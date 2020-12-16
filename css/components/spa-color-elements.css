@@ -19,7 +19,16 @@
 }
 
 spa-color-sel, spa-color-filter {
-  display: flex;
-  max-width: calc(var(--count)*(1em + var(--margin-base)) - var(--margin-base));
-  justify-content: space-between;
+  position: relative;
+  z-index: 0;
+}
+
+spa-color-sel > *, spa-color-filter > * {
+  margin-right: -1em;
+  transition: margin-right .5s;
+  position: relative;
+}
+
+spa-color-sel.expanded > *, spa-color-filter.expanded > * {
+  margin-right: var(--margin-base);
 }
