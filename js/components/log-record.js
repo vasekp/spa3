@@ -17,36 +17,26 @@ templateBase.innerHTML = `
   <span class="log-record-text"></span>
   <textarea class="log-record-area"></textarea>
 </div>
-<div class="log-record-props"></div>`;
+<div class="log-record-props">
+  <spa-color-sel class="log-record-colorsel"></spa-color-sel>
+  <button class="log-record-geo-button inline"></button>
+</div>`;
 
-const templateProps = document.createElement('template');
-templateProps.innerHTML = `
-<spa-color-sel class="log-record-colorsel"></spa-color-sel>
-<button class="log-record-geo-button inline"></button>`;
-
-const construct = Enum.fromObj({ empty: 0, base: 1, props: 2 });
 const states = Enum.fromArray(['nascent', 'base', 'edit']);
 
 export class RecordElement extends HTMLElement {
-  constructor() {
-    super();
-    this._constructed = construct.empty;
-  }
-
   connectedCallback() {
-    if(!this.state) {
-      this._constructProps();
+    this._construct();
+    if(!this.state)
       this.state = states.nascent;
-    } else
-      this._constructBase();
   }
 
   static get observedAttributes() {
     return ['data-time-diff', 'data-state'];
   }
 
-  _constructBase() {
-    if(this._constructed >= construct.base)
+  _construct() {
+    if(this._constructed)
       return;
     this.dataset.color = 'grey';
     this.appendChild(templateBase.content.cloneNode(true));
@@ -55,6 +45,8 @@ export class RecordElement extends HTMLElement {
     id('area').addEventListener('keydown', e => this._keydown(e));
     id('edit').addEventListener('click', e => this.state = states.edit);
     id('geo-icon').addEventListener('click', () => this._geoShow());
+    id('geo-button').addEventListener('click', e => this._geoSet());
+    id('colorsel').addEventListener('color-click', e => this._colorsel(e));
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
         this._close();
@@ -62,17 +54,7 @@ export class RecordElement extends HTMLElement {
     if(!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', -1);
     this.dataset.focusContainer = 1;
-    this._constructed = construct.base;
-  }
-
-  _constructProps() {
-    if(this._constructed >= construct.props)
-      return;
-    this._constructBase();
-    this._id('props').appendChild(templateProps.content.cloneNode(true));
-    this._id('geo-button').addEventListener('click', e => this._geoSet());
-    this._id('colorsel').addEventListener('color-click', e => this._colorsel(e));
-    this._constructed = construct.props;
+    this._constructed = true
   }
 
   attributeChangedCallback(name, oldValue, value) {
@@ -83,7 +65,7 @@ export class RecordElement extends HTMLElement {
   }
 
   set record(record) {
-    this._constructBase();
+    this._construct();
     this._record = record;
     record.addView(this);
     this.state = states.base;
@@ -133,7 +115,6 @@ export class RecordElement extends HTMLElement {
   }
 
   _open() {
-    this._constructProps();
     this._oldText = this._record.text;
     this._id('area').focus();
   }
