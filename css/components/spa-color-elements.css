@@ -24,11 +24,17 @@ spa-color-sel, spa-color-filter {
 }
 
 spa-color-sel > *, spa-color-filter > * {
+  transition: margin-right .5s, visibility .5s step-end;
   margin-right: -1em;
-  transition: margin-right .5s;
   position: relative;
+}
+
+spa-color-sel > *:not(:first-child), spa-color-filter > *:not(:first-child) {
+  visibility: hidden;
 }
 
 spa-color-sel.expanded > *, spa-color-filter.expanded > * {
   margin-right: var(--margin-base);
+  visibility: visible;
+  transition: margin-right .5s, visibility .5s step-start;
 }
