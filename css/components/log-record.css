@@ -50,16 +50,7 @@ log-record[data-state="edit"] .log-record-text {
 }
 
 .log-record-area {
-  border: none;
-  outline: none;
-  margin: 0;
-  background: inherit;
-  color: inherit;
-  font: inherit;
-  box-sizing: border-box;
-  resize: none;
   position: absolute;
-  padding: 0;
   left: 0;
   top: 0;
   width: 100%;

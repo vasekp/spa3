@@ -5,7 +5,6 @@ log-game {
   height: 2rem;
   margin: 0 var(--margin-base-neg);
   padding: 0 var(--margin-base);
-  background: inherit;
 }
 
 log-game:not([data-state="confirm"]) .log-game-confirm {
@@ -106,14 +105,6 @@ log-game[data-disabled] {
 }
 
 .log-game-name-edit {
-  border: none;
-  margin: 0;
-  background: inherit;
-  font: inherit;
-  color: inherit;
-  box-sizing: border-box;
-  resize: none;
-  padding: 0;
   flex: 1;
   height: var(--font-line-height);
 }

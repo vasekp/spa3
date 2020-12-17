@@ -60,16 +60,19 @@ main {
   display: none;
 }
 
-button {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-  outline: none;
-  border: none;
-  margin: 0;
+input[type="text"], textarea, button {
+  font: inherit;
   padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
   background: none;
+  color: inherit;
+}
+
+textarea {
+  box-sizing: border-box;
+  resize: none;
 }
 
 .inline {
