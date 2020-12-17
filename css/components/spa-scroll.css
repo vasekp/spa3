@@ -1,0 +1,48 @@
+:host {
+  position: relative;
+  overflow: hidden;
+}
+
+#frame {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+#frame::-webkit-scrollbar {
+  display: none;
+}
+
+#frame:focus {
+  outline: none;
+  box-shadow: inset var(--focus-shadow);
+}
+
+:host::before, :host::after {
+  position: absolute;
+  display: block;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+:host::before {
+  background: linear-gradient(#FFFFFFC0 0%, #FFFFFF00 100%);
+  top: 0;
+}
+
+:host::after {
+  background: linear-gradient(#FFFFFF00 0%, #FFFFFFC0 100%);
+  bottom: 0;
+}
+
+:host([data-scroll~="up"])::before {
+  content: '';
+}
+
+:host([data-scroll~="down"])::after {
+  content: '';
+}

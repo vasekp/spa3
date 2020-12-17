@@ -1,0 +1,125 @@
+log-game {
+  display: flex;
+  outline: none;
+  align-items: center;
+  height: 2rem;
+  margin: 0 var(--margin-base-neg);
+  padding: 0 var(--margin-base);
+  background: inherit;
+}
+
+log-game:not([data-state="confirm"]) .log-game-confirm {
+  display: none;
+}
+
+log-game:not([data-state="edit"]):not([data-state="nascent"]) .log-game-name-edit {
+  display: none;
+}
+
+log-game:not([data-state="edit"]):not([data-state="base"]) .log-game-color-patch {
+  display: none;
+}
+
+log-game:not([data-state="color"]) .log-game-color-sel {
+  display: none;
+}
+
+log-game:not([data-state="base"]) .log-game-date,
+log-game:not([data-state="base"]) .log-game-name {
+  display: none;
+}
+
+log-game[data-state="edit"] .log-game-tools-container,
+log-game[data-state="nascent"] .log-game-tools-container {
+  display: none;
+}
+
+log-game[data-disabled] {
+  opacity: .5;
+  pointer-events: none;
+}
+
+.log-game-content > * {
+  flex: none;
+}
+
+.log-game-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.log-game-date {
+  color: var(--color-text-light);
+  margin: 0 var(--font-space);
+  white-space: nowrap;
+}
+
+.log-game-tools-container {
+  --div-size: var(--font-line-height);
+  width: calc(var(--div-size) + 2*var(--line-width));
+  height: calc(var(--div-size) + 2*var(--line-width));
+  overflow: visible;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.log-game-tools {
+  --padding: calc((var(--div-size) - 1em) / 2);
+  --count: 3;
+  width: var(--div-size);
+  height: var(--div-size);
+  flex: none;
+  overflow: hidden;
+  transition: width .5s;
+  background: white;
+  border: var(--border);
+  border-radius: var(--div-size);
+  line-height: var(--div-size);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.log-game-tools:hover, .log-game-tools:focus, .log-game-tools:focus-within {
+  width: calc(var(--count) * var(--div-size));
+}
+
+.log-game-tools > * {
+  margin: var(--padding);
+  flex: none;
+  border-radius: var(--radius-small);
+}
+
+.log-game-color-patch {
+  margin-right: var(--margin-small);
+  flex: none;
+}
+
+.log-game-color-patch[data-color="none"] {
+  display: none;
+}
+
+.log-game-color-sel {
+  flex: 1;
+  margin-right: var(--margin-small);
+}
+
+.log-game-name-edit {
+  border: none;
+  margin: 0;
+  background: inherit;
+  font: inherit;
+  box-sizing: border-box;
+  resize: none;
+  padding: 0;
+  flex: 1;
+  height: var(--font-line-height);
+}
+
+.log-game-confirm {
+  background: #f006;
+  padding: 0 var(--margin-small);
+  border-radius: .5rem;
+  outline: none;
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="0 0 10 10">
+  <defs>
+    <linearGradient id="cross" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="5%" stop-color="#e00"/>
+      <stop offset="95%" stop-color="#c00"/>
+    </linearGradient>
+  </defs>
+  <g stroke="black" stroke-width="0.5" stroke-linejoin="round">
+    <path fill="url(#cross)" d="M .5 2 L 2 .5 5 3.5 8 .5 9.5 2 6.5 5 9.5 8 8 9.5 5 6.5 2 9.5 .5 8 3.5 5 z"/>
+  </g>
+</svg>

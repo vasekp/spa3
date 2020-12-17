@@ -1,0 +1,123 @@
+@import "components/spa-color-elements.css";
+@import "components/log-record.css";
+@import "components/log-game.css";
+
+.header-line {
+  height: var(--font-line-height);
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  flex: none;
+}
+
+.header-line > * + * {
+  margin-left: var(--font-space);
+}
+
+#gname {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#gdate {
+  flex: none;
+}
+
+#tag-filter {
+  flex: 1;
+  margin-left: var(--margin-small);
+}
+
+#log-sel {
+  cursor: pointer;
+}
+
+spa-scroll {
+  margin: 0 var(--margin-base-neg);
+  flex: 1;
+}
+
+spa-plus-list {
+  margin-top: var(--margin-small);
+}
+
+#record-list, #game-list {
+  display: block;
+  position: relative;
+  transition: opacity .5s, visibility .5s step-start;
+  opacity: 1;
+  z-index: 1;
+  width: 100%;
+  padding: 0 var(--margin-base);
+  box-sizing: border-box;
+}
+
+#log-sel {
+  transition: height .5s, visibility .5s step-start;
+}
+
+[data-view="game-list"] #record-list, [data-view="rec-list"] #game-list {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  z-index: 0;
+  visibility: hidden;
+  transition: opacity .5s, visibility .5s step-end;
+}
+
+[data-view="game-list"] #log-sel {
+  height: 0;
+  visibility: hidden;
+  transition: height .5s, visibility .5s step-end;
+}
+
+[data-view="init"] #log-sel, [data-view="init"] #game-list {
+  display: none;
+}
+
+log-record {
+  touch-action: pan-y;
+  margin: var(--margin-base) 0;
+}
+
+log-record:last-child {
+  margin-bottom: 0;
+}
+
+.date-marker {
+  color: var(--color-text-fainter);
+  display: flex;
+  font-size: 80%;
+  line-height: 100%;
+  margin: 0 var(--margin-small-neg);
+}
+
+.date-marker::before, .date-marker::after {
+  height: var(--line-width);
+  background: var(--color-line);
+  flex: 1;
+  content: '';
+  margin: auto var(--margin-small);
+}
+
+#game-list > :nth-child(even) {
+  background: var(--color-bg-alt);
+}
+
+#no-games {
+  display: none;
+}
+
+#no-games:only-child {
+  display: flex;
+  justify-content: center;
+}
+
+#no-games > span {
+  border: var(--line-width) solid #44F;
+  border-radius: 1rem;
+  padding: .5rem;
+}
