@@ -2,7 +2,7 @@
 
 #flg-filter {
   display: grid;
-  grid-template-columns: 150px 1fr;
+  grid-template-columns: 150px 1fr 1fr;
   grid-gap: var(--margin-small);
   align-items: baseline;
 }
@@ -20,6 +20,16 @@ input[type="text"] {
   border-bottom: 1px solid #ccc;
 }
 
+.flg-full-width {
+  grid-column-end: span 2;
+}
+
+@media only screen and (max-width: 600px) {
+  .flg-full-width, .flg-half-width {
+    grid-column: 2 / 4;
+  }
+}
+
 @media only screen and (max-width: 400px) {
   #flg-filter {
     grid-template-columns: 1fr;
@@ -33,6 +43,10 @@ input[type="text"] {
     font-size: 80%;
     font-style: oblique;
   }
+
+  .flg-full-width, .flg-half-width {
+    grid-column: auto;
+  }
 }
 
 #flg-colors, #flg-ccount, #flg-shape, #flg-emblems, #flg-ecolor {
@@ -40,6 +54,7 @@ input[type="text"] {
   flex-wrap: wrap;
   row-gap: var(--margin-small);
   user-select: none;
+  align-items: baseline;
 }
 
 #flg-colors > .patch,
