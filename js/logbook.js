@@ -36,7 +36,7 @@ const gameNameView = {
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('spa-plus-list').button.addEventListener('click', plus);
   document.getElementById('log-sel').addEventListener('click', gameList);
-  document.getElementById('tag-filter').addEventListener('change', filter);
+  document.getElementById('tag-filter').addEventListener('filter-change', filter);
   document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
   document.getElementById('no-games').addEventListener('click', plus);
   db.then(dbReady);

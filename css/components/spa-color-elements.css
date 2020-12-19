@@ -1,24 +1,29 @@
-spa-color-sel, spa-color-filter {
+spa-color-sel > .patch {
+  position: relative;
+  margin-right: var(--margin-base);
+}
+
+spa-color-filter {
   position: relative;
   z-index: 0;
 }
 
-spa-color-sel > *, spa-color-filter > * {
-  transition: margin-right .5s, visibility .5s step-end;
-  margin-right: -1em;
+spa-color-filter > .patch {
   position: relative;
 }
 
-spa-color-filter > :not(.selected) {
-  opacity: .5;
-}
-
-spa-color-sel > *:not(:first-child), spa-color-filter > *:not(:first-child) {
+spa-color-filter > [data-color="all"]:checked ~ * {
+  margin-left: -1em;
   visibility: hidden;
+  transition: margin-left .5s, visibility .5s step-end;
 }
 
-spa-color-sel.expanded > *, spa-color-filter.expanded > * {
-  margin-right: var(--margin-base);
+spa-color-filter > [data-color="all"]:not(:checked) ~ * {
+  margin-left: var(--margin-base);
   visibility: visible;
-  transition: margin-right .5s, visibility .5s step-start;
+  transition: margin-left .5s, visibility .5s step-start;
+}
+
+spa-color-filter > :not([data-color="all"]):not(:checked) {
+  opacity: .5;
 }

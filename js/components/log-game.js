@@ -5,7 +5,7 @@ import {gameStore} from '../log-game-store.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <span class="patch log-game-color-patch" color="none"></span>
-<spa-color-sel class="log-game-color-sel" data-zero="1"></spa-color-sel>
+<spa-color-sel class="log-game-color-sel" data-delayed="1" data-has-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
 <input type="text" class="log-game-name-edit">
 <span class="log-game-date"></span>
@@ -109,7 +109,7 @@ export class GameRecordElement extends HTMLElement {
     else
       delete this.dataset.hidePlus;
     if(state === states.color)
-      this.querySelector('spa-color-sel').dataset.expanded = true;
+      this.querySelector('spa-color-sel').construct();
     if(state === states.nascent || state === states.edit)
       this._id('name-edit').focus();
   }

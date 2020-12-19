@@ -18,7 +18,7 @@ templateBase.innerHTML = `
   <textarea class="log-record-area"></textarea>
 </div>
 <div class="log-record-props">
-  <spa-color-sel class="log-record-colorsel"></spa-color-sel>
+  <spa-color-sel class="log-record-colorsel" data-delayed="1"></spa-color-sel>
   <button class="log-record-geo-button inline"></button>
 </div>`;
 
@@ -109,7 +109,7 @@ export class RecordElement extends HTMLElement {
     else
       delete this.dataset.hidePlus;
     if(state === states.edit || state === states.nascent)
-      this.querySelector('spa-color-sel').dataset.expanded = true;
+      this.querySelector('spa-color-sel').construct();
     if(state === states.edit)
       this._open();
   }
