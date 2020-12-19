@@ -14,12 +14,20 @@ window.addEventListener('mousedown', e => {
   let e0 = e.target.closest('[data-focus-container]');
   if(!e0 || !e0.contains(document.activeElement))
     document.activeElement.blur();
-  let e1 = e.target.closest('button, [tabindex]');
+  let e1 = e.target.closest('button, input:not([type="text"]), [tabindex]');
   if(!e1)
     return;
-  let e2 = e.target.closest('input, textarea');
+  let e2 = e.target.closest('input[type="text"], textarea');
   if(!e1.contains(e2))
     e.preventDefault();
+});
+
+window.addEventListener('click', e => {
+  let e1 = e.target.closest('label');
+  if(!e1)
+    return;
+  e1.control.click();
+  e.preventDefault();
 });
 
 window.addEventListener('keydown', e => {
