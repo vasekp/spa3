@@ -60,7 +60,8 @@ main {
   display: none;
 }
 
-input[type="text"], textarea, button {
+input, textarea, button {
+  appearance: none;
   font: inherit;
   padding: 0;
   margin: 0;
