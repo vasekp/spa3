@@ -7,12 +7,12 @@
   align-items: baseline;
 }
 
-label {
+#flg-filter > label {
   font-weight: 600;
   color: var(--color-text-fainter);
 }
 
-label::after {
+#flg-filter > label::after {
   content: ":";
 }
 
@@ -25,11 +25,11 @@ input[type="text"] {
     grid-template-columns: 1fr;
   }
 
-  label::after {
+  #flg-filter > label::after {
     content: "";
   }
 
-  label {
+  #flg-filter > label {
     font-size: 80%;
     font-style: oblique;
   }
