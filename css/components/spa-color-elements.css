@@ -23,7 +23,3 @@ spa-color-filter > [data-color="all"]:not(:checked) ~ * {
   visibility: visible;
   transition: margin-left .5s, visibility .5s step-start;
 }
-
-spa-color-filter > :not([data-color="all"]):not(:checked) {
-  opacity: .5;
-}

@@ -96,23 +96,25 @@ textarea {
   content: attr(data-content);
 }
 
-.checkbox.patch:checked:not(:indeterminate)::after {
+.patch.checkbox:checked:not(:indeterminate)::after {
   content: "+";
 }
 
-.checkbox.patch:not(:checked)::after {
+.patch.checkbox:not(:checked)::after {
   content: "×";
 }
 
-.checkbox.patch:not(:checked) {
+.patch.checkbox:not(:checked),
+.patch.checkbox-simple:not(:checked) {
   opacity: .5;
 }
 
-.checkbox.patch:not(:checked) + label {
+.patch.checkbox:not(:checked) + label,
+.patch.checkbox-simple:not(:checked) + label {
   opacity: .5;
 }
 
-.radio.patch:checked {
+.patch.radio:checked {
   background: var(--color-bg-emph);
 }
 
