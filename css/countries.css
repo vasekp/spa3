@@ -35,18 +35,26 @@ input[type="text"] {
   }
 }
 
-#flg-colors, #flg-ccount {
+#flg-colors, #flg-ccount, #flg-shape, #flg-emblems, #flg-ecolor {
   display: flex;
 }
 
 #flg-colors > .patch,
 #flg-ccount > .patch,
-#flg-shape > .nobreak {
+#flg-shape > .nobreak,
+#flg-emblems > .nobreak,
+#flg-ecolor > .patch {
   margin-right: var(--margin-base);
 }
 
 #flg-shape svg {
   width: calc(1.5*(var(--font-cap-size) + 2*var(--pad-around-text)));
+  height: calc(var(--font-cap-size) + 2*var(--par-around-text));
+  vertical-align: calc(-1 * var(--pad-around-text));
+}
+
+#flg-emblems svg {
+  width: calc(var(--font-cap-size) + 2*var(--pad-around-text));
   height: calc(var(--font-cap-size) + 2*var(--par-around-text));
   vertical-align: calc(-1 * var(--pad-around-text));
 }

@@ -108,9 +108,46 @@
           </div>
         </div>
         <label for="flg-emblems">Emblémy</label>
-        <input type="text" id="flg-emblems"/>
+        <div id="flg-emblems">
+          <div class="nobreak">
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-sun"/>
+            <label for="flg-emblem-sun">
+              <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
+                <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 3.5 0 L 4.6 1.9 2.5 2.5 1.9 4.6 0 3.5 -1.9 4.6 -2.5 2.5 -4.6 1.9 -3.5 0 -4.6 -1.9 -2.5 -2.5 -1.9 -4.6 0 -3.5 1.9 -4.6 2.5 -2.5 4.6 -1.9 z M 2 0 A 2 2 0 0 0 -2 0 2 2 0 0 0 2 0 z"/>
+              </svg>
+            </label>
+          </div>
+          <div class="nobreak">
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-moon"/>
+            <label for="flg-emblem-moon">
+              <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
+                <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 3.5 -3.5 A 4.95 4.95 0 1 0 3.5 3.5 3.7 3.7 0 1 1 3.5 -3.5 z"/>
+              </svg>
+            </label>
+          </div>
+          <div class="nobreak">
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-star"/>
+            <label for="flg-emblem-star">
+              <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
+                <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 0 -5 2.9 4 -4.7 -1.5 4.7 -1.5 -2.9 4 0 -5 2.9 4 z"/>
+              </svg>
+            </label>
+          </div>
+          <div class="nobreak">
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-other"/>
+            <label for="flg-shape-other">?</label>
+          </div>
+        </div>
         <label for="flg-ecolor">Jejich barva</label>
-        <input type="text" id="flg-ecolor"/>
+        <div id="flg-ecolor">
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="param" style="--hue: 0; --sat: 90%;" data-colors="param"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="param" style="--hue: 0; --sat: 0%; --ltn: 200%; color: black;" data-colors="param"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="param" style="--hue: 240; --sat: 90%;" data-colors="param"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="param" style="--hue: 0; --sat: 0%; --ltn: 0%; color: white;" data-colors="param"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="param" style="--hue: 120; --sat: 90%; --ltn: 90%" data-colors="param"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="param" style="--hue: 60; --sat: 90%; --ltn: 80%" data-colors="param"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="all"/>
+        </div>
       </div>
     </main>
   </body>
