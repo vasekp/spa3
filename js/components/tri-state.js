@@ -2,13 +2,14 @@ export class TriStateElement extends HTMLInputElement {
   constructor() {
     super();
     this.addEventListener('click', () => {
-      // https://css-tricks.com/almanac/selectors/i/indeterminate/
-      if(this.readOnly)
-        this.checked = this.readOnly = false;
-      else if(!this.checked)
+      // adapted from https://css-tricks.com/almanac/selectors/i/indeterminate/
+      if(this.readOnly) {
+        this.readOnly = false;
+        this.checked = true;
+      } else if(this.checked)
         this.readOnly = this.indeterminate = true;
     });
-    this.readOnly = this.indeterminate = true;
+    this.checked = this.readOnly = this.indeterminate = true;
   }
 }
 
