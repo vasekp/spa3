@@ -17,6 +17,29 @@
         <input class="flg-full-width" type="text" id="flg-name"/>
         <label for="flg-capital">Hlavní město</label>
         <input class="flg-full-width" type="text" id="flg-capital"/>
+        <label>Světadíl</label>
+        <div class="flg-full-width" id="flg-continent">
+          <div class="nobreak">
+            <input type="checkbox" checked class="patch checkbox-simple c-blue" data-color="param" id="flg-cont-e"/>
+            <label for="flg-cont-e">Evropa</label>
+          </div>
+          <div class="nobreak">
+            <input type="checkbox" checked class="patch checkbox-simple c-yellow" data-color="param" id="flg-cont-as"/>
+            <label for="flg-cont-as">Asie</label>
+          </div>
+          <div class="nobreak">
+            <input type="checkbox" checked class="patch checkbox-simple c-black" data-color="param" id="flg-cont-af"/>
+            <label for="flg-cont-af">Afrika</label>
+          </div>
+          <div class="nobreak">
+            <input type="checkbox" checked class="patch checkbox-simple c-green" data-color="param" id="flg-cont-ao"/>
+            <label for="flg-cont-ao">Austrálie a Oceánie</label>
+          </div>
+          <div class="nobreak">
+            <input type="checkbox" checked class="patch checkbox-simple c-red" data-color="param" id="flg-cont-am"/>
+            <label for="flg-cont-am">S + J Amerika</label>
+          </div>
+        </div>
         <label>Barvy</label>
         <div class="flg-half-width" id="flg-colors">
           <input type="checkbox" is="tri-state" class="patch checkbox c-red" data-color="param"/>
@@ -162,25 +185,31 @@
               <td><img src="assets/flags/AFG.svg"/></td>
               <td>Afghánistán</td>
               <td>Kábul</td>
-              <td>Asie</td>
+              <td><span class="patch c-yellow" data-color="param"></span></td>
             </tr>
             <tr>
               <td><img src="assets/flags/ALB.svg"/></td>
               <td>Albánie</td>
               <td>Tirana</td>
-              <td>Evropa</td>
+              <td><span class="patch c-blue" data-color="param"></span></td>
             </tr>
             <tr>
               <td><img src="assets/flags/AND.svg"/></td>
               <td>Andorra</td>
               <td>Andorra la Vella</td>
-              <td>Evropa</td>
+              <td><span class="patch c-blue" data-color="param"></span></td>
             </tr>
             <tr>
               <td><img src="assets/flags/CZE.svg"/></td>
               <td>Česká republika</td>
               <td>Praha</td>
-              <td>Evropa</td>
+              <td><span class="patch c-blue" data-color="param"></span></td>
+            </tr>
+            <tr>
+              <td><img src="assets/flags/DOM.svg"/></td>
+              <td>Dominikánská republika</td>
+              <td>Santo Domingo</td>
+              <td><span class="patch c-red" data-content="S" data-color="param"></span></td>
             </tr>
           </tbody>
         </table>
