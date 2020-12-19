@@ -2,6 +2,7 @@
   --c: 1;
   --l25: calc(50% - var(--c) * 25%);
   --l60: calc(50% - var(--c) * 10%);
+  --l75: calc(50% + var(--c) * 25%);
   --l85: calc(50% + var(--c) * 35%);
   --color-line: hsl(0, 0%, 50%);
   --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
@@ -12,6 +13,7 @@
   --color-bg-00: hsla(0, 0%, calc(55% + var(--c) * 45%), 0);
   --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));
   --color-bg-alt: hsl(0, 0%, calc(55% + var(--c) * 35%));
+  --color-bg-emph: hsl(60, 90%, var(--l75));
   --color-plus: hsl(100, 50%, 50%);
   --border: var(--line-width) solid var(--color-line);
 }

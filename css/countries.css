@@ -35,10 +35,12 @@ input[type="text"] {
   }
 }
 
-#flg-colors {
+#flg-colors, #flg-ccount {
   display: flex;
 }
 
-#flg-colors > .patch {
+#flg-colors > .patch,
+#flg-ccount > .patch {
   margin-right: var(--margin-base);
 }
+

@@ -18,7 +18,14 @@
         <label for="flg-capital">Hlavní město</label>
         <input type="text" id="flg-capital"/>
         <label for="flg-ccount">Počet barev</label>
-        <input type="text" id="flg-ccount"/>
+        <div id="flg-ccount">
+          <input type="radio" class="patch radio" name="flg-ccount" data-content="1"/>
+          <input type="radio" class="patch radio" name="flg-ccount" data-content="2"/>
+          <input type="radio" class="patch radio" name="flg-ccount" data-content="3"/>
+          <input type="radio" class="patch radio" name="flg-ccount" data-content="4"/>
+          <input type="radio" class="patch radio" name="flg-ccount" data-content="5"/>
+          <input type="radio" checked class="patch radio" name="flg-ccount" data-content="☼"/>
+        </div>
         <label for="flg-colors">Barvy</label>
         <div id="flg-colors">
           <input type="checkbox" is="tri-state" class="patch checkbox" data-color="param" style="--hue: 0; --sat: 90%;" data-colors="param"/>
@@ -31,10 +38,10 @@
         </div>
         <label for="flg-shape">Tvar</label>
         <div id="flg-shape">
-          <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-horz"/>
-          <label for="flg-shape-horz">
-            Horiz
-          </label>
+          <div class="nobreak">
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-horz"/>
+            <label for="flg-shape-horz">Horiz</label>
+          </div>
         </div>
         <label for="flg-emblems">Emblémy</label>
         <input type="text" id="flg-emblems"/>

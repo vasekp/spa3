@@ -92,20 +92,28 @@ textarea {
   content: "\200B";
 }
 
-input[type="checkbox"].checkbox.patch:checked:not(:indeterminate)::after {
+.patch::before {
+  content: attr(data-content);
+}
+
+.checkbox.patch:checked:not(:indeterminate)::after {
   content: "+";
 }
 
-input[type="checkbox"].checkbox.patch:not(:checked)::after {
+.checkbox.patch:not(:checked)::after {
   content: "×";
 }
 
-input[type="checkbox"].checkbox.patch:not(:checked) {
+.checkbox.patch:not(:checked) {
   opacity: .5;
 }
 
-input[type="checkbox"].checkbox.patch:not(:checked) + label {
+.checkbox.patch:not(:checked) + label {
   opacity: .5;
+}
+
+.radio.patch:checked {
+  background: var(--color-bg-emph);
 }
 
 .inline {
@@ -114,6 +122,10 @@ input[type="checkbox"].checkbox.patch:not(:checked) + label {
   vertical-align: top;
   flex: none;
   box-sizing: content-box;
+}
+
+.nobreak {
+  display: inline-block;
 }
 
 @keyframes loading {
