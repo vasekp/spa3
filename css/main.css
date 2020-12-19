@@ -92,19 +92,19 @@ textarea {
   content: "\200B";
 }
 
-input[type="checkbox"][is="tri-state"].patch:checked::after {
+input[type="checkbox"].checkbox.patch:checked::after {
   content: "+";
 }
 
-input[type="checkbox"][is="tri-state"].patch:not(:checked):not(:indeterminate)::after {
+input[type="checkbox"].checkbox.patch:not(:checked):not(:indeterminate)::after {
   content: "×";
 }
 
-input[type="checkbox"][is="tri-state"].patch:not(:checked):not(:indeterminate) {
+input[type="checkbox"].checkbox.patch:not(:checked):not(:indeterminate) {
   opacity: .5;
 }
 
-input[type="checkbox"][is="tri-state"].patch:not(:checked):not(:indeterminate) + label {
+input[type="checkbox"].checkbox.patch:not(:checked):not(:indeterminate) + label {
   opacity: .5;
 }
 
