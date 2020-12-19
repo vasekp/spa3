@@ -11,6 +11,20 @@ export class TriStateElement extends HTMLInputElement {
     });
     this.checked = this.readOnly = this.indeterminate = true;
   }
+
+  get state() {
+    return this.indeterminate ? null : this.checked;
+  }
+
+  set state(state) {
+    if(state === null)
+      this.checked = this.readOnly = this.indeterminate = true;
+    else {
+      this.readOnly = false;
+      this.indeterminate = false;
+      this.checked = state;
+    }
+  }
 }
 
 window.customElements.define('tri-state', TriStateElement, { extends: 'input' });
