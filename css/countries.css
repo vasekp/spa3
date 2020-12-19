@@ -20,22 +20,6 @@ input[type="text"] {
   border-bottom: 1px solid #ccc;
 }
 
-input[type="checkbox"] {
-  display: inline-block;
-  width: var(--font-cap-size);
-  height: var(--font-cap-size);
-  line-height: var(--font-cap-size);
-  text-align: center;
-  padding: var(--pad-around-text);
-  border: var(--border);
-  border-radius: var(--radius-small);
-  box-sizing: content-box;
-}
-
-input[type="checkbox"]::after {
-  content: "\200B";
-}
-
 @media only screen and (max-width: 400px) {
   #cnt-filter {
     grid-template-columns: 1fr;
@@ -55,6 +39,6 @@ input[type="checkbox"]::after {
   display: flex;
 }
 
-#cnt-colors > .color-patch {
+#cnt-colors > .patch {
   margin-right: var(--margin-base);
 }

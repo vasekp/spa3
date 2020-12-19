@@ -47,18 +47,18 @@ export class ColorSelElement extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, value) {
     if(name === 'data-zero') {
-      if(this._constructed == construct.full && !this.querySelector('.color-patch[data-color="cross"]'))
+      if(this._constructed == construct.full && !this.querySelector('.patch[data-color="cross"]'))
         this._addPatch('cross');
     } else if(name === 'data-expanded') {
       this._constructFull();
       this.classList.add('expanded');
-      this.querySelector('.color-patch[data-color="all"]').hidden = true;
+      this.querySelector('.patch[data-color="all"]').hidden = true;
     }
   }
 
   _addPatch(color) {
     let btn = document.createElement('button');
-    btn.classList.add('color-patch');
+    btn.classList.add('patch');
     btn.dataset.color = color;
     btn.addEventListener('click', e => this._click(e));
     for(let elm of this.children)
@@ -112,7 +112,7 @@ export class ColorFilterElement extends ColorSelElement {
       // All colors selected: also mark 'all'
       sel.all = sel.every(x => x);
     }
-    for(let elm2 of this.querySelectorAll('.color-patch'))
+    for(let elm2 of this.querySelectorAll('.patch'))
       elm2.classList.toggle('selected', sel[elm2.dataset.color]);
     this._notify();
   }
@@ -124,7 +124,7 @@ export class ColorFilterElement extends ColorSelElement {
   }
 
   selectAll() {
-    for(let elm of this.querySelectorAll('.color-patch')) {
+    for(let elm of this.querySelectorAll('.patch')) {
       elm.classList.add('filter', 'selected');
       this._sel[elm.dataset.color] = true;
     }

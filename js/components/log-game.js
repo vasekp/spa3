@@ -4,7 +4,7 @@ import {gameStore} from '../log-game-store.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<span class="color-patch log-game-color-patch" color="none"></span>
+<span class="patch log-game-color-patch" color="none"></span>
 <spa-color-sel class="log-game-color-sel" data-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
 <input type="text" class="log-game-name-edit">
@@ -13,7 +13,7 @@ template.innerHTML = `
 <div class="log-game-tools-container">
   <div class="log-game-tools" tabindex="-1">
     <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
-    <button class="color-patch log-game-color-edit" data-color="all" tabindex="0" data-active="1"></button>
+    <button class="patch log-game-color-edit" data-color="all" tabindex="0" data-active="1"></button>
     <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
   </div>
 </div>`;
