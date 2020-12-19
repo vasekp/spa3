@@ -41,7 +41,7 @@
 }
 
 [data-color="param"] {
-  background: hsl(var(--hue), var(--sat), calc((.70 + var(--c) * .15) * var(--ltn)));
+  background: hsl(var(--hue), var(--sat), calc((.60 + var(--c) * .25) * var(--ltn)));
 }
 
 [data-color="all"] {

@@ -4,6 +4,7 @@
   display: grid;
   grid-template-columns: 150px 1fr;
   grid-gap: var(--margin-small);
+  align-items: baseline;
 }
 
 label {
@@ -32,4 +33,12 @@ input[type="text"] {
     font-size: 80%;
     font-style: oblique;
   }
+}
+
+#cnt-colors {
+  display: flex;
+}
+
+#cnt-colors > .color-patch {
+  margin-right: var(--margin-base);
 }
