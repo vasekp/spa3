@@ -5,6 +5,7 @@
   grid-template-columns: 150px 1fr 1fr;
   grid-gap: var(--margin-small);
   align-items: baseline;
+  margin-bottom: var(--margin-base);
 }
 
 #flg-filter > label {
@@ -75,4 +76,47 @@ input[type="text"] {
   width: calc(var(--font-cap-size) + 2*var(--pad-around-text));
   height: calc(var(--font-cap-size) + 2*var(--par-around-text));
   vertical-align: calc(-1 * var(--pad-around-text));
+}
+
+spa-scroll {
+  margin: 0 var(--margin-base-neg);
+  flex: 1;
+}
+
+#flg-list {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#flg-list tr {
+  height: 2rem;
+}
+
+#flg-list td:first-child {
+  padding-left: var(--margin-base);
+}
+
+#flg-list tr:nth-child(odd) {
+  background: var(--color-bg-alt);
+}
+
+#flg-list img {
+  box-shadow: 0px 0px 2px 1px #888;
+  max-height: calc(2*var(--font-cap-size));
+  vertical-align: calc(-.5 * var(--font-cap-size));
+}
+
+#flg-col-flag {
+  width: 3rem;
+}
+
+@media only screen and (max-width: 400px) {
+  #flg-list td:nth-child(3) {
+    display: none;
+  }
+
+  #flg-col-capital {
+    width: 0;
+  }
 }
