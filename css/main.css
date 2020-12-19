@@ -92,6 +92,22 @@ textarea {
   content: "\200B";
 }
 
+input[type="checkbox"][is="tri-state"].patch:checked::after {
+  content: "+";
+}
+
+input[type="checkbox"][is="tri-state"].patch:not(:checked):not(:indeterminate)::after {
+  content: "×";
+}
+
+input[type="checkbox"][is="tri-state"].patch:not(:checked):not(:indeterminate) {
+  opacity: .5;
+}
+
+input[type="checkbox"][is="tri-state"].patch:not(:checked):not(:indeterminate) + label {
+  opacity: .5;
+}
+
 .inline {
   height: 1em;
   width: 1em;

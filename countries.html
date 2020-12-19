@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/countries.css"/>
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/countries.js"></script>
   </head>
   <body>
     <main>
@@ -30,9 +31,9 @@
         </div>
         <label for="flg-shape">Tvar</label>
         <div id="flg-shape">
-          <label>
-            <input type="checkbox" class="patch"/>
-            Ahoj
+          <input type="checkbox" is="tri-state" class="patch" id="flg-shape-horz"/>
+          <label for="flg-shape-horz">
+            Horiz
           </label>
         </div>
         <label for="flg-emblems">Emblémy</label>
