@@ -27,3 +27,8 @@ window.addEventListener('keydown', e => {
     if(e.key === 'Enter' || e.key === ' ')
       e.target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 });
+
+window.addEventListener('auxclick', e => {
+  document.documentElement.classList.toggle('dark');
+  e.preventDefault();
+});

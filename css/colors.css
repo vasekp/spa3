@@ -1,10 +1,23 @@
 :root {
-  --color-line: #888;
-  --color-text-fainter: #444;
-  --color-text-light: #888;
-  --color-bg-alt: #eee;
+  --c: 1;
+  --l25: calc(50% - var(--c) * 25%);
+  --l60: calc(50% - var(--c) * 10%);
+  --l85: calc(50% + var(--c) * 35%);
+  --color-line: hsl(0, 0%, 50%);
+  --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
+  --color-text-fainter: hsl(0, 0%, var(--l25));
+  --color-text-light: hsl(0, 0%, 50%);
+  --color-bg-main: hsl(0, 0%, calc(55% + var(--c) * 45%));
+  --color-bg-75: hsla(0, 0%, calc(55% + var(--c) * 45%), 0.75);
+  --color-bg-00: hsla(0, 0%, calc(55% + var(--c) * 45%), 0);
+  --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));
+  --color-bg-alt: hsl(0, 0%, calc(55% + var(--c) * 35%));
   --color-plus: hsl(100, 50%, 50%);
   --border: var(--line-width) solid var(--color-line);
+}
+
+:root.dark {
+  --c: -1;
 }
 
 [data-color="1"] { --color-index: 1; }
@@ -21,20 +34,27 @@
   --hue: calc(160 + 80 * var(--color-index));
   --sat: 90%;
   --ltn: 100%;
-  background: hsl(var(--hue), var(--sat), calc((50% + 2*var(--ltn))/3));
-  --color-line: hsl(var(--hue), var(--sat), 50%);
-  --color-text-fainter: hsl(var(--hue), calc(var(--sat)/2), calc((3*50% - var(--ltn))/4));
+  background: hsl(var(--hue), var(--sat), var(--l85));
+  --color-line: hsl(var(--hue), var(--sat), var(--l60));
+  --color-text-fainter: hsl(var(--hue), calc(var(--sat)/2), var(--l25));
   --border: var(--line-width) solid var(--color-line);
 }
 
+[data-color="param"] {
+  background: hsl(var(--hue), var(--sat), calc((.70 + var(--c) * .15) * var(--ltn)));
+}
+
 [data-color="all"] {
+  --l: calc(60% + var(--c) * 20%);
   background: linear-gradient(
     .32turn,
-    hsl(0, 90%, 85%),
-    hsl(50, 90%, 85%),
-    hsl(120, 90%, 85%),
-    hsl(190, 90%, 85%),
-    hsl(240, 90%, 85%));
+    hsl(0, 90%, var(--l)),
+    hsl(60, 90%, var(--l)) 30% 35%,
+    hsl(120, 90%, var(--l)),
+    hsl(180, 90%, var(--l)) 60% 65%,
+    hsl(240, 90%, var(--l)));
+  --color-line: hsl(0, 0%, 50%);
+  --color-text-fainter: hsl(0, 0%, var(--l25));
 }
 
 [data-color="cross"] {

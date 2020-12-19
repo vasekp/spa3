@@ -54,6 +54,7 @@ log-record[data-state="edit"] .log-record-text {
   outline: none;
   margin: 0;
   background: inherit;
+  color: inherit;
   font: inherit;
   box-sizing: border-box;
   resize: none;

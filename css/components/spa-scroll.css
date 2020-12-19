@@ -30,12 +30,12 @@
 }
 
 :host::before {
-  background: linear-gradient(#FFFFFFC0 0%, #FFFFFF00 100%);
+  background: linear-gradient(var(--color-bg-75) 0%, var(--color-bg-00) 100%);
   top: 0;
 }
 
 :host::after {
-  background: linear-gradient(#FFFFFF00 0%, #FFFFFFC0 100%);
+  background: linear-gradient(var(--color-bg-00) 0%, var(--color-bg-75) 100%);
   bottom: 0;
 }
 
