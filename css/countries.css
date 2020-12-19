@@ -1,6 +1,6 @@
 @import "components/spa-color-elements.css";
 
-#cnt-filter {
+#flg-filter {
   display: grid;
   grid-template-columns: 150px 1fr;
   grid-gap: var(--margin-small);
@@ -21,7 +21,7 @@ input[type="text"] {
 }
 
 @media only screen and (max-width: 400px) {
-  #cnt-filter {
+  #flg-filter {
     grid-template-columns: 1fr;
   }
 
@@ -35,10 +35,10 @@ input[type="text"] {
   }
 }
 
-#cnt-colors {
+#flg-colors {
   display: flex;
 }
 
-#cnt-colors > .patch {
+#flg-colors > .patch {
   margin-right: var(--margin-base);
 }
