@@ -37,6 +37,9 @@ input[type="text"] {
 
 #flg-colors, #flg-ccount, #flg-shape, #flg-emblems, #flg-ecolor {
   display: flex;
+  flex-wrap: wrap;
+  row-gap: var(--margin-small);
+  user-select: none;
 }
 
 #flg-colors > .patch,
