@@ -58,6 +58,10 @@ input[type="text"] {
   align-items: baseline;
 }
 
+.flg-full-width::after, .flg-half-width::after {
+  content: "\200b";
+}
+
 #flg-colors > .patch,
 #flg-ccount > .patch,
 #flg-shape > .nobreak,
