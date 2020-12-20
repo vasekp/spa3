@@ -20,35 +20,35 @@
         <label>Světadíl</label>
         <div class="flg-full-width" id="flg-continent">
           <div class="nobreak">
-            <input type="checkbox" checked class="patch checkbox-simple c-blue" data-color="param" id="flg-cont-e"/>
+            <input type="checkbox" checked class="patch checkbox-simple c-blue" data-color="param" id="flg-cont-e" data-value="E"/>
             <label for="flg-cont-e">Evropa</label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" checked class="patch checkbox-simple c-yellow" data-color="param" id="flg-cont-as"/>
+            <input type="checkbox" checked class="patch checkbox-simple c-yellow" data-color="param" id="flg-cont-as" data-value="AS"/>
             <label for="flg-cont-as">Asie</label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" checked class="patch checkbox-simple c-black" data-color="param" id="flg-cont-af"/>
+            <input type="checkbox" checked class="patch checkbox-simple c-black" data-color="param" id="flg-cont-af" data-value="AF"/>
             <label for="flg-cont-af">Afrika</label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" checked class="patch checkbox-simple c-green" data-color="param" id="flg-cont-ao"/>
+            <input type="checkbox" checked class="patch checkbox-simple c-green" data-color="param" id="flg-cont-ao" data-value="AO"/>
             <label for="flg-cont-ao">Austrálie a Oceánie</label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" checked class="patch checkbox-simple c-red" data-color="param" id="flg-cont-am"/>
+            <input type="checkbox" checked class="patch checkbox-simple c-red" data-color="param" id="flg-cont-am" data-value="AM"/>
             <label for="flg-cont-am">S + J Amerika</label>
           </div>
         </div>
         <label>Barvy</label>
         <div class="flg-half-width" id="flg-colors">
-          <input type="checkbox" is="tri-state" class="patch checkbox c-red" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-white" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-blue" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-black" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-green" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-yellow" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="all"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-red" data-color="param" data-value="1"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-white" data-color="param" data-value="2"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-blue" data-color="param" data-value="4"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-black" data-color="param" data-value="8"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-green" data-color="param" data-value="16"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-yellow" data-color="param" data-value="32"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="all" data-value="64"/>
         </div>
         <!--label>Počet barev</label-->
         <div class="flg-half-width" id="flg-ccount">
@@ -57,12 +57,13 @@
           <input type="radio" class="patch radio" name="flg-ccount" data-content="3"/>
           <input type="radio" class="patch radio" name="flg-ccount" data-content="4"/>
           <input type="radio" class="patch radio" name="flg-ccount" data-content="5"/>
-          <input type="radio" checked class="patch radio" name="flg-ccount" data-content="☼"/>
+          <input type="radio" class="patch radio" name="flg-ccount" data-content="6"/>
+          <input type="radio" checked class="patch radio" name="flg-ccount" data-content="#"/>
         </div>
         <label>Tvar</label>
         <div class="flg-full-width" id="flg-shape">
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-horz"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-horz" data-value="1"/>
             <label for="flg-shape-horz">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 3.5 H 14.5 M .5 6.5 H 14.5"/>
@@ -70,7 +71,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-vert"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-vert" data-value="2"/>
             <label for="flg-shape-vert">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M 5.2 .5 V 9.5 M 9.8 .5 V 9.5"/>
@@ -78,7 +79,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-cross-hv"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-cross-hv" data-value="4"/>
             <label for="flg-shape-cross-hv">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 5 H 14.5 M 7.5 .5 V 9.5"/>
@@ -86,7 +87,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-cross-diag"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-cross-diag" data-value="8"/>
             <label for="flg-shape-cross-diag">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 .5 L 14.5 9.5 M .5 9.5 L 14.5 .5"/>
@@ -94,7 +95,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-diag"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-diag" data-value="16"/>
             <label for="flg-shape-diag">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M 14.5 .5 L .5 9.5"/>
@@ -102,7 +103,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-circle"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-circle" data-value="32"/>
             <label for="flg-shape-circle">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M 9.5 5 A 2 2 0 0 0 5.5 5 2 2 0 0 0 9.5 5 z"/>
@@ -110,7 +111,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-uk"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-uk" data-value="64"/>
             <label for="flg-shape-uk">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 .5 L 14.5 9.5 M 7.5 .5 V 9.5 M 14.5 .5 L .5 9.5 M .5 5 H 14.5"/>
@@ -118,7 +119,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-usa"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-usa" data-value="128"/>
             <label for="flg-shape-usa">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="15" height="10" viewBox="0 0 15 10">
                 <path stroke="currentcolor" fill="none" stroke-width="0.5" stroke-linejoin="round" d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 5 H 5 V .5 M 5 2.75 H 14.5 M 5 5 H 14.5 M .5 7.25 H 14.5"/>
@@ -126,14 +127,14 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-other"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-shape-other" data-value="256"/>
             <label for="flg-shape-other">?</label>
           </div>
         </div>
         <label>Emblémy</label>
         <div class="flg-half-width" id="flg-emblems">
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-sun"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-sun" data-value="1"/>
             <label for="flg-emblem-sun">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
                 <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 3.2 0 L 4.67 2.25 2 2.5 1.16 5.07 -0.71 3.12 -3.24 4.07 -2.88 1.39 -5.2 0 -2.88 -1.39 -3.24 -4.07 -0.71 -3.12 1.16 -5.07 2 -2.5 4.67 -2.26 z M 2.5 0 A 2.5 2.5 0 0 0 -2.5 0 2.5 2.5 0 0 0 2.5 0 z"/>
@@ -141,7 +142,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-moon"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-moon" data-value="2"/>
             <label for="flg-emblem-moon">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
                 <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 3.5 -3.5 A 4.95 4.95 0 1 0 3.5 3.5 3.7 3.7 0 1 1 3.5 -3.5 z"/>
@@ -149,7 +150,7 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-star"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-star" data-value="4"/>
             <label for="flg-emblem-star">
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
                 <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 0 -5 2.9 4 -4.7 -1.5 4.7 -1.5 -2.9 4 0 -5 2.9 4 z"/>
@@ -157,19 +158,19 @@
             </label>
           </div>
           <div class="nobreak">
-            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-other"/>
+            <input type="checkbox" is="tri-state" class="patch checkbox" id="flg-emblem-other" data-value="8"/>
             <label for="flg-shape-other">?</label>
           </div>
         </div>
         <!--label>Jejich barva</label-->
         <div class="flg-half-width" id="flg-ecolor">
-          <input type="checkbox" is="tri-state" class="patch checkbox c-red" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-white" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-blue" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-black" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-green" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox c-yellow" data-color="param"/>
-          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="all"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-red" data-color="param" data-value="1"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-white" data-color="param" data-value="2"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-blue" data-color="param" data-value="4"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-black" data-color="param" data-value="8"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-green" data-color="param" data-value="16"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox c-yellow" data-color="param" data-value="32"/>
+          <input type="checkbox" is="tri-state" class="patch checkbox" data-color="all" data-value="64"/>
         </div>
       </div>
       <div class="spa-loading"></div>
