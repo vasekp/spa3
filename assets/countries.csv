@@ -5,7 +5,7 @@ Andorra:Andorra:Andorra la Vella:E:Euro:AND:AD:EUR:37:2:8:64
 Angola:Angola:Luanda:AF:Angolská kwanza:AGO:AO:AOA:9:1:8:32
 Antigua a Barbuda:Antigua and Barbuda:Saint John's:SA:Východokaribský dolar:ATG:AG:XCD:15:2:1:32
 Argentina:Argentina:Buenos Aires:JA:Argentinské peso:ARG:AR:ARS:6:1:1:32
-Arménie:Armenia:Jerevan:AS:Arménský dram:ARM:AM:AMD:37:1:0:0
+Arménie:Armenia:Jerevan:AS:Arménský dram:ARM:AM:AMD:69:1:0:0
 Austrálie:Australia:Canberra:AO:Australský dolar:AUS:AU:AUD:7:64:4:2
 Ázerbájdžán:Azerbaijan:Baku:AS:Ázerbájdžánský manat:AZE:AZ:AZN:21:1:6:2
 Bahamy:Bahamas, the:Nassau:SA:Bahamský dolar:BHS:BS:BSD:44:1:0:0
@@ -102,7 +102,7 @@ Malawi:Malawi:Lilongwe:AF:Malawská kwacha:MWI:MW:MWK:25:1:1:1
 Maledivy:Maldives:Male:AS:Maledivská rupie:MDV:MV:MVR:17:256:2:2
 Mali:Mali:Bamako:AF:CFA frank:MLI:ML:XOF:49:2:0:0
 Malta:Malta:Valletta:E:Euro:MLT:MT:EUR:3:2:8:64
-Maroko:Morocco:Rabat:AF:Marocký dirham:MAR:MA:MAD:1:0:4:0
+Maroko:Morocco:Rabat:AF:Marocký dirham:MAR:MA:MAD:1:0:4:16
 Marshallovy ostrovy:Marshall Islands, the:Majuro:AO:Americký dolar:MHL:MH:USD:70:256:1:2
 Mauricius:Mauritius:Port Louis (Mauricius)|Port Louis:AF:Mauricijská rupie:MUS:MU:MUR:53:1:0:0
 Mauritánie:Mauritania:Nuakšott:AF:Mauritánská ukíjá:MRT:MR:MRU:17:1:6:32
@@ -111,13 +111,13 @@ Mikronésie:Federated States of Micronesia, the:Palikir:AO:Americký dolar:FSM:F
 Moldavsko:Moldova:Kišiněv:E:Moldavský leu:MDA:MD:MDL:37:2:8:64
 Monako:Monaco:Monaco-Ville:E:Euro:MCO:MC:EUR:3:1:0:0
 Mongolsko:Mongolia:Ulánbátar:AS:Mongolský tugrik:MNG:MN:MNT:5:2:8:32
-Mosambik:Mozambique:Maputo:AF:Mosambický metical:MOZ:MZ:MZN:91:1:8:64
+Mosambik:Mozambique:Maputo:AF:Mosambický metical:MOZ:MZ:MZN:59:1:8:64
 Myanmar (Barma):Myanmar:Neipyijto:AS:Myanmarský kyat:MMR:MM:MMK:49:1:4:2
 Namibie:Namibia:Windhoek:AF:Namibijský dolar, Jihoafrický rand:NAM:NA:NAD,ZAR:23:16:1:32
 Nauru:Nauru:(Yaren):AO:Australský dolar:NRU:NR:AUD:36:1:1:2
 Německo:Germany:Berlín:E:Euro:DEU:DE:EUR:41:1:0:0
 Nepál:Nepal:Káthmándú:AS:Nepálská rupie:NPL:NP:NPR:7:256:9:2
-Niger:Niger:Niamey:AF:CFA frank:NER:NE:XOF:82:33:0:0
+Niger:Niger:Niamey:AF:CFA frank:NER:NE:XOF:19:33:0:0
 Nigérie:Nigeria:Abuja:AF:Nigerijská naira:NGA:NG:NGN:18:2:0:0
 Nikaragua:Nicaragua:Managua:SA:Nikaragujská córdoba:NIC:NI:NIO:6:1:8:64
 Nizozemsko:Netherlands, the:Amsterdam / Haag:E:Euro:NLD:NL:EUR:7:1:0:0

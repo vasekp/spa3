@@ -91,7 +91,12 @@
 .c-yellow {
   --hue: 60;
   --sat: 90%;
-  --ltn: 80%
+  --ltn: 80%;
+}
+
+.c-orange {
+  --hue: 35;
+  --sat: 100%;
 }
 
 .c-white {
