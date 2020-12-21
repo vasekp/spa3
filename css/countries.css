@@ -62,25 +62,25 @@ input[type="text"] {
   content: "\200b";
 }
 
-#flg-colors > .patch,
 #flg-ccount > .patch,
-#flg-shape > .nobreak,
-#flg-emblems > .nobreak,
-#flg-ecolor > .patch,
-#flg-continent > .nobreak {
+#flg-colors > spa-checkbox,
+#flg-ecolor > spa-checkbox,
+#flg-shape > spa-checkbox,
+#flg-emblems > spa-checkbox,
+#flg-continent > spa-checkbox {
   margin-right: var(--margin-base);
 }
 
 #flg-shape svg {
   width: calc(1.5*(var(--font-cap-size) + 2*var(--pad-around-text)));
   height: calc(var(--font-cap-size) + 2*var(--par-around-text));
-  vertical-align: calc(-1 * var(--pad-around-text));
+  align-self: center;
 }
 
 #flg-emblems svg {
   width: calc(var(--font-cap-size) + 2*var(--pad-around-text));
   height: calc(var(--font-cap-size) + 2*var(--par-around-text));
-  vertical-align: calc(-1 * var(--pad-around-text));
+  align-self: center;
 }
 
 spa-scroll {

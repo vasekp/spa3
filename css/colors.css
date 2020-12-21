@@ -36,19 +36,20 @@
   --hue: calc(160 + 80 * var(--color-index));
   --sat: 90%;
   --ltn: 100%;
-  background: hsl(var(--hue), var(--sat), var(--l85));
+  --bg: hsl(var(--hue), var(--sat), var(--l85));
+  --fg: currentcolor;
   --color-line: hsl(var(--hue), var(--sat), var(--l60));
   --color-text-fainter: hsl(var(--hue), calc(var(--sat)/2), var(--l25));
   --border: var(--line-width) solid var(--color-line);
 }
 
 [data-color="param"] {
-  background: hsl(var(--hue), var(--sat), calc((.60 + var(--c) * .25) * var(--ltn)));
+  --bg: hsl(var(--hue), var(--sat), calc((.60 + var(--c) * .25) * var(--ltn)));
 }
 
 [data-color="all"] {
   --l: calc(60% + var(--c) * 20%);
-  background: linear-gradient(
+  --bg: linear-gradient(
     .32turn,
     hsl(0, 90%, var(--l)),
     hsl(60, 90%, var(--l)) 30% 35%,
@@ -60,8 +61,8 @@
 }
 
 [data-color="cross"] {
-  background: linear-gradient(.125turn, transparent 42%, red 45% 55%, transparent 58%),
-              linear-gradient(-.125turn, transparent 42%, red 45% 55%, transparent 58%);
+  --bg: linear-gradient(.125turn, transparent 42%, red 45% 55%, transparent 58%),
+        linear-gradient(-.125turn, transparent 42%, red 45% 55%, transparent 58%);
 }
 
 [data-color="grey"] {
@@ -103,12 +104,17 @@
   --hue: 0;
   --sat: 0%;
   --ltn: 200%;
-  color: black;
+  --fg: black;
 }
 
 .c-black {
   --hue: 0;
   --sat: 0%;
   --ltn: 0%;
-  color: white;
+  --fg: white;
+}
+
+.apply-colors {
+  background: var(--bg);
+  color: var(--fg);
 }

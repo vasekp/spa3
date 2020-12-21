@@ -1,4 +1,4 @@
-import './components/tri-state.js';
+import './components/spa-checkbox.js';
 import './components/spa-scroll.js';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -73,8 +73,8 @@ function filter() {
       f = addCondition(f, dataset => dataset.capital.toLowerCase().includes(cname));
   }
   // Continent
-  for(const elm of document.getElementById('flg-continent').querySelectorAll('input')) {
-    if(!elm.checked) {
+  for(const elm of document.getElementById('flg-continent').children) {
+    if(!elm.stateBool) {
       if(elm.dataset.value === 'AM')
         f = addCondition(f, dataset => dataset.continent !== 'SA' && dataset.continent !== 'JA');
       else
@@ -83,29 +83,28 @@ function filter() {
   }
   // Flag colors
   for(const elm of document.getElementById('flg-colors').children) {
-    if(elm.state !== null)
-      f = addCondition(f, dataset => !!(dataset.flagColor & elm.dataset.value) === elm.state);
+    console.log(elm.stateBool);
+    if(elm.stateBool !== null)
+      f = addCondition(f, dataset => !!(dataset.flagColor & elm.dataset.value) === elm.stateBool);
   }
   // Color count
   let cc = document.querySelector('input[name="flg-ccount"]:checked').dataset.content;
   if(cc !== '#')
     f = addCondition(f, dataset => popCnt(dataset.flagColor) == cc);
   // Flag colors
-  for(const div of document.getElementById('flg-shape').children) {
-    const elm = div.firstElementChild;
-    if(elm.state !== null)
-      f = addCondition(f, dataset => !!(dataset.flagShape & elm.dataset.value) === elm.state);
+  for(const elm of document.getElementById('flg-shape').children) {
+    if(elm.stateBool !== null)
+      f = addCondition(f, dataset => !!(dataset.flagShape & elm.dataset.value) === elm.stateBool);
   }
   // Emblems
-  for(const div of document.getElementById('flg-emblems').children) {
-    const elm = div.firstElementChild;
-    if(elm.state !== null)
-      f = addCondition(f, dataset => !!(dataset.emblems & elm.dataset.value) === elm.state);
+  for(const elm of document.getElementById('flg-emblems').children) {
+    if(elm.stateBool !== null)
+      f = addCondition(f, dataset => !!(dataset.emblems & elm.dataset.value) === elm.stateBool);
   }
   // Emblem colors
   for(const elm of document.getElementById('flg-ecolor').children) {
-    if(elm.state !== null)
-      f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.state);
+    if(elm.stateBool !== null)
+      f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.stateBool);
   }
   for(const tr of document.getElementById('flg-list').tBodies[0].children)
     tr.hidden = !f(tr.dataset);

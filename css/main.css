@@ -1,6 +1,7 @@
 @import "fonts.css";
 @import "colors.css";
 @import "components/spa-plus-list.css";
+@import "components/spa-checkbox.css";
 
 :root {
   font-family: 'Source Sans Pro';
@@ -86,6 +87,8 @@ textarea {
   border: var(--border);
   border-radius: var(--radius-small);
   box-sizing: content-box;
+  background: var(--bg);
+  color: var(--fg);
 }
 
 .patch:empty::after {
@@ -94,24 +97,6 @@ textarea {
 
 .patch::before {
   content: attr(data-content);
-}
-
-.patch.checkbox:checked:not(:indeterminate)::after {
-  content: "+";
-}
-
-.patch.checkbox:not(:checked)::after {
-  content: "×";
-}
-
-.patch.checkbox:not(:checked),
-.patch.checkbox-simple:not(:checked) {
-  opacity: .5;
-}
-
-.patch.checkbox:not(:checked) + label,
-.patch.checkbox-simple:not(:checked) + label {
-  opacity: .5;
 }
 
 .patch.radio:checked {
@@ -124,10 +109,6 @@ textarea {
   vertical-align: top;
   flex: none;
   box-sizing: content-box;
-}
-
-.nobreak {
-  display: inline-block;
 }
 
 @keyframes loading {
