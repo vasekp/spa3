@@ -65,7 +65,7 @@ export class ColorFilterElement extends HTMLElement {
     if(this._constructed >= construct.full)
       return;
     for(let i = 1; i <= NumColors; i++)
-      this._addPatch(i).classList.add('checkbox-simple');
+      this._addPatch(i).classList.add('checkbox');
     this.offsetWidth;
     this._constructed = construct.full;
   }

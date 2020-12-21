@@ -63,8 +63,8 @@ input[type="text"] {
 }
 
 #flg-ccount > .patch,
+#flg-ecolor > input,
 #flg-colors > spa-checkbox,
-#flg-ecolor > spa-checkbox,
 #flg-shape > spa-checkbox,
 #flg-emblems > spa-checkbox,
 #flg-continent > spa-checkbox {

@@ -20,11 +20,13 @@ export class CheckBoxElement extends HTMLElement {
       const sw = this.dataset.states === "3" ? next_3state : next_2state;
       this.dataset.state = sw[this.dataset.state] || states.checked;
       this.dispatchEvent(new CustomEvent('input', { bubbles: true }));
+      this.dispatchEvent(new CustomEvent('changed', { bubbles: true }));
     });
   }
 
   connectedCallback() {
-    this.dataset.state = this.dataset.states === "3" ? states.unset : states.checked;
+    if(!this.dataset.state)
+      this.dataset.state = this.dataset.states === "3" ? states.unset : states.checked;
   }
 
   get stateBool() {

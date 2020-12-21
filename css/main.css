@@ -99,6 +99,14 @@ textarea {
   content: attr(data-content);
 }
 
+.patch.checkbox:not(:checked) {
+  opacity: .5;
+}
+
+.patch.checkbox:not(:checked) + label {
+  opacity: .5;
+}
+
 .patch.radio:checked {
   background: var(--color-bg-emph);
 }

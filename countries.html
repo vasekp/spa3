@@ -37,13 +37,13 @@
         </div>
         <!--label>Počet barev</label-->
         <div class="flg-half-width" id="flg-ccount">
-          <input type="radio" class="patch radio" name="flg-ccount" data-content="1"/>
-          <input type="radio" class="patch radio" name="flg-ccount" data-content="2"/>
-          <input type="radio" class="patch radio" name="flg-ccount" data-content="3"/>
-          <input type="radio" class="patch radio" name="flg-ccount" data-content="4"/>
-          <input type="radio" class="patch radio" name="flg-ccount" data-content="5"/>
-          <input type="radio" class="patch radio" name="flg-ccount" data-content="6"/>
-          <input type="radio" checked class="patch radio" name="flg-ccount" data-content="#"/>
+          <input type="checkbox" autocomplete="off" checked class="patch checkbox" name="flg-ccount" data-content="#"/>
+          <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="1"/>
+          <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="2"/>
+          <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="3"/>
+          <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="4"/>
+          <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="5"/>
+          <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="6"/>
         </div>
         <label>Tvar</label>
         <div class="flg-full-width" id="flg-shape">
@@ -91,32 +91,32 @@
         </div>
         <label>Emblémy</label>
         <div class="flg-half-width" id="flg-emblems">
-          <spa-checkbox class="show-state" data-states="3" id="flg-emblem-sun" data-value="1">
+          <spa-checkbox data-state="unchecked" id="flg-emblem-sun" data-value="1">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
               <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 3.2 0 L 4.67 2.25 2 2.5 1.16 5.07 -0.71 3.12 -3.24 4.07 -2.88 1.39 -5.2 0 -2.88 -1.39 -3.24 -4.07 -0.71 -3.12 1.16 -5.07 2 -2.5 4.67 -2.26 z M 2.5 0 A 2.5 2.5 0 0 0 -2.5 0 2.5 2.5 0 0 0 2.5 0 z"/>
             </svg>
           </spa-checkbox>
-          <spa-checkbox class="show-state" data-states="3" id="flg-emblem-moon" data-value="2">
+          <spa-checkbox data-state="unchecked" id="flg-emblem-moon" data-value="2">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
               <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 3.5 -3.5 A 4.95 4.95 0 1 0 3.5 3.5 3.7 3.7 0 1 1 3.5 -3.5 z"/>
             </svg>
           </spa-checkbox>
-          <spa-checkbox class="show-state" data-states="3" id="flg-emblem-star" data-value="4">
+          <spa-checkbox data-state="unchecked" id="flg-emblem-star" data-value="4">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="-5 -5 10 10">
               <path fill="currentcolor" stroke-width="0.5" stroke-linejoin="round" d="M 0 -5 2.9 4 -4.7 -1.5 4.7 -1.5 -2.9 4 0 -5 2.9 4 z"/>
             </svg>
           </spa-checkbox>
-          <spa-checkbox class="show-state" data-states="3" id="flg-emblem-other" data-value="8">?</spa-checkbox>
+          <spa-checkbox data-state="unchecked" id="flg-emblem-other" data-value="8">?</spa-checkbox>
         </div>
         <!--label>Jejich barva</label-->
         <div class="flg-half-width" id="flg-ecolor">
-          <spa-checkbox data-states="3" class="show-state c-red" data-color="param" data-value="1"></spa-checkbox>
-          <spa-checkbox data-states="3" class="show-state c-white" data-color="param" data-value="2"></spa-checkbox>
-          <spa-checkbox data-states="3" class="show-state c-blue" data-color="param" data-value="4"></spa-checkbox>
-          <spa-checkbox data-states="3" class="show-state c-black" data-color="param" data-value="8"></spa-checkbox>
-          <spa-checkbox data-states="3" class="show-state c-green" data-color="param" data-value="16"></spa-checkbox>
-          <spa-checkbox data-states="3" class="show-state c-yellow" data-color="param" data-value="32"></spa-checkbox>
-          <spa-checkbox data-states="3" class="show-state" data-color="all" data-value="64"></spa-checkbox>
+          <input type="checkbox" autocomplete="off" checked class="checkbox patch" data-content="#" data-color="all"/>
+          <input type="checkbox" autocomplete="off" class="checkbox patch c-red" data-color="param" data-value="1"/>
+          <input type="checkbox" autocomplete="off" class="checkbox patch c-white" data-color="param" data-value="2"/>
+          <input type="checkbox" autocomplete="off" class="checkbox patch c-blue" data-color="param" data-value="4"/>
+          <input type="checkbox" autocomplete="off" class="checkbox patch c-black" data-color="param" data-value="8"/>
+          <input type="checkbox" autocomplete="off" class="checkbox patch c-green" data-color="param" data-value="16"/>
+          <input type="checkbox" autocomplete="off" class="checkbox patch c-yellow" data-color="param" data-value="32"/>
         </div>
       </div>
       <div class="spa-loading"></div>

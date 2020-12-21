@@ -3,8 +3,26 @@ import './components/spa-scroll.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('input', filter);
+  document.getElementById('flg-ccount').addEventListener('change', firstOrMulti);
+  document.getElementById('flg-ecolor').addEventListener('change', firstOrMulti);
   loadData();
 });
+
+function firstOrMulti(e) {
+  const siblings = [...e.target.parentNode.children];
+  const first = siblings.shift();
+  if(e.target === first) {
+    first.checked = true;
+    for(const elm of siblings)
+      elm.checked = false;
+  } else {
+    let total = 0;
+    for(const elm of siblings)
+      total += elm.checked;
+    first.checked = total === 0;
+  }
+  filter();
+}
 
 async function loadData() {
   const response = await fetch('assets/countries.csv');
@@ -83,14 +101,15 @@ function filter() {
   }
   // Flag colors
   for(const elm of document.getElementById('flg-colors').children) {
-    console.log(elm.stateBool);
     if(elm.stateBool !== null)
       f = addCondition(f, dataset => !!(dataset.flagColor & elm.dataset.value) === elm.stateBool);
   }
   // Color count
-  let cc = document.querySelector('input[name="flg-ccount"]:checked').dataset.content;
-  if(cc !== '#')
-    f = addCondition(f, dataset => popCnt(dataset.flagColor) == cc);
+  {
+    const ccount = [...document.getElementById('flg-ccount').children];
+    if(!ccount[0].checked)
+      f = addCondition(f, dataset => ccount[popCnt(dataset.flagColor)].checked);
+  }
   // Flag colors
   for(const elm of document.getElementById('flg-shape').children) {
     if(elm.stateBool !== null)
@@ -98,13 +117,15 @@ function filter() {
   }
   // Emblems
   for(const elm of document.getElementById('flg-emblems').children) {
-    if(elm.stateBool !== null)
-      f = addCondition(f, dataset => !!(dataset.emblems & elm.dataset.value) === elm.stateBool);
+    if(elm.stateBool)
+      f = addCondition(f, dataset => dataset.emblems & elm.dataset.value);
   }
   // Emblem colors
-  for(const elm of document.getElementById('flg-ecolor').children) {
-    if(elm.stateBool !== null)
-      f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.stateBool);
+  {
+    const ecolors = [...document.getElementById('flg-ecolor').children];
+    if(!ecolors.shift().checked)
+      for(const elm of ecolors)
+        f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.checked);
   }
   for(const tr of document.getElementById('flg-list').tBodies[0].children)
     tr.hidden = !f(tr.dataset);
