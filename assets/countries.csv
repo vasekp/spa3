@@ -2,8 +2,8 @@ Afghánistán:Afghanistan:Kábul:AS:Afghánský afghání:AFG:AF:AFN:25:2:8:2
 Albánie:Albania:Tirana:E:Albánský lek:ALB:AL:ALL:1:0:8:8
 Alžírsko:Algeria:Alžír:AF:Alžírský dinár:DZA:DZ:DZD:18:2:6:1
 Andorra:Andorra:Andorra la Vella:E:Euro:AND:AD:EUR:37:2:8:64
-Angola:Angola:Luanda:AF:Angolská kwanza:AGO:AO:AOA:9:1:8:32
-Antigua a Barbuda:Antigua and Barbuda:Saint John's:SA:Východokaribský dolar:ATG:AG:XCD:15:2:1:32
+Angola:Angola:Luanda:AF:Angolská kwanza:AGO:AO:AOA:9:1:12:32
+Antigua a Barbuda:Antigua and Barbuda:Saint John's:SA:Východokaribský dolar:ATG:AG:XCD:15:257:1:32
 Argentina:Argentina:Buenos Aires:JA:Argentinské peso:ARG:AR:ARS:6:1:1:32
 Arménie:Armenia:Jerevan:AS:Arménský dram:ARM:AM:AMD:69:1:0:0
 Austrálie:Australia:Canberra:AO:Australský dolar:AUS:AU:AUD:7:64:4:2
@@ -14,9 +14,9 @@ Bangladéš:Bangladesh:Dháka:AS:Bangladéšská taka:BGD:BD:BDT:17:32:0:0
 Barbados:Barbados:Bridgetown:SA:Barbadoský dolar:BRB:BB:BBD:36:2:8:8
 Belgie:Belgium:Brusel:E:Euro:BEL:BE:EUR:41:2:0:0
 Belize:Belize:Belmopan:SA:Belizský dolar:BLZ:BZ:BZD:5:1:8:64
-Bělorusko:Belarus:Minsk:AF:CFA frank:BLR:BY:XOF:17:1:8:3
-Benin:Benin:Porto Novo:E:Běloruský rubl:BEN:BJ:BYN:52:3:0:0
-Bhútán:Bhutan:Thimbú:AS:Bhútánský ngultrum, Indická rupie:BTN:BT:BTN,INR:65:16:8:2
+Bělorusko:Belarus:Minsk:E:Běloruský rubl:BLR:BY:BYN:17:1:8:3
+Benin:Benin:Porto Novo:AF:CFA frank:BEN:BJ:XOF:49:3:0:0
+Bhútán:Bhutan:Thimbú:AS:Bhútánský ngultrum, Indická rupie:BTN:BT:BTN,INR:96:16:8:2
 Bolívie:Bolivia:Sucre / La Paz:JA:Bolivijský boliviano:BOL:BO:BOB:49:1:0:0
 Bosna a Hercegovina:Bosnia and Herzegovina:Sarajevo:E:Konvertibilní marka:BIH:BA:BAM:36:256:4:2
 Botswana:Botswana:Gaborone:AF:Botswanská pula:BWA:BW:BWP:14:1:0:0
@@ -24,7 +24,7 @@ Brazílie:Brazil:Brasília:JA:Brazilský real:BRA:BR:BRL:48:256:8:64
 Brunej:Brunei:Bandar Seri Begawan:AS:Brunejský dolar:BRN:BN:BND:42:16:8:1
 Bulharsko:Bulgaria:Sofie:E:Bulharský lev:BGR:BG:BGN:19:1:0:0
 Burkina Faso:Burkina Faso:Ouagadougou:AF:CFA frank:BFA:BF:XOF:17:1:4:32
-Burundi:Burundi:Gitega:AF:Burundský frank:BDI:BI:BIF:19:8:4:1
+Burundi:Burundi:Gitega:AF:Burundský frank:BDI:BI:BIF:19:40:4:1
 Čad:Chad:N'Djamena:AF:CFA frank:TCD:TD:XAF:37:2:0:0
 Černá Hora:Montenegro:Podgorica:E:Euro:MNE:ME:EUR:33:256:8:64
 Česko:Czech Republic, the:Praha:E:Česká koruna:CZE:CZ:CZK:7:1:0:0
@@ -38,9 +38,9 @@ Egypt:Egypt:Káhira:AF:Egyptská libra:EGY:EG:EGP:11:1:8:32
 Ekvádor:Ecuador:Quito:JA:Americký dolar:ECU:EC:USD:37:1:8:64
 Eritrea:Eritrea:Asmara:AF:Eritrejská nakfa:ERI:ER:ERN:21:1:8:32
 Estonsko:Estonia:Tallinn:E:Euro:EST:EE:EUR:14:1:0:0
-Etiopie:Ethiopia:Addis Abeba:AF:Etiopský birr:ETH:ET:ETB:49:1:8:36
-Fidži:Fiji:Suva:AO:Fidžijský dolar:FJI:FJ:FJD:4:64:8:64
-Filipíny:Philippines, the:Manila:AS:Filipínské peso:PHL:PH:PHP:7:1:8:32
+Etiopie:Ethiopia:Addis Abeba:AF:Etiopský birr:ETH:ET:ETB:53:33:12:36
+Fidži:Fiji:Suva:AO:Fidžijský dolar:FJI:FJ:FJD:7:64:8:64
+Filipíny:Philippines, the:Manila:AS:Filipínské peso:PHL:PH:PHP:7:1:5:32
 Finsko:Finland:Helsinky:E:Euro:FIN:FI:EUR:6:4:0:0
 Francie:France:Paříž:E:Euro:FRA:FR:EUR:7:2:0:0
 Gabon:Gabon:Libreville:AF:CFA frank:GAB:GA:XAF:52:1:0:0
@@ -68,7 +68,7 @@ Jamajka:Jamaica:Kingston:SA:Jamajský dolar:JAM:JM:JMD:56:8:0:0
 Japonsko:Japan:Tokio:AS:Japonský jen:JPN:JP:JPY:3:32:0:0
 Jemen:Yemen:San'á:AS:Jemenský rijál:YEM:YE:YER:11:1:0:0
 Jihoafrická republika:South Africa:Pretorie / Kapské Město:AF:Jihoafrický rand:ZAF:ZA:ZAR:63:1:0:0
-Jižní Korea:South Korea:Soul:AS:Jihokorejský won:KOR:KR:KRW:7:256:8:8
+Jižní Korea:South Korea:Soul:AS:Jihokorejský won:KOR:KR:KRW:7:32:8:8
 Jižní Súdán:South Sudan:Džuba:AF:Jihosúdánská libra:SSD:SS:SSP:31:1:4:32
 Jordánsko:Jordan:Ammán:AS:Jordánský dinár:JOR:JO:JOD:27:1:4:2
 Kambodža:Cambodia:Phnompenh:AS:Kambodžský riel:KHM:KH:KHR:5:1:8:2
@@ -76,9 +76,9 @@ Kamerun:Cameroon:Yaoundé:AF:CFA frank:CMR:CM:XAF:49:2:4:32
 Kanada:Canada:Ottawa:SA:Kanadský dolar:CAN:CA:CAD:3:2:8:1
 Kapverdy:Cape Verde:Praia:AF:Kapverdské escudo:CPV:CV:CVE:7:1:4:32
 Katar:Qatar:Dauhá:AS:Katarský rijál:QAT:QA:QAR:3:256:0:0
-Kazachstán:Kazakhstan:Nur-Sultan:AS:Kazachstánský tenge:KAZ:KZ:KZT:4:0:4:32
+Kazachstán:Kazakhstan:Nur-Sultan:AS:Kazachstánský tenge:KAZ:KZ:KZT:4:0:9:32
 Keňa:Kenya:Nairobi:AF:Keňský šilink:KEN:KE:KES:27:1:8:64
-Kiribati:Kiribati:Jižní Tarawa:AO:Kiribatský dolar:KIR:KI:AUD:7:256:8:32
+Kiribati:Kiribati:Jižní Tarawa:AO:Kiribatský dolar:KIR:KI:AUD:7:256:9:32
 Kolumbie:Colombia:Bogotá:JA:Kolumbijské peso:COL:CO:COP:37:1:0:0
 Komory:Comoros, the:Moroni:AF:Komorský frank:COM:KM:KMF:55:1:6:2
 Kostarika:Costa Rica:San José (Kostarika)|San José:SA:Kostarický colón:CRI:CR:CRC:7:1:0:0
@@ -111,12 +111,12 @@ Mikronésie:Federated States of Micronesia, the:Palikir:AO:Americký dolar:FSM:F
 Moldavsko:Moldova:Kišiněv:E:Moldavský leu:MDA:MD:MDL:37:2:8:64
 Monako:Monaco:Monaco-Ville:E:Euro:MCO:MC:EUR:3:1:0:0
 Mongolsko:Mongolia:Ulánbátar:AS:Mongolský tugrik:MNG:MN:MNT:5:2:8:32
-Mosambik:Mozambique:Maputo:AF:Mosambický metical:MOZ:MZ:MZN:59:1:8:64
+Mosambik:Mozambique:Maputo:AF:Mosambický metical:MOZ:MZ:MZN:59:1:12:64
 Myanmar (Barma):Myanmar:Neipyijto:AS:Myanmarský kyat:MMR:MM:MMK:49:1:4:2
 Namibie:Namibia:Windhoek:AF:Namibijský dolar, Jihoafrický rand:NAM:NA:NAD,ZAR:23:16:1:32
 Nauru:Nauru:(Yaren):AO:Australský dolar:NRU:NR:AUD:36:1:1:2
 Německo:Germany:Berlín:E:Euro:DEU:DE:EUR:41:1:0:0
-Nepál:Nepal:Káthmándú:AS:Nepálská rupie:NPL:NP:NPR:7:256:9:2
+Nepál:Nepal:Káthmándú:AS:Nepálská rupie:NPL:NP:NPR:5:256:9:2
 Niger:Niger:Niamey:AF:CFA frank:NER:NE:XOF:19:33:0:0
 Nigérie:Nigeria:Abuja:AF:Nigerijská naira:NGA:NG:NGN:18:2:0:0
 Nikaragua:Nicaragua:Managua:SA:Nikaragujská córdoba:NIC:NI:NIO:6:1:8:64
@@ -128,7 +128,7 @@ Pákistán:Pakistan:Islámábád:AS:Pákistánská rupie:PAK:PK:PKR:18:2:6:2
 Palau:Palau:Ngerulmud:AO:Americký dolar:PLW:PW:USD:36:32:0:0
 Palestina:Palestine:Rámaláh / Východní Jeruzalém:AS:Izraelský šekel, Jordánský dinár:PSE:PS:ILS,JOD:27:1:0:0
 Panama:Panama:Panamá:SA:Panamská balboa, Americký dolar:PAN:PA:PAB,USD:7:4:4:5
-Papua Nová Guinea:Papua New Guinea:Port Moresby:AO:Papuánská kina:PNG:PG:PGK:9:16:8:34
+Papua Nová Guinea:Papua New Guinea:Port Moresby:AO:Papuánská kina:PNG:PG:PGK:9:16:12:34
 Paraguay:Paraguay:Asunción:JA:Paraguayský guaraní:PRY:PY:PYG:7:1:8:64
 Peru:Peru:Lima:JA:Peruánský sol:PER:PE:PEN:3:2:0:0
 Pobřeží slonoviny:Côte d'Ivoire:Yamoussoukro / Abidžan:AF:CFA frank:CIV:CI:XOF:82:2:0:0
@@ -142,7 +142,7 @@ Rusko:Russia:Moskva:E:Ruský rubl:RUS:RU:RUB:7:1:0:0
 Rwanda:Rwanda:Kigali:AF:Rwandský frank:RWA:RW:RWF:52:1:1:32
 Řecko:Greece:Athény:E:Euro:GRC:GR:EUR:6:128:0:0
 Salvador:El Salvador:San Salvador:SA:Americký dolar:SLV:SV:USD:6:1:8:64
-Samoa:Samoa:Apia:AO:Samojská tala:WSM:WS:WST:5:256:4:2
+Samoa:Samoa:Apia:AO:Samojská tala:WSM:WS:WST:5:128:4:2
 San Marino:San Marino:San Marino:E:Euro:SMR:SM:EUR:6:1:8:64
 Saúdská Arábie:Saudi Arabia:Rijád:AS:Saúdský rijál:SAU:SA:SAR:16:0:8:2
 Senegal:Senegal:Dakar:AF:CFA frank:SEN:SN:XOF:49:2:4:16
@@ -181,7 +181,7 @@ Trinidad a Tobago:Trinidad and Tobago:Port of Spain:SA:dolar Trinidadu a Tobaga:
 Tunisko:Tunisia:Tunis:AF:Tuniský dinár:TUN:TN:TND:3:32:6:1
 Turecko:Turkey:Ankara:AS:Nová turecká lira:TUR:TR:TRY:1:0:6:2
 Turkmenistán:Turkmenistan:Ašchabad:AS:Turkmenský manat:TKM:TM:TMT:16:0:14:64
-Tuvalu:Tuvalu:Funafuti (Vaiaku):AO:Tuvalský dolar:TUV:TV:AUD:4:128:4:32
+Tuvalu:Tuvalu:Funafuti (Vaiaku):AO:Tuvalský dolar:TUV:TV:AUD:7:128:4:32
 Uganda:Uganda:Kampala:AF:Ugandský šilink:UGA:UG:UGX:41:1:8:64
 Ukrajina:Ukraine:Kyjev:E:Ukrajinská hřivna:UKR:UA:UAH:36:1:0:0
 Uruguay:Uruguay:Montevideo:JA:Uruguayské peso:URY:UY:UYU:6:128:1:32
@@ -192,4 +192,4 @@ Venezuela:Venezuela:Caracas:JA:Venezuelský bolívar:VEN:VE:VES:37:1:12:64
 Vietnam:Vietnam:Hanoj:AS:Vietnamský dong:VNM:VN:VND:1:0:4:32
 Východní Timor:East Timor:Dili:AS:Americký dolar:TLS:TL:USD:41:1:4:2
 Zambie:Zambia:Lusaka:AF:Zambijská kwacha:ZMB:ZM:ZMW:89:256:8:64
-Zimbabwe:Zimbabwe:Harare:AF:Americký dolar:ZWE:ZW:USD:59:1:8:64
+Zimbabwe:Zimbabwe:Harare:AF:Americký dolar:ZWE:ZW:USD:59:1:12:64
