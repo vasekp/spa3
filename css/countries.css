@@ -24,6 +24,10 @@ input[type="text"] {
   grid-column-end: span 2;
 }
 
+#flg-filter-country, #flg-filter-flag {
+  display: none;
+}
+
 @media only screen and (max-width: 600px) {
   .flg-full-width, .flg-half-width {
     grid-column: 2 / 4;
@@ -32,7 +36,7 @@ input[type="text"] {
 
 @media only screen and (max-width: 400px) {
   #flg-filter {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   #flg-filter > label::after {
@@ -45,7 +49,31 @@ input[type="text"] {
   }
 
   .flg-full-width, .flg-half-width {
+    grid-column: 1 / 3;
+  }
+
+  .flg-filter-header {
     grid-column: auto;
+    border-radius: var(--radius-full);
+    text-align: center;
+    border: var(--border);
+    border-color: transparent;
+  }
+
+  #flg-filter-country:checked ~ label[for="flg-filter-country"],
+  #flg-filter-flag:checked ~ label[for="flg-filter-flag"] {
+    border-color: var(--color-line);
+  }
+
+  #flg-filter-country:not(:checked) ~ [data-section="country"],
+  #flg-filter-flag:not(:checked) ~ [data-section="flag"] {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 401px) {
+  .flg-filter-header {
+    display: none;
   }
 }
 
