@@ -136,9 +136,14 @@ function filter(e) {
       elm.hidden = !show;
     }
   } else {
+    let odd = true;
     for(let elm of document.getElementById('game-list').querySelectorAll('log-game')) {
       let show = elm.record && elm.record.tag ? sel[elm.record.tag] : sel.all;
       elm.hidden = !show;
+      if(show) {
+        elm.classList.toggle('alt-row', odd);
+        odd = !odd;
+      }
     }
   }
 }

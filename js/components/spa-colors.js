@@ -118,8 +118,6 @@ export class ColorFilterElement extends HTMLElement {
   }
 
   selectAll() {
-    if(this._constructed < construct.full)
-      return;
     for(let elm of this.querySelectorAll('.patch'))
       elm.checked = true;
     this._notify();
@@ -129,6 +127,9 @@ export class ColorFilterElement extends HTMLElement {
     let selected = {};
     for(let elm of this.querySelectorAll('.patch'))
       selected[elm.dataset.color] = elm.checked;
+    if(this._constructed < construct.full)
+      for(let i = 1; i <= NumColors; i++)
+        selected[i] = true;
     this.dispatchEvent(new CustomEvent('filter-change', {
       detail: { selected },
       bubbles: true

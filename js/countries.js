@@ -63,6 +63,7 @@ async function loadData() {
     tbody.appendChild(tr);
   }
   document.querySelector('.spa-loading').hidden = true;
+  filter();
 }
 
 function addCondition(f, cond) {
@@ -127,6 +128,13 @@ function filter() {
       for(const elm of ecolors)
         f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.checked);
   }
-  for(const tr of document.getElementById('flg-list').tBodies[0].children)
-    tr.hidden = !f(tr.dataset);
+  let odd = true;
+  for(const tr of document.getElementById('flg-list').tBodies[0].children) {
+    let show = f(tr.dataset);
+    tr.hidden = !show;
+    if(show) {
+      tr.classList.toggle('alt-row', odd);
+      odd = !odd;
+    }
+  }
 }
