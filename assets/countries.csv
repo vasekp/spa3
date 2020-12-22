@@ -81,9 +81,9 @@ Keňa:Kenya:Nairobi:AF:Keňský šilink:KEN:KE:KES:27:1:8:64
 Kiribati:Kiribati:Jižní Tarawa:AO:Kiribatský dolar:KIR:KI:AUD:7:256:9:32
 Kolumbie:Colombia:Bogotá:JA:Kolumbijské peso:COL:CO:COP:37:1:0:0
 Komory:Comoros, the:Moroni:AF:Komorský frank:COM:KM:KMF:55:1:6:2
-Kostarika:Costa Rica:San José (Kostarika)|San José:SA:Kostarický colón:CRI:CR:CRC:7:1:0:0
+Kostarika:Costa Rica:San José:SA:Kostarický colón:CRI:CR:CRC:7:1:0:0
 Kuba:Cuba:Havana:SA:Kubánské peso, Kubánské konvertibilní peso:CUB:CU:CUP,CUC:7:1:4:2
-Kuvajt:Kuwait:Kuvajt (město)|Kuvajt:AS:Kuvajtský dinár:KWT:KW:KWD:27:1:0:0
+Kuvajt:Kuwait:Kuvajt:AS:Kuvajtský dinár:KWT:KW:KWD:27:1:0:0
 Kypr:Cyprus:Nikósie:AS:Euro:CYP:CY:EUR:2:0:8:48
 Kyrgyzstán:Kyrgyzstan:Biškek:AS:Kyrgyzský som:KGZ:KG:KGS:1:0:8:32
 Laos:Laos:Vientiane:AS:Laoský kip:LAO:LA:LAK:7:33:0:0
@@ -104,7 +104,7 @@ Mali:Mali:Bamako:AF:CFA frank:MLI:ML:XOF:49:2:0:0
 Malta:Malta:Valletta:E:Euro:MLT:MT:EUR:3:2:8:64
 Maroko:Morocco:Rabat:AF:Marocký dirham:MAR:MA:MAD:1:0:4:16
 Marshallovy ostrovy:Marshall Islands, the:Majuro:AO:Americký dolar:MHL:MH:USD:70:256:1:2
-Mauricius:Mauritius:Port Louis (Mauricius)|Port Louis:AF:Mauricijská rupie:MUS:MU:MUR:53:1:0:0
+Mauricius:Mauritius:Port Louis:AF:Mauricijská rupie:MUS:MU:MUR:53:1:0:0
 Mauritánie:Mauritania:Nuakšott:AF:Mauritánská ukíjá:MRT:MR:MRU:17:1:6:32
 Mexiko:Mexico:Ciudad de México:SA:Mexické peso:MEX:MX:MXN:19:2:8:64
 Mikronésie:Federated States of Micronesia, the:Palikir:AO:Americký dolar:FSM:FM:USD:4:0:4:2
@@ -181,7 +181,7 @@ Trinidad a Tobago:Trinidad and Tobago:Port of Spain:SA:dolar Trinidadu a Tobaga:
 Tunisko:Tunisia:Tunis:AF:Tuniský dinár:TUN:TN:TND:3:32:6:1
 Turecko:Turkey:Ankara:AS:Nová turecká lira:TUR:TR:TRY:1:0:6:2
 Turkmenistán:Turkmenistan:Ašchabad:AS:Turkmenský manat:TKM:TM:TMT:16:0:14:64
-Tuvalu:Tuvalu:Funafuti (Vaiaku):AO:Tuvalský dolar:TUV:TV:AUD:7:128:4:32
+Tuvalu:Tuvalu:Funafuti / Vaiaku:AO:Tuvalský dolar:TUV:TV:AUD:7:128:4:32
 Uganda:Uganda:Kampala:AF:Ugandský šilink:UGA:UG:UGX:41:1:8:64
 Ukrajina:Ukraine:Kyjev:E:Ukrajinská hřivna:UKR:UA:UAH:36:1:0:0
 Uruguay:Uruguay:Montevideo:JA:Uruguayské peso:URY:UY:UYU:6:128:1:32
