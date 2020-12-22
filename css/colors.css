@@ -7,6 +7,7 @@
   --color-line: hsl(0, 0%, 50%);
   --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
   --color-text-fainter: hsl(0, 0%, var(--l25));
+  --color-text-semitrans: hsl(0, 0%, calc(50% - var(--c) * 50%), 50%);
   --color-text-light: hsl(0, 0%, 50%);
   --color-bg-main: hsl(0, 0%, calc(55% + var(--c) * 45%));
   --color-bg-75: hsla(0, 0%, calc(55% + var(--c) * 45%), 0.75);

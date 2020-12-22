@@ -72,15 +72,52 @@ input[type="text"] {
 }
 
 #flg-shape svg {
-  width: calc(1.5*(var(--font-cap-size) + 2*var(--pad-around-text)));
-  height: calc(var(--font-cap-size) + 2*var(--par-around-text));
-  align-self: center;
+  height: calc(var(--font-cap-size) + 2*var(--pad-around-text));
+  vertical-align: calc(-1 * var(--pad-around-text));
+}
+
+#flg-shape spa-checkbox {
+  position: relative;
+}
+
+#flg-shape path {
+  stroke-width: 0.5;
+  stroke: currentcolor;
+  fill: none;
+}
+
+#flg-shape [data-state="checked"] path {
+  stroke-width: 1;
+  fill: var(--color-bg-emph);
+}
+
+#flg-shape [data-state="unchecked"] {
+  color: var(--color-text-semitrans);
+}
+
+#flg-shape [data-state="unchecked"]::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  content: '×';
+  color: red;
 }
 
 #flg-emblems svg {
-  width: calc(var(--font-cap-size) + 2*var(--pad-around-text));
-  height: calc(var(--font-cap-size) + 2*var(--par-around-text));
-  align-self: center;
+  height: calc(var(--font-cap-size) + 2*var(--pad-around-text));
+  vertical-align: calc(-1 * var(--pad-around-text));
+}
+
+#flg-emblems path {
+  stroke: currentcolor;
+  stroke-linejoin: miter;
+  stroke-width: 0.5;
+  fill: none;
+}
+
+#flg-emblems [data-state="checked"] path {
+  fill: currentcolor;
 }
 
 spa-scroll {
