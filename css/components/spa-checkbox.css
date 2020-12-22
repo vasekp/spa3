@@ -9,14 +9,14 @@ spa-checkbox:not(.no-patch) {
 
 spa-checkbox:not(.no-patch)::before {
   display: inline-block;
-  width: var(--font-cap-size);
-  height: var(--font-cap-size);
+  width: var(--patch-size);
+  height: var(--patch-size);
   line-height: var(--font-cap-size);
   text-align: center;
   padding: var(--pad-around-text);
   border: var(--border);
   border-radius: var(--radius-small);
-  box-sizing: content-box;
+  box-sizing: border-box;
   background: var(--bg);
   color: var(--fg);
   content: "\200B";

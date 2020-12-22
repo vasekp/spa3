@@ -4,10 +4,6 @@
 @import "components/spa-checkbox.css";
 
 :root {
-  font-family: 'Source Sans Pro';
-  font-size: 13pt;
-  width: 100%;
-  height: 100%;
   --font-cap-size: 0.66em;
   --font-line-height: 1.424em;
   --font-space: 0.2em;
@@ -16,10 +12,16 @@
   --margin-small: 5px;
   --margin-base-neg: calc(-1 * var(--margin-base));
   --margin-small-neg: calc(-1 * var(--margin-small));
-  --pad-around-text: calc((1em - var(--font-cap-size))/2 - var(--line-width));
+  --patch-size: 1em;
+  --pad-around-text: calc((var(--patch-size) - var(--font-cap-size))/2);
   --radius-full: 5px;
   --radius-small: 3px;
   --focus-shadow: 0 0 2px 1px #888;
+  font-family: 'Source Sans Pro';
+  font-size: 17.556px; /* line-height = 25.000 px */
+  line-height: var(--font-line-height);
+  width: 100%;
+  height: 100%;
 }
 
 body {
@@ -63,6 +65,7 @@ main {
 
 input, textarea, button {
   appearance: none;
+  -webkit-appearance: none;
   font: inherit;
   padding: 0;
   margin: 0;
@@ -79,14 +82,14 @@ textarea {
 
 .patch {
   display: inline-block;
-  width: var(--font-cap-size);
-  height: var(--font-cap-size);
+  width: var(--patch-size);
+  height: var(--patch-size);
   line-height: var(--font-cap-size);
   text-align: center;
   padding: var(--pad-around-text);
   border: var(--border);
   border-radius: var(--radius-small);
-  box-sizing: content-box;
+  box-sizing: border-box;
   background: var(--bg);
   color: var(--fg);
 }

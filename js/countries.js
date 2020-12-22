@@ -41,7 +41,7 @@ async function loadData() {
     const arr = line.split(':');
     const tr = document.createElement('tr');
     const color = colors[arr[3]];
-    const content = arr[3] === 'SA' || arr[4] === 'JA' ? `data-content="${arr[3][0]}"` : "";
+    const content = arr[3] === 'SA' || arr[3] === 'JA' ? `data-content="${arr[3][0]}"` : "";
     tr.innerHTML = `
       <td><img src="assets/flags/${arr[5]}.svg"/></td>
       <td>${arr[0]}</td>
