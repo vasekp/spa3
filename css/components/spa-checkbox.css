@@ -1,7 +1,3 @@
-spa-checkbox {
-  user-select: none;
-}
-
 spa-checkbox.patch-before {
   display: inline-flex;
   align-items: baseline;

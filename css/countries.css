@@ -53,7 +53,6 @@ input[type="text"] {
   display: flex;
   flex-wrap: wrap;
   row-gap: var(--margin-small);
-  user-select: none;
   align-items: baseline;
 }
 
