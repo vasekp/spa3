@@ -170,9 +170,9 @@ spa-scroll {
 }
 
 #flg-list img {
-  box-shadow: 0px 0px 2px 1px #888;
-  max-height: calc(2*var(--font-cap-size));
+  height: calc(2*var(--font-cap-size));
   vertical-align: calc(-.5 * var(--font-cap-size));
+  filter: drop-shadow(0 0 2px #888);
 }
 
 #flg-col-flag {
