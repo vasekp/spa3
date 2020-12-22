@@ -27,15 +27,19 @@ export class CheckBoxElement extends HTMLElement {
       this.setAttribute('tabindex', 0);
   }
 
-  get stateBool() {
+  get checked() {
     return this.dataset.state === states.unset ? null : this.dataset.state === states.checked;
+  }
+
+  set checked(c) {
+    this.dataset.state = c ? states.checked : states.unchecked;
   }
 
   _toggle() {
     const sw = this.dataset.states === "3" ? next_3state : next_2state;
     this.dataset.state = sw[this.dataset.state] || states.checked;
     this.dispatchEvent(new CustomEvent('input', { bubbles: true }));
-    this.dispatchEvent(new CustomEvent('changed', { bubbles: true }));
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
   }
 }
 

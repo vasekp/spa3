@@ -1,10 +1,17 @@
 import './components/spa-checkbox.js';
 import './components/spa-scroll.js';
 import {normalize} from './util/text.js';
+import {debounce} from './util/debounce.js';
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.addEventListener('input', filter);
+  const dbf = debounce(filter, 300);
+  document.getElementById('flg-name').addEventListener('input', dbf);
+  document.getElementById('flg-capital').addEventListener('input', dbf);
+  document.getElementById('flg-continent').addEventListener('change', atLeastOne);
   document.getElementById('flg-ccount').addEventListener('change', firstOrMulti);
+  document.getElementById('flg-colors').addEventListener('change', filter);
+  document.getElementById('flg-shape').addEventListener('change', filter);
+  document.getElementById('flg-emblems').addEventListener('change', filter);
   document.getElementById('flg-ecolor').addEventListener('change', firstOrMulti);
   loadData();
 });
@@ -21,6 +28,22 @@ function firstOrMulti(e) {
     for(const elm of siblings)
       total += elm.checked;
     first.checked = total === 0;
+  }
+  filter();
+}
+
+function atLeastOne(e) {
+  const siblings = e.target.parentNode.children;
+  let totalAfter = 0;
+  for(const elm of siblings)
+    totalAfter += elm.checked;
+  let totalBefore = totalAfter + (e.target.checked ? -1 : +1);
+  if(totalBefore === siblings.length) {
+    for(const elm of siblings)
+      elm.checked = elm === e.target;
+  } else if(totalAfter === 0) {
+    for(const elm of siblings)
+      elm.checked = elm !== e.target;
   }
   filter();
 }
@@ -94,7 +117,7 @@ function filter() {
   }
   // Continent
   for(const elm of document.getElementById('flg-continent').children) {
-    if(!elm.stateBool) {
+    if(!elm.checked) {
       if(elm.dataset.value === 'AM')
         f = addCondition(f, dataset => dataset.continent !== 'SA' && dataset.continent !== 'JA');
       else
@@ -103,8 +126,8 @@ function filter() {
   }
   // Flag colors
   for(const elm of document.getElementById('flg-colors').children) {
-    if(elm.stateBool !== null)
-      f = addCondition(f, dataset => !!(dataset.flagColor & elm.dataset.value) === elm.stateBool);
+    if(elm.checked !== null)
+      f = addCondition(f, dataset => !!(dataset.flagColor & elm.dataset.value) === elm.checked);
   }
   // Color count
   {
@@ -114,12 +137,12 @@ function filter() {
   }
   // Flag colors
   for(const elm of document.getElementById('flg-shape').children) {
-    if(elm.stateBool !== null)
-      f = addCondition(f, dataset => !!(dataset.flagShape & elm.dataset.value) === elm.stateBool);
+    if(elm.checked !== null)
+      f = addCondition(f, dataset => !!(dataset.flagShape & elm.dataset.value) === elm.checked);
   }
   // Emblems
   for(const elm of document.getElementById('flg-emblems').children) {
-    if(elm.stateBool)
+    if(elm.checked)
       f = addCondition(f, dataset => dataset.emblems & elm.dataset.value);
   }
   // Emblem colors
