@@ -1,5 +1,6 @@
 import './components/spa-checkbox.js';
 import './components/spa-scroll.js';
+import {normalize} from './util/text.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('input', filter);
@@ -48,9 +49,9 @@ async function loadData() {
       <td>${arr[2]}</td>
       <td><span class="patch c-${color}" ${content} data-color="param"></span></td>
     `;
-    tr.dataset.czname = arr[0];
-    tr.dataset.enname = arr[1];
-    tr.dataset.capital = arr[2];
+    tr.dataset.czname = normalize(arr[0]);
+    tr.dataset.enname = normalize(arr[1]);
+    tr.dataset.capital = normalize(arr[2]);
     tr.dataset.continent = arr[3];
     tr.dataset.currency = arr[4];
     tr.dataset.abbr3 = arr[5];
@@ -81,15 +82,15 @@ function filter() {
   let f = () => true;
   // Country name
   {
-    const cname = document.getElementById('flg-name').value.toLowerCase();
+    const cname = normalize(document.getElementById('flg-name').value);
     if(cname)
-      f = addCondition(f, dataset => dataset.czname.toLowerCase().includes(cname));
+      f = addCondition(f, dataset => dataset.czname.includes(cname));
   }
   // Capital
   {
-    const cname = document.getElementById('flg-capital').value.toLowerCase();
+    const cname = normalize(document.getElementById('flg-capital').value);
     if(cname)
-      f = addCondition(f, dataset => dataset.capital.toLowerCase().includes(cname));
+      f = addCondition(f, dataset => dataset.capital.includes(cname));
   }
   // Continent
   for(const elm of document.getElementById('flg-continent').children) {
