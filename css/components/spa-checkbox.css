@@ -2,23 +2,12 @@ spa-checkbox {
   user-select: none;
 }
 
-spa-checkbox:not(.no-patch) {
+spa-checkbox.patch-before {
   display: inline-flex;
   align-items: baseline;
 }
 
-spa-checkbox:not(.no-patch)::before {
-  display: inline-block;
-  width: var(--patch-size);
-  height: var(--patch-size);
-  line-height: var(--font-cap-size);
-  text-align: center;
-  padding: var(--pad-around-text);
-  border: var(--border);
-  border-radius: var(--radius-small);
-  box-sizing: border-box;
-  background: var(--bg);
-  color: var(--fg);
+spa-checkbox.patch-before::before {
   content: "\200B";
 }
 
@@ -30,10 +19,12 @@ spa-checkbox.show-opacity[data-state="unchecked"] {
   opacity: .5;
 }
 
-spa-checkbox:not(.no-patch).show-state[data-state="checked"]::before {
+spa-checkbox.patch.show-state[data-state="checked"]::before,
+spa-checkbox.patch-before.show-state[data-state="checked"]::before {
   content: "+";
 }
 
-spa-checkbox:not(.no-patch).show-state[data-state="unchecked"]::before {
+spa-checkbox.patch.show-state[data-state="unchecked"]::before,
+spa-checkbox.patch-before.show-state[data-state="unchecked"]::before {
   content: "×";
 }

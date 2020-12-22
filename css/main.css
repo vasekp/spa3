@@ -80,7 +80,7 @@ textarea {
   resize: none;
 }
 
-.patch {
+.patch, .patch-before::before {
   display: inline-block;
   width: var(--patch-size);
   height: var(--patch-size);
@@ -94,11 +94,11 @@ textarea {
   color: var(--fg);
 }
 
-.patch:empty::after {
+.patch::before {
   content: "\200B";
 }
 
-.patch::before {
+.patch::after {
   content: attr(data-content);
 }
 
