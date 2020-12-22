@@ -24,7 +24,7 @@ window.addEventListener('mousedown', e => {
 
 window.addEventListener('click', e => {
   let e1 = e.target.closest('label');
-  if(!e1)
+  if(!e1 || !e1.control)
     return;
   e1.control.click();
   e.preventDefault();
