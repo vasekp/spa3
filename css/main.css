@@ -59,6 +59,14 @@ main {
   box-shadow: inset var(--focus-shadow);
 }
 
+.patch-before:focus {
+  box-shadow: none;
+}
+
+.patch-before:focus::before {
+  box-shadow: var(--focus-shadow);
+}
+
 :not(:defined) {
   display: none;
 }
