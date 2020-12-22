@@ -62,14 +62,14 @@ log-record[data-state="edit"] .log-record-text {
 }
 
 .log-record-props {
-  margin: var(--margin-small) var(--margin-base);
+  margin: var(--margin-small);
   display: flex;
   align-items: center;
 }
 
 .log-record-colorsel {
   flex: 1;
-  margin-right: var(--margin-small);
+  line-height: 1em;
 }
 
 @keyframes geo-waiting {
