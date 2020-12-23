@@ -103,17 +103,22 @@ function popCnt(x) {
 
 function filter() {
   let f = () => true;
+  let edited = { country: false, flag: false };
   // Country name
   {
     const cname = normalize(document.getElementById('flg-name').value);
-    if(cname)
+    if(cname) {
       f = addCondition(f, dataset => dataset.czname.includes(cname));
+      edited.country = true;
+    }
   }
   // Capital
   {
     const cname = normalize(document.getElementById('flg-capital').value);
-    if(cname)
+    if(cname) {
       f = addCondition(f, dataset => dataset.capital.includes(cname));
+      edited.country = true;
+    }
   }
   // Continent
   for(const elm of document.getElementById('flg-continent').children) {
@@ -122,35 +127,46 @@ function filter() {
         f = addCondition(f, dataset => dataset.continent !== 'SA' && dataset.continent !== 'JA');
       else
         f = addCondition(f, dataset => dataset.continent !== elm.dataset.value);
+      edited.country = true;
     }
   }
   // Flag colors
   for(const elm of document.getElementById('flg-colors').children) {
-    if(elm.checked)
+    if(elm.checked) {
       f = addCondition(f, dataset => dataset.flagColor & elm.dataset.value);
+      edited.flag = true;
+    }
   }
   // Color count
   {
     const ccount = [...document.getElementById('flg-ccount').children];
-    if(!ccount[0].checked)
+    if(!ccount[0].checked) {
       f = addCondition(f, dataset => ccount[popCnt(dataset.flagColor)].checked);
+      edited.flag = true;
+    }
   }
   // Flag shape
   for(const elm of document.getElementById('flg-shape').children) {
-    if(elm.checked)
+    if(elm.checked) {
       f = addCondition(f, dataset => dataset.flagShape & elm.dataset.value);
+      edited.flag = true;
+    }
   }
   // Emblems
   for(const elm of document.getElementById('flg-emblems').children) {
-    if(elm.checked)
+    if(elm.checked) {
       f = addCondition(f, dataset => dataset.emblems & elm.dataset.value);
+      edited.flag = true;
+    }
   }
   // Emblem colors
   {
     const ecolors = [...document.getElementById('flg-ecolor').children];
-    if(!ecolors.shift().checked)
+    if(!ecolors.shift().checked) {
       for(const elm of ecolors)
         f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.checked);
+      edited.flag = true;
+    }
   }
   let odd = true;
   for(const tr of document.getElementById('flg-list').tBodies[0].children) {
@@ -161,4 +177,6 @@ function filter() {
       odd = !odd;
     }
   }
+  document.getElementById('flg-filter-country').labels[0].classList.toggle('edited', edited.country);
+  document.getElementById('flg-filter-flag').labels[0].classList.toggle('edited', edited.flag);
 }

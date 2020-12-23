@@ -17,11 +17,11 @@
         <input type="radio" name="flg-filter-section" id="flg-filter-flag"/>
         <label tabindex="0" data-active="1" class="flg-filter-header" for="flg-filter-country">Země</label>
         <label tabindex="0" data-active="1" class="flg-filter-header" for="flg-filter-flag">Vlajka</label>
-        <label data-section="country" for="flg-name">Název</label>
+        <label class="flg-filter-label" data-section="country" for="flg-name">Název</label>
         <input data-section="country" class="flg-full-width" type="text" id="flg-name"/>
-        <label data-section="country" for="flg-capital">Hlavní město</label>
+        <label class="flg-filter-label" data-section="country" for="flg-capital">Hlavní město</label>
         <input data-section="country" class="flg-full-width" type="text" id="flg-capital"/>
-        <label data-section="country">Světadíl</label>
+        <label class="flg-filter-label" data-section="country">Světadíl</label>
         <div data-section="country" class="flg-full-width" id="flg-continent">
           <spa-checkbox data-state="checked" class="patch-before show-opacity c-blue" data-color="param" id="flg-cont-e" data-value="E"/>Evropa</spa-checkbox>
           <spa-checkbox data-state="checked" class="patch-before show-opacity c-yellow" data-color="param" id="flg-cont-as" data-value="AS"/>Asie</spa-checkbox>
@@ -29,7 +29,7 @@
           <spa-checkbox data-state="checked" class="patch-before show-opacity c-green" data-color="param" id="flg-cont-ao" data-value="AO"/>Austrálie a Oceánie</spa-checkbox>
           <spa-checkbox data-state="checked" class="patch-before show-opacity c-red" data-color="param" id="flg-cont-am" data-value="AM"/>S + J Amerika</spa-checkbox>
         </div>
-        <label data-section="flag">Barvy</label>
+        <label class="flg-filter-label" data-section="flag">Barvy</label>
         <div data-section="flag" class="flg-half-width" id="flg-colors">
           <spa-checkbox class="patch show-opacity c-red" data-color="param" data-value="1"></spa-checkbox>
           <spa-checkbox class="patch show-opacity c-white" data-color="param" data-value="2"></spa-checkbox>
@@ -39,7 +39,6 @@
           <spa-checkbox class="patch show-opacity c-yellow" data-color="param" data-value="32"></spa-checkbox>
           <spa-checkbox class="patch show-opacity c-orange" data-color="param" data-value="64"></spa-checkbox>
         </div>
-        <!--label data-section="flag">Počet barev</label-->
         <div data-section="flag" class="flg-half-width" id="flg-ccount">
           <input type="checkbox" autocomplete="off" checked class="patch checkbox" name="flg-ccount" data-content="#"/>
           <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="1"/>
@@ -49,7 +48,7 @@
           <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="5"/>
           <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="6"/>
         </div>
-        <label data-section="flag">Tvar</label>
+        <label class="flg-filter-label" data-section="flag">Tvar</label>
         <div data-section="flag" class="flg-full-width" id="flg-shape">
           <spa-checkbox class="no-patch show-state" id="flg-shape-horz" data-value="1">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
@@ -103,7 +102,7 @@
             </svg>
           </spa-checkbox>
         </div>
-        <label data-section="flag">Emblémy</label>
+        <label class="flg-filter-label" data-section="flag">Emblémy</label>
         <div data-section="flag" class="flg-half-width" id="flg-emblems">
           <spa-checkbox class="no-patch" id="flg-emblem-sun" data-value="1">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5 -5 10 10">
@@ -128,7 +127,6 @@
             </svg>
           </spa-checkbox>
         </div>
-        <!--label data-section="flag">Jejich barva</label-->
         <div data-section="flag" class="flg-half-width" id="flg-ecolor">
           <input type="checkbox" autocomplete="off" checked class="checkbox patch" data-content="#" data-color="all"/>
           <input type="checkbox" autocomplete="off" class="checkbox patch c-red" data-color="param" data-value="1"/>
