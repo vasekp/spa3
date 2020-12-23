@@ -126,8 +126,8 @@ function filter() {
   }
   // Flag colors
   for(const elm of document.getElementById('flg-colors').children) {
-    if(elm.checked !== null)
-      f = addCondition(f, dataset => !!(dataset.flagColor & elm.dataset.value) === elm.checked);
+    if(elm.checked)
+      f = addCondition(f, dataset => dataset.flagColor & elm.dataset.value);
   }
   // Color count
   {
@@ -135,10 +135,10 @@ function filter() {
     if(!ccount[0].checked)
       f = addCondition(f, dataset => ccount[popCnt(dataset.flagColor)].checked);
   }
-  // Flag colors
+  // Flag shape
   for(const elm of document.getElementById('flg-shape').children) {
-    if(elm.checked !== null)
-      f = addCondition(f, dataset => !!(dataset.flagShape & elm.dataset.value) === elm.checked);
+    if(elm.checked)
+      f = addCondition(f, dataset => dataset.flagShape & elm.dataset.value);
   }
   // Emblems
   for(const elm of document.getElementById('flg-emblems').children) {

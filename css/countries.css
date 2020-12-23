@@ -107,27 +107,13 @@ input[type="text"] {
 }
 
 #flg-shape path {
-  stroke-width: 0.5;
+  stroke-width: 0.4;
   stroke: currentcolor;
   fill: none;
 }
 
 #flg-shape [data-state="checked"] path {
-  stroke-width: 1;
-  fill: var(--color-bg-emph);
-}
-
-#flg-shape [data-state="unchecked"] {
-  color: var(--color-text-semitrans);
-}
-
-#flg-shape [data-state="unchecked"]::after {
-  position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
-  content: '×';
-  color: red;
+  stroke-width: 1.2;
 }
 
 #flg-emblems svg {
@@ -138,7 +124,7 @@ input[type="text"] {
 #flg-emblems path {
   stroke: currentcolor;
   stroke-linejoin: miter;
-  stroke-width: 0.5;
+  stroke-width: 0.4;
   fill: none;
 }
 
