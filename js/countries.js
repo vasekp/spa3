@@ -14,6 +14,8 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('flg-shape').addEventListener('change', filter);
   document.getElementById('flg-emblems').addEventListener('change', filter);
   document.getElementById('flg-ecolor').addEventListener('change', firstOrMulti);
+  document.getElementById('flg-currency').addEventListener('input', dbf);
+  document.getElementById('flg-curr-code').addEventListener('input', dbf);
   document.getElementById('flg-list').addEventListener('click', flagClicked);
   document.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
   loadData();
@@ -110,7 +112,7 @@ function popCnt(x) {
 
 function filter() {
   let f = () => true;
-  let edited = { country: false, flag: false };
+  let edited = { country: false, flag: false, currency: false };
   // Country name
   {
     const cname = normalize(document.getElementById('flg-name').value);
@@ -175,6 +177,19 @@ function filter() {
       edited.flag = true;
     }
   }
+  // Currency
+  {
+    const cname = normalize(document.getElementById('flg-currency').value);
+    if(cname) {
+      f = addCondition(f, dataset => dataset.currencyN.includes(cname));
+      edited.currency = true;
+    }
+    const ccode = document.getElementById('flg-curr-code').value.toUpperCase();
+    if(ccode) {
+      f = addCondition(f, dataset => dataset.abbrCurr.includes(ccode));
+      edited.currency = true;
+    }
+  }
   let odd = true;
   for(const tr of document.getElementById('flg-list').tBodies[0].children) {
     let show = f(tr.dataset);
@@ -184,8 +199,8 @@ function filter() {
       odd = !odd;
     }
   }
-  document.getElementById('flg-filter-country').labels[0].classList.toggle('edited', edited.country);
-  document.getElementById('flg-filter-flag').labels[0].classList.toggle('edited', edited.flag);
+  for(const sec in edited)
+    document.getElementById(`flg-filter-${sec}`).labels[0].classList.toggle('edited', edited[sec]);
 }
 
 function flagClicked(e) {
