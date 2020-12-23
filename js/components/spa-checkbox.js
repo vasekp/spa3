@@ -22,7 +22,7 @@ export class CheckBoxElement extends HTMLElement {
 
   connectedCallback() {
     if(!this.dataset.state)
-      this.dataset.state = this.dataset.states === "3" ? states.unset : states.checked;
+      this.dataset.state = this.dataset.states === "3" ? states.unset : states.unchecked;
     if(!this.hasAttribute('tabindex'))
       this.setAttribute('tabindex', 0);
   }
