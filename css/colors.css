@@ -15,6 +15,7 @@
   --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));
   --color-bg-alt: hsl(0, 0%, calc(55% + var(--c) * 35%));
   --color-bg-emph: hsl(60, 90%, var(--l75));
+  --color-bg-modal: hsl(0, 0%, 25%, 50%);
   --color-plus: hsl(100, 50%, 50%);
   --border: var(--line-width) solid var(--color-line);
 }

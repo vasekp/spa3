@@ -1,5 +1,6 @@
 import './components/spa-checkbox.js';
 import './components/spa-scroll.js';
+import './components/spa-modal.js';
 import {normalize} from './util/text.js';
 import {debounce} from './util/debounce.js';
 
