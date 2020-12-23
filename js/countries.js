@@ -75,14 +75,16 @@ async function loadData() {
       <td>${arr[2]}</td>
       <td><span class="patch c-${color}" ${content} data-color="param"></span></td>
     `;
-    tr.dataset.czname = normalize(arr[0]);
-    tr.dataset.enname = normalize(arr[1]);
-    tr.dataset.capital = normalize(arr[2]);
+    tr.dataset.name = arr[0];
+    tr.dataset.nameN = normalize(arr[0]);
+    tr.dataset.capital = arr[2]
+    tr.dataset.capitalN = normalize(arr[2]);
     tr.dataset.continent = arr[3];
     tr.dataset.currency = arr[4];
+    tr.dataset.currencyN = normalize(arr[4]);
     tr.dataset.abbr3 = arr[5];
     tr.dataset.abbr2 = arr[6];
-    tr.dataset.currAbbr = arr[7];
+    tr.dataset.abbrCurr = arr[7];
     tr.dataset.flagColor = arr[8];
     tr.dataset.flagShape = arr[9];
     tr.dataset.emblems = arr[10];
@@ -113,7 +115,7 @@ function filter() {
   {
     const cname = normalize(document.getElementById('flg-name').value);
     if(cname) {
-      f = addCondition(f, dataset => dataset.czname.includes(cname));
+      f = addCondition(f, dataset => dataset.nameN.includes(cname));
       edited.country = true;
     }
   }
@@ -121,7 +123,7 @@ function filter() {
   {
     const cname = normalize(document.getElementById('flg-capital').value);
     if(cname) {
-      f = addCondition(f, dataset => dataset.capital.includes(cname));
+      f = addCondition(f, dataset => dataset.capitalN.includes(cname));
       edited.country = true;
     }
   }
@@ -191,7 +193,8 @@ function flagClicked(e) {
   if(!tr)
     return;
   document.getElementById('flg-d-flag').src = tr.querySelector('img').src;
-  document.getElementById('flg-d-name').textContent = tr.children[1].textContent;
-  document.getElementById('flg-d-capital').textContent = tr.children[2].textContent;
+  document.getElementById('flg-d-name').textContent = tr.dataset.name;
+  document.getElementById('flg-d-capital').textContent = tr.dataset.capital;
+  document.getElementById('flg-d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
   document.getElementById('flg-details-modal').hidden = false;
 }

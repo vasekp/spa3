@@ -217,3 +217,11 @@ spa-scroll {
 #flg-d-name {
   font-weight: 600;
 }
+
+#flg-d-currency::before {
+  font-weight: 600;
+}
+
+#flg-d-currency::before {
+  content: "Měna: ";
+}
