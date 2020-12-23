@@ -44,13 +44,15 @@ input[name=flg-filter-section] {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  .flg-filter-label::after {
-    content: "";
-  }
-
   .flg-filter-label {
     font-size: 80%;
     font-style: oblique;
+    line-height: 1em;
+    margin-top: var(--margin-small);
+  }
+
+  .flg-filter-label::after {
+    content: "";
   }
 
   .flg-full-width, .flg-half-width {
