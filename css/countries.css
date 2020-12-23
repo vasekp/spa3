@@ -192,3 +192,28 @@ spa-scroll {
     visibility: collapse;
   }
 }
+
+@media only screen and (min-width: 401px) {
+  #flg-details {
+    width: 350px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #flg-details {
+    width: 100%;
+  }
+}
+
+#flg-d-flag {
+  width: 100%;
+  filter: drop-shadow(0px 0px var(--margin-base) #888);
+}
+
+#flg-d-name, #flg-d-capital {
+  text-align: center;
+}
+
+#flg-d-name {
+  font-weight: 600;
+}

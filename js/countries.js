@@ -14,6 +14,8 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('flg-shape').addEventListener('change', filter);
   document.getElementById('flg-emblems').addEventListener('change', filter);
   document.getElementById('flg-ecolor').addEventListener('change', firstOrMulti);
+  document.getElementById('flg-list').addEventListener('click', flagClicked);
+  document.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
   loadData();
 });
 
@@ -85,6 +87,8 @@ async function loadData() {
     tr.dataset.flagShape = arr[9];
     tr.dataset.emblems = arr[10];
     tr.dataset.emblemColor = arr[11];
+    tr.dataset.active = true;
+    tr.tabindex = 0;
     tbody.appendChild(tr);
   }
   document.querySelector('.spa-loading').hidden = true;
@@ -180,4 +184,14 @@ function filter() {
   }
   document.getElementById('flg-filter-country').labels[0].classList.toggle('edited', edited.country);
   document.getElementById('flg-filter-flag').labels[0].classList.toggle('edited', edited.flag);
+}
+
+function flagClicked(e) {
+  let tr = e.target.closest('tr');
+  if(!tr)
+    return;
+  document.getElementById('flg-d-flag').src = tr.querySelector('img').src;
+  document.getElementById('flg-d-name').textContent = tr.children[1].textContent;
+  document.getElementById('flg-d-capital').textContent = tr.children[2].textContent;
+  document.getElementById('flg-details-modal').hidden = false;
 }
