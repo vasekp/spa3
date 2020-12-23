@@ -59,7 +59,7 @@ export class GameRecordElement extends HTMLElement {
       this.setAttribute('tabindex', 0);
     this.dataset.focusContainer = 1;
     this.dataset.active = 1;
-    this.classList.add('innerOutline');
+    this.classList.add('inner-outline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
         this._close();

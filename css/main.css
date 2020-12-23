@@ -56,11 +56,12 @@ main {
   box-shadow: var(--focus-shadow);
 }
 
-*.innerOutline:focus {
+.inner-outline:focus {
   outline: none;
   box-shadow: inset var(--focus-shadow);
 }
 
+.no-outline:focus,
 .patch-before:focus {
   box-shadow: none;
 }

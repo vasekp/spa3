@@ -92,7 +92,8 @@ async function loadData() {
     tr.dataset.emblems = arr[10];
     tr.dataset.emblemColor = arr[11];
     tr.dataset.active = true;
-    tr.tabindex = 0;
+    tr.tabIndex = 0;
+    tr.classList.add('inner-outline');
     tbody.appendChild(tr);
   }
   document.querySelector('.spa-loading').hidden = true;
@@ -212,4 +213,5 @@ function flagClicked(e) {
   document.getElementById('flg-d-capital').textContent = tr.dataset.capital;
   document.getElementById('flg-d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
   document.getElementById('flg-details-modal').hidden = false;
+  document.getElementById('flg-details-modal').focus();
 }
