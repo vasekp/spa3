@@ -1,4 +1,5 @@
 import {ObjectStore} from './log-db.js';
+import {debounce} from './util/debounce.js';
 
 export const recordStore = new ObjectStore('log-rec');
 
@@ -16,8 +17,7 @@ recordStore.getAll = async function(gid) {
 class Record {
   constructor(record) {
     this._static = record;
-    this._saveTimer = null;
-    this._save = () => recordStore.update(this._static);
+    this._delayedSave = debounce(() => this._save(), 300);
     this._views = new Set();
   }
 
@@ -31,26 +31,30 @@ class Record {
   get tag() { return this._static.tag; }
   get geo() { return this._static.geo; }
 
+  _save() {
+    console.log('s');
+    recordStore.update(this._static);
+  }
+
   set text(text) {
     for(let view of this._views)
       view.text = text;
     this._static.text = text;
-    clearTimeout(this._saveTimer);
-    this._saveTimer = setTimeout(this._save, 300);
+    this._delayedSave();
   }
 
   set tag(tag) {
     for(let view of this._views)
       view.tag = tag;
     this._static.tag = tag;
-    recordStore.update(this._static);
+    this._save();
   }
 
   set geo(geo) {
     for(let view of this._views)
       view.geo = geo;
     this._static.geo = geo;
-    recordStore.update(this._static);
+    this._save();
   }
 
   addView(elm) {

@@ -50,15 +50,7 @@ log-record[data-state="edit"] .log-record-text {
 }
 
 .log-record-area {
-  border: none;
-  outline: none;
-  margin: 0;
-  background: inherit;
-  font: inherit;
-  box-sizing: border-box;
-  resize: none;
   position: absolute;
-  padding: 0;
   left: 0;
   top: 0;
   width: 100%;
@@ -70,14 +62,14 @@ log-record[data-state="edit"] .log-record-text {
 }
 
 .log-record-props {
-  margin: var(--margin-small) var(--margin-base);
+  margin: var(--margin-small);
   display: flex;
   align-items: center;
 }
 
 .log-record-colorsel {
   flex: 1;
-  margin-right: var(--margin-small);
+  line-height: 1em;
 }
 
 @keyframes geo-waiting {

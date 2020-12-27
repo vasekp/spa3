@@ -57,7 +57,6 @@ export class LiveListElement extends HTMLElement {
       else {
         this._tracking.zero = false;
         elm.setPointerCapture(e.pointerId);
-        elm.style['user-select'] = 'none';
         elm.dispatchEvent(new CustomEvent('move-start', { bubbles: true }));
       }
     }
@@ -107,7 +106,6 @@ export class LiveListElement extends HTMLElement {
 const swipeCancelCallback = e => {
   let elm = e.currentTarget;
   elm.style.transition = '';
-  elm.style['user-select'] = 'auto';
   elm.dispatchEvent(new CustomEvent('move-cancel', { bubbles: true }));
 };
 

@@ -1,10 +1,27 @@
 :root {
-  --color-line: #888;
-  --color-text-fainter: #444;
-  --color-text-light: #888;
-  --color-bg-alt: #eee;
+  --c: 1;
+  --l25: calc(50% - var(--c) * 25%);
+  --l60: calc(50% - var(--c) * 10%);
+  --l75: calc(50% + var(--c) * 25%);
+  --l85: calc(50% + var(--c) * 35%);
+  --color-line: hsl(0, 0%, 50%);
+  --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
+  --color-text-fainter: hsl(0, 0%, var(--l25));
+  --color-text-semitrans: hsl(0, 0%, calc(50% - var(--c) * 50%), 50%);
+  --color-text-light: hsl(0, 0%, 50%);
+  --color-bg-main: hsl(0, 0%, calc(55% + var(--c) * 45%));
+  --color-bg-75: hsla(0, 0%, calc(55% + var(--c) * 45%), 0.75);
+  --color-bg-00: hsla(0, 0%, calc(55% + var(--c) * 45%), 0);
+  --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));
+  --color-bg-alt: hsl(0, 0%, calc(55% + var(--c) * 35%));
+  --color-bg-emph: hsl(60, 90%, var(--l75));
+  --color-bg-modal: hsl(0, 0%, 25%, 50%);
   --color-plus: hsl(100, 50%, 50%);
   --border: var(--line-width) solid var(--color-line);
+}
+
+:root.dark {
+  --c: -1;
 }
 
 [data-color="1"] { --color-index: 1; }
@@ -19,40 +36,88 @@
 
 [data-color] {
   --hue: calc(160 + 80 * var(--color-index));
-  background: hsl(var(--hue), 90%, 85%);
-  --color-line: hsl(var(--hue), 90%, 50%);
-  --color-text-fainter: hsl(var(--hue), 50%, 25%);
+  --sat: 90%;
+  --ltn: 100%;
+  --bg: hsl(var(--hue), var(--sat), var(--l85));
+  --fg: currentcolor;
+  --color-line: hsl(var(--hue), var(--sat), var(--l60));
+  --color-text-fainter: hsl(var(--hue), calc(var(--sat)/2), var(--l25));
+  --border: var(--line-width) solid var(--color-line);
+}
+
+[data-color="param"] {
+  --bg: hsl(var(--hue), var(--sat), calc((.60 + var(--c) * .25) * var(--ltn)));
 }
 
 [data-color="all"] {
-  background: linear-gradient(
+  --l: calc(60% + var(--c) * 20%);
+  --bg: linear-gradient(
     .32turn,
-    hsl(0, 90%, 85%),
-    hsl(50, 90%, 85%),
-    hsl(120, 90%, 85%),
-    hsl(190, 90%, 85%),
-    hsl(240, 90%, 85%));
+    hsl(0, 90%, var(--l)),
+    hsl(60, 90%, var(--l)) 30% 35%,
+    hsl(120, 90%, var(--l)),
+    hsl(180, 90%, var(--l)) 60% 65%,
+    hsl(240, 90%, var(--l)));
   --color-line: hsl(0, 0%, 50%);
-  --color-text-fainter: hsl(0, 0%, 25%);
+  --color-text-fainter: hsl(0, 0%, var(--l25));
 }
 
 [data-color="cross"] {
-  background: linear-gradient(.125turn, transparent 42%, red 45% 55%, transparent 58%),
-              linear-gradient(-.125turn, transparent 42%, red 45% 55%, transparent 58%);
-  --color-line: hsl(0, 0%, 50%);
-  --color-text-fainter: hsl(0, 0%, 25%);
+  --bg: linear-gradient(.125turn, transparent 42%, red 45% 55%, transparent 58%),
+        linear-gradient(-.125turn, transparent 42%, red 45% 55%, transparent 58%);
 }
 
 [data-color="grey"] {
-  background: hsl(0, 0%, 85%);
-  --color-line: hsl(0, 0%, 50%);
-  --color-text-fainter: hsl(0, 0%, 25%);
-}
-
-[data-color] {
-  --border: var(--line-width) solid var(--color-line);
+  --hue: 0;
+  --sat: 0%;
 }
 
 .color-fainter {
   color: var(--color-text-fainter);
+}
+
+.c-red {
+  --hue: 0;
+  --sat: 90%;
+}
+
+.c-green {
+  --hue: 120;
+  --sat: 90%;
+  --ltn: 90%;
+}
+
+.c-blue {
+  --hue: 240;
+  --sat: 90%;
+}
+
+.c-yellow {
+  --hue: 60;
+  --sat: 90%;
+  --ltn: 80%;
+}
+
+.c-orange {
+  --hue: 35;
+  --sat: 100%;
+}
+
+.c-white {
+  --hue: 0;
+  --sat: 0%;
+  --ltn: 200%;
+  --fg: black;
+}
+
+.c-black {
+  --hue: 0;
+  --sat: 0%;
+  --ltn: 0%;
+  --fg: white;
+}
+
+.apply-colors {
+  background: var(--bg);
+  color: var(--fg);
 }

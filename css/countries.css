@@ -1,0 +1,231 @@
+@import "components/spa-color-elements.css";
+
+#flg-filter {
+  display: grid;
+  grid-template-columns: 150px 1fr 1fr;
+  grid-gap: var(--margin-small);
+  margin-bottom: var(--margin-base);
+}
+
+.flg-filter-label {
+  grid-column: 1/2;
+  font-weight: 600;
+  color: var(--color-text-fainter);
+}
+
+.flg-filter-label::after {
+  content: ":";
+}
+
+input[type="text"] {
+  border-bottom: 1px solid #ccc;
+}
+
+.flg-full-width {
+  grid-column: 2/4;
+}
+
+input[name=flg-filter-section] {
+  display: none;
+}
+
+.flg-section {
+  display: contents;
+}
+
+@media only screen and (max-width: 600px) {
+  .flg-half-width {
+    grid-column: 2/4;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #flg-filter {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .flg-filter-label {
+    font-size: 80%;
+    font-style: oblique;
+    line-height: 1em;
+    margin-top: var(--margin-small);
+  }
+
+  .flg-filter-label::after {
+    content: "";
+  }
+
+  .flg-full-width, .flg-half-width {
+    grid-column: 1/4;
+  }
+
+  .flg-filter-header {
+    grid-row: 1/2;
+    grid-column: auto;
+    border-radius: var(--radius-full);
+    text-align: center;
+    border: var(--border);
+    border-color: transparent;
+  }
+
+  input[name=flg-filter-section]:checked + label {
+    border-color: var(--color-line);
+  }
+
+  input[name=flg-filter-section]:not(:checked) + label + div {
+    display: none;
+  }
+
+  input[name=flg-filter-section]:not(:checked) + label.edited::after {
+    content: '';
+    width: 1em;
+    display: inline-block;
+    height: 1em;
+    background: url('../images/edit.svg') center / 100%;
+    margin-right: calc(-1em - var(--font-space));
+    margin-left: var(--font-space);
+    vertical-align: calc((var(--font-cap-size) - 1em) / 2);
+  }
+}
+
+@media only screen and (min-width: 401px) {
+  .flg-filter-header {
+    display: none;
+  }
+}
+
+#flg-continent, #flg-colors, #flg-ccount, #flg-shape, #flg-emblems, #flg-ecolor {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: var(--margin-small);
+  align-items: baseline;
+}
+
+.flg-full-width::after, .flg-half-width::after {
+  content: "\200b";
+}
+
+#flg-ccount > .patch,
+#flg-ecolor > input,
+#flg-colors > spa-checkbox,
+#flg-shape > spa-checkbox,
+#flg-emblems > spa-checkbox,
+#flg-continent > spa-checkbox {
+  margin-right: var(--margin-base);
+}
+
+#flg-shape svg {
+  height: calc(var(--font-cap-size) + 2*var(--pad-around-text));
+  vertical-align: calc(-1 * var(--pad-around-text));
+}
+
+#flg-shape spa-checkbox {
+  position: relative;
+}
+
+#flg-shape path {
+  stroke-width: 0.4;
+  stroke: currentcolor;
+  fill: none;
+}
+
+#flg-shape [data-state="checked"] path {
+  stroke-width: 1.2;
+}
+
+#flg-emblems svg {
+  height: calc(var(--font-cap-size) + 2*var(--pad-around-text));
+  vertical-align: calc(-1 * var(--pad-around-text));
+}
+
+#flg-emblems path {
+  stroke: currentcolor;
+  stroke-linejoin: miter;
+  stroke-width: 0.4;
+  fill: none;
+}
+
+#flg-emblems [data-state="checked"] path {
+  fill: currentcolor;
+}
+
+spa-scroll {
+  margin: 0 var(--margin-base-neg);
+  flex: 1;
+}
+
+#flg-list {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#flg-list tr {
+  height: 2rem;
+}
+
+#flg-list td:first-child {
+  padding-left: var(--margin-base);
+}
+
+#flg-list td:last-child {
+  padding-right: var(--margin-base);
+}
+
+#flg-list img {
+  height: calc(2*var(--font-cap-size));
+  vertical-align: calc(-.5 * var(--font-cap-size));
+  filter: drop-shadow(0 0 2px #888);
+}
+
+#flg-col-flag {
+  width: 4rem;
+}
+
+#flg-col-continent {
+  width: 2rem;
+}
+
+@media only screen and (max-width: 400px) {
+  #flg-list td:nth-child(3) {
+    font-size: 0;
+  }
+
+  #flg-col-capital {
+    width: 0;
+    visibility: collapse;
+  }
+}
+
+@media only screen and (min-width: 401px) {
+  #flg-details {
+    width: 350px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #flg-details {
+    width: 100%;
+  }
+}
+
+#flg-d-flag {
+  width: 100%;
+  filter: drop-shadow(0px 0px var(--margin-base) #888);
+}
+
+#flg-d-name, #flg-d-capital {
+  text-align: center;
+}
+
+#flg-d-name {
+  font-weight: 600;
+}
+
+#flg-d-currency::before {
+  font-weight: 600;
+}
+
+#flg-d-currency::before {
+  content: "Měna: ";
+}

@@ -4,8 +4,8 @@ import {gameStore} from '../log-game-store.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<span class="color-patch log-game-color-patch" color="none"></span>
-<spa-color-sel class="log-game-color-sel" data-zero="1"></spa-color-sel>
+<span class="patch log-game-color-patch" color="none"></span>
+<spa-color-sel class="log-game-color-sel" data-delayed="1" data-has-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
 <input type="text" class="log-game-name-edit">
 <span class="log-game-date"></span>
@@ -13,7 +13,7 @@ template.innerHTML = `
 <div class="log-game-tools-container">
   <div class="log-game-tools" tabindex="-1">
     <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
-    <button class="color-patch log-game-color-edit" data-color="all" tabindex="0" data-active="1"></button>
+    <button class="patch log-game-color-edit" data-color="all" tabindex="0" data-active="1"></button>
     <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
   </div>
 </div>`;
@@ -59,7 +59,7 @@ export class GameRecordElement extends HTMLElement {
       this.setAttribute('tabindex', 0);
     this.dataset.focusContainer = 1;
     this.dataset.active = 1;
-    this.classList.add('innerOutline');
+    this.classList.add('inner-outline');
     this.addEventListener('focusout', e => {
       if(!this.contains(e.relatedTarget))
         this._close();
@@ -109,7 +109,7 @@ export class GameRecordElement extends HTMLElement {
     else
       delete this.dataset.hidePlus;
     if(state === states.color)
-      this.querySelector('spa-color-sel').dataset.expanded = true;
+      this.querySelector('spa-color-sel').construct();
     if(state === states.nascent || state === states.edit)
       this._id('name-edit').focus();
   }

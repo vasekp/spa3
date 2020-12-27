@@ -36,7 +36,7 @@ const gameNameView = {
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelector('spa-plus-list').button.addEventListener('click', plus);
   document.getElementById('log-sel').addEventListener('click', gameList);
-  document.getElementById('tag-filter').addEventListener('change', filter);
+  document.getElementById('tag-filter').addEventListener('filter-change', filter);
   document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
   document.getElementById('no-games').addEventListener('click', plus);
   db.then(dbReady);
@@ -136,9 +136,14 @@ function filter(e) {
       elm.hidden = !show;
     }
   } else {
+    let odd = true;
     for(let elm of document.getElementById('game-list').querySelectorAll('log-game')) {
       let show = elm.record && elm.record.tag ? sel[elm.record.tag] : sel.all;
       elm.hidden = !show;
+      if(show) {
+        elm.classList.toggle('alt-row', odd);
+        odd = !odd;
+      }
     }
   }
 }
