@@ -18,8 +18,14 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('flg-curr-code').addEventListener('input', dbf);
   document.getElementById('flg-list').addEventListener('click', flagClicked);
   document.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
+  document.addEventListener('keydown', blurOnEnter);
   loadData();
 });
+
+function blurOnEnter(e) {
+  if(e.target.tagName === 'INPUT' && e.target.type === 'text' && e.key === 'Enter')
+    e.target.blur();
+}
 
 function firstOrMulti(e) {
   const siblings = [...e.target.parentNode.children];
