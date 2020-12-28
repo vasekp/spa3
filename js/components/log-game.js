@@ -1,6 +1,7 @@
 import {Enum} from '../util/enum.js';
 import {dateFormat} from '../util/datetime.js';
 import {gameStore} from '../log-game-store.js';
+import './spa-slideout.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -10,13 +11,11 @@ template.innerHTML = `
 <input type="text" class="log-game-name-edit">
 <span class="log-game-date"></span>
 <div class="log-game-confirm">Klikněte znovu pro potvrzení.</div>
-<div class="log-game-tools-container">
-  <div class="log-game-tools" tabindex="-1">
-    <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
-    <button class="patch log-game-color-edit" data-color="all" tabindex="0" data-active="1"></button>
-    <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
-  </div>
-</div>`;
+<spa-slideout class="log-game-tools">
+  <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
+  <button class="patch log-game-color-edit" data-color="all" data-active="1"></button>
+  <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
+</spa-slideout>`;
 
 const states = Enum.fromArray(['nascent', 'disabled', 'base', 'edit', 'color', 'confirm']);
 
@@ -47,12 +46,6 @@ export class GameRecordElement extends HTMLElement {
     });
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
     id('color-sel').addEventListener('color-click', e => { this._colorClicked(e.detail.color); e.preventDefault(); });
-    id('tools').addEventListener('touchend', e => {
-      if(!e.currentTarget.contains(this.getRootNode().activeElement)) {
-        e.currentTarget.focus();
-        e.preventDefault();
-      }
-    });
     id('tools').addEventListener('click', e => e.preventDefault());
     this.addEventListener('click', e => this._click(e));
     if(!this.hasAttribute('tabindex'))

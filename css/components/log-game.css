@@ -28,8 +28,8 @@ log-game:not([data-state="base"]) .log-game-name {
   display: none;
 }
 
-log-game[data-state="edit"] .log-game-tools-container,
-log-game[data-state="nascent"] .log-game-tools-container {
+log-game[data-state="edit"] .log-game-tools,
+log-game[data-state="nascent"] .log-game-tools {
   display: none;
 }
 
@@ -52,42 +52,6 @@ log-game[data-disabled] {
   color: var(--color-text-light);
   margin: 0 var(--font-space);
   white-space: nowrap;
-}
-
-.log-game-tools-container {
-  --div-size: var(--font-line-height);
-  width: calc(var(--div-size) + 2*var(--line-width));
-  height: calc(var(--div-size) + 2*var(--line-width));
-  overflow: visible;
-  margin-left: auto;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.log-game-tools {
-  --padding: calc((var(--div-size) - 1em) / 2);
-  --count: 3;
-  width: var(--div-size);
-  height: var(--div-size);
-  flex: none;
-  overflow: hidden;
-  transition: width .5s;
-  background: var(--color-bg-main);
-  border: var(--border);
-  border-radius: var(--div-size);
-  line-height: var(--div-size);
-  display: flex;
-  justify-content: flex-end;
-}
-
-.log-game-tools:hover, .log-game-tools:focus, .log-game-tools:focus-within {
-  width: calc(var(--count) * var(--div-size));
-}
-
-.log-game-tools > * {
-  margin: var(--padding);
-  flex: none;
-  border-radius: var(--radius-small);
 }
 
 .log-game-color-patch {

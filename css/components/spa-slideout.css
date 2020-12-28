@@ -1,0 +1,43 @@
+:host {
+  --div-size: var(--font-line-height);
+  --padding: calc((var(--div-size) - 1em) / 2);
+  width: calc(var(--div-size) + 2*var(--line-width));
+  height: calc(var(--div-size) + 2*var(--line-width));
+  overflow: visible;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+#container {
+  width: var(--div-size);
+  height: var(--div-size);
+  flex: none;
+  overflow: hidden;
+  transition: width .5s;
+  background: var(--color-bg-main);
+  border: var(--border);
+  border-radius: var(--div-size);
+  line-height: var(--div-size);
+  display: flex;
+  justify-content: flex-end;
+}
+
+#container:hover, :host(:focus) #container, :host(:focus-within) #container {
+  width: calc(var(--count) * var(--div-size));
+}
+
+#container:focus {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+
+::slotted(*) {
+  margin: var(--padding) !important;
+  flex: none;
+  border-radius: var(--radius-small);
+}
