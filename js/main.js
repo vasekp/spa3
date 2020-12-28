@@ -28,8 +28,9 @@ window.addEventListener('DOMContentLoaded', () => {
  */
 window.addEventListener('mousedown', e => {
   const target = e.composedPath()[0];
+  const root = target.getRootNode();
   let e0 = target.closest('[data-focus-container]');
-  if(!e0 || !e0.contains(document.activeElement))
+  if(!e0 || !e0.contains(root.activeElement))
     document.activeElement.blur();
   let e1 = target.closest('button, input:not([type="text"]), [tabindex]');
   if(!e1)

@@ -48,7 +48,7 @@ export class GameRecordElement extends HTMLElement {
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
     id('color-sel').addEventListener('color-click', e => { this._colorClicked(e.detail.color); e.preventDefault(); });
     id('tools').addEventListener('touchend', e => {
-      if(!e.currentTarget.contains(document.activeElement)) {
+      if(!e.currentTarget.contains(this.getRootNode().activeElement)) {
         e.currentTarget.focus();
         e.preventDefault();
       }
@@ -200,8 +200,7 @@ export class GameRecordElement extends HTMLElement {
   _colorClicked(color) {
     this.record.tag = color;
     this._close();
-    if(document.activeElement)
-      document.activeElement.blur();
+    document.activeElement.blur();
   }
 }
 
