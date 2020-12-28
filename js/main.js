@@ -29,20 +29,20 @@ window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('mousedown', e => {
   const target = e.composedPath()[0];
   const root = target.getRootNode();
-  let e0 = target.closest('[data-focus-container]');
+  const e0 = target.closest('[data-focus-container]');
   if(!e0 || !e0.contains(root.activeElement))
-    document.activeElement.blur();
-  let e1 = target.closest('button, input:not([type="text"]), [tabindex]');
+    e.target.focus(); // This is the <spa-view> due to event retargetting!
+  const e1 = target.closest('button, input:not([type="text"]), [tabindex]');
   if(!e1)
     return;
-  let e2 = target.closest('input[type="text"], textarea');
+  const e2 = target.closest('input[type="text"], textarea');
   if(!e1.contains(e2))
     e.preventDefault();
 });
 
 window.addEventListener('click', e => {
   const target = e.composedPath()[0];
-  let e1 = target.closest('label');
+  const e1 = target.closest('label');
   if(!e1 || !e1.control)
     return;
   e1.control.click();

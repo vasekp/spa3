@@ -64,6 +64,10 @@ spa-view {
   contain: size;
 }
 
+spa-view:focus {
+  outline: none;
+}
+
 @media only screen and (max-width: 1210px) {
   #v1 {
     justify-self: center;
@@ -75,6 +79,10 @@ spa-view {
 }
 
 @media only screen and (min-width: 1211px) {
+  spa-view:focus, spa-view:focus-within {
+    box-shadow: var(--focus-shadow);
+  }
+
   body {
     grid-template-columns: 800px 400px;
     grid-gap: var(--margin-base);
