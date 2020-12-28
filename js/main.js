@@ -1,3 +1,5 @@
+import './components/spa-view.js';
+
 /* Element focus handling.
  *
  * The idea is to allow tab navigation while preventing drawing outlines on everything
@@ -6,24 +8,26 @@
  * clicking and selecting within text fields.
  *
  * The situations we want to handle:
- * body > tabbale > target: YES preventDefault()
+ * body > tabbable > target: YES preventDefault()
  * body > (tabbable) > input > target: NO
  * all other: DON'T CARE
  */
 window.addEventListener('mousedown', e => {
-  let e0 = e.target.closest('[data-focus-container]');
+  const target = e.composedPath()[0];
+  let e0 = target.closest('[data-focus-container]');
   if(!e0 || !e0.contains(document.activeElement))
     document.activeElement.blur();
-  let e1 = e.target.closest('button, input:not([type="text"]), [tabindex]');
+  let e1 = target.closest('button, input:not([type="text"]), [tabindex]');
   if(!e1)
     return;
-  let e2 = e.target.closest('input[type="text"], textarea');
+  let e2 = target.closest('input[type="text"], textarea');
   if(!e1.contains(e2))
     e.preventDefault();
 });
 
 window.addEventListener('click', e => {
-  let e1 = e.target.closest('label');
+  const target = e.composedPath()[0];
+  let e1 = target.closest('label');
   if(!e1 || !e1.control)
     return;
   e1.control.click();
@@ -31,9 +35,10 @@ window.addEventListener('click', e => {
 });
 
 window.addEventListener('keydown', e => {
-  if(e.target.dataset.active)
+  const target = e.composedPath()[0];
+  if(target.dataset.active)
     if(e.key === 'Enter' || e.key === ' ')
-      e.target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 });
 
 window.addEventListener('auxclick', e => {

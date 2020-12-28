@@ -1,45 +1,13 @@
-@import "fonts.css";
 @import "colors.css";
 @import "components/spa-plus-list.css";
 @import "components/spa-checkbox.css";
 
-:root {
-  --font-cap-size: 0.66em;
-  --font-line-height: 1.424em;
-  --font-space: 0.2em;
-  --line-width: 1px;
-  --margin-base: 10px;
-  --margin-small: 5px;
-  --margin-base-neg: calc(-1 * var(--margin-base));
-  --margin-small-neg: calc(-1 * var(--margin-small));
-  --patch-size: 1em;
-  --pad-around-text: calc((var(--patch-size) - var(--font-cap-size))/2);
-  --radius-full: 5px;
-  --radius-small: 3px;
-  --focus-shadow: 0 0 2px 1px #888;
-  font-family: 'Source Sans Pro';
-  font-size: 17.556px; /* line-height = 25.000 px */
-  line-height: var(--font-line-height);
-  width: 100%;
-  height: 100%;
-  background: var(--color-bg-sides);
-  user-select: none;
-  -webkit-user-select: none;
-  cursor: default;
-}
-
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
-
 main {
   display: flex;
-  max-width: 50rem;
+  flex-direction: column;
+  width: 100%;
   height: 100%;
   margin: 0 auto;
-  flex-direction: column;
   background: var(--color-bg-main);
   color: var(--color-text-main);
   padding: var(--margin-base);

@@ -32,7 +32,6 @@ class Record {
   get geo() { return this._static.geo; }
 
   _save() {
-    console.log('s');
     recordStore.update(this._static);
   }
 

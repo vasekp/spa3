@@ -1,0 +1,105 @@
+@import "fonts.css";
+
+:root {
+  --c: 1;
+  --l25: calc(50% - var(--c) * 25%);
+  --l60: calc(50% - var(--c) * 10%);
+  --l75: calc(50% + var(--c) * 25%);
+  --l85: calc(50% + var(--c) * 35%);
+  --color-line: hsl(0, 0%, 50%);
+  --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
+  --color-text-fainter: hsl(0, 0%, var(--l25));
+  --color-text-semitrans: hsl(0, 0%, calc(50% - var(--c) * 50%), 50%);
+  --color-text-light: hsl(0, 0%, 50%);
+  --color-bg-main: hsl(0, 0%, calc(55% + var(--c) * 45%));
+  --color-bg-75: hsla(0, 0%, calc(55% + var(--c) * 45%), 0.75);
+  --color-bg-00: hsla(0, 0%, calc(55% + var(--c) * 45%), 0);
+  --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));
+  --color-bg-alt: hsl(0, 0%, calc(55% + var(--c) * 35%));
+  --color-bg-emph: hsl(60, 90%, var(--l75));
+  --color-bg-modal: hsl(0, 0%, 25%, 50%);
+  --color-plus: hsl(100, 50%, 50%);
+  --border: var(--line-width) solid var(--color-line);
+  --font-cap-size: 0.66em;
+  --font-line-height: 1.424em;
+  --font-space: 0.2em;
+  --line-width: 1px;
+  --margin-base: 10px;
+  --margin-small: 5px;
+  --margin-base-neg: calc(-1 * var(--margin-base));
+  --margin-small-neg: calc(-1 * var(--margin-small));
+  --patch-size: 1em;
+  --pad-around-text: calc((var(--patch-size) - var(--font-cap-size))/2);
+  --radius-full: 5px;
+  --radius-small: 3px;
+  --focus-shadow: 0 0 2px 1px #888;
+  font-family: 'Source Sans Pro';
+  font-size: 17.556px; /* line-height = 25.000 px */
+  line-height: var(--font-line-height);
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg-sides);
+  color: var(--color-text-main);
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+:root.dark {
+  --c: -1;
+}
+
+body {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+spa-view {
+  background: var(--color-bg-main);
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+  contain: size;
+}
+
+@media only screen and (max-width: 1210px) {
+  #v1 {
+    justify-self: center;
+  }
+
+  #v2, #v3 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1211px) {
+  body {
+    grid-template-columns: 800px 400px;
+    grid-gap: var(--margin-base);
+    width: 1210px;
+    margin: 0 auto;
+  }
+
+  #v1 {
+    justify-self: right;
+  }
+
+  #v2, #v3 {
+    max-width: 400px;
+    justify-self: left;
+  }
+}
+
+@media only screen and (min-width: 1211px) and (max-height: 900px) {
+  #v3 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1211px) and (min-height: 901px) {
+  #v1 {
+    grid-row: 1/3;
+  }
+}

@@ -1,0 +1,21 @@
+<!doctype html>
+<main data-view="init">
+  <div class="header-line" id="log-sel" tabindex="0" data-active="1">
+    <span>Záznam:</span>
+    <span id="gname"></span>
+    <span id="gdate"></span>
+  </div>
+  <div class="header-line">
+    <span>Filtr:</span>
+    <spa-color-filter id="tag-filter"></spa-color-filter>
+  </div>
+  <spa-scroll>
+    <spa-plus-list>
+      <div class="spa-loading" id="load"></div>
+      <log-record-list id="record-list"></log-record-list>
+      <div id="game-list">
+        <div id="no-games"><span>Přidejte první hru...</span></div>
+      </div>
+    </spa-plus-list>
+  </spa-scroll>
+</main>

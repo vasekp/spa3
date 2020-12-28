@@ -1,0 +1,159 @@
+<!doctype html>
+<main>
+  <div id="flg-filter">
+    <input type="radio" name="flg-filter-section" checked id="flg-filter-country"/>
+    <label tabindex="0" data-active="1" class="flg-filter-header" for="flg-filter-country">Země</label>
+    <div class="flg-section">
+      <label class="flg-filter-label" for="flg-name">Název</label>
+      <input class="flg-full-width" type="text" id="flg-name"/>
+      <label class="flg-filter-label" for="flg-capital">Hlavní město</label>
+      <input class="flg-full-width" type="text" id="flg-capital"/>
+      <label class="flg-filter-label">Světadíl</label>
+      <div class="flg-full-width" id="flg-continent">
+        <spa-checkbox data-state="checked" class="patch-before show-opacity c-blue" data-color="param" id="flg-cont-e" data-value="E"/>Evropa</spa-checkbox>
+        <spa-checkbox data-state="checked" class="patch-before show-opacity c-yellow" data-color="param" id="flg-cont-as" data-value="AS"/>Asie</spa-checkbox>
+        <spa-checkbox data-state="checked" class="patch-before show-opacity c-black" data-color="param" id="flg-cont-af" data-value="AF"/>Afrika</spa-checkbox>
+        <spa-checkbox data-state="checked" class="patch-before show-opacity c-green" data-color="param" id="flg-cont-ao" data-value="AO"/>Austrálie a Oceánie</spa-checkbox>
+        <spa-checkbox data-state="checked" class="patch-before show-opacity c-red" data-color="param" id="flg-cont-am" data-value="AM"/>S + J Amerika</spa-checkbox>
+      </div>
+    </div>
+    <input type="radio" name="flg-filter-section" id="flg-filter-flag"/>
+    <label tabindex="0" data-active="1" class="flg-filter-header" for="flg-filter-flag">Vlajka</label>
+    <div class="flg-section">
+      <label class="flg-filter-label">Barvy</label>
+      <div class="flg-half-width" id="flg-colors">
+        <spa-checkbox class="patch show-opacity c-red" data-color="param" data-value="1"></spa-checkbox>
+        <spa-checkbox class="patch show-opacity c-white" data-color="param" data-value="2"></spa-checkbox>
+        <spa-checkbox class="patch show-opacity c-blue" data-color="param" data-value="4"></spa-checkbox>
+        <spa-checkbox class="patch show-opacity c-black" data-color="param" data-value="8"></spa-checkbox>
+        <spa-checkbox class="patch show-opacity c-green" data-color="param" data-value="16"></spa-checkbox>
+        <spa-checkbox class="patch show-opacity c-yellow" data-color="param" data-value="32"></spa-checkbox>
+        <spa-checkbox class="patch show-opacity c-orange" data-color="param" data-value="64"></spa-checkbox>
+      </div>
+      <div class="flg-half-width" id="flg-ccount">
+        <input type="checkbox" autocomplete="off" checked class="patch checkbox" name="flg-ccount" data-content="#"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="1"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="2"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="3"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="4"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="5"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="6"/>
+      </div>
+      <label class="flg-filter-label">Tvar</label>
+      <div class="flg-full-width" id="flg-shape">
+        <spa-checkbox class="no-patch show-state" id="flg-shape-horz" data-value="1">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 3.5 H 14.5 M .5 6.5 H 14.5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-vert" data-value="2">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M 5.2 .5 V 9.5 M 9.8 .5 V 9.5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-cross-hv" data-value="4">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 5 H 14.5 M 7.5 .5 V 9.5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-cross-diag" data-value="8">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 .5 L 14.5 9.5 M .5 9.5 L 14.5 .5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-cross-diag" data-value="16">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 .5 L 7.5 5 .5 9.5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-diag" data-value="32">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M 14.5 .5 L .5 9.5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-circle" data-value="64">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M 9.5 5 A 2 2 0 0 1 5.5 5 2 2 0 0 1 9.5 5 z"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-uk" data-value="128">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M .5 .5 L 14.5 9.5 M 7.5 .5 V 9.5 M 14.5 .5 L .5 9.5 M .5 5 H 14.5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-usa" data-value="256">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z M 5 .5 V 5 H .5 M 5 2.75 H 14.5 M 5 5 H 14.5 M .5 7.25 H 14.5"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch show-state" id="flg-shape-other" data-value="512">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
+            <path d="M .5 .5 H 14.5 V 9.5 H .5 z"/>
+            <text x="7.5" y="8" text-anchor="middle" fill="currentcolor" font-size="8">?</text>
+          </svg>
+        </spa-checkbox>
+      </div>
+      <label class="flg-filter-label">Emblémy</label>
+      <div class="flg-half-width" id="flg-emblems">
+        <spa-checkbox class="no-patch" id="flg-emblem-sun" data-value="1">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5 -5 10 10">
+            <path d="M 2.5 0 L 4.05 1.95 1.56 1.95 1 4.39 -0.56 2.44 -2.81 3.52 -2.25 1.08 -4.5 0 -2.25 -1.08 -2.81 -3.52 -0.56 -2.44 1 -4.39 1.56 -1.95 4.05 -1.95 z M 2 0 A 2 2 0 0 0 -2 0 2 2 0 0 0 2 0 z"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch" id="flg-emblem-moon" data-value="2">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5 -5 10 10">
+            <path d="M 4 -3.5 A 4.5 4.5 0 1 0 4 3.5 3.7 3.7 0 1 1 4 -3.5 z"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch" id="flg-emblem-star" data-value="4">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5 -5 10 10">
+            <path d="M 0 -4.5 2.65 3.64 -4.28 -1.39 4.27 -1.39 -2.65 3.64 z"/>
+          </svg>
+        </spa-checkbox>
+        <spa-checkbox class="no-patch" id="flg-emblem-other" data-value="8">
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 -5 12 10">
+            <path d="M .5 0 a 1.5 1.5 0 0 0 3 0 1.5 1.5 0 0 0 -3 0 z
+                     m 4 0 a 1.5 1.5 0 0 0 3 0 1.5 1.5 0 0 0 -3 0 z
+                     m 4 0 a 1.5 1.5 0 0 0 3 0 1.5 1.5 0 0 0 -3 0 z"/>
+          </svg>
+        </spa-checkbox>
+      </div>
+      <div class="flg-half-width" id="flg-ecolor">
+        <input type="checkbox" autocomplete="off" checked class="checkbox patch" data-content="#" data-color="all"/>
+        <input type="checkbox" autocomplete="off" class="checkbox patch c-red" data-color="param" data-value="1"/>
+        <input type="checkbox" autocomplete="off" class="checkbox patch c-white" data-color="param" data-value="2"/>
+        <input type="checkbox" autocomplete="off" class="checkbox patch c-blue" data-color="param" data-value="4"/>
+        <input type="checkbox" autocomplete="off" class="checkbox patch c-black" data-color="param" data-value="8"/>
+        <input type="checkbox" autocomplete="off" class="checkbox patch c-green" data-color="param" data-value="16"/>
+        <input type="checkbox" autocomplete="off" class="checkbox patch c-yellow" data-color="param" data-value="32"/>
+      </div>
+    </div>
+    <input type="radio" name="flg-filter-section" id="flg-filter-currency"/>
+    <label tabindex="0" data-active="1" class="flg-filter-header" for="flg-filter-currency">Měna</label>
+    <div class="flg-section">
+      <label class="flg-filter-label" for="flg-currency">Měna</label>
+      <input class="flg-half-width" type="text" id="flg-currency"/>
+      <input class="flg-half-width" type="text" placeholder="kód" id="flg-curr-code"/>
+    </div>
+  </div>
+  <div class="spa-loading"></div>
+  <spa-scroll>
+    <table id="flg-list">
+      <colgroup>
+        <col id="flg-col-flag"/>
+        <col id="flg-col-name"/>
+        <col id="flg-col-capital"/>
+        <col id="flg-col-continent"/>
+      </colgroup>
+      <tbody></tbody>
+    </table>
+  </spa-scroll>
+  <spa-modal id="flg-details-modal" class="no-outline" hidden tabindex="-1" data-active="1">
+    <div id="flg-details">
+      <img id="flg-d-flag"/>
+      <div id="flg-d-name"></div>
+      <div id="flg-d-capital"></div>
+      <div id="flg-d-currency"></div>
+    </div>
+  </spa-modal>
+</main>

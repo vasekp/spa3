@@ -25,8 +25,10 @@ export class ListElement extends LiveListElement {
     super();
     this._mo = new MutationObserver(() => this._updateDates());
     this._mo.observe(this, { childList: true });
-    this.addEventListener('move-away', e =>
-      recordStore.delete(e.target.record).then(() => e.target.remove()));
+    this.addEventListener('move-away', e => {
+      let tgt = e.target;
+      recordStore.delete(tgt.record).then(() => tgt.remove());
+    });
   }
 
   _updateDates() {
