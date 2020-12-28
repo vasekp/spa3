@@ -65,6 +65,10 @@ spa-view {
 }
 
 @media only screen and (max-width: 1210px) {
+  :root {
+    --layout: "single";
+  }
+
   #v1 {
     justify-self: center;
   }
@@ -75,6 +79,10 @@ spa-view {
 }
 
 @media only screen and (min-width: 1211px) {
+  :root {
+    --layout: "split";
+  }
+
   body {
     grid-template-columns: 800px 400px;
     grid-gap: var(--margin-base);

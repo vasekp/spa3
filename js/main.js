@@ -1,5 +1,19 @@
 import './components/spa-view.js';
 
+/* As of now there seems to be no other way than JS to condition layout on container size. */
+const ro = new ResizeObserver(entries => {
+  for(const entry of entries) {
+    const view = entry.target;
+    const width = view.clientWidth;
+    view.dataset.size = width <= 400 ? 'small' : width <= 600 ? 'mid' : 'full';
+  }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  for(const view of document.querySelectorAll('spa-view'))
+    ro.observe(view)
+});
+
 /* Element focus handling.
  *
  * The idea is to allow tab navigation while preventing drawing outlines on everything
