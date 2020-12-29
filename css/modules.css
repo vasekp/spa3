@@ -1,4 +1,5 @@
 @import "colors.css";
+@import "common.css";
 @import "components/spa-plus-list.css";
 @import "components/spa-checkbox.css";
 
@@ -15,48 +16,12 @@ main {
   position: relative;
 }
 
-*[hidden] {
-  display: none !important;
-}
-
-*:focus {
-  outline: none;
-  box-shadow: var(--focus-shadow);
-}
-
-.inner-outline:focus {
-  outline: none;
-  box-shadow: inset var(--focus-shadow);
-}
-
-.no-outline:focus,
 .patch-before:focus {
   box-shadow: none;
 }
 
 .patch-before:focus::before {
   box-shadow: var(--focus-shadow);
-}
-
-:not(:defined) {
-  display: none;
-}
-
-input, textarea, button {
-  appearance: none;
-  -webkit-appearance: none;
-  font: inherit;
-  padding: 0;
-  margin: 0;
-  border: none;
-  outline: none;
-  background: none;
-  color: inherit;
-}
-
-textarea {
-  box-sizing: border-box;
-  resize: none;
 }
 
 .patch, .patch-before::before {
@@ -91,42 +56,6 @@ textarea {
 
 .patch.radio:checked {
   background: var(--color-bg-emph);
-}
-
-.inline {
-  height: 1em;
-  width: 1em;
-  vertical-align: top;
-  flex: none;
-  box-sizing: content-box;
-}
-
-@keyframes loading {
-  from { background-position: 200%; }
-  to   { background-position: 0%; }
-}
-
-.spa-loading {
-  display: flex;
-  justify-content: center;
-  margin: 0 var(--margin-small);
-  position: relative;
-}
-
-.spa-loading::before {
-  content: '● ● ●';
-}
-
-.spa-loading::after {
-  display: inline-block;
-  position: absolute;
-  content: '';
-  width: 3em;
-  height: 100%;
-  top: 0;
-  margin: 0 auto;
-  background: linear-gradient(90deg, var(--color-bg-00) 0%, var(--color-bg-main) 50%, var(--color-bg-00) 100%) repeat 0/200%;
-  animation: loading 1s linear infinite running;
 }
 
 .alt-row {

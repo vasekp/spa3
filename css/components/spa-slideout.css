@@ -1,3 +1,5 @@
+@import "../common.css";
+
 :host {
   --div-size: var(--font-line-height);
   --padding: calc((var(--div-size) - 1em) / 2);
@@ -30,11 +32,6 @@
 #container:hover, #container:focus, #container:focus-within {
   width: calc(var(--count) * var(--div-size));
   height: var(--div-size);
-}
-
-#container:focus {
-  outline: none;
-  box-shadow: var(--focus-shadow);
 }
 
 ::slotted(*) {
