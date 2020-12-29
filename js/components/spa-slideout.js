@@ -6,8 +6,10 @@ template.innerHTML = `
 export class SlideOutElement extends HTMLElement {
   constructor() {
     super();
+    this.hidden = true;
     const root = this.attachShadow({ mode: 'open' });
     root.appendChild(template.content.cloneNode(true));
+    root.querySelector('link').addEventListener('load', () => this.hidden = false);
     const cont = root.getElementById('container');
     root.addEventListener('touchend', e => {
       if(!root.host.matches(':focus-within')) {

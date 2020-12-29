@@ -1,8 +1,8 @@
 :host {
   --div-size: var(--font-line-height);
   --padding: calc((var(--div-size) - 1em) / 2);
-  width: calc(var(--div-size) + 2*var(--line-width));
-  height: calc(var(--div-size) + 2*var(--line-width));
+  width: var(--div-size);
+  height: var(--div-size);
   overflow: visible;
   margin-left: auto;
   display: flex;
@@ -25,6 +25,13 @@
   line-height: var(--div-size);
   display: flex;
   justify-content: flex-end;
+}
+
+:host(.corner) #container {
+  border-radius: 0;
+  border-bottom-left-radius: calc(0.75 * var(--div-size));
+  border-top-style: none;
+  border-right-style: none;
 }
 
 #container:hover, :host(:focus) #container, :host(:focus-within) #container {
