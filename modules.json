@@ -1,0 +1,10 @@
+[
+  {
+    "moduleName": "logbook",
+    "displayName": "Zápisník"
+  },
+  {
+    "moduleName": "countries",
+    "displayName": "Země světa"
+  }
+]
