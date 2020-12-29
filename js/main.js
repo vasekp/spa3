@@ -21,23 +21,27 @@ window.addEventListener('DOMContentLoaded', () => {
  * mousedown because that would break other default actions than just focus, namely,
  * clicking and selecting within text fields.
  *
+ * This is presumably what :focus-visible does but until it is supported in Firefox
+ * we'll have to do it manually.
+ *
  * The situations we want to handle:
  * body > tabbable > target: YES preventDefault()
  * body > (tabbable) > input > target: NO
  * all other: DON'T CARE
  */
 window.addEventListener('mousedown', e => {
-  const target = e.composedPath()[0];
+  const path = e.composedPath().filter(n => n.nodeType === Node.ELEMENT_NODE);
+  const target = path[0];
   const root = target.getRootNode();
   const e0 = target.closest('[data-focus-container]');
   if(!e0 || !e0.contains(root.activeElement))
     e.target.focus(); // This is the <spa-view> due to event retargetting!
-  const e1 = target.closest('button, input:not([type="text"]), [tabindex]');
-  if(!e1)
-    return;
-  const e2 = target.closest('input[type="text"], textarea');
-  if(!e1.contains(e2))
-    e.preventDefault();
+  for(const elm of path) {
+    if(elm.matches('input[type="text"], textarea'))
+      break;
+    if(elm.tabIndex === 0)
+      e.preventDefault();
+  }
 });
 
 window.addEventListener('click', e => {
