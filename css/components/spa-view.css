@@ -9,6 +9,19 @@
   z-index: 1;
 }
 
+#controls::part(container) {
+  border-radius: 0;
+  border-bottom-left-radius: calc(0.75 * var(--div-size));
+  border-top-style: none;
+  border-right-style: none;
+}
+
+#controls::part(container):not(:hover):not(:focus):not(:focus-within) {
+  width: calc(var(--div-size) / 2);
+  height: calc(var(--div-size) / 2);
+  opacity: .5;
+}
+
 #content {
   display: contents;
 }

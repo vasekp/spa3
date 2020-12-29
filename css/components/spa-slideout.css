@@ -18,7 +18,7 @@
   height: var(--div-size);
   flex: none;
   overflow: hidden;
-  transition: width .5s;
+  transition: width .5s, height .5s;
   background: var(--color-bg-main);
   border: var(--border);
   border-radius: var(--div-size);
@@ -27,15 +27,9 @@
   justify-content: flex-end;
 }
 
-:host(.corner) #container {
-  border-radius: 0;
-  border-bottom-left-radius: calc(0.75 * var(--div-size));
-  border-top-style: none;
-  border-right-style: none;
-}
-
-#container:hover, :host(:focus) #container, :host(:focus-within) #container {
+#container:hover, #container:focus, #container:focus-within {
   width: calc(var(--count) * var(--div-size));
+  height: var(--div-size);
 }
 
 #container:focus {

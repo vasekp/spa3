@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-slideout.css"/>
-<div id="container" tabindex="0"><slot></slot></div>`;
+<div id="container" part="container" tabindex="0"><slot></slot></div>`;
 
 export class SlideOutElement extends HTMLElement {
   constructor() {
@@ -11,8 +11,8 @@ export class SlideOutElement extends HTMLElement {
     root.appendChild(template.content.cloneNode(true));
     root.querySelector('link').addEventListener('load', () => this.hidden = false);
     const cont = root.getElementById('container');
-    root.addEventListener('touchend', e => {
-      if(!root.host.matches(':focus-within')) {
+    this.addEventListener('touchend', e => {
+      if(!cont.matches(':focus-within')) {
         cont.focus();
         e.preventDefault();
       }
