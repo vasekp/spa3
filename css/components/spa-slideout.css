@@ -1,0 +1,43 @@
+@import "../common.css";
+
+:host {
+  --div-size: var(--font-line-height);
+  --padding: calc((var(--div-size) - 1em) / 2);
+  --count: 1; /* dummy */
+  width: calc(var(--div-size) + 2 * var(--line-width));
+  height: calc(var(--div-size) + 2 * var(--line-width));
+  overflow: visible;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+#container {
+  width: var(--div-size);
+  height: var(--div-size);
+  flex: none;
+  overflow: hidden;
+  transition: width .5s, height .5s;
+  background: var(--color-bg-main);
+  border: var(--border);
+  border-radius: var(--div-size);
+  line-height: var(--div-size);
+  display: flex;
+  justify-content: flex-end;
+}
+
+#container:hover, #container:focus, #container:focus-within {
+  width: calc(var(--count) * var(--div-size));
+  height: var(--div-size);
+}
+
+::slotted(*) {
+  margin: var(--padding) !important;
+  flex: none;
+  border-radius: var(--radius-small);
+}

@@ -10,12 +10,14 @@ import {dateFormat} from './util/datetime.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 
+let root;
+
 const state = {
   set view(view) {
-    document.querySelector('main').dataset.view = view;
+    root.querySelector('main').dataset.view = view;
   },
   get view() {
-    return document.querySelector('main').dataset.view;
+    return root.querySelector('main').dataset.view;
   }
 };
 
@@ -29,32 +31,33 @@ const lsKeys = Enum.fromObj({
 });
 
 const gameNameView = {
-  set name(name) { document.getElementById('gname').innerText = name; },
-  set date(date) { document.getElementById('gdate').innerText = `(${dateFormat(date)})`; }
+  set name(name) { root.getElementById('gname').innerText = name; },
+  set date(date) { root.getElementById('gdate').innerText = `(${dateFormat(date)})`; }
 };
 
-window.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('spa-plus-list').button.addEventListener('click', plus);
-  document.getElementById('log-sel').addEventListener('click', gameList);
-  document.getElementById('tag-filter').addEventListener('filter-change', filter);
-  document.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
-  document.getElementById('no-games').addEventListener('click', plus);
+export function init(_root) {
+  root = _root;
+  root.querySelector('spa-plus-list').button.addEventListener('click', plus);
+  root.getElementById('log-sel').addEventListener('click', gameList);
+  root.getElementById('tag-filter').addEventListener('filter-change', filter);
+  root.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
+  root.getElementById('no-games').addEventListener('click', plus);
   db.then(dbReady);
-});
+}
 
 function gameList() {
-  let curGame = document.getElementById('record-list').game;
+  let curGame = root.getElementById('record-list').game;
   if(curGame)
     curGame.removeView(gameNameView);
   state.view = state.views.games;
   delete localStorage[lsKeys.gid];
-  document.getElementById('tag-filter').selectAll();
+  root.getElementById('tag-filter').selectAll();
 }
 
 function recordList(gameAwaitable) {
   loadRecords(gameAwaitable);
   state.view = state.views.records;
-  document.getElementById('tag-filter').selectAll();
+  root.getElementById('tag-filter').selectAll();
 }
 
 async function dbReady(adb) {
@@ -80,10 +83,10 @@ async function addExampleData(adb) {
 }
 
 async function loadRecords(gameAwaitable) {
-  let list = document.getElementById('record-list');
+  let list = root.getElementById('record-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
-  document.getElementById('load').hidden = false;
+  root.getElementById('load').hidden = false;
   let game = await gameAwaitable;
   localStorage[lsKeys.gid] = game.id;
   list.game = game;
@@ -92,38 +95,38 @@ async function loadRecords(gameAwaitable) {
 }
 
 function populateGameList(games) {
-  let glist = document.getElementById('game-list');
+  let glist = root.getElementById('game-list');
   for(let game of games) {
     let elm = document.createElement('log-game');
     elm.record = game;
     glist.appendChild(elm);
   }
-  document.getElementById('load').hidden = true;
+  root.getElementById('load').hidden = true;
 }
 
 function populateRecList(records) {
-  let list = document.getElementById('record-list');
+  let list = root.getElementById('record-list');
   let frag = document.createDocumentFragment();
   for(let record of records) {
     let elm = document.createElement('log-record');
     elm.record = record;
     frag.appendChild(elm);
   }
-  document.getElementById('load').hidden = true;
+  root.getElementById('load').hidden = true;
   list.appendChild(frag);
   list.offsetHeight;
 }
 
 function plus(e) {
-  document.getElementById('tag-filter').selectAll();
+  root.getElementById('tag-filter').selectAll();
   if(state.view === state.views.records) {
     let elm = document.createElement('log-record');
-    document.getElementById('record-list').appendChild(elm);
+    root.getElementById('record-list').appendChild(elm);
     elm.scrollIntoView(false);
     elm.focus();
   } else {
     let elm = document.createElement('log-game');
-    document.getElementById('game-list').appendChild(elm);
+    root.getElementById('game-list').appendChild(elm);
     elm.scrollIntoView(false);
   }
 }
@@ -131,13 +134,13 @@ function plus(e) {
 function filter(e) {
   let sel = e.detail.selected;
   if(state.view === state.views.records) {
-    for(let elm of document.getElementById('record-list').querySelectorAll('log-record')) {
+    for(let elm of root.getElementById('record-list').querySelectorAll('log-record')) {
       let show = elm.record ? sel[elm.record.tag] : true;
       elm.hidden = !show;
     }
   } else {
     let odd = true;
-    for(let elm of document.getElementById('game-list').querySelectorAll('log-game')) {
+    for(let elm of root.getElementById('game-list').querySelectorAll('log-game')) {
       let show = elm.record && elm.record.tag ? sel[elm.record.tag] : sel.all;
       elm.hidden = !show;
       if(show) {

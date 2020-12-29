@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-scroll.css"/>
-<div id="frame"><div id="content"><slot></slot></div></div>`;
+<div id="frame" tabindex="0"><div id="content"><slot></slot></div></div>`;
 
 /***
  * We need 3 divs:

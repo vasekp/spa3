@@ -1,0 +1,14 @@
+spa-scroll {
+  flex: 1;
+  margin: 0 var(--margin-base-neg);
+}
+
+#menu-container > div {
+  padding: 0 var(--margin-base);
+  height: 2rem;
+  line-height: 2rem;
+}
+
+#menu-container > :nth-child(odd) {
+  background: var(--color-bg-alt);
+}

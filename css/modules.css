@@ -1,0 +1,63 @@
+@import "colors.css";
+@import "common.css";
+@import "components/spa-plus-list.css";
+@import "components/spa-checkbox.css";
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background: var(--color-bg-main);
+  color: var(--color-text-main);
+  padding: var(--margin-base);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.patch-before:focus {
+  box-shadow: none;
+}
+
+.patch-before:focus::before {
+  box-shadow: var(--focus-shadow);
+}
+
+.patch, .patch-before::before {
+  display: inline-block;
+  width: var(--patch-size);
+  height: var(--patch-size);
+  line-height: var(--font-cap-size);
+  text-align: center;
+  padding: var(--pad-around-text);
+  border: var(--border);
+  border-radius: var(--radius-small);
+  box-sizing: border-box;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.patch::before {
+  content: "\200B";
+}
+
+.patch::after {
+  content: attr(data-content);
+}
+
+.patch.checkbox:not(:checked) {
+  opacity: .5;
+}
+
+.patch.checkbox:not(:checked) + label {
+  opacity: .5;
+}
+
+.patch.radio:checked {
+  background: var(--color-bg-emph);
+}
+
+.alt-row {
+  background: var(--color-bg-alt);
+}

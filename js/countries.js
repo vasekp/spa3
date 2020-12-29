@@ -4,23 +4,26 @@ import './components/spa-modal.js';
 import {normalize} from './util/text.js';
 import {debounce} from './util/debounce.js';
 
-window.addEventListener('DOMContentLoaded', () => {
+let root;
+
+export function init(_root) {
+  root = _root;
   const dbf = debounce(filter, 300);
-  document.getElementById('flg-name').addEventListener('input', dbf);
-  document.getElementById('flg-capital').addEventListener('input', dbf);
-  document.getElementById('flg-continent').addEventListener('change', atLeastOne);
-  document.getElementById('flg-ccount').addEventListener('change', firstOrMulti);
-  document.getElementById('flg-colors').addEventListener('change', filter);
-  document.getElementById('flg-shape').addEventListener('change', filter);
-  document.getElementById('flg-emblems').addEventListener('change', filter);
-  document.getElementById('flg-ecolor').addEventListener('change', firstOrMulti);
-  document.getElementById('flg-currency').addEventListener('input', dbf);
-  document.getElementById('flg-curr-code').addEventListener('input', dbf);
-  document.getElementById('flg-list').addEventListener('click', flagClicked);
-  document.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
-  document.addEventListener('keydown', blurOnEnter);
+  root.getElementById('flg-name').addEventListener('input', dbf);
+  root.getElementById('flg-capital').addEventListener('input', dbf);
+  root.getElementById('flg-continent').addEventListener('change', atLeastOne);
+  root.getElementById('flg-ccount').addEventListener('change', firstOrMulti);
+  root.getElementById('flg-colors').addEventListener('change', filter);
+  root.getElementById('flg-shape').addEventListener('change', filter);
+  root.getElementById('flg-emblems').addEventListener('change', filter);
+  root.getElementById('flg-ecolor').addEventListener('change', firstOrMulti);
+  root.getElementById('flg-currency').addEventListener('input', dbf);
+  root.getElementById('flg-curr-code').addEventListener('input', dbf);
+  root.getElementById('flg-list').addEventListener('click', flagClicked);
+  root.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
+  root.addEventListener('keydown', blurOnEnter);
   loadData();
-});
+}
 
 function blurOnEnter(e) {
   if(e.target.tagName === 'INPUT' && e.target.type === 'text' && e.key === 'Enter')
@@ -62,7 +65,7 @@ function atLeastOne(e) {
 async function loadData() {
   const response = await fetch('assets/countries.csv');
   const text = await response.text();
-  const tbody = document.getElementById('flg-list').tBodies[0];
+  const tbody = root.getElementById('flg-list').tBodies[0];
   const colors = {
     'E': 'blue',
     'AS': 'yellow',
@@ -102,7 +105,7 @@ async function loadData() {
     tr.classList.add('inner-outline');
     tbody.appendChild(tr);
   }
-  document.querySelector('.spa-loading').hidden = true;
+  root.querySelector('.spa-loading').hidden = true;
   filter();
 }
 
@@ -122,7 +125,7 @@ function filter() {
   let edited = { country: false, flag: false, currency: false };
   // Country name
   {
-    const cname = normalize(document.getElementById('flg-name').value);
+    const cname = normalize(root.getElementById('flg-name').value);
     if(cname) {
       f = addCondition(f, dataset => dataset.nameN.includes(cname));
       edited.country = true;
@@ -130,14 +133,14 @@ function filter() {
   }
   // Capital
   {
-    const cname = normalize(document.getElementById('flg-capital').value);
+    const cname = normalize(root.getElementById('flg-capital').value);
     if(cname) {
       f = addCondition(f, dataset => dataset.capitalN.includes(cname));
       edited.country = true;
     }
   }
   // Continent
-  for(const elm of document.getElementById('flg-continent').children) {
+  for(const elm of root.getElementById('flg-continent').children) {
     if(!elm.checked) {
       if(elm.dataset.value === 'AM')
         f = addCondition(f, dataset => dataset.continent !== 'SA' && dataset.continent !== 'JA');
@@ -147,7 +150,7 @@ function filter() {
     }
   }
   // Flag colors
-  for(const elm of document.getElementById('flg-colors').children) {
+  for(const elm of root.getElementById('flg-colors').children) {
     if(elm.checked) {
       f = addCondition(f, dataset => dataset.flagColor & elm.dataset.value);
       edited.flag = true;
@@ -155,21 +158,21 @@ function filter() {
   }
   // Color count
   {
-    const ccount = [...document.getElementById('flg-ccount').children];
+    const ccount = [...root.getElementById('flg-ccount').children];
     if(!ccount[0].checked) {
       f = addCondition(f, dataset => ccount[popCnt(dataset.flagColor)].checked);
       edited.flag = true;
     }
   }
   // Flag shape
-  for(const elm of document.getElementById('flg-shape').children) {
+  for(const elm of root.getElementById('flg-shape').children) {
     if(elm.checked) {
       f = addCondition(f, dataset => dataset.flagShape & elm.dataset.value);
       edited.flag = true;
     }
   }
   // Emblems
-  for(const elm of document.getElementById('flg-emblems').children) {
+  for(const elm of root.getElementById('flg-emblems').children) {
     if(elm.checked) {
       f = addCondition(f, dataset => dataset.emblems & elm.dataset.value);
       edited.flag = true;
@@ -177,7 +180,7 @@ function filter() {
   }
   // Emblem colors
   {
-    const ecolors = [...document.getElementById('flg-ecolor').children];
+    const ecolors = [...root.getElementById('flg-ecolor').children];
     if(!ecolors.shift().checked) {
       for(const elm of ecolors)
         f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.checked);
@@ -186,19 +189,19 @@ function filter() {
   }
   // Currency
   {
-    const cname = normalize(document.getElementById('flg-currency').value);
+    const cname = normalize(root.getElementById('flg-currency').value);
     if(cname) {
       f = addCondition(f, dataset => dataset.currencyN.includes(cname));
       edited.currency = true;
     }
-    const ccode = document.getElementById('flg-curr-code').value.toUpperCase();
+    const ccode = root.getElementById('flg-curr-code').value.toUpperCase();
     if(ccode) {
       f = addCondition(f, dataset => dataset.abbrCurr.includes(ccode));
       edited.currency = true;
     }
   }
   let odd = true;
-  for(const tr of document.getElementById('flg-list').tBodies[0].children) {
+  for(const tr of root.getElementById('flg-list').tBodies[0].children) {
     let show = f(tr.dataset);
     tr.hidden = !show;
     if(show) {
@@ -207,17 +210,17 @@ function filter() {
     }
   }
   for(const sec in edited)
-    document.getElementById(`flg-filter-${sec}`).labels[0].classList.toggle('edited', edited[sec]);
+    root.getElementById(`flg-filter-${sec}`).labels[0].classList.toggle('edited', edited[sec]);
 }
 
 function flagClicked(e) {
   let tr = e.target.closest('tr');
   if(!tr)
     return;
-  document.getElementById('flg-d-flag').src = tr.querySelector('img').src;
-  document.getElementById('flg-d-name').textContent = tr.dataset.name;
-  document.getElementById('flg-d-capital').textContent = tr.dataset.capital;
-  document.getElementById('flg-d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
-  document.getElementById('flg-details-modal').hidden = false;
-  document.getElementById('flg-details-modal').focus();
+  root.getElementById('flg-d-flag').src = tr.querySelector('img').src;
+  root.getElementById('flg-d-name').textContent = tr.dataset.name;
+  root.getElementById('flg-d-capital').textContent = tr.dataset.capital;
+  root.getElementById('flg-d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
+  root.getElementById('flg-details-modal').hidden = false;
+  root.getElementById('flg-details-modal').focus();
 }

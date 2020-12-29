@@ -1,29 +1,3 @@
-:root {
-  --c: 1;
-  --l25: calc(50% - var(--c) * 25%);
-  --l60: calc(50% - var(--c) * 10%);
-  --l75: calc(50% + var(--c) * 25%);
-  --l85: calc(50% + var(--c) * 35%);
-  --color-line: hsl(0, 0%, 50%);
-  --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
-  --color-text-fainter: hsl(0, 0%, var(--l25));
-  --color-text-semitrans: hsl(0, 0%, calc(50% - var(--c) * 50%), 50%);
-  --color-text-light: hsl(0, 0%, 50%);
-  --color-bg-main: hsl(0, 0%, calc(55% + var(--c) * 45%));
-  --color-bg-75: hsla(0, 0%, calc(55% + var(--c) * 45%), 0.75);
-  --color-bg-00: hsla(0, 0%, calc(55% + var(--c) * 45%), 0);
-  --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));
-  --color-bg-alt: hsl(0, 0%, calc(55% + var(--c) * 35%));
-  --color-bg-emph: hsl(60, 90%, var(--l75));
-  --color-bg-modal: hsl(0, 0%, 25%, 50%);
-  --color-plus: hsl(100, 50%, 50%);
-  --border: var(--line-width) solid var(--color-line);
-}
-
-:root.dark {
-  --c: -1;
-}
-
 [data-color="1"] { --color-index: 1; }
 [data-color="2"] { --color-index: 2; }
 [data-color="3"] { --color-index: 3; }
