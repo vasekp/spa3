@@ -1,4 +1,9 @@
 import './components/spa-view.js';
+import {Enum} from './util/enum.js';
+
+const lsKeys = Enum.fromObj({
+  panels: 'spa-panels'
+});
 
 /* As of now there seems to be no other way than JS to condition layout on container size. */
 const ro = new ResizeObserver(entries => {
@@ -11,7 +16,24 @@ const ro = new ResizeObserver(entries => {
 
 window.addEventListener('DOMContentLoaded', () => {
   for(const view of document.querySelectorAll('spa-view'))
-    ro.observe(view)
+    ro.observe(view);
+  if(localStorage[lsKeys.panels]) {
+    const panels = JSON.parse(localStorage[lsKeys.panels]);
+    for(const id in panels) {
+      document.getElementById(id).dataset.pos = panels[id].pos;
+      document.getElementById(id).dataset.module = panels[id].module;
+    }
+  } else {
+    document.getElementById('v1').dataset.module = 'logbook';
+    document.getElementById('v2').dataset.module = 'menu';
+    document.getElementById('v3').dataset.module = 'menu';
+  }
+  document.addEventListener('view-change', () => {
+    const panels = {};
+    for(const panel of document.querySelectorAll('spa-view'))
+      panels[panel.id] = { pos: panel.dataset.pos, module: panel.dataset.module };
+    localStorage[lsKeys.panels] = JSON.stringify(panels);
+  });
 });
 
 /* Element focus handling.

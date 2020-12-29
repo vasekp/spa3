@@ -41,12 +41,15 @@ export class ViewElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['data-module'];
+    return ['data-module', 'data-pos'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if(newValue !== oldValue)
+    if(newValue === oldValue)
+      return;
+    if(name === 'data-module')
       this.loadModule(newValue);
+    document.dispatchEvent(new CustomEvent('view-change'));
   }
 
   async loadModule(module) {
@@ -65,7 +68,6 @@ export class ViewElement extends HTMLElement {
     if(prevStyle)
       prevStyle.remove();
     script.init(this.shadowRoot);
-    document.dispatchEvent(new CustomEvent('view-change'));
   }
 
   swap(otherId) {
