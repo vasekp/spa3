@@ -3,9 +3,9 @@ template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
 <style>:not(:defined) { display: none; }</style>
 <spa-slideout id="controls" class="corner">
-  <button><img class="inline" src="images/edit.svg"/></button>
-  <button><img class="inline" src="images/edit.svg"/></button>
-  <button><img class="inline" src="images/edit.svg"/></button>
+  <button><img class="inline" src="images/move.svg"/></button>
+  <button><img class="inline" src="images/settings.svg"/></button>
+  <button><img class="inline" src="images/home.svg"/></button>
 </spa-slideout>
 <div id="content"></div>`;
 
