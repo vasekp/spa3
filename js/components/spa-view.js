@@ -26,15 +26,17 @@ export class ViewElement extends HTMLElement {
 
   async loadView(view) {
     const cont = this.shadowRoot.getElementById('content');
-    const response = await fetch(`${view}.mod.html`);
     cont.innerHTML = '';
-    await this.addStyleSheet('css/modules.css');
-    await this.addStyleSheet(`css/${view}.css`);
     const loading = document.createElement('div');
     loading.classList.add('spa-loading');
     cont.appendChild(loading);
-    const script = await import(`../${view}.js`);
-    loading.insertAdjacentHTML('afterend', await response.text());
+    const [response, script] = await Promise.all([
+      fetch(`${view}.mod.html`).then(r => r.text()),
+      import(`../${view}.js`),
+      this.addStyleSheet('css/modules.css'),
+      this.addStyleSheet(`css/${view}.css`)
+    ]);
+    loading.insertAdjacentHTML('afterend', await response);
     loading.remove();
     script.init(this.shadowRoot);
   }
