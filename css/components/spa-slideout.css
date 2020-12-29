@@ -3,12 +3,13 @@
 :host {
   --div-size: var(--font-line-height);
   --padding: calc((var(--div-size) - 1em) / 2);
-  width: var(--div-size);
-  height: var(--div-size);
+  width: calc(var(--div-size) + 2 * var(--line-width));
+  height: calc(var(--div-size) + 2 * var(--line-width));
   overflow: visible;
   margin-left: auto;
   display: flex;
   justify-content: flex-end;
+  z-index: 1;
 }
 
 :host([hidden]) {
