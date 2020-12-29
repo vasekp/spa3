@@ -76,6 +76,10 @@ spa-view:focus {
   #v2, #v3 {
     display: none;
   }
+
+  spa-view::part(move-icon) {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 1211px) {

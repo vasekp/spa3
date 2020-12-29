@@ -17,17 +17,13 @@ export class SlideOutElement extends HTMLElement {
         e.preventDefault();
       }
     });
-    const mo = new MutationObserver(() => this.updateCount());
-    root.addEventListener('slotchange', e => {
-      for(const elm of this.shadowRoot.querySelector('slot').assignedElements())
-        mo.observe(elm, { attributes: true, attributeFilter: ['hidden'] });
-      this.updateCount();
-    });
+    this.addEventListener('mouseenter', () => this.updateCount());
+    this.addEventListener('focusin', () => this.updateCount());
   }
 
   updateCount() {
     const nodes = this.shadowRoot.querySelector('slot').assignedElements();
-    const count = nodes.filter(elm => !elm.hidden).length;
+    const count = nodes.filter(elm => getComputedStyle(elm).display !== 'none').length;
     this.style.setProperty('--count', count);
   }
 }

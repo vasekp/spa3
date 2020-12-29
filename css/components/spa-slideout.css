@@ -3,6 +3,7 @@
 :host {
   --div-size: var(--font-line-height);
   --padding: calc((var(--div-size) - 1em) / 2);
+  --count: 1; /* dummy */
   width: calc(var(--div-size) + 2 * var(--line-width));
   height: calc(var(--div-size) + 2 * var(--line-width));
   overflow: visible;
