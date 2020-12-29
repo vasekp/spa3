@@ -37,7 +37,7 @@ window.addEventListener('mousedown', e => {
   if(!e0 || !e0.contains(root.activeElement))
     e.target.focus(); // This is the <spa-view> due to event retargetting!
   for(const elm of path) {
-    if(elm.matches('input[type="text"], textarea'))
+    if(elm.matches('input[type="text"], textarea, [draggable]'))
       break;
     if(elm.tabIndex === 0)
       e.preventDefault();
