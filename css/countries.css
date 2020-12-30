@@ -158,6 +158,7 @@ spa-scroll {
 
 #flg-list tr {
   height: 2rem;
+  contain: strict;
 }
 
 #flg-list td:first-child {

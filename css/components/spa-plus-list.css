@@ -16,6 +16,7 @@ spa-plus-list {
   font-size: 2rem;
   line-height: 1.018;
   overflow-y: hidden;
+  contain: strict;
 }
 
 .spa-plus-button[data-size="big"] {
