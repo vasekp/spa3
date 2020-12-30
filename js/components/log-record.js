@@ -100,14 +100,8 @@ export class RecordElement extends HTMLElement {
   }
 
   _stateChange(state = this.state) {
-    if(state === states.base)
-      delete this.dataset.protected;
-    else
-      this.dataset.protected = true;
-    if(state === states.nascent)
-      this.dataset.hidePlus = true;
-    else
-      delete this.dataset.hidePlus;
+    this.dataset.protected = state === states.base ? 0 : 1;
+    this.dataset.hidePlus = state === states.nascent ? 1 : 0;
     if(state === states.edit || state === states.nascent)
       this.querySelector('spa-color-sel').construct();
     if(state === states.edit)
@@ -142,6 +136,7 @@ export class RecordElement extends HTMLElement {
     let gid = this.closest('log-record-list').gid;
     this.record = await recordStore.create({ gid, tag, text: '', geo: this._preGeo });
     this.state = states.edit;
+    setTimeout(() => this.scrollIntoView(), 0);
   }
 
   _input() {

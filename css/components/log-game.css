@@ -5,6 +5,7 @@ log-game {
   height: 2rem;
   margin: 0 var(--margin-base-neg);
   padding: 0 var(--margin-base);
+  contain: content;
 }
 
 log-game:not([data-state="confirm"]) .log-game-confirm {

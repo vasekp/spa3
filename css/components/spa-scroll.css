@@ -38,7 +38,7 @@
 }
 
 :host::after {
-  background: linear-gradient(var(--color-bg-00) 0%, var(--color-bg-75) 100%);
+  background: linear-gradient(var(--color-bg-00) 0%, var(--color-bg-main) 100%);
   bottom: 0;
 }
 

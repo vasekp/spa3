@@ -1,12 +1,3 @@
-spa-checkbox.patch-before {
-  display: inline-flex;
-  align-items: baseline;
-}
-
-spa-checkbox.patch-before::before {
-  content: "\200B";
-}
-
 spa-checkbox:not(:empty)::before {
   margin-right: var(--font-space);
 }
@@ -15,12 +6,12 @@ spa-checkbox.show-opacity[data-state="unchecked"] {
   opacity: .5;
 }
 
-spa-checkbox.patch.show-state[data-state="checked"]::before,
-spa-checkbox.patch-before.show-state[data-state="checked"]::before {
+spa-checkbox.patch.show-state[data-state="checked"]::after,
+spa-checkbox.patch-before.show-state[data-state="checked"]::after {
   content: "+";
 }
 
-spa-checkbox.patch.show-state[data-state="unchecked"]::before,
-spa-checkbox.patch-before.show-state[data-state="unchecked"]::before {
+spa-checkbox.patch.show-state[data-state="unchecked"]::after,
+spa-checkbox.patch-before.show-state[data-state="unchecked"]::after {
   content: "×";
 }

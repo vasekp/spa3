@@ -29,6 +29,7 @@
   line-height: var(--div-size);
   display: flex;
   justify-content: flex-end;
+  contain: strict;
 }
 
 #container:hover, #container:focus, #container:focus-within {

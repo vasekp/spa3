@@ -2,6 +2,7 @@ log-record {
   display: block;
   border: var(--border);
   border-radius: var(--radius-full);
+  contain: content;
 }
 
 log-record[data-state="nascent"] .log-record-header,

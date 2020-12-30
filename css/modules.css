@@ -36,10 +36,12 @@ main {
   box-sizing: border-box;
   background: var(--bg);
   color: var(--fg);
+  vertical-align: calc((var(--font-cap-size) - var(--patch-size))/2);
+  contain: strict;
 }
 
-.patch::before {
-  content: "\200B";
+.patch::after, .patch-before::before {
+  content: '';
 }
 
 .patch::after {

@@ -100,7 +100,7 @@ async function loadData() {
     tr.dataset.flagShape = arr[9];
     tr.dataset.emblems = arr[10];
     tr.dataset.emblemColor = arr[11];
-    tr.dataset.active = true;
+    tr.dataset.active = 1;
     tr.tabIndex = 0;
     tr.classList.add('inner-outline');
     tbody.appendChild(tr);
