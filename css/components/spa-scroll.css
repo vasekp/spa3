@@ -19,7 +19,7 @@
 }
 
 #frame:focus-visible {
-  box-shadow: inset var(--focus-shadow);
+  box-shadow: inset var(--shadow-focus);
 }
 
 :host::before, :host::after {

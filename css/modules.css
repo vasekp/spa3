@@ -21,7 +21,7 @@ main {
 }
 
 .patch-before:focus-visible::before {
-  box-shadow: var(--focus-shadow);
+  box-shadow: var(--shadow-focus);
 }
 
 .patch, .patch-before::before {

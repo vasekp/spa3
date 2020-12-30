@@ -18,7 +18,7 @@
 
 #content {
   background: var(--color-bg-main);
-  box-shadow: 0 0 var(--margin-base);
+  box-shadow: var(--shadow-modal);
   border-radius: var(--radius-full);
   padding: var(--margin-base);
   max-height: calc(100% - var(--margin-base));
