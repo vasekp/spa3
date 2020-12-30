@@ -16,6 +16,9 @@
 
 #frame:focus {
   outline: none;
+}
+
+#frame:focus-visible {
   box-shadow: inset var(--focus-shadow);
 }
 

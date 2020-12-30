@@ -8,16 +8,25 @@
 
 *:focus {
   outline: none;
+}
+
+*:focus-visible {
   box-shadow: var(--focus-shadow);
 }
 
-.inner-outline:focus,
-spa-scroll:focus {
+/* For browsers without :focus-visible. Separate rule as otherwise
+ * the unsupported selector would invalidate it. */
+input[type="text"]:focus, textarea:focus {
+  box-shadow: var(--focus-shadow);
+}
+
+.inner-outline:focus-visible,
+spa-scroll:focus-visible {
   outline: none;
   box-shadow: inset var(--focus-shadow);
 }
 
-.no-outline:focus {
+.no-outline:focus-visible {
   box-shadow: none;
 }
 
