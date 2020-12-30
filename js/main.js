@@ -34,15 +34,6 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-window.addEventListener('click', e => {
-  const target = e.composedPath()[0];
-  const e1 = target.closest('label');
-  if(!e1 || !e1.control)
-    return;
-  e1.control.click();
-  e.preventDefault();
-});
-
 window.addEventListener('keydown', e => {
   const target = e.composedPath()[0];
   if(target.dataset.active)
