@@ -16,7 +16,9 @@ export class ViewElement extends HTMLElement {
     this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     this.shadowRoot.getElementById('home').addEventListener('click',
-      () => this.dataset.module = "menu");
+      () => this.dataset.module = 'menu');
+    this.shadowRoot.getElementById('move').addEventListener('click',
+      () => alert('Ikonku zkuste táhnout a pustit do jiného panelu.'));
     this.shadowRoot.getElementById('move').addEventListener('dragstart', e => {
       this.classList.add('dragged');
       e.dataTransfer.setData('application/spa3', this.id);
