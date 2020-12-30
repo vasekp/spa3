@@ -97,10 +97,7 @@ export class GameRecordElement extends HTMLElement {
   }
 
   _stateChange(state, oldState) {
-    if(state === states.nascent)
-      this.dataset.hidePlus = true;
-    else
-      delete this.dataset.hidePlus;
+    this.dataset.hidePlus = state === states.nascent ? 1 : 0;
     if(state === states.color)
       this.querySelector('spa-color-sel').construct();
     if(state === states.nascent || state === states.edit)

@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('keydown', e => {
   const target = e.composedPath()[0];
-  if(target.dataset.active)
+  if(+target.dataset.active)
     if(e.key === 'Enter' || e.key === ' ')
       target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 });

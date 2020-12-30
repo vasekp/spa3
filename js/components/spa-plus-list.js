@@ -18,9 +18,9 @@ export class PlusListElement extends HTMLElement {
       { threshold: 0.01 });
     io.observe(this._item);
 
-    /* Sets _state.hidden (= an element with [data-hide-plus] is connected) */
+    /* Sets _state.hidden (= an element with dataset.hidePlus == 1 is connected) */
     const mo = new MutationObserver(() =>
-      this._state.hidden = Boolean(this.querySelector('[data-hide-plus]')));
+      this._state.hidden = Boolean(this.querySelector('[data-hide-plus="1"]')));
     mo.observe(this, {
       subtree: true,
       childList: true,
