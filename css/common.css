@@ -14,6 +14,12 @@
   box-shadow: var(--focus-shadow);
 }
 
+/* For browsers without :focus-visible. Separate rule as otherwise
+ * the unsupported selector would invalidate it. */
+input[type="text"]:focus, textarea:focus {
+  box-shadow: var(--focus-shadow);
+}
+
 .inner-outline:focus-visible,
 spa-scroll:focus-visible {
   outline: none;
