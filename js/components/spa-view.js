@@ -1,3 +1,5 @@
+import './spa-modal.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
@@ -8,23 +10,43 @@ template.innerHTML = `
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
   <button id="home"><img class="inline" src="images/home.svg"/></button>
 </spa-slideout>
-<div id="content"></div>`;
+<div id="content"></div>
+<spa-modal id="settings-modal" hidden>
+  <div id="settings-container" class="no-outline" tabindex="-1" data-focus-container="1">
+    <div id="shared-settings-container"></div>
+    <div id="module-settings-container"></div>
+  </div>
+</spa-modal>`;
 
 export class ViewElement extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({mode: 'open'});
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.shadowRoot.getElementById('home').addEventListener('click',
+    const root = this.attachShadow({mode: 'open'});
+    root.appendChild(template.content.cloneNode(true));
+    root.getElementById('home').addEventListener('click',
       () => this.dataset.module = 'menu');
-    this.shadowRoot.getElementById('move').addEventListener('click',
+    const settings = root.getElementById('settings-modal');
+    root.getElementById('settings').addEventListener('click', () => {
+      const s1 = root.getElementById('shared-settings-container');
+      s1.innerHTML = '';
+      s1.append(document.getElementById('shared-settings').content.cloneNode(true));
+      const s2 = root.getElementById('module-settings-container');
+      s2.innerHTML = '';
+      if(root.getElementById('module-settings'))
+        s2.append(root.getElementById('module-settings').content.cloneNode(true));
+      settings.hidden = false;
+      root.getElementById('settings-container').focus();
+    });
+    root.getElementById('settings-container').addEventListener('blur', () =>
+      settings.hidden = true);
+    root.getElementById('move').addEventListener('click',
       () => alert('Ikonku zkuste táhnout a pustit do jiného panelu.'));
-    this.shadowRoot.getElementById('move').addEventListener('dragstart', e => {
+    root.getElementById('move').addEventListener('dragstart', e => {
       this.classList.add('dragged');
       e.dataTransfer.setData('application/spa3', this.id);
       e.currentTarget.blur();
     });
-    this.shadowRoot.getElementById('move').addEventListener('dragend',
+    root.getElementById('move').addEventListener('dragend',
       () => this.classList.remove('dragged'));
     this.addEventListener('dragenter', e => {
       if(e.dataTransfer.types.includes('application/spa3'))
