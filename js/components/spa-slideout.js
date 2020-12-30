@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-slideout.css"/>
-<div id="container" part="container" tabindex="0"><slot></slot></div>`;
+<div id="container" part="container" tabindex="-1"><slot></slot></div>`;
 
 export class SlideOutElement extends HTMLElement {
   constructor() {
