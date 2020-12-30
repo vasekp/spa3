@@ -142,6 +142,7 @@ export class RecordElement extends HTMLElement {
     let gid = this.closest('log-record-list').gid;
     this.record = await recordStore.create({ gid, tag, text: '', geo: this._preGeo });
     this.state = states.edit;
+    setTimeout(() => this.scrollIntoView(), 0);
   }
 
   _input() {

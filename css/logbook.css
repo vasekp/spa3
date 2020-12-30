@@ -61,11 +61,13 @@ spa-plus-list {
 [data-view="game-list"] #record-list, [data-view="rec-list"] #game-list {
   position: absolute;
   left: 0;
-  top: 0;
+  top: var(--margin-small);
+  bottom: 0;
   opacity: 0;
   z-index: 0;
   visibility: hidden;
   transition: opacity .5s, visibility .5s step-end;
+  overflow: hidden;
 }
 
 [data-view="game-list"] #log-sel {

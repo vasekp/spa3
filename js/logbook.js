@@ -122,12 +122,12 @@ function plus(e) {
   if(state.view === state.views.records) {
     let elm = document.createElement('log-record');
     root.getElementById('record-list').appendChild(elm);
-    elm.scrollIntoView(false);
+    elm.scrollIntoView();
     elm.focus();
   } else {
     let elm = document.createElement('log-game');
     root.getElementById('game-list').appendChild(elm);
-    elm.scrollIntoView(false);
+    elm.scrollIntoView();
   }
 }
 
