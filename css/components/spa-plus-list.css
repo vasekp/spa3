@@ -31,7 +31,7 @@ spa-plus-list {
   line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
 }
 
-.spa-plus-button[data-size="big"]:focus {
+.spa-plus-button[data-size="big"]:focus-visible {
   box-shadow: 2px 2px 4px #0004, 0px 0px 5px var(--color-plus);
 }
 

@@ -16,11 +16,11 @@ main {
   position: relative;
 }
 
-.patch-before:focus {
+.patch-before:focus-visible {
   box-shadow: none;
 }
 
-.patch-before:focus::before {
+.patch-before:focus-visible::before {
   box-shadow: var(--focus-shadow);
 }
 

@@ -36,36 +36,6 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-/* Element focus handling.
- *
- * The idea is to allow tab navigation while preventing drawing outlines on everything
- * when using mouse / touch. Nevertheless, we can't just globally preventDefault() the
- * mousedown because that would break other default actions than just focus, namely,
- * clicking and selecting within text fields.
- *
- * This is presumably what :focus-visible does but until it is supported in Firefox
- * we'll have to do it manually.
- *
- * The situations we want to handle:
- * body > tabbable > target: YES preventDefault()
- * body > (tabbable) > input > target: NO
- * all other: DON'T CARE
- */
-window.addEventListener('mousedown', e => {
-  const path = e.composedPath().filter(n => n.nodeType === Node.ELEMENT_NODE);
-  const target = path[0];
-  const root = target.getRootNode();
-  const e0 = target.closest('[data-focus-container]');
-  if(!e0 || !e0.contains(root.activeElement))
-    e.target.focus(); // This is the <spa-view> due to event retargetting!
-  for(const elm of path) {
-    if(elm.matches('input[type="text"], textarea, [draggable]'))
-      break;
-    if(elm.tabIndex === 0)
-      e.preventDefault();
-  }
-});
-
 window.addEventListener('click', e => {
   const target = e.composedPath()[0];
   const e1 = target.closest('label');

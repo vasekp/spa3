@@ -8,16 +8,19 @@
 
 *:focus {
   outline: none;
+}
+
+*:focus-visible {
   box-shadow: var(--focus-shadow);
 }
 
-.inner-outline:focus,
-spa-scroll:focus {
+.inner-outline:focus-visible,
+spa-scroll:focus-visible {
   outline: none;
   box-shadow: inset var(--focus-shadow);
 }
 
-.no-outline:focus {
+.no-outline:focus-visible {
   box-shadow: none;
 }
 
