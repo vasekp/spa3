@@ -63,3 +63,26 @@ main {
 .alt-row {
   background: var(--color-bg-alt);
 }
+
+.menu {
+  margin: var(--margin-base-neg);
+}
+
+.menu > div {
+  display: contents;
+}
+
+.menu > div > div {
+  padding: 0 var(--margin-base);
+  height: 2rem;
+  line-height: 2rem;
+}
+
+.menu .menu-header {
+  font-size: 80%;
+  font-weight: 600;
+  font-style: oblique;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  background: var(--color-bg-alt);
+}

@@ -12,9 +12,9 @@ template.innerHTML = `
 </spa-slideout>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>
-  <div id="settings-container" class="no-outline" tabindex="-1" data-focus-container="1">
-    <div id="shared-settings-container"></div>
+  <div class="menu">
     <div id="module-settings-container"></div>
+    <div id="shared-settings-container"></div>
   </div>
 </spa-modal>`;
 
@@ -35,9 +35,8 @@ export class ViewElement extends HTMLElement {
       if(root.getElementById('module-settings'))
         s2.append(root.getElementById('module-settings').content.cloneNode(true));
       settings.hidden = false;
-      root.getElementById('settings-container').focus();
     });
-    root.getElementById('settings-container').addEventListener('blur', () =>
+    root.getElementById('settings-modal').addEventListener('blur', () =>
       settings.hidden = true);
     root.getElementById('move').addEventListener('click',
       () => alert('Ikonku zkuste táhnout a pustit do jiného panelu.'));
