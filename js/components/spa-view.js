@@ -1,4 +1,5 @@
 import './spa-modal.js';
+import './spa-slideout.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
