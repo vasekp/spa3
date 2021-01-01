@@ -1,3 +1,5 @@
+import './spa-slideout.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
