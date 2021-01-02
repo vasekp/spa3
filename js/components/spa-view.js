@@ -1,5 +1,6 @@
 import './spa-modal.js';
 import './spa-slideout.js';
+import {populateSettings} from '../main.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -29,16 +30,17 @@ export class ViewElement extends HTMLElement {
     const settings = root.getElementById('settings-modal');
     root.getElementById('settings').addEventListener('click', () => {
       const s1 = root.getElementById('shared-settings-container');
-      s1.innerHTML = '';
-      s1.append(document.getElementById('shared-settings').content.cloneNode(true));
+      populateSettings(s1);
       const s2 = root.getElementById('module-settings-container');
       s2.innerHTML = '';
       if(root.getElementById('module-settings'))
         s2.append(root.getElementById('module-settings').content.cloneNode(true));
       settings.hidden = false;
     });
-    root.getElementById('settings-modal').addEventListener('blur', () =>
-      settings.hidden = true);
+    settings.addEventListener('focusout', e => {
+      if(!settings.contains(e.relatedTarget))
+        settings.hidden = true;
+    });
     root.getElementById('move').addEventListener('click',
       () => alert('Ikonku zkuste táhnout a pustit do jiného panelu.'));
     root.getElementById('move').addEventListener('dragstart', e => {
