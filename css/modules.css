@@ -64,23 +64,23 @@ main {
   background: var(--color-bg-alt);
 }
 
-.menu {
+.settings {
   margin: var(--margin-base-neg);
   display: grid;
   grid-template-columns: auto auto;
 }
 
-.menu > div {
+.settings > div {
   display: contents;
 }
 
-.menu > * > * {
+.settings > * > * {
   padding: 0 var(--margin-base);
   height: 2rem;
   line-height: 2rem;
 }
 
-.menu-header {
+.settings-header {
   font-size: 80%;
   font-weight: 600;
   font-style: oblique;
