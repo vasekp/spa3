@@ -203,7 +203,7 @@ function filter() {
     }
   }
   for(const sec in edited)
-    root.getElementById(`flg-filter-${sec}`).labels[0].classList.toggle('edited', edited[sec]);
+    root.getElementById(`flg-filter-${sec}`).nextElementSibling.classList.toggle('edited', edited[sec]);
 }
 
 function flagClicked(e) {
