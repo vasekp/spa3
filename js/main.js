@@ -44,7 +44,6 @@ window.addEventListener('keydown', e => {
 });
 
 export function populateSettings(elm) {
-  elm.innerHTML = '';
   elm.append(document.getElementById('shared-settings').content.cloneNode(true));
   elm.querySelector('#m-set-dark').checked = getTheme() === 'dark';
   elm.querySelector('#m-set-theme').addEventListener('change', e =>

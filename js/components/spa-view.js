@@ -1,6 +1,6 @@
 import './spa-modal.js';
 import './spa-slideout.js';
-import {populateSettings} from '../main.js';
+import * as main from '../main.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -30,11 +30,12 @@ export class ViewElement extends HTMLElement {
     const settings = root.getElementById('settings-modal');
     root.getElementById('settings').addEventListener('click', () => {
       const s1 = root.getElementById('shared-settings-container');
-      populateSettings(s1);
+      s1.innerHTML = '';
+      main.populateSettings(s1);
       const s2 = root.getElementById('module-settings-container');
       s2.innerHTML = '';
-      if(root.getElementById('module-settings'))
-        s2.append(root.getElementById('module-settings').content.cloneNode(true));
+      if(this.script.populateSettings)
+        this.script.populateSettings(s2);
       settings.hidden = false;
     });
     settings.addEventListener('focusout', e => {
@@ -94,6 +95,7 @@ export class ViewElement extends HTMLElement {
     if(prevStyle)
       prevStyle.remove();
     script.init(this.shadowRoot);
+    this.script = script;
   }
 
   swap(otherId) {

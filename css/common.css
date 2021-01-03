@@ -6,6 +6,10 @@
   display: none !important;
 }
 
+*[disabled] {
+  opacity: .5;
+}
+
 *:focus {
   outline: none;
 }
