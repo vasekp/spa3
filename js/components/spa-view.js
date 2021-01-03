@@ -109,7 +109,7 @@ export class ViewElement extends HTMLElement {
     link.type = 'text/css';
     link.href = filename;
     link.id = 'style';
-    this.shadowRoot.appendChild(link);
+    this.shadowRoot.insertBefore(link, this.shadowRoot.getElementById('content'));
     return new Promise(resolve => link.addEventListener('load', resolve));
   }
 }
