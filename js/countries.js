@@ -20,13 +20,7 @@ export function init(_root) {
   root.getElementById('flg-curr-code').addEventListener('input', dbf);
   root.getElementById('flg-list').addEventListener('click', flagClicked);
   root.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
-  root.addEventListener('keydown', blurOnEnter);
   loadData();
-}
-
-function blurOnEnter(e) {
-  if(e.target.tagName === 'INPUT' && e.target.type === 'text' && e.key === 'Enter')
-    e.target.blur();
 }
 
 function firstOrMulti(e) {

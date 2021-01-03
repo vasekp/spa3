@@ -14,7 +14,7 @@ template.innerHTML = `
 </spa-slideout>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>
-  <div class="settings">
+  <div class="settings" tabindex="-1" data-focus-container="1">
     <div class="trans" id="module-settings-container"></div>
     <div class="trans" id="shared-settings-container"></div>
   </div>

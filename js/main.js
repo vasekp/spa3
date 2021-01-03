@@ -41,6 +41,13 @@ window.addEventListener('keydown', e => {
   if(+target.dataset.active)
     if(e.key === 'Enter' || e.key === ' ')
       target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  if(target.tagName === 'INPUT' && target.type === 'text' && e.key === 'Enter') {
+    const cont = target.closest('[data-focus-container]');
+    if(cont)
+      cont.focus();
+    else
+      target.blur();
+  }
 });
 
 export function populateSettings(elm) {
