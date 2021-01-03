@@ -1,4 +1,3 @@
-import './components/spa-checkbox.js';
 import './components/spa-scroll.js';
 import './components/spa-modal.js';
 import {normalize} from './util/text.js';
@@ -47,7 +46,7 @@ function firstOrMulti(e) {
 }
 
 function atLeastOne(e) {
-  const siblings = e.target.parentNode.children;
+  const siblings = e.target.closest('div').querySelectorAll('input');
   let totalAfter = 0;
   for(const elm of siblings)
     totalAfter += elm.checked;
@@ -140,7 +139,7 @@ function filter() {
     }
   }
   // Continent
-  for(const elm of root.getElementById('flg-continent').children) {
+  for(const elm of root.querySelectorAll('#flg-continent input')) {
     if(!elm.checked) {
       if(elm.dataset.value === 'AM')
         f = addCondition(f, dataset => dataset.continent !== 'SA' && dataset.continent !== 'JA');
@@ -165,14 +164,14 @@ function filter() {
     }
   }
   // Flag shape
-  for(const elm of root.getElementById('flg-shape').children) {
+  for(const elm of root.querySelectorAll('#flg-shape input')) {
     if(elm.checked) {
       f = addCondition(f, dataset => dataset.flagShape & elm.dataset.value);
       edited.flag = true;
     }
   }
   // Emblems
-  for(const elm of root.getElementById('flg-emblems').children) {
+  for(const elm of root.querySelectorAll('#flg-emblems input')) {
     if(elm.checked) {
       f = addCondition(f, dataset => dataset.emblems & elm.dataset.value);
       edited.flag = true;

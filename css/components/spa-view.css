@@ -19,9 +19,8 @@
 }
 
 #controls::part(container):not(:hover):not(:focus):not(:focus-within) {
-  width: calc(var(--div-size) / 2);
-  height: calc(var(--div-size) / 2);
-  opacity: .5;
+  width: calc(var(--div-size) / 2 - 1px);
+  height: calc(var(--div-size) / 2 - 1px);
 }
 
 #content {

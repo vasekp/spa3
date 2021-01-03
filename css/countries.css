@@ -76,13 +76,13 @@ input[name=flg-filter-section] {
 
 :host([data-size="small"]) input[name=flg-filter-section]:not(:checked) + label.edited::after {
   content: '';
-  width: 1em;
   display: inline-block;
+  width: 1em;
   height: 1em;
   background: url('../images/edit.svg') center / 100%;
   margin-right: calc(-1em - var(--font-space));
   margin-left: var(--font-space);
-  vertical-align: calc((var(--font-cap-size) - 1em) / 2);
+  vertical-align: var(--valign-em-patch);
 }
 
 :host([data-size="mid"]) .flg-filter-header,
@@ -101,48 +101,13 @@ input[name=flg-filter-section] {
   content: "\200b";
 }
 
-#flg-ccount > .patch,
-#flg-ecolor > input,
-#flg-colors > spa-checkbox,
-#flg-shape > spa-checkbox,
-#flg-emblems > spa-checkbox,
-#flg-continent > spa-checkbox {
+#flg-ccount > *,
+#flg-continent > *,
+#flg-colors > *,
+#flg-shape > *,
+#flg-emblems > *,
+#flg-ecolor > * {
   margin-right: var(--margin-base);
-}
-
-#flg-shape svg {
-  height: calc(var(--font-cap-size) + 2*var(--pad-around-text));
-  vertical-align: calc(-1 * var(--pad-around-text));
-}
-
-#flg-shape spa-checkbox {
-  position: relative;
-}
-
-#flg-shape path {
-  stroke-width: 0.4;
-  stroke: currentcolor;
-  fill: none;
-}
-
-#flg-shape [data-state="checked"] path {
-  stroke-width: 1.2;
-}
-
-#flg-emblems svg {
-  height: calc(var(--font-cap-size) + 2*var(--pad-around-text));
-  vertical-align: calc(-1 * var(--pad-around-text));
-}
-
-#flg-emblems path {
-  stroke: currentcolor;
-  stroke-linejoin: miter;
-  stroke-width: 0.4;
-  fill: none;
-}
-
-#flg-emblems [data-state="checked"] path {
-  fill: currentcolor;
 }
 
 spa-scroll {
