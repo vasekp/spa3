@@ -30,7 +30,8 @@ state.views = Enum.fromObj({
 export const lsKeys = Enum.fromObj({
   gid: 'log-gid',
   ccount: 'log-ccount',
-  labels: 'log-labels',
+  labelsDefault: 'log-labels-records',
+  labelsGames: 'log-labels-games',
 });
 
 const gameNameView = {
@@ -47,8 +48,6 @@ export function init(_root) {
   root.getElementById('no-games').addEventListener('click', plus);
   if(localStorage[lsKeys.ccount])
     root.getElementById('tag-filter').dataset.count = localStorage[lsKeys.ccount];
-  if(localStorage[lsKeys.labels])
-    root.getElementById('tag-filter').labels = JSON.parse(localStorage[lsKeys.labels])[1];
   db.then(dbReady);
 }
 
@@ -59,6 +58,7 @@ function gameList() {
   state.view = state.views.games;
   delete localStorage[lsKeys.gid];
   root.getElementById('tag-filter').selectAll();
+  root.getElementById('tag-filter').labels = getLabelsGames()[1];
 }
 
 function recordList(gameAwaitable) {
@@ -98,6 +98,7 @@ async function loadRecords(gameAwaitable) {
   localStorage[lsKeys.gid] = game.id;
   list.game = game;
   game.addView(gameNameView);
+  root.getElementById('tag-filter').labels = getGameLabels(game)[1];
   populateRecList(await recordStore.getAll(game.id));
 }
 
@@ -163,7 +164,7 @@ export function populateSettings(elm) {
   {
     let min = 5, max = 9;
     let ccount = localStorage[lsKeys.ccount] || max;
-    const div = elm.querySelector('#log-set-ccount');
+    const div = elm.querySelector('#log-set-ccount div');
     const [minus, count, plus] = div.children;
     const showHide = () => {
       for(const elm2 of elm.querySelector('#log-set-clabels').children) {
@@ -184,6 +185,8 @@ export function populateSettings(elm) {
     }
     (async () => {
       min = Math.max(await recordStore.maxTag(), await gameStore.maxTag(), 5);
+      if(min === max)
+        elm.querySelector('#log-set-ccount').hidden = true;
       update();
     })();
     minus.addEventListener('click', () => { --ccount; update(); });
@@ -191,13 +194,19 @@ export function populateSettings(elm) {
     update();
   }
   {
-    const labels = localStorage[lsKeys.labels] ? JSON.parse(localStorage[lsKeys.labels]) : [[], []];
-    for(const elm2 of elm.querySelector('#log-set-clabels').children) {
-      const children = elm2.children;
-      const color = children[0].dataset.color;
-      children[1].value = labels[0][color] || '';
-      children[0].dataset.content = labels[1][color] || '';
-    }
+    const game = root.getElementById('record-list').game;
+    let labels = state.view === state.views.games
+      ? getLabelsGames()
+      : getGameLabels(game);
+    const load = () => {
+      for(const elm2 of elm.querySelector('#log-set-clabels').children) {
+        const children = elm2.children;
+        const color = children[0].dataset.color;
+        children[1].value = labels[0][color] || '';
+        children[0].dataset.content = labels[1][color] || '';
+      }
+    };
+    load();
     elm.querySelector('#log-set-clabels').addEventListener('input', e => {
       const tgt = e.target;
       const trim = tgt.value.trim();
@@ -206,7 +215,39 @@ export function populateSettings(elm) {
       labels[0][tgt.previousElementSibling.dataset.color] = trim;
       labels[1][tgt.previousElementSibling.dataset.color] = first;
       root.getElementById('tag-filter').labels = labels[1];
-      localStorage[lsKeys.labels] = JSON.stringify(labels);
+      if(state.view === state.views.games)
+        localStorage[lsKeys.labelsGames] = JSON.stringify(labels);
+      else
+        game.labels = labels;
     });
+    const div = elm.querySelector('#log-set-labels-default');
+    if(state.view === state.views.games)
+      div.hidden = true;
+    else {
+      const game = root.getElementById('record-list').game;
+      div.children[0].addEventListener('click', () => {
+        localStorage[lsKeys.labelsDefault] = JSON.stringify(game.labels);
+      });
+      div.children[1].addEventListener('click', () => {
+        game.labels = null;
+        labels = getGameLabels(game);
+        root.getElementById('tag-filter').labels = labels[1];
+        load();
+      });
+    }
   }
+}
+
+export function getGameLabels(game) {
+  return game.labels
+    ? game.labels
+    : localStorage[lsKeys.labelsDefault]
+      ? JSON.parse(localStorage[lsKeys.labelsDefault])
+      : [[], []];
+}
+
+export function getLabelsGames() {
+  return localStorage[lsKeys.labelsGames]
+          ? JSON.parse(localStorage[lsKeys.labelsGames])
+          : [[], []]
 }

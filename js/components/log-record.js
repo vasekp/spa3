@@ -1,7 +1,7 @@
 import {Enum} from '../util/enum.js';
 import {timeFormat} from '../util/datetime.js';
 import {recordStore} from '../log-record-store.js';
-import {lsKeys} from '../logbook.js';
+import {lsKeys, getGameLabels} from '../logbook.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -103,14 +103,18 @@ export class RecordElement extends HTMLElement {
   _stateChange(state = this.state) {
     this.dataset.protected = state === states.base ? 0 : 1;
     this.dataset.hidePlus = state === states.nascent ? 1 : 0;
-    if(state === states.edit || state === states.nascent)
-      this.querySelector('spa-color-sel').construct();
+    if(state === states.edit || state === states.nascent) {
+      const colorsel = this.querySelector('spa-color-sel');
+      const game = this.closest('log-record-list').game;
+      colorsel.construct();
+      colorsel.labels = getGameLabels(game)[1];
+      colorsel.dataset.count = localStorage[lsKeys.ccount];
+    }
     if(state === states.edit)
       this._open();
   }
 
   _open() {
-    this.querySelector('spa-color-sel').labels = localStorage[lsKeys.labels] ? JSON.parse(localStorage[lsKeys.labels])[1] : [];
     this._oldText = this._record.text;
     this._id('area').focus();
   }

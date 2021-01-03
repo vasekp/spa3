@@ -19,9 +19,19 @@ export class ColorSelElement extends HTMLElement {
       this._addPatch('all');
     if(this.dataset.hasZero !== undefined)
       this._addPatch('cross');
+    this._updateCount();
     if(this._labels)
       this.labels = this._labels;
     this._constructed = true;
+  }
+
+  static get observedAttributes() {
+    return ['data-count'];
+  }
+
+  attributeChangedCallback(name, oldValue, value) {
+    if(this._constructed)
+      this._updateCount();
   }
 
   _addPatch(color) {
@@ -42,6 +52,14 @@ export class ColorSelElement extends HTMLElement {
     }));
     if(stop)
       e.preventDefault();
+  }
+
+  _updateCount() {
+    const count = +this.dataset.count;
+    if(!count)
+      return;
+    for(const elm of this.children)
+      elm.hidden = +elm.dataset.color > count;
   }
 
   set labels(labels) {

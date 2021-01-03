@@ -20,11 +20,13 @@
   </spa-scroll>
   <template id="module-settings">
     <div class="settings-header">Zápisník</div>
-    <label>Počet barev</label>
-    <div id="log-set-ccount">
-      <button class="patch" data-content="–"></button>
-      <span>9</span>
-      <button class="patch" data-content="+"></button>
+    <div class="trans" id="log-set-ccount">
+      <label>Počet barev</label>
+      <div>
+        <button class="patch" data-content="–"></button>
+        <span>9</span>
+        <button class="patch" data-content="+"></button>
+      </div>
     </div>
     <div class="trans" id="log-set-clabels">
       <label class="trans"><span class="patch" data-color="1"></span><input type="text" placeholder="(Popis)"/></label>
@@ -36,6 +38,10 @@
       <label class="trans"><span class="patch" data-color="7"></span><input type="text" placeholder="(Popis)"/></label>
       <label class="trans"><span class="patch" data-color="8"></span><input type="text" placeholder="(Popis)"/></label>
       <label class="trans"><span class="patch" data-color="9"></span><input type="text" placeholder="(Popis)"/></label>
+    </div>
+    <div class="trans" id="log-set-labels-default">
+      <button id="log-set-to-default">→ výchozí</button>
+      <button id="log-set-from-default">← výchozí</button>
     </div>
   </template>
 </main>

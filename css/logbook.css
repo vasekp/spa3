@@ -122,6 +122,14 @@ log-record:last-child {
   padding: .5rem;
 }
 
+#log-set-ccount > label {
+  grid-column: 1 / 3;
+}
+
+#log-set-ccount > div {
+  grid-column: 3 / 6;
+}
+
 #log-set-ccount span {
   display: inline-block;
   width: 1rem;

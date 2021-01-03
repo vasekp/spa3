@@ -1,7 +1,8 @@
+import './spa-slideout.js';
 import {Enum} from '../util/enum.js';
 import {dateFormat} from '../util/datetime.js';
 import {gameStore} from '../log-game-store.js';
-import './spa-slideout.js';
+import {lsKeys, getLabelsGames} from '../logbook.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -98,8 +99,12 @@ export class GameRecordElement extends HTMLElement {
 
   _stateChange(state, oldState) {
     this.dataset.hidePlus = state === states.nascent ? 1 : 0;
-    if(state === states.color)
-      this.querySelector('spa-color-sel').construct();
+    if(state === states.color) {
+      const colorsel = this.querySelector('spa-color-sel');
+      colorsel.construct();
+      colorsel.labels = getLabelsGames()[1];
+      colorsel.dataset.count = localStorage[lsKeys.ccount];
+    }
     if(state === states.nascent || state === states.edit)
       this._id('name-edit').focus();
   }
