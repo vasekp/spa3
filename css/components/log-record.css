@@ -93,12 +93,8 @@ log-record[data-geo-state="none"] .log-record-geo-icon {
   display: none;
 }
 
-log-record[data-geo-state="n/a"] .log-record-geo-button {
-  display: none;
-}
-
 log-record[data-geo-state="ok"] .log-record-geo-button {
-  background-image: url("../../images/geo-fail.svg");
+  background-image: url("../../images/geo-remove.svg");
 }
 
 log-record[data-geo-state="success"] .log-record-geo-button {
@@ -106,11 +102,11 @@ log-record[data-geo-state="success"] .log-record-geo-button {
 }
 
 log-record[data-geo-state="waiting"] .log-record-geo-icon,
-log-record[data-geo-state="waiting"] .log-record-geo-button {
+log-record[data-state="nascent"][data-geo-state="waiting"] .log-record-geo-button {
   animation: 1s geo-waiting infinite running;
 }
 
 log-record[data-geo-state="error"] .log-record-geo-icon,
-log-record[data-geo-state="error"] .log-record-geo-button {
-  content: url("../../images/geo-fail.svg");
+log-record[data-state="nascent"][data-geo-state="error"] .log-record-geo-button {
+  background-image: url("../../images/geo-fail.svg");
 }

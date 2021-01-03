@@ -140,7 +140,10 @@ export class RecordElement extends HTMLElement {
 
   async _materialize(tag) {
     let gid = this.closest('log-record-list').gid;
-    this.record = await recordStore.create({ gid, tag, text: '', geo: this._preGeo });
+    this.record = await recordStore.create({ gid, tag, text: '' });
+    /* The above line causes set geo. If we have a promise let's restore the reflection here. */
+    if(this._geoPromise)
+      this.geoPromise = this._geoPromise;
     this.state = states.edit;
     setTimeout(() => this.scrollIntoView(), 0);
   }
@@ -169,27 +172,33 @@ export class RecordElement extends HTMLElement {
   }
 
   _geoSet() {
+    this._geoPromise = null;
     if(this._record && this._record.geo) {
       // delete
       this._record.geo = undefined;
     } else {
-      this.dataset.geoState = 'waiting';
-      navigator.geolocation.getCurrentPosition(
-        position => this._geoCallback(position),
-        error => this._geoError(error),
-        { enableHighAccuracy: true });
+      this.geoPromise = new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject,
+          { enableHighAccuracy: true })
+      });
     }
     if(this.state !== states.nascent)
       this.state = states.base;
   }
 
-  _geoCallback(position) {
-    if(this._record)
+  set geoPromise(promise) {
+    this.dataset.geoState = 'waiting';
+    this._geoPromise = promise;
+    promise
+      .then(position => this._geoResolve(position))
+      .catch(error => this._geoError(error));
+  }
+
+  _geoResolve(position) {
+    if(this._record) // will set geoState = 'ok'
       this._record.geo = { lat: position.coords.latitude, lon: position.coords.longitude };
-    else {
+    else
       this.dataset.geoState = 'success';
-      this._preGeo = { lat: position.coords.latitude, lon: position.coords.longitude };
-    }
   }
 
   _geoError(error) {
