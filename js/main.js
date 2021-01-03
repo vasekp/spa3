@@ -2,7 +2,8 @@ import './components/spa-view.js';
 import {Enum} from './util/enum.js';
 
 const lsKeys = Enum.fromObj({
-  views: 'spa-views'
+  views: 'spa-views',
+  theme: 'spa-theme',
 });
 
 /* As of now there seems to be no other way than JS to condition layout on container size. */
@@ -17,6 +18,7 @@ const ro = new ResizeObserver(entries => {
 window.addEventListener('DOMContentLoaded', () => {
   for(const view of document.querySelectorAll('spa-view'))
     ro.observe(view);
+  setTheme(localStorage[lsKeys.theme] || 'light');
   if(localStorage[lsKeys.views]) {
     const views = JSON.parse(localStorage[lsKeys.views]);
     for(const pos in views)
@@ -41,7 +43,18 @@ window.addEventListener('keydown', e => {
       target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 });
 
-window.addEventListener('auxclick', e => {
-  document.documentElement.classList.toggle('dark');
-  e.preventDefault();
-});
+export function populateSettings(elm) {
+  elm.append(document.getElementById('shared-settings').content.cloneNode(true));
+  elm.querySelector('#m-set-dark').checked = getTheme() === 'dark';
+  elm.querySelector('#m-set-theme').addEventListener('change', e =>
+    setTheme(e.currentTarget.querySelector(':checked').value));
+}
+
+export function setTheme(theme) {
+  localStorage[lsKeys.theme] = theme;
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+}
+
+function getTheme() {
+  return localStorage[lsKeys.theme];
+}

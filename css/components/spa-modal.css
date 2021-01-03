@@ -1,3 +1,5 @@
+@import "../common.css";
+
 :host {
   position: absolute;
   left: 0;
@@ -7,6 +9,7 @@
   background: var(--color-bg-modal);
   z-index: 10;
   display: flex;
+  flex-direction: column;
   padding: var(--margin-base);
   align-items: center;
   justify-content: center;
@@ -16,13 +19,16 @@
   display: none;
 }
 
-#content {
+#scroll {
   background: var(--color-bg-main);
-  box-shadow: 0 0 var(--margin-base);
+  box-shadow: var(--shadow-modal);
   border-radius: var(--radius-full);
-  padding: var(--margin-base);
   max-height: calc(100% - var(--margin-base));
-  overflow: auto;
+  flex: 0 1 auto;
+}
+
+#content {
+  padding: var(--margin-base);
 }
 
 :host(.full-size) #content {

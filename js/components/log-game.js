@@ -5,7 +5,7 @@ import './spa-slideout.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
-<span class="patch log-game-color-patch" color="none"></span>
+<span class="patch log-game-color-patch" data-color="none"></span>
 <spa-color-sel class="log-game-color-sel" data-delayed="1" data-has-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
 <input type="text" class="log-game-name-edit">

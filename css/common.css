@@ -6,24 +6,28 @@
   display: none !important;
 }
 
+*[disabled] {
+  opacity: .5;
+}
+
 *:focus {
   outline: none;
 }
 
 *:focus-visible {
-  box-shadow: var(--focus-shadow);
+  box-shadow: var(--shadow-focus);
 }
 
 /* For browsers without :focus-visible. Separate rule as otherwise
  * the unsupported selector would invalidate it. */
 input[type="text"]:focus, textarea:focus {
-  box-shadow: var(--focus-shadow);
+  box-shadow: var(--shadow-focus);
 }
 
 .inner-outline:focus-visible,
 spa-scroll:focus-visible {
   outline: none;
-  box-shadow: inset var(--focus-shadow);
+  box-shadow: inset var(--shadow-focus);
 }
 
 .no-outline:focus-visible {

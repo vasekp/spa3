@@ -33,7 +33,8 @@
   --pad-around-text: calc((var(--patch-size) - var(--font-cap-size))/2);
   --radius-full: 5px;
   --radius-small: 3px;
-  --focus-shadow: 0 0 2px 1px #888;
+  --shadow-focus: 0 0 2px 1px #888;
+  --shadow-modal: 0 0 var(--margin-base) hsl(0, 0%, calc(40% - var(--c) * 10%));
   font-family: 'Source Sans Pro';
   font-size: 17.556px; /* line-height = 25.000 px */
   line-height: var(--font-line-height);

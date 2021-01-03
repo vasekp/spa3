@@ -203,7 +203,7 @@ spa-scroll {
 
 #flg-d-flag {
   width: 100%;
-  filter: drop-shadow(0px 0px var(--margin-base) #888);
+  filter: drop-shadow(0px 0px var(--margin-small) #888);
 }
 
 #flg-d-name, #flg-d-capital {

@@ -121,3 +121,25 @@ log-record:last-child {
   border-radius: 1rem;
   padding: .5rem;
 }
+
+#log-set-ccount span {
+  display: inline-block;
+  width: 1rem;
+  text-align: center;
+}
+
+#log-set-clabels {
+  display: contents;
+}
+
+.log-set-patch {
+  display: contents;
+}
+
+.log-set-patch span {
+  grid-column: 1 / 2;
+}
+
+.log-set-patch input {
+  grid-column: 2 / 6;
+}

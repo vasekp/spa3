@@ -7,6 +7,7 @@ import './components/spa-scroll.js';
 import {db} from './log-db.js';
 import {Enum} from './util/enum.js';
 import {dateFormat} from './util/datetime.js';
+import {debounce} from './util/debounce.js';
 import {gameStore} from './log-game-store.js';
 import {recordStore} from './log-record-store.js';
 
@@ -149,4 +150,34 @@ function filter(e) {
       }
     }
   }
+}
+
+export function populateSettings(elm) {
+  elm.append(root.getElementById('module-settings').content.cloneNode(true));
+  {
+    let ccount = 9;
+    const div = elm.querySelector('#log-set-ccount');
+    const [minus, count, plus] = div.children;
+    const showHide = debounce(() => {
+      for(const elm2 of elm.querySelector('#log-set-clabels').children) {
+        const span = elm2.firstChild;
+        elm2.hidden = span.dataset.color > ccount;
+      }
+    }, 500);
+    const update = () => {
+      ccount = Math.max(Math.min(ccount, 9), 5);
+      count.textContent = ccount;
+      minus.disabled = ccount == 5;
+      plus.disabled = ccount == 9;
+      showHide();
+    }
+    minus.addEventListener('click', () => { --ccount; update(); });
+    plus.addEventListener('click', () => { ++ccount; update(); });
+    update();
+  }
+  elm.querySelector('#log-set-clabels').addEventListener('input', e => {
+    const tgt = e.target;
+    const trim = tgt.value.trim();
+    tgt.previousElementSibling.dataset.content = trim ? trim[0].toUpperCase() : '';
+  });
 }
