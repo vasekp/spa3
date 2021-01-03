@@ -16,15 +16,15 @@ main {
   position: relative;
 }
 
-.patch-before:focus-visible {
+.patch:focus-visible {
   box-shadow: none;
 }
 
-.patch-before:focus-visible::before {
+.patch:focus-visible::before {
   box-shadow: var(--shadow-focus);
 }
 
-.patch, .patch-before::before {
+.patch::before {
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -35,12 +35,12 @@ main {
   box-sizing: border-box;
   background: var(--bg);
   color: var(--fg);
-  vertical-align: var(--valign-em-patch);
-  contain: strict;
+  contain: size paint;
+  content: attr(data-content);
 }
 
-.patch::after, .patch-before::before {
-  content: attr(data-content);
+.patch[data-content=""]::before, .patch:not([data-content])::before {
+  content: '\200B';
 }
 
 .patch.checkbox:not(:checked) {
