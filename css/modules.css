@@ -92,17 +92,21 @@ main {
 
 /* Common settings */
 
-.svg-cb + label svg {
+.svg-cb {
+  white-space: ignore;
+}
+
+.svg-cb svg {
   height: 1em;
   vertical-align: calc(-1 * var(--pad-around-text));
 }
 
-.svg-cb + label path {
+.svg-cb path {
   stroke-width: 0.4;
   stroke: currentcolor;
   fill: none;
 }
 
-.svg-cb:checked + label path {
+.svg-cb :checked + svg path {
   fill: currentcolor;
 }
