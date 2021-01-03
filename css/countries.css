@@ -29,10 +29,6 @@ input[name=flg-filter-section] {
   display: none;
 }
 
-.flg-section {
-  display: contents;
-}
-
 :host([data-size="mid"]) .flg-half-width {
   grid-column: 2/4;
 }

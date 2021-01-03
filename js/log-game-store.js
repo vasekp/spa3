@@ -27,6 +27,11 @@ gameStore.get = async function(id) {
   return new Game(result);
 }
 
+gameStore.maxTag = async function() {
+  let results = await ObjectStore.prototype.getAll.call(this);
+  return results.reduce((a, c) => Math.max(a, +c.tag || 0), 0);
+}
+
 class Game {
   constructor(record) {
     this._static = record;
@@ -41,6 +46,7 @@ class Game {
   get date() { return this._static.date; }
   get tag() { return this._static.tag; }
   get id() { return this._static.id; }
+  get labels() { return this._static.labels; }
 
   set name(name) {
     for(let view of this._views)
@@ -58,6 +64,11 @@ class Game {
     for(let view of this._views)
       view.tag = tag;
     this._static.tag = tag != 'none' ? tag : '';
+    gameStore.update(this._static);
+  }
+
+  set labels(labels) {
+    this._static.labels = labels;
     gameStore.update(this._static);
   }
 

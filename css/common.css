@@ -6,7 +6,7 @@
   display: none !important;
 }
 
-*[disabled] {
+*[disabled], .inactive {
   opacity: .5;
 }
 
@@ -16,6 +16,10 @@
 
 *:focus-visible {
   box-shadow: var(--shadow-focus);
+}
+
+.trans {
+  display: contents;
 }
 
 /* For browsers without :focus-visible. Separate rule as otherwise

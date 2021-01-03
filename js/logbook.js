@@ -27,8 +27,11 @@ state.views = Enum.fromObj({
   games: 'game-list'
 });
 
-const lsKeys = Enum.fromObj({
-  gid: 'log-gid'
+export const lsKeys = Enum.fromObj({
+  gid: 'log-gid',
+  ccount: 'log-ccount',
+  labelsDefault: 'log-labels-records',
+  labelsGames: 'log-labels-games',
 });
 
 const gameNameView = {
@@ -43,6 +46,8 @@ export function init(_root) {
   root.getElementById('tag-filter').addEventListener('filter-change', filter);
   root.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
   root.getElementById('no-games').addEventListener('click', plus);
+  if(localStorage[lsKeys.ccount])
+    root.getElementById('tag-filter').dataset.count = localStorage[lsKeys.ccount];
   db.then(dbReady);
 }
 
@@ -53,6 +58,7 @@ function gameList() {
   state.view = state.views.games;
   delete localStorage[lsKeys.gid];
   root.getElementById('tag-filter').selectAll();
+  root.getElementById('tag-filter').labels = getLabelsGames()[1];
 }
 
 function recordList(gameAwaitable) {
@@ -92,6 +98,7 @@ async function loadRecords(gameAwaitable) {
   localStorage[lsKeys.gid] = game.id;
   list.game = game;
   game.addView(gameNameView);
+  root.getElementById('tag-filter').labels = getGameLabels(game)[1];
   populateRecList(await recordStore.getAll(game.id));
 }
 
@@ -155,29 +162,92 @@ function filter(e) {
 export function populateSettings(elm) {
   elm.append(root.getElementById('module-settings').content.cloneNode(true));
   {
-    let ccount = 9;
-    const div = elm.querySelector('#log-set-ccount');
+    let min = 5, max = 9;
+    let ccount = localStorage[lsKeys.ccount] || max;
+    const div = elm.querySelector('#log-set-ccount div');
     const [minus, count, plus] = div.children;
-    const showHide = debounce(() => {
+    const showHide = () => {
       for(const elm2 of elm.querySelector('#log-set-clabels').children) {
         const span = elm2.firstChild;
         elm2.hidden = span.dataset.color > ccount;
       }
-    }, 500);
-    const update = () => {
-      ccount = Math.max(Math.min(ccount, 9), 5);
-      count.textContent = ccount;
-      minus.disabled = ccount == 5;
-      plus.disabled = ccount == 9;
-      showHide();
+      localStorage[lsKeys.ccount] = ccount;
+      root.getElementById('tag-filter').dataset.count = ccount;
     }
+    showHide();
+    const showHideD = debounce(showHide, 500);
+    const update = () => {
+      ccount = Math.max(Math.min(ccount, max), min);
+      count.textContent = ccount;
+      minus.classList.toggle('inactive', ccount == min);
+      plus.classList.toggle('inactive', ccount == max);
+      showHideD();
+    }
+    (async () => {
+      min = Math.max(await recordStore.maxTag(), await gameStore.maxTag(), 5);
+      if(min === max)
+        elm.querySelector('#log-set-ccount').hidden = true;
+      update();
+    })();
     minus.addEventListener('click', () => { --ccount; update(); });
     plus.addEventListener('click', () => { ++ccount; update(); });
     update();
   }
-  elm.querySelector('#log-set-clabels').addEventListener('input', e => {
-    const tgt = e.target;
-    const trim = tgt.value.trim();
-    tgt.previousElementSibling.dataset.content = trim ? trim[0].toUpperCase() : '';
-  });
+  {
+    const game = root.getElementById('record-list').game;
+    let labels = state.view === state.views.games
+      ? getLabelsGames()
+      : getGameLabels(game);
+    const load = () => {
+      for(const elm2 of elm.querySelector('#log-set-clabels').children) {
+        const children = elm2.children;
+        const color = children[0].dataset.color;
+        children[1].value = labels[0][color] || '';
+        children[0].dataset.content = labels[1][color] || '';
+      }
+    };
+    load();
+    elm.querySelector('#log-set-clabels').addEventListener('input', e => {
+      const tgt = e.target;
+      const trim = tgt.value.trim();
+      const first = trim ? trim[0].toUpperCase() : '';
+      tgt.previousElementSibling.dataset.content = first;
+      labels[0][tgt.previousElementSibling.dataset.color] = trim;
+      labels[1][tgt.previousElementSibling.dataset.color] = first;
+      root.getElementById('tag-filter').labels = labels[1];
+      if(state.view === state.views.games)
+        localStorage[lsKeys.labelsGames] = JSON.stringify(labels);
+      else
+        game.labels = labels;
+    });
+    const div = elm.querySelector('#log-set-labels-default');
+    if(state.view === state.views.games)
+      div.hidden = true;
+    else {
+      const game = root.getElementById('record-list').game;
+      div.children[0].addEventListener('click', () => {
+        localStorage[lsKeys.labelsDefault] = JSON.stringify(game.labels);
+      });
+      div.children[1].addEventListener('click', () => {
+        game.labels = null;
+        labels = getGameLabels(game);
+        root.getElementById('tag-filter').labels = labels[1];
+        load();
+      });
+    }
+  }
+}
+
+export function getGameLabels(game) {
+  return game.labels
+    ? game.labels
+    : localStorage[lsKeys.labelsDefault]
+      ? JSON.parse(localStorage[lsKeys.labelsDefault])
+      : [[], []];
+}
+
+export function getLabelsGames() {
+  return localStorage[lsKeys.labelsGames]
+          ? JSON.parse(localStorage[lsKeys.labelsGames])
+          : [[], []]
 }

@@ -122,24 +122,39 @@ log-record:last-child {
   padding: .5rem;
 }
 
+#log-set-ccount > label {
+  grid-column: 1 / 3;
+}
+
+#log-set-ccount > div {
+  grid-column: 3 / 6;
+}
+
 #log-set-ccount span {
   display: inline-block;
   width: 1rem;
   text-align: center;
 }
 
-#log-set-clabels {
-  display: contents;
-}
-
-.log-set-patch {
-  display: contents;
-}
-
-.log-set-patch span {
+#log-set-clabels span {
   grid-column: 1 / 2;
 }
 
-.log-set-patch input {
+#log-set-clabels input {
   grid-column: 2 / 6;
+}
+
+#log-set-to-default,
+#log-set-from-default {
+  border: var(--border);
+  border-radius: var(--radius-full);
+  padding: 0 var(--margin-small);
+}
+
+#log-set-to-default {
+  grid-column: 2 / 3;
+}
+
+#log-set-from-default {
+  grid-column: 4 / 5;
 }
