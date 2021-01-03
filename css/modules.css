@@ -26,17 +26,16 @@ main {
 
 .patch, .patch-before::before {
   display: inline-block;
-  width: var(--patch-size);
-  height: var(--patch-size);
-  line-height: var(--font-cap-size);
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
   text-align: center;
-  padding: var(--pad-around-text);
   border: var(--border);
   border-radius: var(--radius-small);
   box-sizing: border-box;
   background: var(--bg);
   color: var(--fg);
-  vertical-align: calc((var(--font-cap-size) - var(--patch-size))/2);
+  vertical-align: var(--valign-em-patch);
   contain: strict;
 }
 
@@ -99,7 +98,7 @@ main {
 
 .svg-cb svg {
   height: 1em;
-  vertical-align: calc(-1 * var(--pad-around-text));
+  vertical-align: var(--valign-em-patch);
 }
 
 .svg-cb path {
