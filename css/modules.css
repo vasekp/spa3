@@ -67,10 +67,6 @@ label input[type="checkbox"].patch:not(:checked) + span {
   margin-bottom: 0;
 }
 
-.settings > div {
-  display: contents;
-}
-
 .settings > div > label {
   grid-column: 1 / 3;
 }

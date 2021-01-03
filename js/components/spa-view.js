@@ -15,8 +15,8 @@ template.innerHTML = `
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>
   <div class="settings">
-    <div id="module-settings-container"></div>
-    <div id="shared-settings-container"></div>
+    <div class="trans" id="module-settings-container"></div>
+    <div class="trans" id="shared-settings-container"></div>
   </div>
 </spa-modal>`;
 

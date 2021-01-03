@@ -18,6 +18,10 @@
   box-shadow: var(--shadow-focus);
 }
 
+.trans {
+  display: contents;
+}
+
 /* For browsers without :focus-visible. Separate rule as otherwise
  * the unsupported selector would invalidate it. */
 input[type="text"]:focus, textarea:focus {
