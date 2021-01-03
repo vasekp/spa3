@@ -2,6 +2,7 @@ import {Enum} from '../util/enum.js';
 import {timeFormat} from '../util/datetime.js';
 import {recordStore} from '../log-record-store.js';
 import {lsKeys, getGameLabels} from '../logbook.js';
+import {ContainerElement} from './spa-focus-container.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -25,7 +26,7 @@ templateBase.innerHTML = `
 
 const states = Enum.fromArray(['nascent', 'base', 'edit']);
 
-export class RecordElement extends HTMLElement {
+export class RecordElement extends ContainerElement {
   connectedCallback() {
     this._construct();
     if(!this.state)
@@ -48,13 +49,7 @@ export class RecordElement extends HTMLElement {
     id('geo-icon').addEventListener('click', () => this._geoShow());
     id('geo-button').addEventListener('click', e => this._geoSet());
     id('colorsel').addEventListener('color-click', e => this._colorsel(e));
-    this.addEventListener('focusout', e => {
-      if(!this.contains(e.relatedTarget))
-        this._close();
-    });
-    if(!this.hasAttribute('tabindex'))
-      this.setAttribute('tabindex', -1);
-    this.dataset.focusContainer = 1;
+    this.addEventListener('focus-leave', () => this._close());
     this._constructed = true
   }
 

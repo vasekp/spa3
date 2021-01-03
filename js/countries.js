@@ -214,6 +214,5 @@ function flagClicked(e) {
   root.getElementById('flg-d-name').textContent = tr.dataset.name;
   root.getElementById('flg-d-capital').textContent = tr.dataset.capital;
   root.getElementById('flg-d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
-  root.getElementById('flg-details-modal').hidden = false;
-  root.getElementById('flg-details-modal').focus();
+  root.getElementById('flg-details-modal').show();
 }

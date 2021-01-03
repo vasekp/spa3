@@ -42,7 +42,7 @@ window.addEventListener('keydown', e => {
     if(e.key === 'Enter' || e.key === ' ')
       target.dispatchEvent(new MouseEvent('click', { bubbles: true }));
   if(target.tagName === 'INPUT' && target.type === 'text' && e.key === 'Enter') {
-    const cont = target.closest('[data-focus-container]');
+    const cont = target.closest('spa-focus-container, spa-modal');
     if(cont)
       cont.focus();
     else
