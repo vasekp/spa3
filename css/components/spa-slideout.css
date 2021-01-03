@@ -28,6 +28,7 @@
   border-radius: var(--div-size);
   line-height: var(--div-size);
   display: flex;
+  line-height: 1em;
   justify-content: flex-end;
   contain: strict;
 }

@@ -56,11 +56,13 @@ textarea {
 }
 
 .inline {
+  display: inline;
   height: 1em;
   width: 1em;
   vertical-align: top;
   flex: none;
   box-sizing: content-box;
+  vertical-align: var(--valign-em-patch);
 }
 
 @keyframes loading {
