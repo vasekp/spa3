@@ -1,6 +1,7 @@
 import {Enum} from '../util/enum.js';
 import {timeFormat} from '../util/datetime.js';
 import {recordStore} from '../log-record-store.js';
+import {lsKeys} from '../logbook.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -109,6 +110,7 @@ export class RecordElement extends HTMLElement {
   }
 
   _open() {
+    this.querySelector('spa-color-sel').labels = localStorage[lsKeys.labels] ? JSON.parse(localStorage[lsKeys.labels])[1] : [];
     this._oldText = this._record.text;
     this._id('area').focus();
   }

@@ -14,6 +14,11 @@ recordStore.getAll = async function(gid) {
   return results.map(r => new Record(r));
 }
 
+recordStore.maxTag = async function() {
+  let results = await ObjectStore.prototype.getAll.call(this);
+  return results.reduce((a, c) => Math.max(a, +c.tag), 0);
+}
+
 class Record {
   constructor(record) {
     this._static = record;

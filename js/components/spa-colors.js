@@ -19,6 +19,8 @@ export class ColorSelElement extends HTMLElement {
       this._addPatch('all');
     if(this.dataset.hasZero !== undefined)
       this._addPatch('cross');
+    if(this._labels)
+      this.labels = this._labels;
     this._constructed = true;
   }
 
@@ -41,6 +43,14 @@ export class ColorSelElement extends HTMLElement {
     if(stop)
       e.preventDefault();
   }
+
+  set labels(labels) {
+    if(this._constructed)
+      for(const elm of this.children)
+        elm.dataset.content = labels[elm.dataset.color] || '';
+    else
+      this._labels = labels;
+  }
 }
 
 export class ColorFilterElement extends HTMLElement {
@@ -51,6 +61,10 @@ export class ColorFilterElement extends HTMLElement {
 
   connectedCallback() {
     this._constructBase();
+  }
+
+  static get observedAttributes() {
+    return ['data-count'];
   }
 
   _constructBase() {
@@ -66,8 +80,24 @@ export class ColorFilterElement extends HTMLElement {
       return;
     for(let i = 1; i <= NumColors; i++)
       this._addPatch(i).classList.add('checkbox');
+    this._updateCount();
     this.offsetWidth;
     this._constructed = construct.full;
+    if(this._labels)
+      this.labels = this._labels;
+  }
+
+  _updateCount() {
+    const count = +this.dataset.count;
+    if(!count)
+      return;
+    for(const elm of this.children)
+      elm.hidden = +elm.dataset.color > count;
+  }
+
+  attributeChangedCallback(name, oldValue, value) {
+    if(this._constructed === construct.full)
+      this._updateCount();
   }
 
   _click(e) {
@@ -134,6 +164,14 @@ export class ColorFilterElement extends HTMLElement {
       detail: { selected },
       bubbles: true
     }));
+  }
+
+  set labels(labels) {
+    if(this._constructed === construct.full)
+      for(const elm of this.children)
+        elm.dataset.content = labels[elm.dataset.color] || '';
+    else
+      this._labels = labels;
   }
 }
 

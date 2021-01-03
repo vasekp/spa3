@@ -27,6 +27,11 @@ gameStore.get = async function(id) {
   return new Game(result);
 }
 
+gameStore.maxTag = async function() {
+  let results = await ObjectStore.prototype.getAll.call(this);
+  return results.reduce((a, c) => Math.max(a, +c.tag || 0), 0);
+}
+
 class Game {
   constructor(record) {
     this._static = record;
