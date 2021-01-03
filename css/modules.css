@@ -1,8 +1,6 @@
 @import "colors.css";
 @import "common.css";
 @import "components/spa-plus-list.css";
-@import "components/spa-checkbox.css";
-
 main {
   display: flex;
   flex-direction: column;
@@ -43,11 +41,12 @@ main {
   content: '\200B';
 }
 
-.patch.checkbox:not(:checked) {
-  opacity: .5;
+label input[type="checkbox"].patch + span {
+  margin-left: var(--font-space);
 }
 
-.patch.checkbox:not(:checked) + label {
+input[type="checkbox"].patch:not(:checked),
+label input[type="checkbox"].patch:not(:checked) + span {
   opacity: .5;
 }
 

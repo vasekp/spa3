@@ -101,12 +101,12 @@ input[name=flg-filter-section] {
   content: "\200b";
 }
 
-#flg-ccount > .patch,
-#flg-ecolor > input,
-#flg-colors > spa-checkbox,
-#flg-shape > spa-checkbox,
-#flg-emblems > spa-checkbox,
-#flg-continent > spa-checkbox {
+#flg-ccount > *,
+#flg-continent > *,
+#flg-colors > *,
+#flg-shape > *,
+#flg-emblems > *,
+#flg-ecolor > * {
   margin-right: var(--margin-base);
 }
 
@@ -123,11 +123,11 @@ input[name=flg-filter-section] {
   fill: none;
 }
 
-#flg-shape [data-state="checked"] path {
+#flg-shape :checked + * path {
   stroke-width: 1.2;
 }
 
-#flg-emblems [data-state="checked"] path {
+#flg-emblems :checked + * path {
   fill: currentcolor;
 }
 
