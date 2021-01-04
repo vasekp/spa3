@@ -3,6 +3,7 @@ import {Enum} from '../util/enum.js';
 import {dateFormat} from '../util/datetime.js';
 import {gameStore} from '../log-game-store.js';
 import {lsKeys, getLabelsGames} from '../logbook.js';
+import {ContainerElement} from './spa-focus-container.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -20,7 +21,7 @@ template.innerHTML = `
 
 const states = Enum.fromArray(['nascent', 'disabled', 'base', 'edit', 'color', 'confirm']);
 
-export class GameRecordElement extends HTMLElement {
+export class GameRecordElement extends ContainerElement {
   connectedCallback() {
     this._construct();
     if(!this.state)
@@ -49,15 +50,10 @@ export class GameRecordElement extends HTMLElement {
     id('color-sel').addEventListener('color-click', e => { this._colorClicked(e.detail.color); e.preventDefault(); });
     id('tools').addEventListener('click', e => e.preventDefault());
     this.addEventListener('click', e => this._click(e));
-    if(!this.hasAttribute('tabindex'))
-      this.setAttribute('tabindex', 0);
-    this.dataset.focusContainer = 1;
+    this.setAttribute('tabindex', 0);
     this.dataset.active = 1;
     this.classList.add('inner-outline');
-    this.addEventListener('focusout', e => {
-      if(!this.contains(e.relatedTarget))
-        this._close();
-    });
+    this.addEventListener('focus-leave', () => this._close());
     this._constructed = true;
   }
 

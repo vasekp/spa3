@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10" height="10" viewBox="0 0 10 10">
+  <defs>
+    <linearGradient id="geo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f99"/>
+      <stop offset="100%" stop-color="#c33"/>
+    </linearGradient>
+    <linearGradient id="cross" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="5%" stop-color="#e00"/>
+      <stop offset="95%" stop-color="#a00"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#geo)" d="
+    M 5 9.5 Q 8 7 8 4 8 1 5 1 2 1 2 4 2 7 5 9.5
+    M 5 3 Q 6 3 6 4 6 5 5 5 4 5 4 4 4 3 5 3
+  "/>
+  <path fill="url(#cross)" d="M 1 2 L 2 1 5 4 8 1 9 2 6 5 9 8 8 9 5 6 2 9 1 8 4 5 z"/>
+</svg>

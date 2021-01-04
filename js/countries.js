@@ -20,13 +20,7 @@ export function init(_root) {
   root.getElementById('flg-curr-code').addEventListener('input', dbf);
   root.getElementById('flg-list').addEventListener('click', flagClicked);
   root.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
-  root.addEventListener('keydown', blurOnEnter);
   loadData();
-}
-
-function blurOnEnter(e) {
-  if(e.target.tagName === 'INPUT' && e.target.type === 'text' && e.key === 'Enter')
-    e.target.blur();
 }
 
 function firstOrMulti(e) {
@@ -209,7 +203,7 @@ function filter() {
     }
   }
   for(const sec in edited)
-    root.getElementById(`flg-filter-${sec}`).labels[0].classList.toggle('edited', edited[sec]);
+    root.getElementById(`flg-filter-${sec}`).nextElementSibling.classList.toggle('edited', edited[sec]);
 }
 
 function flagClicked(e) {
@@ -220,6 +214,5 @@ function flagClicked(e) {
   root.getElementById('flg-d-name').textContent = tr.dataset.name;
   root.getElementById('flg-d-capital').textContent = tr.dataset.capital;
   root.getElementById('flg-d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
-  root.getElementById('flg-details-modal').hidden = false;
-  root.getElementById('flg-details-modal').focus();
+  root.getElementById('flg-details-modal').show();
 }

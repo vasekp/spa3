@@ -27,8 +27,8 @@ function filter(cont) {
   let odd = true;
   for(const item of cont.children) {
     const modName = item.dataset.moduleName;
-    const view = document.querySelector(`spa-view[data-module="${modName}"`);
-    const used = view && getComputedStyle(view).display !== 'none';
+    const view = document.querySelector(`spa-view[data-module="${modName}"]:not([data-size=""])`);
+    const used = !!view;
     item.hidden = used;
     if(!used) {
       item.classList.toggle('alt-row', odd);

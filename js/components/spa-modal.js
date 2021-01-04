@@ -1,24 +1,35 @@
 import './spa-scroll.js';
+import {ContainerElement} from './spa-focus-container.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-modal.css"/>
-<spa-scroll id="scroll"><div id="content" tabindex="-1" data-focus-container="1" class="no-outline"><slot></slot></div></spa-scroll>`;
+<spa-scroll id="scroll"><div id="content"><slot></slot></div></spa-scroll>`;
 
-export class ModalElement extends HTMLElement {
+export class ModalElement extends ContainerElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.addEventListener('focus-leave', () => this.hide());
+    this.addEventListener('click', e => {
+      if(e.target === this)
+        this.hide();
+    });
   }
 
-  static get observedAttributes() {
-    return ['hidden'];
+  connectedCallback() {
+    if(!this.hasAttribute('tabindex'))
+      this.setAttribute('tabindex', -1);
   }
 
-  attributeChangedCallback(name, oldValue, value) {
-    if(!value)
-      this.shadowRoot.getElementById('content').focus();
+  show() {
+    this.hidden = false;
+    this.focus();
+  }
+
+  hide() {
+    this.hidden = true;
   }
 }
 

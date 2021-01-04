@@ -14,7 +14,7 @@ template.innerHTML = `
 </spa-slideout>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>
-  <div class="settings">
+  <div class="settings" tabindex="-1">
     <div class="trans" id="module-settings-container"></div>
     <div class="trans" id="shared-settings-container"></div>
   </div>
@@ -36,11 +36,7 @@ export class ViewElement extends HTMLElement {
       s2.innerHTML = '';
       if(this.script.populateSettings)
         this.script.populateSettings(s2);
-      settings.hidden = false;
-    });
-    settings.addEventListener('focusout', e => {
-      if(!settings.contains(e.relatedTarget))
-        settings.hidden = true;
+      settings.show();
     });
     root.getElementById('move').addEventListener('click',
       () => alert('Ikonku zkuste táhnout a pustit do jiného panelu.'));
@@ -76,7 +72,10 @@ export class ViewElement extends HTMLElement {
       return;
     if(name === 'data-module')
       this.loadModule(newValue);
-    document.dispatchEvent(new CustomEvent('view-change'));
+    document.dispatchEvent(new CustomEvent('view-change', { detail: {
+      id: this.id,
+      module: newValue
+    }}));
   }
 
   async loadModule(module) {
@@ -113,7 +112,7 @@ export class ViewElement extends HTMLElement {
     link.type = 'text/css';
     link.href = filename;
     link.id = 'style';
-    this.shadowRoot.appendChild(link);
+    this.shadowRoot.insertBefore(link, this.shadowRoot.getElementById('content'));
     return new Promise(resolve => link.addEventListener('load', resolve));
   }
 }

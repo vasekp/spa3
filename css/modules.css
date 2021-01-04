@@ -87,10 +87,6 @@ label input[type="checkbox"].patch:not(:checked) + span {
 
 /* Common settings */
 
-.svg-cb {
-  white-space: ignore;
-}
-
 .svg-cb svg {
   height: 1em;
   vertical-align: var(--valign-em-patch);
@@ -108,4 +104,8 @@ label input[type="checkbox"].patch:not(:checked) + span {
 
 .svg-cb.stroke :checked + svg path {
   stroke-width: 1.2;
+}
+
+#m-set-theme > * {
+  margin-right: calc(var(--margin-base) - var(--font-space));
 }
