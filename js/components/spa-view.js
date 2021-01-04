@@ -72,7 +72,10 @@ export class ViewElement extends HTMLElement {
       return;
     if(name === 'data-module')
       this.loadModule(newValue);
-    document.dispatchEvent(new CustomEvent('view-change'));
+    document.dispatchEvent(new CustomEvent('view-change', { detail: {
+      id: this.id,
+      module: newValue
+    }}));
   }
 
   async loadModule(module) {

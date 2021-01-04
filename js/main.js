@@ -8,11 +8,20 @@ const lsKeys = Enum.fromObj({
 
 /* As of now there seems to be no other way than JS to condition layout on container size. */
 const ro = new ResizeObserver(entries => {
+  let change = false;
   for(const entry of entries) {
     const view = entry.target;
     const width = view.clientWidth;
-    view.dataset.size = width <= 400 ? 'small' : width <= 600 ? 'mid' : 'full';
+    const newSize = width === 0 ? ''
+      : width <= 400 ? 'small'
+      : width <= 600 ? 'mid'
+      : 'full';
+    if(newSize !== view.dataset.size)
+      change = true;
+    view.dataset.size = newSize;
   }
+  if(change)
+    document.dispatchEvent(new CustomEvent('view-change'));
 });
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -28,10 +37,15 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('v2').dataset.module = 'menu';
     document.getElementById('v3').dataset.module = 'menu';
   }
-  document.addEventListener('view-change', () => {
+  document.addEventListener('view-change', e => {
     const views = {};
-    for(const view of document.querySelectorAll('spa-view'))
+    for(const view of document.querySelectorAll('spa-view')) {
+      if(e.detail && view.id !== e.detail.id && view.dataset.module === e.detail.module && view.dataset.module !== 'menu') {
+        view.dataset.module = 'menu';
+        return;
+      }
       views[view.dataset.pos] = view.dataset.module;
+    }
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
 });
