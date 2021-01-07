@@ -10,12 +10,12 @@ recordStore.create = async function(record, tx) {
 }
 
 recordStore.getAll = async function(gid) {
-  let results = await ObjectStore.prototype.getAllWhere.call(this, 'gid', +gid);
+  const results = await ObjectStore.prototype.getAllWhere.call(this, 'gid', +gid);
   return results.map(r => new Record(r));
 }
 
 recordStore.maxTag = async function() {
-  let results = await ObjectStore.prototype.getAll.call(this);
+  const results = await ObjectStore.prototype.getAll.call(this);
   return results.reduce((a, c) => Math.max(a, +c.tag), 0);
 }
 
@@ -41,21 +41,21 @@ class Record {
   }
 
   set text(text) {
-    for(let view of this._views)
+    for(const view of this._views)
       view.text = text;
     this._static.text = text;
     this._delayedSave();
   }
 
   set tag(tag) {
-    for(let view of this._views)
+    for(const view of this._views)
       view.tag = tag;
     this._static.tag = tag;
     this._save();
   }
 
   set geo(geo) {
-    for(let view of this._views)
+    for(const view of this._views)
       view.geo = geo;
     this._static.geo = geo;
     this._save();

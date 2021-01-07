@@ -108,14 +108,17 @@ function addCondition(f, cond) {
 
 function popCnt(x) {
   let r = 0;
-  for(let m = 1; m < 128; m <<= 1)
-    if(x & m) r++;
+  while(x) {
+    console.log(x);
+    r += x & 1;
+    x >>= 1;
+  }
   return r;
 }
 
 function filter() {
   let f = () => true;
-  let edited = { country: false, flag: false, currency: false };
+  const edited = { country: false, flag: false, currency: false };
   // Country name
   {
     const cname = normalize(root.getElementById('flg-name').value);
@@ -195,7 +198,7 @@ function filter() {
   }
   let odd = true;
   for(const tr of root.getElementById('flg-list').tBodies[0].children) {
-    let show = f(tr.dataset);
+    const show = f(tr.dataset);
     tr.hidden = !show;
     if(show) {
       tr.classList.toggle('alt-row', odd);
@@ -207,7 +210,7 @@ function filter() {
 }
 
 function flagClicked(e) {
-  let tr = e.target.closest('tr');
+  const tr = e.target.closest('tr');
   if(!tr)
     return;
   root.getElementById('flg-d-flag').src = tr.querySelector('img').src;

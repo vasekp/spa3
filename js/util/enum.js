@@ -10,14 +10,14 @@ const enumHandler = {
 export class Enum {
   static fromArray(arr) {
     const obj = Object.create(null);
-    for(let s of arr)
+    for(const s of arr)
       obj[s] = s;
     return Object.freeze(new Proxy(obj, enumHandler));
   }
 
   static fromObj(tmpl) {
     const obj = Object.create(null);
-    for(let s in tmpl)
+    for(const s in tmpl)
       obj[s] = tmpl[s];
     return Object.freeze(new Proxy(obj, enumHandler));
   }

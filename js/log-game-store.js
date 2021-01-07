@@ -4,13 +4,13 @@ import {recordStore} from './log-record-store.js';
 export const gameStore = new ObjectStore('log-gid');
 
 gameStore.create = async function(name, tx) {
-  let record = { name, date: Date.now() };
+  const record = { name, date: Date.now() };
   await gameStore.add(record, tx);
   return new Game(record);
 }
 
 gameStore.delete = async function(game) {
-  let tx = (await db).transaction(['log-gid', 'log-rec'], 'readwrite');
+  const tx = (await db).transaction(['log-gid', 'log-rec'], 'readwrite');
   ObjectStore.prototype.delete.call(this, game, tx);
   recordStore.deleteWhere('gid', +game.id, tx);
   tx.onerror = window.alert;
@@ -18,17 +18,17 @@ gameStore.delete = async function(game) {
 }
 
 gameStore.getAll = async function() {
-  let results = await ObjectStore.prototype.getAll.call(this);
+  const results = await ObjectStore.prototype.getAll.call(this);
   return results.map(g => new Game(g));
 }
 
 gameStore.get = async function(id) {
-  let result = await ObjectStore.prototype.get.call(this, id);
+  const result = await ObjectStore.prototype.get.call(this, id);
   return new Game(result);
 }
 
 gameStore.maxTag = async function() {
-  let results = await ObjectStore.prototype.getAll.call(this);
+  const results = await ObjectStore.prototype.getAll.call(this);
   return results.reduce((a, c) => Math.max(a, +c.tag || 0), 0);
 }
 
@@ -49,19 +49,19 @@ class Game {
   get labels() { return this._static.labels; }
 
   set name(name) {
-    for(let view of this._views)
+    for(const view of this._views)
       view.name = name;
     this._static.name = name;
     gameStore.update(this._static);
   }
 
   set date(date) {
-    for(let view of this._views)
+    for(const view of this._views)
       view.date = date;
   }
 
   set tag(tag) {
-    for(let view of this._views)
+    for(const view of this._views)
       view.tag = tag;
     this._static.tag = tag != 'none' ? tag : '';
     gameStore.update(this._static);

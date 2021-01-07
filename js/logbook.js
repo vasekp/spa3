@@ -52,7 +52,7 @@ export function init(_root) {
 }
 
 function gameList() {
-  let curGame = root.getElementById('record-list').game;
+  const curGame = root.getElementById('record-list').game;
   if(curGame)
     curGame.removeView(gameNameView);
   state.view = state.views.games;
@@ -70,7 +70,7 @@ function recordList(gameAwaitable) {
 async function dbReady(adb) {
   if(adb.dataOldVersion === 0)
     await addExampleData(adb);
-  let games = await gameStore.getAll();
+  const games = await gameStore.getAll();
   populateGameList(games);
   gameStore.get(+localStorage[lsKeys.gid])
     .then(game => recordList(game))
@@ -78,8 +78,8 @@ async function dbReady(adb) {
 }
 
 async function addExampleData(adb) {
-  let tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
-  let gid = (await gameStore.create('Příklad', tx)).id;
+  const tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
+  const gid = (await gameStore.create('Příklad', tx)).id;
   recordStore.create({ gid, tag: 1, text: 'Příklad' }, tx);
   recordStore.create({ gid, tag: 2, text: 'Upřesnítko' }, tx);
   recordStore.create({ gid, tag: 3, text: 'Mezitajenka' }, tx);
@@ -90,11 +90,11 @@ async function addExampleData(adb) {
 }
 
 async function loadRecords(gameAwaitable) {
-  let list = root.getElementById('record-list');
+  const list = root.getElementById('record-list');
   while(list.firstChild)
     list.removeChild(list.firstChild);
   root.getElementById('load').hidden = false;
-  let game = await gameAwaitable;
+  const game = await gameAwaitable;
   localStorage[lsKeys.gid] = game.id;
   list.game = game;
   game.addView(gameNameView);
@@ -103,9 +103,9 @@ async function loadRecords(gameAwaitable) {
 }
 
 function populateGameList(games) {
-  let glist = root.getElementById('game-list');
-  for(let game of games) {
-    let elm = document.createElement('log-game');
+  const glist = root.getElementById('game-list');
+  for(const game of games) {
+    const elm = document.createElement('log-game');
     elm.record = game;
     glist.appendChild(elm);
   }
@@ -113,10 +113,10 @@ function populateGameList(games) {
 }
 
 function populateRecList(records) {
-  let list = root.getElementById('record-list');
-  let frag = document.createDocumentFragment();
-  for(let record of records) {
-    let elm = document.createElement('log-record');
+  const list = root.getElementById('record-list');
+  const frag = document.createDocumentFragment();
+  for(const record of records) {
+    const elm = document.createElement('log-record');
     elm.record = record;
     frag.appendChild(elm);
   }
@@ -128,28 +128,28 @@ function populateRecList(records) {
 function plus(e) {
   root.getElementById('tag-filter').selectAll();
   if(state.view === state.views.records) {
-    let elm = document.createElement('log-record');
+    const elm = document.createElement('log-record');
     root.getElementById('record-list').appendChild(elm);
     elm.scrollIntoView();
     elm.focus();
   } else {
-    let elm = document.createElement('log-game');
+    const elm = document.createElement('log-game');
     root.getElementById('game-list').appendChild(elm);
     elm.scrollIntoView();
   }
 }
 
 function filter(e) {
-  let sel = e.detail.selected;
+  const sel = e.detail.selected;
   if(state.view === state.views.records) {
-    for(let elm of root.getElementById('record-list').querySelectorAll('log-record')) {
-      let show = elm.record ? sel[elm.record.tag] : true;
+    for(const elm of root.getElementById('record-list').querySelectorAll('log-record')) {
+      const show = elm.record ? sel[elm.record.tag] : true;
       elm.hidden = !show;
     }
   } else {
     let odd = true;
-    for(let elm of root.getElementById('game-list').querySelectorAll('log-game')) {
-      let show = elm.record && elm.record.tag ? sel[elm.record.tag] : sel.all;
+    for(const elm of root.getElementById('game-list').querySelectorAll('log-game')) {
+      const show = elm.record && elm.record.tag ? sel[elm.record.tag] : sel.all;
       elm.hidden = !show;
       if(show) {
         elm.classList.toggle('alt-row', odd);
@@ -195,7 +195,7 @@ export function populateSettings(elm) {
   }
   {
     const game = root.getElementById('record-list').game;
-    let labels = state.view === state.views.games
+    const labels = state.view === state.views.games
       ? getLabelsGames()
       : getGameLabels(game);
     const load = () => {
