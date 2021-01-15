@@ -3,7 +3,7 @@ template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-slideout.css"/>
 <div id="container" part="container" tabindex="-1"><slot></slot></div>`;
 
-export class SlideOutElement extends HTMLElement {
+class SlideOutElement extends HTMLElement {
   constructor() {
     super();
     this.hidden = true;

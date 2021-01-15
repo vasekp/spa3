@@ -1,8 +1,8 @@
-import {Enum} from '../util/enum.js';
-import {timeFormat} from '../util/datetime.js';
-import {recordStore} from '../log-record-store.js';
+import Enum from '../util/enum.js';
+import {formatTime} from '../util/datetime.js';
+import recordStore from '../log-record-store.js';
 import {lsKeys, getGameLabels} from '../logbook.js';
-import {ContainerElement} from './spa-focus-container.js';
+import ContainerElement from './spa-focus-container.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -26,7 +26,7 @@ templateBase.innerHTML = `
 
 const states = Enum.fromArray(['nascent', 'base', 'edit']);
 
-export class RecordElement extends ContainerElement {
+class RecordElement extends ContainerElement {
   connectedCallback() {
     this._construct();
     if(!this.state)
@@ -42,7 +42,7 @@ export class RecordElement extends ContainerElement {
       return;
     this.dataset.color = 'grey';
     this.appendChild(templateBase.content.cloneNode(true));
-    let id = this._id = id => this.querySelector(`.log-record-${id}`);
+    const id = this._id = id => this.querySelector(`.log-record-${id}`);
     id('area').addEventListener('input', () => this._input());
     id('area').addEventListener('keydown', e => this._keydown(e));
     id('edit').addEventListener('click', e => this.state = states.edit);
@@ -80,7 +80,7 @@ export class RecordElement extends ContainerElement {
   }
 
   set date(date) {
-    this._id('timestamp').textContent = timeFormat(date);
+    this._id('timestamp').textContent = formatTime(date);
   }
 
   set geo(geo) {
@@ -122,7 +122,7 @@ export class RecordElement extends ContainerElement {
   }
 
   _colorsel(e) {
-    let tag = e.detail.color;
+    const tag = e.detail.color;
     if(tag === 'all')
       return;
     if(this.state === states.nascent)
@@ -134,7 +134,7 @@ export class RecordElement extends ContainerElement {
   }
 
   async _materialize(tag) {
-    let gid = this.closest('log-record-list').gid;
+    const gid = this.closest('log-record-list').gid;
     this.record = await recordStore.create({ gid, tag, text: '' });
     /* The above line causes set geo. If we have a promise let's restore the reflection here. */
     if(this._geoPromise)

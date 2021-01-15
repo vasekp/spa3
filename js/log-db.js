@@ -1,9 +1,9 @@
 export const db = new Promise(async resolve => {
   //indexedDB.deleteDatabase('spa');
-  let rq = indexedDB.open('spa', 1);
+  const rq = indexedDB.open('spa', 1);
   let dataOldVersion;
   rq.onupgradeneeded = e => {
-    let adb = e.target.result;
+    const adb = e.target.result;
     dataOldVersion = e.oldVersion;
     if(e.oldVersion === 0) {
       adb.createObjectStore('log-gid', { keyPath: 'id', autoIncrement: true });
@@ -13,7 +13,7 @@ export const db = new Promise(async resolve => {
   };
   rq.onerror = e => window.alert(e.target.error);
   rq.onsuccess = async e => {
-    let adb = e.target.result;
+    const adb = e.target.result;
     adb.dataOldVersion = dataOldVersion;
     adb.onerror = e => window.alert(e.target.error);
     resolve(adb);
@@ -28,8 +28,8 @@ export class ObjectStore {
   async _request(type, record, tx) {
     if(!tx)
       tx = (await db).transaction(this.name, 'readwrite');
-    let os = tx.objectStore(this.name);
-    let rq = os[type](record);
+    const os = tx.objectStore(this.name);
+    const rq = os[type](record);
     return new Promise(resolve => {
       rq.onsuccess = (e) => {
         if(type === 'add')
@@ -61,12 +61,12 @@ export class ObjectStore {
   async deleteWhere(index, value, tx) {
     if(!tx)
       tx = (await db).transaction(this.name, 'readwrite');
-    let os = tx.objectStore(this.name);
-    let ix = os.index(index);
-    let rq = ix.openKeyCursor(IDBKeyRange.only(value));
+    const os = tx.objectStore(this.name);
+    const ix = os.index(index);
+    const rq = ix.openKeyCursor(IDBKeyRange.only(value));
     return new Promise(resolve => {
       rq.onsuccess = () => {
-        let cursor = rq.result;
+        const cursor = rq.result;
         if(cursor) {
           os.delete(cursor.primaryKey);
           cursor.continue();
@@ -78,17 +78,17 @@ export class ObjectStore {
   async getAll(tx) {
     if(!tx)
       tx = (await db).transaction(this.name, 'readonly');
-    let os = tx.objectStore(this.name);
-    let rq = os.getAll();
+    const os = tx.objectStore(this.name);
+    const rq = os.getAll();
     return new Promise(resolve => rq.onsuccess = e => resolve(e.target.result));
   }
 
   async getAllWhere(index, value, tx) {
     if(!tx)
       tx = (await db).transaction(this.name, 'readonly');
-    let os = tx.objectStore(this.name);
-    let ix = os.index(index);
-    let rq = ix.getAll(value);
+    const os = tx.objectStore(this.name);
+    const ix = os.index(index);
+    const rq = ix.getAll(value);
     return new Promise(resolve => rq.onsuccess = e => resolve(e.target.result));
   }
 }

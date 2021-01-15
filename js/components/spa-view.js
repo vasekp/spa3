@@ -20,7 +20,7 @@ template.innerHTML = `
   </div>
 </spa-modal>`;
 
-export class ViewElement extends HTMLElement {
+class ViewElement extends HTMLElement {
   constructor() {
     super();
     const root = this.attachShadow({mode: 'open'});
@@ -34,8 +34,8 @@ export class ViewElement extends HTMLElement {
       main.populateSettings(s1);
       const s2 = root.getElementById('module-settings-container');
       s2.innerHTML = '';
-      if(this.script.populateSettings)
-        this.script.populateSettings(s2);
+      if(this.funcs.populateSettings)
+        this.funcs.populateSettings(s2);
       settings.show();
     });
     root.getElementById('move').addEventListener('click',
@@ -93,8 +93,7 @@ export class ViewElement extends HTMLElement {
     cont.innerHTML = responseText;
     if(prevStyle)
       prevStyle.remove();
-    script.init(this.shadowRoot);
-    this.script = script;
+    this.funcs = script.default(this.shadowRoot);
   }
 
   swap(otherId) {

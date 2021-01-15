@@ -1,20 +1,20 @@
 @charset "UTF-8";
 @import "components/spa-color-elements.css";
 
-#flg-filter {
+#filter {
   display: grid;
   grid-template-columns: 150px 1fr 1fr;
   grid-gap: var(--margin-small);
   margin-bottom: var(--margin-base);
 }
 
-.flg-filter-label {
+.filter-label {
   grid-column: 1/2;
   font-weight: 600;
   color: var(--color-text-fainter);
 }
 
-.flg-filter-label::after {
+.filter-label::after {
   content: ":";
 }
 
@@ -22,39 +22,39 @@ input[type="text"] {
   border-bottom: 1px solid #ccc;
 }
 
-.flg-full-width {
+.full-width {
   grid-column: 2/4;
 }
 
-input[name=flg-filter-section] {
+input[name=filter-section] {
   display: none;
 }
 
-:host([data-size="mid"]) .flg-half-width {
+:host([data-size="mid"]) .half-width {
   grid-column: 2/4;
 }
 
-:host([data-size="small"]) #flg-filter {
+:host([data-size="small"]) #filter {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-:host([data-size="small"]) .flg-filter-label {
+:host([data-size="small"]) .filter-label {
   font-size: 80%;
   font-style: oblique;
   line-height: 1em;
   margin-top: var(--margin-small);
 }
 
-:host([data-size="small"]) .flg-filter-label::after {
+:host([data-size="small"]) .filter-label::after {
   content: "";
 }
 
-:host([data-size="small"]) .flg-full-width,
-:host([data-size="small"]) .flg-half-width {
+:host([data-size="small"]) .full-width,
+:host([data-size="small"]) .half-width {
   grid-column: 1/4;
 }
 
-:host([data-size="small"]) .flg-filter-header {
+:host([data-size="small"]) .filter-header {
   grid-row: 1/2;
   grid-column: auto;
   border-radius: var(--radius-full);
@@ -63,15 +63,15 @@ input[name=flg-filter-section] {
   border-color: transparent;
 }
 
-:host([data-size="small"]) input[name=flg-filter-section]:checked + label {
+:host([data-size="small"]) input[name=filter-section]:checked + label {
   border-color: var(--color-line);
 }
 
-:host([data-size="small"]) input[name=flg-filter-section]:not(:checked) + label + div {
+:host([data-size="small"]) input[name=filter-section]:not(:checked) + label + div {
   display: none;
 }
 
-:host([data-size="small"]) input[name=flg-filter-section]:not(:checked) + label.edited::after {
+:host([data-size="small"]) input[name=filter-section]:not(:checked) + label.edited::after {
   content: '';
   display: inline-block;
   width: 1em;
@@ -82,28 +82,28 @@ input[name=flg-filter-section] {
   vertical-align: var(--valign-em-patch);
 }
 
-:host([data-size="mid"]) .flg-filter-header,
-:host([data-size="full"]) .flg-filter-header {
+:host([data-size="mid"]) .filter-header,
+:host([data-size="full"]) .filter-header {
   display: none;
 }
 
-#flg-continent, #flg-colors, #flg-ccount, #flg-shape, #flg-emblems, #flg-ecolor {
+#continent, #colors, #ccount, #shape, #emblems, #ecolor {
   display: flex;
   flex-wrap: wrap;
   row-gap: var(--margin-small);
   align-items: baseline;
 }
 
-.flg-full-width::after, .flg-half-width::after {
+.full-width::after, .half-width::after {
   content: "\200b";
 }
 
-#flg-ccount > *,
-#flg-continent > *,
-#flg-colors > *,
-#flg-shape > *,
-#flg-emblems > *,
-#flg-ecolor > * {
+#ccount > *,
+#continent > *,
+#colors > *,
+#shape > *,
+#emblems > *,
+#ecolor > * {
   margin-right: var(--margin-base);
 }
 
@@ -112,74 +112,74 @@ spa-scroll {
   flex: 1;
 }
 
-#flg-list {
+#list {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
 }
 
-#flg-list tr {
+#list tr {
   height: 2rem;
   contain: strict;
 }
 
-#flg-list td:first-child {
+#list td:first-child {
   padding-left: var(--margin-base);
 }
 
-#flg-list td:last-child {
+#list td:last-child {
   padding-right: var(--margin-base);
 }
 
-#flg-list img {
+#list img {
   height: calc(2*var(--font-cap-size));
   vertical-align: calc(-.5 * var(--font-cap-size));
   filter: drop-shadow(0 0 2px #888);
 }
 
-#flg-col-flag {
+#col-flag {
   width: 4rem;
 }
 
-#flg-col-continent {
+#col-continent {
   width: 2rem;
 }
 
-:host([data-size="small"]) #flg-list td:nth-child(3) {
+:host([data-size="small"]) #list td:nth-child(3) {
   font-size: 0;
 }
 
-:host([data-size="small"]) #flg-col-capital {
+:host([data-size="small"]) #col-capital {
   width: 0;
   visibility: collapse;
 }
 
-:host([data-size="mid"]) #flg-details,
-:host([data-size="full"]) #flg-details {
+:host([data-size="mid"]) #details,
+:host([data-size="full"]) #details {
   width: 350px;
 }
 
-:host([data-size="small"]) #flg-details {
+:host([data-size="small"]) #details {
   width: 100%;
 }
 
-#flg-d-flag {
+#d-flag {
   width: 100%;
   filter: drop-shadow(0px 0px var(--margin-small) #888);
 }
 
-#flg-d-name, #flg-d-capital {
+#d-name, #d-capital {
   text-align: center;
 }
 
-#flg-d-name {
+#d-name {
   font-weight: 600;
 }
 
-#flg-d-currency::before {
+#d-currency::before {
   font-weight: 600;
 }
 
-#flg-d-currency::before {
+#d-currency::before {
   content: "Měna: ";
 }

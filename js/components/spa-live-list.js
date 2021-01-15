@@ -1,4 +1,4 @@
-export class LiveListElement extends HTMLElement {
+export default class LiveListElement extends HTMLElement {
   constructor() {
     super();
     this._tracking = {};
@@ -14,8 +14,8 @@ export class LiveListElement extends HTMLElement {
   }
 
   _update(list) {
-    for(let record of list) {
-      for(let elm of record.addedNodes) {
+    for(const record of list) {
+      for(const elm of record.addedNodes) {
         elm.addEventListener('pointerdown', this._cb.down);
         elm.addEventListener('pointerup', this._cb.up);
         elm.addEventListener('pointermove', this._cb.move);
@@ -27,7 +27,7 @@ export class LiveListElement extends HTMLElement {
   }
 
   _pDown(e) {
-    let elm = e.currentTarget;
+    const elm = e.currentTarget;
     if(this._tracking.elm)
       return;
     if(+elm.dataset.protected)
@@ -49,8 +49,8 @@ export class LiveListElement extends HTMLElement {
   _pMove(e) {
     if(!this._active(e))
       return;
-    let elm = e.currentTarget;
-    let dx = e.x - this._tracking.x;
+    const elm = e.currentTarget;
+    const dx = e.x - this._tracking.x;
     if(this._tracking.zero) {
       if(Math.abs(dx) < 0.05 * this._tracking.w)
         return;
@@ -66,12 +66,12 @@ export class LiveListElement extends HTMLElement {
   _pUp(e) {
     if(!this._active(e))
       return;
-    let elm = e.currentTarget;
+    const elm = e.currentTarget;
     try {
       elm.releasePointerCapture(e.pointerId);
     } catch(e) { }
-    let dx = (e.x - this._tracking.x) / this._tracking.w;
-    let vx = dx / (e.timeStamp - this._tracking.t) * 1000;
+    const dx = (e.x - this._tracking.x) / this._tracking.w;
+    const vx = dx / (e.timeStamp - this._tracking.t) * 1000;
     if(Math.abs(dx) > .5 || (Math.abs(vx) > 1 && dx*vx > 0))
       this._finishMove(elm, dx);
     else
@@ -82,7 +82,7 @@ export class LiveListElement extends HTMLElement {
   _pCancel(e) {
     if(!this._active(e))
       return;
-    let elm = e.currentTarget;
+    const elm = e.currentTarget;
     elm.releasePointerCapture(e.pointerId);
     this._revertMove(elm);
     this._tracking = {};
@@ -104,13 +104,13 @@ export class LiveListElement extends HTMLElement {
 }
 
 const swipeCancelCallback = e => {
-  let elm = e.currentTarget;
+  const elm = e.currentTarget;
   elm.style.transition = '';
   elm.dispatchEvent(new CustomEvent('move-cancel', { bubbles: true }));
 };
 
 const swipeFinishCallback = e => {
-  let elm = e.currentTarget;
+  const elm = e.currentTarget;
   elm.style.transition = '';
   elm.dispatchEvent(new CustomEvent('move-away', { bubbles: true }));
 };

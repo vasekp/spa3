@@ -12,7 +12,7 @@ template.innerHTML = `
  * 2 ≠ 3 because if 3 had height: 100% it would not fire resize changes.
  ***/
 
-export class ScrollElement extends HTMLElement {
+class ScrollElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});
@@ -22,8 +22,8 @@ export class ScrollElement extends HTMLElement {
 
   connectedCallback() {
     const cb = () => {
-      let up = this._div.scrollTop > 0;
-      let down = this._div.scrollHeight - this._div.scrollTop > this._div.clientHeight;
+      const up = this._div.scrollTop > 0;
+      const down = this._div.scrollHeight - this._div.scrollTop > this._div.clientHeight;
       this.dataset.scroll = (up ? 'up ' : '') + (down ? 'down' : '');
     };
     this._div.addEventListener('scroll', cb);

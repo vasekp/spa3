@@ -1,15 +1,15 @@
 <!doctype html>
 <main>
-  <div id="flg-filter">
-    <input type="radio" name="flg-filter-section" checked id="flg-filter-country"/>
-    <label tabindex="1" data-active="1" class="flg-filter-header" for="flg-filter-country">Země</label>
+  <div id="filter">
+    <input type="radio" name="filter-section" checked id="filter-country"/>
+    <label tabindex="1" data-active="1" class="filter-header" for="filter-country">Země</label>
     <div class="trans">
-      <label class="flg-filter-label" for="flg-name">Název</label>
-      <input class="flg-full-width" type="text" id="flg-name"/>
-      <label class="flg-filter-label" for="flg-capital">Hlavní město</label>
-      <input class="flg-full-width" type="text" id="flg-capital"/>
-      <label class="flg-filter-label">Světadíl</label>
-      <div class="flg-full-width" id="flg-continent">
+      <label class="filter-label" for="name">Název</label>
+      <input class="full-width" type="text" id="name"/>
+      <label class="filter-label" for="capital">Hlavní město</label>
+      <input class="full-width" type="text" id="capital"/>
+      <label class="filter-label">Světadíl</label>
+      <div class="full-width" id="continent">
         <label><input type="checkbox" autocomplete="off" checked class="patch show-opacity c-blue" data-color="param" data-value="E"/><span>Evropa</span></label>
         <label><input type="checkbox" autocomplete="off" checked class="patch show-opacity c-yellow" data-color="param" data-value="AS"/><span>Asie</span></label>
         <label><input type="checkbox" autocomplete="off" checked class="patch show-opacity c-black" data-color="param" data-value="AF"/><span>Afrika</span></label>
@@ -17,11 +17,11 @@
         <label><input type="checkbox" autocomplete="off" checked class="patch show-opacity c-red" data-color="param" data-value="AM"/><span>S + J Amerika</span></label>
       </div>
     </div>
-    <input type="radio" name="flg-filter-section" id="flg-filter-flag"/>
-    <label tabindex="2" data-active="1" class="flg-filter-header" for="flg-filter-flag">Vlajka</label>
+    <input type="radio" name="filter-section" id="filter-flag"/>
+    <label tabindex="2" data-active="1" class="filter-header" for="filter-flag">Vlajka</label>
     <div class="trans">
-      <label class="flg-filter-label">Barvy</label>
-      <div class="flg-half-width" id="flg-colors">
+      <label class="filter-label">Barvy</label>
+      <div class="half-width" id="colors">
         <input type="checkbox" autocomplete="off" class="patch show-opacity c-red" data-color="param" data-value="1"/>
         <input type="checkbox" autocomplete="off" class="patch show-opacity c-white" data-color="param" data-value="2"/>
         <input type="checkbox" autocomplete="off" class="patch show-opacity c-blue" data-color="param" data-value="4"/>
@@ -30,17 +30,17 @@
         <input type="checkbox" autocomplete="off" class="patch show-opacity c-yellow" data-color="param" data-value="32"/>
         <input type="checkbox" autocomplete="off" class="patch show-opacity c-orange" data-color="param" data-value="64"/>
       </div>
-      <div class="flg-half-width" id="flg-ccount">
-        <input type="checkbox" autocomplete="off" checked class="patch checkbox" name="flg-ccount" data-content="#"/>
-        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="1"/>
-        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="2"/>
-        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="3"/>
-        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="4"/>
-        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="5"/>
-        <input type="checkbox" autocomplete="off" class="patch checkbox" name="flg-ccount" data-content="6"/>
+      <div class="half-width" id="ccount">
+        <input type="checkbox" autocomplete="off" checked class="patch checkbox" name="ccount" data-content="#"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="ccount" data-content="1"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="ccount" data-content="2"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="ccount" data-content="3"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="ccount" data-content="4"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="ccount" data-content="5"/>
+        <input type="checkbox" autocomplete="off" class="patch checkbox" name="ccount" data-content="6"/>
       </div>
-      <label class="flg-filter-label">Tvar</label>
-      <div class="flg-full-width" id="flg-shape">
+      <label class="filter-label">Tvar</label>
+      <div class="full-width" id="shape">
         <label class="svg-cb stroke" tabindex="0" data-active="1">
           <input type="checkbox" hidden autocomplete="off" data-value="1">
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 15 10">
@@ -103,8 +103,8 @@
           </svg>
         </label>
       </div>
-      <label class="flg-filter-label">Emblémy</label>
-      <div class="flg-half-width" id="flg-emblems">
+      <label class="filter-label">Emblémy</label>
+      <div class="half-width" id="emblems">
         <label class="svg-cb fill" tabindex="0" data-active="1">
         <input type="checkbox" hidden autocomplete="off" data-value="1">
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5 -5 10 10">
@@ -132,7 +132,7 @@
           </svg>
         </label>
       </div>
-      <div class="flg-half-width" id="flg-ecolor">
+      <div class="half-width" id="ecolor">
         <input type="checkbox" autocomplete="off" checked class="checkbox patch" data-content="#" data-color="all"/>
         <input type="checkbox" autocomplete="off" class="checkbox patch c-red" data-color="param" data-value="1"/>
         <input type="checkbox" autocomplete="off" class="checkbox patch c-white" data-color="param" data-value="2"/>
@@ -142,32 +142,32 @@
         <input type="checkbox" autocomplete="off" class="checkbox patch c-yellow" data-color="param" data-value="32"/>
       </div>
     </div>
-    <input type="radio" name="flg-filter-section" id="flg-filter-currency"/>
-    <label tabindex="3" data-active="1" class="flg-filter-header" for="flg-filter-currency">Měna</label>
+    <input type="radio" name="filter-section" id="filter-currency"/>
+    <label tabindex="3" data-active="1" class="filter-header" for="filter-currency">Měna</label>
     <div class="trans">
-      <label class="flg-filter-label" for="flg-currency">Měna</label>
-      <input class="flg-half-width" type="text" id="flg-currency"/>
-      <input class="flg-half-width" type="text" placeholder="kód" id="flg-curr-code"/>
+      <label class="filter-label" for="currency">Měna</label>
+      <input class="half-width" type="text" id="currency"/>
+      <input class="half-width" type="text" placeholder="kód" id="curr-code"/>
     </div>
   </div>
   <div class="spa-loading"></div>
   <spa-scroll>
-    <table id="flg-list">
+    <table id="list">
       <colgroup>
-        <col id="flg-col-flag"/>
-        <col id="flg-col-name"/>
-        <col id="flg-col-capital"/>
-        <col id="flg-col-continent"/>
+        <col id="col-flag"/>
+        <col id="col-name"/>
+        <col id="col-capital"/>
+        <col id="col-continent"/>
       </colgroup>
       <tbody></tbody>
     </table>
   </spa-scroll>
-  <spa-modal id="flg-details-modal" class="no-outline" hidden tabindex="-1" data-active="1">
-    <div id="flg-details">
-      <img id="flg-d-flag"/>
-      <div id="flg-d-name"></div>
-      <div id="flg-d-capital"></div>
-      <div id="flg-d-currency"></div>
+  <spa-modal id="details-modal" class="no-outline" hidden tabindex="-1" data-active="1">
+    <div id="details">
+      <img id="d-flag"/>
+      <div id="d-name"></div>
+      <div id="d-capital"></div>
+      <div id="d-currency"></div>
     </div>
   </spa-modal>
 </main>

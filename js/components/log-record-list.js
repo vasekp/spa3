@@ -1,39 +1,21 @@
-import {LiveListElement} from './spa-live-list.js';
-import {dateFormat} from '../util/datetime.js';
-import {recordStore} from '../log-record-store.js';
+import {formatDate, formatTimeDiff} from '../util/datetime.js';
+import recordStore from '../log-record-store.js';
+import LiveListElement from './spa-live-list.js';
 
-function formatDiff(diff) {
-  diff = Math.floor(diff / 1000);
-  let sec = diff % 60;
-  let sec02 = sec.toString().padStart(2, '0');
-  diff = Math.floor(diff / 60);
-  let min = diff % 60;
-  let min02 = min.toString().padStart(2, '0');
-  diff = Math.floor(diff / 60);
-  let hrs = diff % 24;
-  let days = Math.floor(diff / 24);
-  if(days > 0)
-    return `+${days}d ${hrs}:${min02}:${sec02}`;
-  else if(hrs > 0)
-    return `+${hrs}:${min02}:${sec02}`;
-  else
-    return `+${min}:${sec02}`;
-}
-
-export class ListElement extends LiveListElement {
+class ListElement extends LiveListElement {
   constructor() {
     super();
     this._mo = new MutationObserver(() => this._updateDates());
     this._mo.observe(this, { childList: true });
     this.addEventListener('move-away', e => {
-      let tgt = e.target;
+      const tgt = e.target;
       recordStore.delete(tgt.record).then(() => tgt.remove());
     });
   }
 
   _updateDates() {
     const insertMarker = (elm, day) => {
-      let marker = document.createElement('div');
+      const marker = document.createElement('div');
       marker.classList.add('date-marker');
       marker.dataset.protected = 1;
       marker.dataset.day = day;
@@ -41,28 +23,28 @@ export class ListElement extends LiveListElement {
       this.insertBefore(marker, elm);
     }
     let prevDate, prevDay, nonempty, prevMarker;
-    for(let elm of this.childNodes) {
+    for(const elm of this.childNodes) {
       if(elm.nodeName === 'LOG-RECORD') {
         if(!elm.dataset.day) {
           // newly added element
           this._mo.observe(elm, { attributes: true, attributeFilter: ['data-state', 'hidden'] });
           if(elm.record)
-            elm.dataset.day = dateFormat(elm.record.date);
+            elm.dataset.day = formatDate(elm.record.date);
           else
             continue;
         }
         if(elm.hidden)
           continue;
-        let day = elm.dataset.day;
+        const day = elm.dataset.day;
         if(day !== prevDay)
           insertMarker(elm, day);
         prevDay = day;
-        elm.dataset.timeDiff = prevDate ? formatDiff(elm.record.date - prevDate) : '';
+        elm.dataset.timeDiff = prevDate ? formatTimeDiff(elm.record.date - prevDate) : '';
         prevDate = elm.record.date;
         nonempty = true;
       } else {
         // date marker
-        let day = elm.dataset.day;
+        const day = elm.dataset.day;
         if(day === prevDay) {
           elm.remove();
           continue;
