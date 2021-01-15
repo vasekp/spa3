@@ -1,26 +1,8 @@
-import {LiveListElement} from './spa-live-list.js';
-import {dateFormat} from '../util/datetime.js';
-import {recordStore} from '../log-record-store.js';
+import {formatDate, formatTimeDiff} from '../util/datetime.js';
+import recordStore from '../log-record-store.js';
+import LiveListElement from './spa-live-list.js';
 
-function formatDiff(diff) {
-  diff = Math.floor(diff / 1000);
-  const sec = diff % 60;
-  const sec02 = sec.toString().padStart(2, '0');
-  diff = Math.floor(diff / 60);
-  const min = diff % 60;
-  const min02 = min.toString().padStart(2, '0');
-  diff = Math.floor(diff / 60);
-  const hrs = diff % 24;
-  const days = Math.floor(diff / 24);
-  if(days > 0)
-    return `+${days}d ${hrs}:${min02}:${sec02}`;
-  else if(hrs > 0)
-    return `+${hrs}:${min02}:${sec02}`;
-  else
-    return `+${min}:${sec02}`;
-}
-
-export class ListElement extends LiveListElement {
+class ListElement extends LiveListElement {
   constructor() {
     super();
     this._mo = new MutationObserver(() => this._updateDates());
@@ -47,7 +29,7 @@ export class ListElement extends LiveListElement {
           // newly added element
           this._mo.observe(elm, { attributes: true, attributeFilter: ['data-state', 'hidden'] });
           if(elm.record)
-            elm.dataset.day = dateFormat(elm.record.date);
+            elm.dataset.day = formatDate(elm.record.date);
           else
             continue;
         }
@@ -57,7 +39,7 @@ export class ListElement extends LiveListElement {
         if(day !== prevDay)
           insertMarker(elm, day);
         prevDay = day;
-        elm.dataset.timeDiff = prevDate ? formatDiff(elm.record.date - prevDate) : '';
+        elm.dataset.timeDiff = prevDate ? formatTimeDiff(elm.record.date - prevDate) : '';
         prevDate = elm.record.date;
         nonempty = true;
       } else {

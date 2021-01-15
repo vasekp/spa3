@@ -1,5 +1,5 @@
 import './components/spa-view.js';
-import {Enum} from './util/enum.js';
+import Enum from './util/enum.js';
 
 const lsKeys = Enum.fromObj({
   views: 'spa-views',

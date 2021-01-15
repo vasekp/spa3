@@ -1,8 +1,8 @@
-import {Enum} from '../util/enum.js';
-import {timeFormat} from '../util/datetime.js';
-import {recordStore} from '../log-record-store.js';
+import Enum from '../util/enum.js';
+import {formatTime} from '../util/datetime.js';
+import recordStore from '../log-record-store.js';
 import {lsKeys, getGameLabels} from '../logbook.js';
-import {ContainerElement} from './spa-focus-container.js';
+import ContainerElement from './spa-focus-container.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -26,7 +26,7 @@ templateBase.innerHTML = `
 
 const states = Enum.fromArray(['nascent', 'base', 'edit']);
 
-export class RecordElement extends ContainerElement {
+class RecordElement extends ContainerElement {
   connectedCallback() {
     this._construct();
     if(!this.state)
@@ -80,7 +80,7 @@ export class RecordElement extends ContainerElement {
   }
 
   set date(date) {
-    this._id('timestamp').textContent = timeFormat(date);
+    this._id('timestamp').textContent = formatTime(date);
   }
 
   set geo(geo) {

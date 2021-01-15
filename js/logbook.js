@@ -5,11 +5,11 @@ import './components/log-record-list.js';
 import './components/log-game.js';
 import './components/spa-scroll.js';
 import {db} from './log-db.js';
-import {Enum} from './util/enum.js';
-import {dateFormat} from './util/datetime.js';
-import {debounce} from './util/debounce.js';
-import {gameStore} from './log-game-store.js';
-import {recordStore} from './log-record-store.js';
+import Enum from './util/enum.js';
+import {formatDate} from './util/datetime.js';
+import debounce from './util/debounce.js';
+import gameStore from './log-game-store.js';
+import recordStore from './log-record-store.js';
 
 export default function(root) {
   const state = {
@@ -28,7 +28,7 @@ export default function(root) {
 
   const gameNameView = {
     set name(name) { root.getElementById('gname').innerText = name; },
-    set date(date) { root.getElementById('gdate').innerText = `(${dateFormat(date)})`; }
+    set date(date) { root.getElementById('gdate').innerText = `(${formatDate(date)})`; }
   };
 
   function gameList() {

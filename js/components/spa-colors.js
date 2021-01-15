@@ -1,10 +1,10 @@
-import {Enum} from '../util/enum.js';
+import Enum from '../util/enum.js';
 
 const NumColors = 9;
 
 const construct = Enum.fromObj({ empty: 0, base: 1, full: 2});
 
-export class ColorSelElement extends HTMLElement {
+class ColorSelElement extends HTMLElement {
   connectedCallback() {
     if(this.dataset.delayed === undefined)
       this.construct();
@@ -71,7 +71,7 @@ export class ColorSelElement extends HTMLElement {
   }
 }
 
-export class ColorFilterElement extends HTMLElement {
+class ColorFilterElement extends HTMLElement {
   constructor() {
     super();
     this._constructed = construct.empty;

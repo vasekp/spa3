@@ -1,4 +1,4 @@
-export class ContainerElement extends HTMLElement {
+export default class ContainerElement extends HTMLElement {
   constructor() {
     super();
     this.addEventListener('focusout', e => {

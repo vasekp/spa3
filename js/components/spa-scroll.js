@@ -12,7 +12,7 @@ template.innerHTML = `
  * 2 ≠ 3 because if 3 had height: 100% it would not fire resize changes.
  ***/
 
-export class ScrollElement extends HTMLElement {
+class ScrollElement extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({mode: 'open'});

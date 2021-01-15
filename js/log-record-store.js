@@ -1,7 +1,7 @@
 import {ObjectStore} from './log-db.js';
-import {debounce} from './util/debounce.js';
+import debounce from './util/debounce.js';
 
-export const recordStore = new ObjectStore('log-rec');
+const recordStore = new ObjectStore('log-rec');
 
 recordStore.create = async function(record, tx) {
   record.date = Date.now();
@@ -73,3 +73,5 @@ class Record {
     this._views.delete(elm);
   }
 };
+
+export default recordStore;

@@ -8,7 +8,7 @@ const map = {};
     map[patt[i]] = repl[i];
 }
 
-export function normalize(str) {
+export default function normalize(str) {
   return str
     .trim()
     .toLowerCase()

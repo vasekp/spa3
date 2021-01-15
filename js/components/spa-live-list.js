@@ -1,4 +1,4 @@
-export class LiveListElement extends HTMLElement {
+export default class LiveListElement extends HTMLElement {
   constructor() {
     super();
     this._tracking = {};

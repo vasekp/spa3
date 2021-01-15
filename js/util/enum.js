@@ -7,7 +7,7 @@ const enumHandler = {
   }
 };
 
-export class Enum {
+export default class Enum {
   static fromArray(arr) {
     const obj = Object.create(null);
     for(const s of arr)

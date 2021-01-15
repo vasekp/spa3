@@ -1,7 +1,7 @@
 import './components/spa-scroll.js';
 import './components/spa-modal.js';
-import {normalize} from './util/text.js';
-import {debounce} from './util/debounce.js';
+import normalize from './util/text.js';
+import debounce from './util/debounce.js';
 
 export default function(root) {
   const dbf = debounce(filter, 300);

@@ -1,9 +1,9 @@
 import './spa-slideout.js';
-import {Enum} from '../util/enum.js';
-import {dateFormat} from '../util/datetime.js';
-import {gameStore} from '../log-game-store.js';
+import Enum from '../util/enum.js';
+import {formatDate} from '../util/datetime.js';
+import gameStore from '../log-game-store.js';
 import {lsKeys, getLabelsGames} from '../logbook.js';
-import {ContainerElement} from './spa-focus-container.js';
+import ContainerElement from './spa-focus-container.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -21,7 +21,7 @@ template.innerHTML = `
 
 const states = Enum.fromArray(['nascent', 'disabled', 'base', 'edit', 'color', 'confirm']);
 
-export class GameRecordElement extends ContainerElement {
+class GameRecordElement extends ContainerElement {
   connectedCallback() {
     this._construct();
     if(!this.state)
@@ -67,7 +67,7 @@ export class GameRecordElement extends ContainerElement {
   }
 
   set date(date) {
-    this._id('date').textContent = `(${dateFormat(date)})`;
+    this._id('date').textContent = `(${formatDate(date)})`;
   }
 
   attributeChangedCallback(name, oldValue, value) {

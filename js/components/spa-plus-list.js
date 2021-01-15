@@ -1,4 +1,4 @@
-export class PlusListElement extends HTMLElement {
+class PlusListElement extends HTMLElement {
   connectedCallback() {
     this._construct();
     this._state = new Proxy({

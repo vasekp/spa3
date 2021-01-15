@@ -1,7 +1,7 @@
 import {db, ObjectStore} from './log-db.js';
-import {recordStore} from './log-record-store.js';
+import recordStore from './log-record-store.js';
 
-export const gameStore = new ObjectStore('log-gid');
+const gameStore = new ObjectStore('log-gid');
 
 gameStore.create = async function(name, tx) {
   const record = { name, date: Date.now() };
@@ -83,3 +83,5 @@ class Game {
     this._views.delete(elm);
   }
 };
+
+export default gameStore;

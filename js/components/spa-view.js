@@ -20,7 +20,7 @@ template.innerHTML = `
   </div>
 </spa-modal>`;
 
-export class ViewElement extends HTMLElement {
+class ViewElement extends HTMLElement {
   constructor() {
     super();
     const root = this.attachShadow({mode: 'open'});
