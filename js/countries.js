@@ -5,18 +5,18 @@ import debounce from './util/debounce.js';
 
 export default function(root) {
   const dbf = debounce(filter, 300);
-  root.getElementById('flg-name').addEventListener('input', dbf);
-  root.getElementById('flg-capital').addEventListener('input', dbf);
-  root.getElementById('flg-continent').addEventListener('change', atLeastOne);
-  root.getElementById('flg-ccount').addEventListener('change', firstOrMulti);
-  root.getElementById('flg-colors').addEventListener('change', filter);
-  root.getElementById('flg-shape').addEventListener('change', filter);
-  root.getElementById('flg-emblems').addEventListener('change', filter);
-  root.getElementById('flg-ecolor').addEventListener('change', firstOrMulti);
-  root.getElementById('flg-currency').addEventListener('input', dbf);
-  root.getElementById('flg-curr-code').addEventListener('input', dbf);
-  root.getElementById('flg-list').addEventListener('click', flagClicked);
-  root.getElementById('flg-details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
+  root.getElementById('name').addEventListener('input', dbf);
+  root.getElementById('capital').addEventListener('input', dbf);
+  root.getElementById('continent').addEventListener('change', atLeastOne);
+  root.getElementById('ccount').addEventListener('change', firstOrMulti);
+  root.getElementById('colors').addEventListener('change', filter);
+  root.getElementById('shape').addEventListener('change', filter);
+  root.getElementById('emblems').addEventListener('change', filter);
+  root.getElementById('ecolor').addEventListener('change', firstOrMulti);
+  root.getElementById('currency').addEventListener('input', dbf);
+  root.getElementById('curr-code').addEventListener('input', dbf);
+  root.getElementById('list').addEventListener('click', flagClicked);
+  root.getElementById('details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
   loadData();
 
   function firstOrMulti(e) {
@@ -54,7 +54,7 @@ export default function(root) {
   async function loadData() {
     const response = await fetch('assets/countries.csv');
     const text = await response.text();
-    const tbody = root.getElementById('flg-list').tBodies[0];
+    const tbody = root.getElementById('list').tBodies[0];
     const colors = {
       'E': 'blue',
       'AS': 'yellow',
@@ -117,7 +117,7 @@ export default function(root) {
     const edited = { country: false, flag: false, currency: false };
     // Country name
     {
-      const cname = normalize(root.getElementById('flg-name').value);
+      const cname = normalize(root.getElementById('name').value);
       if(cname) {
         f = addCondition(f, dataset => dataset.nameN.includes(cname));
         edited.country = true;
@@ -125,14 +125,14 @@ export default function(root) {
     }
     // Capital
     {
-      const cname = normalize(root.getElementById('flg-capital').value);
+      const cname = normalize(root.getElementById('capital').value);
       if(cname) {
         f = addCondition(f, dataset => dataset.capitalN.includes(cname));
         edited.country = true;
       }
     }
     // Continent
-    for(const elm of root.querySelectorAll('#flg-continent input')) {
+    for(const elm of root.querySelectorAll('#continent input')) {
       if(!elm.checked) {
         if(elm.dataset.value === 'AM')
           f = addCondition(f, dataset => dataset.continent !== 'SA' && dataset.continent !== 'JA');
@@ -142,7 +142,7 @@ export default function(root) {
       }
     }
     // Flag colors
-    for(const elm of root.getElementById('flg-colors').children) {
+    for(const elm of root.getElementById('colors').children) {
       if(elm.checked) {
         f = addCondition(f, dataset => dataset.flagColor & elm.dataset.value);
         edited.flag = true;
@@ -150,21 +150,21 @@ export default function(root) {
     }
     // Color count
     {
-      const ccount = [...root.getElementById('flg-ccount').children];
+      const ccount = [...root.getElementById('ccount').children];
       if(!ccount[0].checked) {
         f = addCondition(f, dataset => ccount[popCnt(dataset.flagColor)].checked);
         edited.flag = true;
       }
     }
     // Flag shape
-    for(const elm of root.querySelectorAll('#flg-shape input')) {
+    for(const elm of root.querySelectorAll('#shape input')) {
       if(elm.checked) {
         f = addCondition(f, dataset => dataset.flagShape & elm.dataset.value);
         edited.flag = true;
       }
     }
     // Emblems
-    for(const elm of root.querySelectorAll('#flg-emblems input')) {
+    for(const elm of root.querySelectorAll('#emblems input')) {
       if(elm.checked) {
         f = addCondition(f, dataset => dataset.emblems & elm.dataset.value);
         edited.flag = true;
@@ -172,7 +172,7 @@ export default function(root) {
     }
     // Emblem colors
     {
-      const ecolors = [...root.getElementById('flg-ecolor').children];
+      const ecolors = [...root.getElementById('ecolor').children];
       if(!ecolors.shift().checked) {
         for(const elm of ecolors)
           f = addCondition(f, dataset => !!(dataset.emblemColor & elm.dataset.value) === elm.checked);
@@ -181,19 +181,19 @@ export default function(root) {
     }
     // Currency
     {
-      const cname = normalize(root.getElementById('flg-currency').value);
+      const cname = normalize(root.getElementById('currency').value);
       if(cname) {
         f = addCondition(f, dataset => dataset.currencyN.includes(cname));
         edited.currency = true;
       }
-      const ccode = root.getElementById('flg-curr-code').value.toUpperCase();
+      const ccode = root.getElementById('curr-code').value.toUpperCase();
       if(ccode) {
         f = addCondition(f, dataset => dataset.abbrCurr.includes(ccode));
         edited.currency = true;
       }
     }
     let odd = true;
-    for(const tr of root.getElementById('flg-list').tBodies[0].children) {
+    for(const tr of root.getElementById('list').tBodies[0].children) {
       const show = f(tr.dataset);
       tr.hidden = !show;
       if(show) {
@@ -202,18 +202,18 @@ export default function(root) {
       }
     }
     for(const sec in edited)
-      root.getElementById(`flg-filter-${sec}`).nextElementSibling.classList.toggle('edited', edited[sec]);
+      root.getElementById(`filter-${sec}`).nextElementSibling.classList.toggle('edited', edited[sec]);
   }
 
   function flagClicked(e) {
     const tr = e.target.closest('tr');
     if(!tr)
       return;
-    root.getElementById('flg-d-flag').src = tr.querySelector('img').src;
-    root.getElementById('flg-d-name').textContent = tr.dataset.name;
-    root.getElementById('flg-d-capital').textContent = tr.dataset.capital;
-    root.getElementById('flg-d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
-    root.getElementById('flg-details-modal').show();
+    root.getElementById('d-flag').src = tr.querySelector('img').src;
+    root.getElementById('d-name').textContent = tr.dataset.name;
+    root.getElementById('d-capital').textContent = tr.dataset.capital;
+    root.getElementById('d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
+    root.getElementById('details-modal').show();
   }
 
   return {};
