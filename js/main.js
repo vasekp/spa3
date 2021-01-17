@@ -1,5 +1,6 @@
 import './components/spa-view.js';
 import Enum from './util/enum.js';
+import _, * as i18n from './i18n.js';
 
 const lsKeys = Enum.fromObj({
   views: 'spa-views',
@@ -24,30 +25,33 @@ const ro = new ResizeObserver(entries => {
     document.dispatchEvent(new CustomEvent('view-change'));
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  setTheme(localStorage[lsKeys.theme] || 'light');
+  await i18n.loadTrans(`trans/${i18n.lang}/main.json`);
+  document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
     ro.observe(view);
-  setTheme(localStorage[lsKeys.theme] || 'light');
   if(localStorage[lsKeys.views]) {
     const views = JSON.parse(localStorage[lsKeys.views]);
     for(const pos in views)
       document.querySelector(`spa-view[data-pos="${pos}"]`).dataset.module = views[pos];
   } else {
     document.getElementById('v1').dataset.module = 'logbook';
-    document.getElementById('v2').dataset.module = 'menu';
-    document.getElementById('v3').dataset.module = 'menu';
+    document.getElementById('v2').dataset.module = 'list';
+    document.getElementById('v3').dataset.module = 'list';
   }
   document.addEventListener('view-change', e => {
     const views = {};
     for(const view of document.querySelectorAll('spa-view')) {
-      if(e.detail && view.id !== e.detail.id && view.dataset.module === e.detail.module && view.dataset.module !== 'menu') {
-        view.dataset.module = 'menu';
+      if(e.detail && view.id !== e.detail.id && view.dataset.module === e.detail.module && view.dataset.module !== 'list') {
+        view.dataset.module = 'list';
         return;
       }
       views[view.dataset.pos] = view.dataset.module;
     }
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
+  document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
 });
 
 window.addEventListener('keydown', e => {
@@ -69,6 +73,9 @@ export function populateSettings(elm) {
   elm.querySelector('#m-set-dark').checked = getTheme() === 'dark';
   elm.querySelector('#m-set-theme').addEventListener('change', e =>
     setTheme(e.currentTarget.querySelector(':checked').value));
+  elm.querySelector(`#m-set-lang [value=${i18n.lang}]`).checked = true;
+  elm.querySelector('#m-set-lang').addEventListener('change', e =>
+    i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
 }
 
 export function setTheme(theme) {

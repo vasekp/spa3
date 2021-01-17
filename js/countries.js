@@ -2,6 +2,7 @@ import './components/spa-scroll.js';
 import './components/spa-modal.js';
 import normalize from './util/text.js';
 import debounce from './util/debounce.js';
+import _, * as i18n from './i18n.js';
 
 export default function(root) {
   const dbf = debounce(filter, 300);
@@ -52,7 +53,7 @@ export default function(root) {
   }
 
   async function loadData() {
-    const response = await fetch('assets/countries.csv');
+    const response = await fetch(`assets/${i18n.lang}/countries.csv`);
     const text = await response.text();
     const tbody = root.getElementById('list').tBodies[0];
     const colors = {
@@ -63,32 +64,38 @@ export default function(root) {
       'SA': 'red',
       'JA': 'red'
     };
+    const lines = [];
     for(const line of text.split('\n')) {
       if(!line) break;
-      const arr = line.split(':');
+      lines.push(line.split(':'));
+    }
+    lines.sort((a, b) => i18n.compare(a[0], b[0]));
+    for(const arr of lines) {
       const tr = document.createElement('tr');
-      const color = colors[arr[3]];
-      const content = arr[3] === 'SA' || arr[3] === 'JA' ? `data-content="${arr[3][0]}"` : "";
+      const color = colors[arr[2]];
+      const content = arr[2] === 'SA' || arr[2] === 'JA'
+        ? `data-content="${_(`flg:label ${arr[2] === 'SA' ? 'north' : 'south'}`)}"`
+        : '';
       tr.innerHTML = `
-        <td><img src="assets/flags/${arr[5]}.svg"/></td>
+        <td><img src="assets/any/flags/${arr[4]}.svg"/></td>
         <td>${arr[0]}</td>
-        <td>${arr[2]}</td>
+        <td>${arr[1]}</td>
         <td><span class="patch c-${color}" ${content} data-color="param"></span></td>
       `;
       tr.dataset.name = arr[0];
       tr.dataset.nameN = normalize(arr[0]);
-      tr.dataset.capital = arr[2]
-      tr.dataset.capitalN = normalize(arr[2]);
-      tr.dataset.continent = arr[3];
-      tr.dataset.currency = arr[4];
-      tr.dataset.currencyN = normalize(arr[4]);
-      tr.dataset.abbr3 = arr[5];
-      tr.dataset.abbr2 = arr[6];
-      tr.dataset.abbrCurr = arr[7];
-      tr.dataset.flagColor = arr[8];
-      tr.dataset.flagShape = arr[9];
-      tr.dataset.emblems = arr[10];
-      tr.dataset.emblemColor = arr[11];
+      tr.dataset.capital = arr[1]
+      tr.dataset.capitalN = normalize(arr[1]);
+      tr.dataset.continent = arr[2];
+      tr.dataset.currency = arr[3];
+      tr.dataset.currencyN = normalize(arr[3]);
+      tr.dataset.abbr3 = arr[4];
+      tr.dataset.abbr2 = arr[5];
+      tr.dataset.abbrCurr = arr[6];
+      tr.dataset.flagColor = arr[7];
+      tr.dataset.flagShape = arr[8];
+      tr.dataset.emblems = arr[9];
+      tr.dataset.emblemColor = arr[10];
       tr.dataset.active = 1;
       tr.tabIndex = 0;
       tr.classList.add('inner-outline');

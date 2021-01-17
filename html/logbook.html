@@ -1,0 +1,47 @@
+<!doctype html>
+<main data-view="init">
+  <div class="header-line" id="log-sel" tabindex="0" data-active="1">
+    <span>_(log:record)</span>
+    <span id="gname"></span>
+    <span id="gdate"></span>
+  </div>
+  <div class="header-line">
+    <span>_(log:filter)</span>
+    <spa-color-filter id="tag-filter"></spa-color-filter>
+  </div>
+  <spa-scroll>
+    <spa-plus-list>
+      <div class="spa-loading" id="load"></div>
+      <log-record-list id="record-list"></log-record-list>
+      <div id="game-list">
+        <div id="no-games"><span>_(log:add first)</span></div>
+      </div>
+    </spa-plus-list>
+  </spa-scroll>
+  <template id="module-settings">
+    <div class="settings-header">_(log:title)</div>
+    <div class="trans" id="log-set-ccount">
+      <label>_(log:color count)</label>
+      <div>
+        <button class="patch" data-content="–"></button>
+        <span>9</span>
+        <button class="patch" data-content="+"></button>
+      </div>
+    </div>
+    <div class="trans" id="log-set-clabels">
+      <label class="trans"><span class="patch" data-color="1"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="2"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="3"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="4"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="5"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="6"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="7"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="8"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+      <label class="trans"><span class="patch" data-color="9"></span><input type="text" placeholder="_(log:label placeholder)"/></label>
+    </div>
+    <div class="trans" id="log-set-labels-default">
+      <button id="log-set-to-default">_(log:to default)</button>
+      <button id="log-set-from-default">_(log:from default)</button>
+    </div>
+  </template>
+</main>

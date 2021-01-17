@@ -1,6 +1,7 @@
 import './spa-modal.js';
 import './spa-slideout.js';
 import * as main from '../main.js';
+import _, * as i18n from '../i18n.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -12,7 +13,7 @@ template.innerHTML = `
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
   <button id="home"><img class="inline" src="images/home.svg"/></button>
 </spa-slideout>
-<div id="content"></div>
+<div id="content"><div class="spa-loading"></div></div>
 <spa-modal id="settings-modal" hidden>
   <div class="settings" tabindex="-1">
     <div class="trans" id="module-settings-container"></div>
@@ -26,7 +27,7 @@ class ViewElement extends HTMLElement {
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
     root.getElementById('home').addEventListener('click',
-      () => this.dataset.module = 'menu');
+      () => this.dataset.module = 'list');
     const settings = root.getElementById('settings-modal');
     root.getElementById('settings').addEventListener('click', () => {
       const s1 = root.getElementById('shared-settings-container');
@@ -39,7 +40,7 @@ class ViewElement extends HTMLElement {
       settings.show();
     });
     root.getElementById('move').addEventListener('click',
-      () => alert('Ikonku zkuste táhnout a pustit do jiného panelu.'));
+      () => alert(_('try dragging')));
     root.getElementById('move').addEventListener('dragstart', e => {
       this.classList.add('dragged');
       e.dataTransfer.setData('application/spa3', this.id);
@@ -71,7 +72,7 @@ class ViewElement extends HTMLElement {
     if(newValue === oldValue)
       return;
     if(name === 'data-module')
-      this.loadModule(newValue);
+      this.loadModule(newValue).catch(() => this.dataset.module = 'list');
     document.dispatchEvent(new CustomEvent('view-change', { detail: {
       id: this.id,
       module: newValue
@@ -83,10 +84,11 @@ class ViewElement extends HTMLElement {
     const prevStyle = this.shadowRoot.getElementById('style');
     if(prevStyle)
       prevStyle.id = '';
-    if(module !== 'menu') // switching to menu should look fluid
+    if(module !== 'list') // switching to menu should look fluid
       cont.innerHTML = '<div class="spa-loading"></div>';
     const [responseText, script] = await Promise.all([
-      fetch(`${module}.mod.html`).then(async r => await r.text()),
+      i18n.loadTrans(`trans/${i18n.lang}/${module}.json`).then(
+        () => i18n.loadTemplate(`html/${module}.html`)),
       import(`../${module}.js`),
       this.addStyleSheet(`css/${module}.css`)
     ]);

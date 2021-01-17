@@ -1,0 +1,21 @@
+{
+  "_prefix": "flg",
+  "tab country": "Country",
+  "tab flag": "Flag",
+  "tab currency": "Currency",
+  "name": "Name",
+  "capital": "Capital",
+  "continent": "Continent",
+  "europe": "Europe",
+  "asia": "Asia",
+  "africa": "Africa",
+  "oceania": "Oceania",
+  "americas": "N + S America",
+  "label north": "N",
+  "label south": "S",
+  "colors": "Colors",
+  "shape": "Shape",
+  "emblems": "Emblems",
+  "currency": "Currency",
+  "currency placeholder": "code"
+}

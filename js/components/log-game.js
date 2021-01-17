@@ -4,20 +4,21 @@ import {formatDate} from '../util/datetime.js';
 import gameStore from '../log-game-store.js';
 import {lsKeys, getLabelsGames} from '../logbook.js';
 import ContainerElement from './spa-focus-container.js';
+import * as i18n from '../i18n.js';
 
 const template = document.createElement('template');
-template.innerHTML = `
+template.innerHTML = i18n.useTemplate(`
 <span class="patch log-game-color-patch" data-color="none"></span>
 <spa-color-sel class="log-game-color-sel" data-delayed="1" data-has-zero="1"></spa-color-sel>
 <span class="log-game-name"></span>
 <input type="text" class="log-game-name-edit">
 <span class="log-game-date"></span>
-<div class="log-game-confirm">Klikněte znovu pro potvrzení.</div>
+<div class="log-game-confirm">_(log:confirm delete)</div>
 <spa-slideout class="log-game-tools">
   <button class="log-game-delete"><img class="inline" src="images/delete.svg" alt="delete"/></button>
   <button class="patch log-game-color-edit" data-color="all" data-active="1"></button>
   <button class="log-game-edit"><img class="inline" alt="edit" src="images/edit.svg"/></button>
-</spa-slideout>`;
+</spa-slideout>`);
 
 const states = Enum.fromArray(['nascent', 'disabled', 'base', 'edit', 'color', 'confirm']);
 

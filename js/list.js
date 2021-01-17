@@ -1,9 +1,10 @@
 import './components/spa-scroll.js';
+import * as i18n from './i18n.js';
 
 export default function(root) {
   function filter() {
     let odd = true;
-    const cont = root.getElementById('menu-container');
+    const cont = root.getElementById('list');
     for(const item of cont.children) {
       const modName = item.dataset.moduleName;
       const view = document.querySelector(`spa-view[data-module="${modName}"]:not([data-size=""])`);
@@ -17,13 +18,11 @@ export default function(root) {
   }
 
   (async () => {
-    const items = await(await fetch('modules.json')).json();
-    const cont = root.getElementById('menu-container');
-    const cmp = new Intl.Collator().compare;
-    items.sort((a, b) => cmp(a.displayName, b.displayName));
+    const items = await(await fetch(`trans/${i18n.lang}/modules.json`)).json();
+    const cont = root.getElementById('list');
+    items.sort((a, b) => i18n.compare(a.displayName, b.displayName));
     for(const item of items) {
       const div = document.createElement('div');
-      div.classList.add('menu-item');
       div.textContent = item.displayName;
       div.dataset.moduleName = item.moduleName;
       div.tabindex = 0;

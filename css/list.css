@@ -3,12 +3,12 @@ spa-scroll {
   margin: 0 var(--margin-base-neg);
 }
 
-#menu-container > div {
+#list > div {
   padding: 0 var(--margin-base);
   height: 2rem;
   line-height: 2rem;
 }
 
-#menu-container > :nth-child(odd) {
+#list > :nth-child(odd) {
   background: var(--color-bg-alt);
 }

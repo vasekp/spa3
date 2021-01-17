@@ -3,6 +3,7 @@ import {formatTime} from '../util/datetime.js';
 import recordStore from '../log-record-store.js';
 import {lsKeys, getGameLabels} from '../logbook.js';
 import ContainerElement from './spa-focus-container.js';
+import _ from '../i18n.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -161,7 +162,7 @@ class RecordElement extends ContainerElement {
     if(this.dataset.geoState == 'waiting')
       return;
     else if(this.dataset.geoState == 'error') {
-      alert(`Error: ${this.dataset.geoError}`);
+      alert(`${_('error')}: ${_(this.dataset.geoError)}`);
     } else
       window.open(`https://www.openstreetmap.org/?mlat=${this._record.geo.lat}&mlon=${this._record.geo.lon}&zoom=18`);
   }
@@ -199,9 +200,9 @@ class RecordElement extends ContainerElement {
   _geoError(error) {
     this.dataset.geoState = 'error';
     this.dataset.geoError =
-      error.code == error.PERMISSION_DENIED ? 'Permission denied'
-      : error.code == error.POSITION_UNAVAILABLE ? 'Location unavailable'
-      : 'Unknown error';
+      error.code == error.PERMISSION_DENIED ? 'log:error geo permission'
+      : error.code == error.POSITION_UNAVAILABLE ? 'log:error geo unavailable'
+      : 'log:error unknown';
   }
 }
 
