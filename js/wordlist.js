@@ -6,14 +6,14 @@ import _, * as i18n from './i18n.js';
 export default function(root) {
   const table = root.getElementById('list');
 
-  async function filter(f) {
+  async function loadFile(file) {
+    const reader = (await fetch(file)).body.getReader();
     const decoder = new TextDecoder('utf-8');
     const opts = { stream: true };
-    const r = (await fetch('assets/any/wordlists/cs-subst.txt')).body.getReader();
     let textChunk = '';
     const chunkIterator = {
       [Symbol.asyncIterator]: () => ({
-        next: async () => r.read()
+        next: async () => reader.read()
       })
     }
     const textIterator = {
@@ -37,9 +37,19 @@ export default function(root) {
         }
       }
     }
+    const lines = [];
+    for await(const line of lineIterator)
+      lines.push(line);
+    return lines;
+  }
+
+  const linesP = loadFile('assets/any/wordlists/cs-subst.txt');
+
+  async function filter(f) {
+    const lines = await linesP;
     console.time('filter');
     let c = 0;
-    for await(const line of lineIterator) {
+    for(const line of lines) {
       if(f(line)) {
         if(++c < 100)
           console.log(line)
