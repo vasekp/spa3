@@ -1,7 +1,7 @@
 {
   "title": "Šifrovací pomůcky",
-  "normalize pattern": "áàäâãčćçďéěëęíîĺľłňńóöőôřšśťúůüűýžź‚‘’ʻ„“”",
-  "normalize repl": "aaaaacccdeeeeiilllnnoooorsstuuuuyzz''''\"\"\"",
+  "normalize pattern": "áàäâãăčćçďđéěëęíîĺľłňńóöőôồřšśșťúůüűýžź‚‘’ʻ„“”",
+  "normalize repl": "aaaaaacccddeeeeiilllnnooooorssstuuuuyzz''''\"\"\"",
   "day single letter": "d",
   "common settings": "Obecná nastavení",
   "theme": "Vzhled:",
