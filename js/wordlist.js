@@ -7,6 +7,7 @@ export default function(root) {
   const table = root.getElementById('list');
 
   async function loadFile(file) {
+    console.time('load');
     const reader = (await fetch(file)).body.getReader();
     const decoder = new TextDecoder('utf-8');
     const opts = { stream: true };
@@ -16,30 +17,24 @@ export default function(root) {
         next: async () => reader.read()
       })
     }
-    const textIterator = {
-      [Symbol.asyncIterator]: async function*() {
-        for await(const chunk of chunkIterator)
-          yield decoder.decode(chunk, opts);
-      }
-    }
+    const text = await (async() => {
+      let text = '';
+      for await(const chunk of chunkIterator)
+        text += decoder.decode(chunk, opts);
+      return text;
+    })();
     const lineIterator = {
-      [Symbol.asyncIterator]: async function*() {
-        let remText = '';
-        for await(let text of textIterator) {
-          text = remText + text;
-          let lastIndex = 0;
-          let index;
-          while((index = text.indexOf('\n', lastIndex)) >= 0) {
-            yield text.substring(lastIndex, index);
-            lastIndex = index + 1;
-          }
-          remText = text.substring(lastIndex);
+      [Symbol.iterator]: function*() {
+        let lastIndex = 0;
+        let index;
+        while((index = text.indexOf('\n', lastIndex)) >= 0) {
+          yield text.substring(lastIndex, index);
+          lastIndex = index + 1;
         }
       }
     }
-    const lines = [];
-    for await(const line of lineIterator)
-      lines.push(line);
+    const lines = [...lineIterator];
+    console.timeEnd('load');
     return lines;
   }
 
