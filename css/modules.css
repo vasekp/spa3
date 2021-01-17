@@ -87,7 +87,8 @@ label input[type="checkbox"].patch:not(:checked) + span {
 
 /* Common settings */
 
-.svg-cb svg {
+.svg-cb svg,
+.img-cb img {
   height: 1em;
   vertical-align: var(--valign-em-patch);
 }
@@ -106,6 +107,15 @@ label input[type="checkbox"].patch:not(:checked) + span {
   stroke-width: 1.2;
 }
 
-#m-set-theme > * {
+.img-cb :not(:checked) + img {
+  opacity: .5;
+}
+
+#m-set-theme > *,
+#m-set-lang > * {
   margin-right: calc(var(--margin-base) - var(--font-space));
+}
+
+#m-set-lang img {
+  filter: drop-shadow(0 0 2px #888);
 }

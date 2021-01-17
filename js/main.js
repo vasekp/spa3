@@ -73,6 +73,9 @@ export function populateSettings(elm) {
   elm.querySelector('#m-set-dark').checked = getTheme() === 'dark';
   elm.querySelector('#m-set-theme').addEventListener('change', e =>
     setTheme(e.currentTarget.querySelector(':checked').value));
+  elm.querySelector(`#m-set-lang [value=${i18n.lang}]`).checked = true;
+  elm.querySelector('#m-set-lang').addEventListener('change', e =>
+    i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
 }
 
 export function setTheme(theme) {
