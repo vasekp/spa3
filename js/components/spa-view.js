@@ -12,7 +12,7 @@ template.innerHTML = `
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
   <button id="home"><img class="inline" src="images/home.svg"/></button>
 </spa-slideout>
-<div id="content"></div>
+<div id="content"><div class="spa-loading"></div></div>
 <spa-modal id="settings-modal" hidden>
   <div class="settings" tabindex="-1">
     <div class="trans" id="module-settings-container"></div>

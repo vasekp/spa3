@@ -1,5 +1,6 @@
 import './components/spa-view.js';
 import Enum from './util/enum.js';
+import _, * as i18n from './i18n.js';
 
 const lsKeys = Enum.fromObj({
   views: 'spa-views',
@@ -24,10 +25,12 @@ const ro = new ResizeObserver(entries => {
     document.dispatchEvent(new CustomEvent('view-change'));
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  setTheme(localStorage[lsKeys.theme] || 'light');
+  await i18n.load('trans/cs.json');
+  document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
     ro.observe(view);
-  setTheme(localStorage[lsKeys.theme] || 'light');
   if(localStorage[lsKeys.views]) {
     const views = JSON.parse(localStorage[lsKeys.views]);
     for(const pos in views)
