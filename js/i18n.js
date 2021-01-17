@@ -7,7 +7,8 @@ const lsKeys = Enum.fromObj({
   lang: 'spa-lang',
 });
 
-export const lang = localStorage[lsKeys.lang] || 'cs';
+export const lang = localStorage[lsKeys.lang]
+  || (navigator.language.substr(0,2) === 'cs' ? 'cs' : 'en');
 
 export function resetLangReload(lang) {
   localStorage[lsKeys.lang] = lang;
