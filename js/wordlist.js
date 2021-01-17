@@ -8,21 +8,7 @@ export default function(root) {
 
   async function loadFile(file) {
     console.time('load');
-    const reader = (await fetch(file)).body.getReader();
-    const decoder = new TextDecoder('utf-8');
-    const opts = { stream: true };
-    let textChunk = '';
-    const chunkIterator = {
-      [Symbol.asyncIterator]: () => ({
-        next: async () => reader.read()
-      })
-    }
-    const text = await (async() => {
-      let text = '';
-      for await(const chunk of chunkIterator)
-        text += decoder.decode(chunk, opts);
-      return text;
-    })();
+    const text = await (await fetch(file)).text();
     const lineIterator = {
       [Symbol.iterator]: function*() {
         let lastIndex = 0;
