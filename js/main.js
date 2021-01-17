@@ -27,7 +27,7 @@ const ro = new ResizeObserver(entries => {
 
 window.addEventListener('DOMContentLoaded', async () => {
   setTheme(localStorage[lsKeys.theme] || 'light');
-  await i18n.load('trans/cs.json');
+  await i18n.loadTrans('trans/cs.json');
   document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
     ro.observe(view);
@@ -51,6 +51,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
+  document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
 });
 
 window.addEventListener('keydown', e => {

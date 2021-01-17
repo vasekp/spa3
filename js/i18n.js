@@ -1,7 +1,7 @@
 const data = {};
 const loaded = new Set();
 
-export async function load(url) {
+export async function loadTrans(url) {
   if(loaded.has(url))
     return;
   const json = await (await fetch(url)).json();
@@ -12,6 +12,11 @@ export async function load(url) {
     else
       data[key] = json[key];
   }
+}
+
+export async function loadTemplate(url) {
+  const text = await(await fetch(url)).text();
+  return text.replace(/_\(([^)]*)\)/g, (m, p) => _(p));
 }
 
 export default function _(key) {
