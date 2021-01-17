@@ -8,7 +8,3 @@ spa-scroll {
   height: 2rem;
   line-height: 2rem;
 }
-
-#list > :nth-child(odd) {
-  background: var(--color-bg-alt);
-}
