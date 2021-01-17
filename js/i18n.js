@@ -17,24 +17,17 @@ export function resetLangReload(lang) {
 export async function loadTrans(url) {
   if(loaded.has(url))
     return;
-  try {
-    const response = await fetch(url);
-    if(!response.ok)
-      throw `Error loading ${url}`;
-    const json = await (await fetch(url)).json();
-    loaded.add(url);
-    const prefix = json['_prefix'] ? json['_prefix'] + ':' : '';
-    for(const key in json) {
-      if(key === '_prefix')
-        continue;
-      const pKey = prefix + key;
-      if(data.hasOwnProperty(pKey))
-        console.error(`In loading ${url}: key ${pKey} already defined.`);
-      else
-        data[pKey] = json[key];
-    }
-  } catch(e) {
-    console.error(e);
+  const json = await (await fetch(url)).json();
+  loaded.add(url);
+  const prefix = json['_prefix'] ? json['_prefix'] + ':' : '';
+  for(const key in json) {
+    if(key === '_prefix')
+      continue;
+    const pKey = prefix + key;
+    if(data.hasOwnProperty(pKey))
+      console.error(`In loading ${url}: key ${pKey} already defined.`);
+    else
+      data[pKey] = json[key];
   }
 }
 
