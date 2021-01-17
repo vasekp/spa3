@@ -59,7 +59,7 @@ export default function(root) {
   }
 
   async function addExampleData(adb) {
-    await i18n.loadTrans('trans/cs/logbook-example-data.json');
+    await i18n.loadTrans(`trans/${i18n.lang}/logbook-example-data.json`);
     const data = _('log:example data');
     const tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
     for(const game of data) {

@@ -87,7 +87,7 @@ class ViewElement extends HTMLElement {
     if(module !== 'list') // switching to menu should look fluid
       cont.innerHTML = '<div class="spa-loading"></div>';
     const [responseText, script] = await Promise.all([
-      i18n.loadTrans(`trans/cs/${module}.json`).then(
+      i18n.loadTrans(`trans/${i18n.lang}/${module}.json`).then(
         () => i18n.loadTemplate(`html/${module}.html`)),
       import(`../${module}.js`),
       this.addStyleSheet(`css/${module}.css`)

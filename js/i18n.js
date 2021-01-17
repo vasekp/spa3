@@ -1,5 +1,18 @@
+import Enum from './util/enum.js';
+
 const data = {};
 const loaded = new Set();
+
+const lsKeys = Enum.fromObj({
+  lang: 'spa-lang',
+});
+
+export const lang = localStorage[lsKeys.lang] || 'cs';
+
+export function resetLangReload(lang) {
+  localStorage[lsKeys.lang] = lang;
+  location.reload();
+}
 
 export async function loadTrans(url) {
   if(loaded.has(url))

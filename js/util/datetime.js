@@ -1,11 +1,11 @@
-import _ from '../i18n.js';
+import _, * as i18n from '../i18n.js';
 
-export const formatDate = new Intl.DateTimeFormat('cs', {
+export const formatDate = new Intl.DateTimeFormat(i18n.lang, {
   day: 'numeric',
   month: 'numeric',
   year: 'numeric' }).format;
 
-export const formatTime = new Intl.DateTimeFormat('cs', {
+export const formatTime = new Intl.DateTimeFormat(i18n.lang, {
   hour: 'numeric',
   minute: 'numeric',
   second: 'numeric'
