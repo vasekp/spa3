@@ -72,7 +72,7 @@ class ViewElement extends HTMLElement {
     if(newValue === oldValue)
       return;
     if(name === 'data-module')
-      this.loadModule(newValue);
+      this.loadModule(newValue).catch(() => this.dataset.module = 'list');
     document.dispatchEvent(new CustomEvent('view-change', { detail: {
       id: this.id,
       module: newValue
