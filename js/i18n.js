@@ -4,13 +4,20 @@ const loaded = new Set();
 export async function loadTrans(url) {
   if(loaded.has(url))
     return;
-  const json = await (await fetch(url)).json();
-  loaded.add(url);
-  for(const key in json) {
-    if(data.hasOwnProperty(key))
-      console.error(`In loading ${url}: key ${key} already defined.`);
-    else
-      data[key] = json[key];
+  try {
+    const response = await fetch(url);
+    if(!response.ok)
+      throw `Error loading ${url}`;
+    const json = await (await fetch(url)).json();
+    loaded.add(url);
+    for(const key in json) {
+      if(data.hasOwnProperty(key))
+        console.error(`In loading ${url}: key ${key} already defined.`);
+      else
+        data[key] = json[key];
+    }
+  } catch(e) {
+    console.error(e);
   }
 }
 
