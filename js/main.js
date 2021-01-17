@@ -27,7 +27,7 @@ const ro = new ResizeObserver(entries => {
 
 window.addEventListener('DOMContentLoaded', async () => {
   setTheme(localStorage[lsKeys.theme] || 'light');
-  await i18n.loadTrans('trans/cs.json');
+  await i18n.loadTrans('trans/cs/main.json');
   document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
     ro.observe(view);

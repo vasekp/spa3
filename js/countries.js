@@ -2,6 +2,7 @@ import './components/spa-scroll.js';
 import './components/spa-modal.js';
 import normalize from './util/text.js';
 import debounce from './util/debounce.js';
+import _ from './i18n.js';
 
 export default function(root) {
   const dbf = debounce(filter, 300);
@@ -68,7 +69,9 @@ export default function(root) {
       const arr = line.split(':');
       const tr = document.createElement('tr');
       const color = colors[arr[3]];
-      const content = arr[3] === 'SA' || arr[3] === 'JA' ? `data-content="${arr[3][0]}"` : "";
+      const content = arr[3] === 'SA' || arr[3] === 'JA'
+        ? `data-content="${_(`flg:label ${arr[3] === 'SA' ? 'north' : 'south'}`)}"`
+        : '';
       tr.innerHTML = `
         <td><img src="assets/flags/${arr[5]}.svg"/></td>
         <td>${arr[0]}</td>

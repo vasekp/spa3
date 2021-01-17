@@ -1,3 +1,5 @@
+import _ from '../i18n.js';
+
 export const formatDate = new Intl.DateTimeFormat('cs', {
   day: 'numeric',
   month: 'numeric',
@@ -23,5 +25,5 @@ export function formatTimeDiff(diff) {
   if(diff < 24)
     return `+${hrs}:${min02}:${sec02}`;
   const days = Math.floor(diff / 24);
-  return `+${days}d ${hrs}:${min02}:${sec02}`;
+  return `+${days}${_('day single letter')} ${hrs}:${min02}:${sec02}`;
 }

@@ -1,0 +1,15 @@
+{
+  "_prefix": "log",
+  "example data": [
+    {
+      "name": "Příklad",
+      "records": [
+        { "tag": 1, "text": "Příklad" },
+        { "tag": 2, "text": "Upřesnítko" },
+        { "tag": 3, "text": "Mezitajenka" },
+        { "tag": 4, "text": "Nápověda" },
+        { "tag": 5, "text": "Adresa" }
+      ]
+    }
+  ]
+}

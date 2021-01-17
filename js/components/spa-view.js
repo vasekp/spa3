@@ -1,6 +1,7 @@
 import './spa-modal.js';
 import './spa-slideout.js';
 import * as main from '../main.js';
+import _, * as i18n from '../i18n.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -39,7 +40,7 @@ class ViewElement extends HTMLElement {
       settings.show();
     });
     root.getElementById('move').addEventListener('click',
-      () => alert('Ikonku zkuste táhnout a pustit do jiného panelu.'));
+      () => alert(_('try dragging')));
     root.getElementById('move').addEventListener('dragstart', e => {
       this.classList.add('dragged');
       e.dataTransfer.setData('application/spa3', this.id);
@@ -86,7 +87,8 @@ class ViewElement extends HTMLElement {
     if(module !== 'list') // switching to menu should look fluid
       cont.innerHTML = '<div class="spa-loading"></div>';
     const [responseText, script] = await Promise.all([
-      fetch(`html/${module}.html`).then(async r => await r.text()),
+      i18n.loadTrans(`trans/cs/${module}.json`).then(
+        () => i18n.loadTemplate(`html/${module}.html`)),
       import(`../${module}.js`),
       this.addStyleSheet(`css/${module}.css`)
     ]);

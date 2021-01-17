@@ -178,8 +178,5 @@ spa-scroll {
 
 #d-currency::before {
   font-weight: 600;
-}
-
-#d-currency::before {
-  content: "Měna: ";
+  content: attr(data-label) ": ";
 }

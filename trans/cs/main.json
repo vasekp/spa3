@@ -1,0 +1,10 @@
+{
+  "title": "Šifrovací pomůcky",
+  "normalize pattern": "áàäâãčćçďéěëęíîĺľłňńóöőôřšśťúůüűýžź‚‘’ʻ„“”",
+  "normalize repl": "aaaaacccdeeeeiilllnnoooorsstuuuuyzz''''\"\"\"",
+  "day single letter": "d",
+  "common settings": "Obecná nastavení",
+  "theme": "Vzhled:",
+  "error": "Chyba",
+  "try dragging": "Ikonku zkuste táhnout a pustit do jiného panelu."
+}

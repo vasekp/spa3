@@ -1,0 +1,15 @@
+{
+  "_prefix": "log",
+  "title": "Zápisník",
+  "record": "Záznam:",
+  "filter": "Filtr:",
+  "add first": "Přidejte první hru...",
+  "color count": "Počet barev:",
+  "to default": "→ výchozí",
+  "from default": "← výchozí",
+  "label placeholder": "(Popis)",
+  "confirm delete": "Klikněte znovu pro potvrzení.",
+  "error geo permission": "Neuděleno povolení pro geolokaci.",
+  "error geo unavailable": "Služby polohy nejsou dostupné.",
+  "error unknown": "Neznámá chyba."
+}

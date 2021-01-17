@@ -1,0 +1,21 @@
+{
+  "_prefix": "flg",
+  "tab country": "Země",
+  "tab flag": "Vlajka",
+  "tab currency": "Měna",
+  "name": "Název",
+  "capital": "Hlavní město",
+  "continent": "Světadíl",
+  "europe": "Evropa",
+  "asia": "Asie",
+  "africa": "Afrika",
+  "oceania": "Austrálie a Oceánie",
+  "americas": "S + J Amerika",
+  "label north": "S",
+  "label south": "J",
+  "colors": "Barvy",
+  "shape": "Tvar",
+  "emblems": "Emblémy",
+  "currency": "Měna",
+  "currency placeholder": "kód"
+}

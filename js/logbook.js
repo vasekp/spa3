@@ -10,6 +10,7 @@ import {formatDate} from './util/datetime.js';
 import debounce from './util/debounce.js';
 import gameStore from './log-game-store.js';
 import recordStore from './log-record-store.js';
+import _, * as i18n from './i18n.js';
 
 export default function(root) {
   const state = {
@@ -58,14 +59,16 @@ export default function(root) {
   }
 
   async function addExampleData(adb) {
+    await i18n.loadTrans('trans/cs/logbook-example-data.json');
+    const data = _('log:example data');
     const tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
-    const gid = (await gameStore.create('Příklad', tx)).id;
-    recordStore.create({ gid, tag: 1, text: 'Příklad' }, tx);
-    recordStore.create({ gid, tag: 2, text: 'Upřesnítko' }, tx);
-    recordStore.create({ gid, tag: 3, text: 'Mezitajenka' }, tx);
-    recordStore.create({ gid, tag: 4, text: 'Nápověda' }, tx);
-    recordStore.create({ gid, tag: 5, text: 'Adresa' }, tx);
-    localStorage[lsKeys.gid] = gid;
+    for(const game of data) {
+      const gid = (await gameStore.create(game.name, tx)).id;
+      for(const record of game.records)
+        recordStore.create({ gid, ...record }, tx);
+      if(!localStorage[lsKeys.gid])
+        localStorage[lsKeys.gid] = gid;
+    }
     return new Promise(resolve => tx.oncomplete = resolve);
   }
 
