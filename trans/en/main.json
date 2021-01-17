@@ -1,0 +1,10 @@
+{
+  "title": "Puzzlehunt Assistant",
+  "normalize pattern": "áàäâãčćçďéěëęíîĺľłňńóöőôřšśťúůüűýžź‚‘’ʻ„“”",
+  "normalize repl": "aaaaacccdeeeeiilllnnoooorsstuuuuyzz''''\"\"\"",
+  "day single letter": "d",
+  "common settings": "Common settings",
+  "theme": "Theme:",
+  "error": "Error",
+  "try dragging": "Try dragging the icon to another panel."
+}

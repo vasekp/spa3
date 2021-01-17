@@ -1,0 +1,15 @@
+{
+  "_prefix": "log",
+  "title": "Logbook",
+  "record": "Record:",
+  "filter": "Filter:",
+  "add first": "Add first record...",
+  "color count": "Color count:",
+  "to default": "→ default",
+  "from default": "← default",
+  "label placeholder": "(Label)",
+  "confirm delete": "Click again to confirm.",
+  "error geo permission": "Geolocation permission denied.",
+  "error geo unavailable": "Location not available.",
+  "error unknown": "Unknown error."
+}
