@@ -44,3 +44,5 @@ export function useTemplate(text) {
 export default function _(key) {
   return data[key] || key;
 }
+
+export const compare = new Intl.Collator(lang).compare;

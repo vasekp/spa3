@@ -20,8 +20,7 @@ export default function(root) {
   (async () => {
     const items = await(await fetch(`trans/${i18n.lang}/modules.json`)).json();
     const cont = root.getElementById('list');
-    const cmp = new Intl.Collator(i18n.lang).compare;
-    items.sort((a, b) => cmp(a.displayName, b.displayName));
+    items.sort((a, b) => i18n.compare(a.displayName, b.displayName));
     for(const item of items) {
       const div = document.createElement('div');
       div.textContent = item.displayName;
