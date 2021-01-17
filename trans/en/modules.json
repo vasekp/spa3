@@ -1,0 +1,10 @@
+[
+  {
+    "moduleName": "logbook",
+    "displayName": "Logbook"
+  },
+  {
+    "moduleName": "countries",
+    "displayName": "Countries and Flags"
+  }
+]

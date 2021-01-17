@@ -18,7 +18,7 @@ export default function(root) {
   }
 
   (async () => {
-    const items = await(await fetch('modules.json')).json();
+    const items = await(await fetch(`trans/${i18n.lang}/modules.json`)).json();
     const cont = root.getElementById('list');
     const cmp = new Intl.Collator(i18n.lang).compare;
     items.sort((a, b) => cmp(a.displayName, b.displayName));
