@@ -34,14 +34,14 @@ window.addEventListener('DOMContentLoaded', () => {
       document.querySelector(`spa-view[data-pos="${pos}"]`).dataset.module = views[pos];
   } else {
     document.getElementById('v1').dataset.module = 'logbook';
-    document.getElementById('v2').dataset.module = 'menu';
-    document.getElementById('v3').dataset.module = 'menu';
+    document.getElementById('v2').dataset.module = 'list';
+    document.getElementById('v3').dataset.module = 'list';
   }
   document.addEventListener('view-change', e => {
     const views = {};
     for(const view of document.querySelectorAll('spa-view')) {
-      if(e.detail && view.id !== e.detail.id && view.dataset.module === e.detail.module && view.dataset.module !== 'menu') {
-        view.dataset.module = 'menu';
+      if(e.detail && view.id !== e.detail.id && view.dataset.module === e.detail.module && view.dataset.module !== 'list') {
+        view.dataset.module = 'list';
         return;
       }
       views[view.dataset.pos] = view.dataset.module;

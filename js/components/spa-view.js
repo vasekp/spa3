@@ -26,7 +26,7 @@ class ViewElement extends HTMLElement {
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
     root.getElementById('home').addEventListener('click',
-      () => this.dataset.module = 'menu');
+      () => this.dataset.module = 'list');
     const settings = root.getElementById('settings-modal');
     root.getElementById('settings').addEventListener('click', () => {
       const s1 = root.getElementById('shared-settings-container');
@@ -83,7 +83,7 @@ class ViewElement extends HTMLElement {
     const prevStyle = this.shadowRoot.getElementById('style');
     if(prevStyle)
       prevStyle.id = '';
-    if(module !== 'menu') // switching to menu should look fluid
+    if(module !== 'list') // switching to menu should look fluid
       cont.innerHTML = '<div class="spa-loading"></div>';
     const [responseText, script] = await Promise.all([
       fetch(`${module}.mod.html`).then(async r => await r.text()),
