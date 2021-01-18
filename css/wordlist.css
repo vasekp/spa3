@@ -1,0 +1,22 @@
+#filters {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: var(--margin-small);
+  margin-bottom: var(--margin-base);
+  align-items: baseline;
+}
+
+#filters > label {
+  font-weight: 600;
+  padding-right: var(--margin-base);
+  color: var(--color-text-fainter);
+}
+
+#filters input[type="text"] {
+  border-bottom: 1px solid #ccc;
+}
+
+.pre {
+  font-family: 'Source Code Pro';
+  line-height: 1.257em;
+}
