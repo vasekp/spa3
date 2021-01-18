@@ -1,4 +1,5 @@
 import './components/spa-scroll.js';
+import './components/spa-dropdown.js';
 import normalize from './util/text.js';
 import debounce from './util/debounce.js';
 import _, * as i18n from './i18n.js';

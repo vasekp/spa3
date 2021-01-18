@@ -1,0 +1,65 @@
+@import "../common.css";
+
+:host {
+  display: inline;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+#ref {
+  position: relative;
+}
+
+#ref.open {
+  z-index: 1;
+}
+
+#header {
+  padding: 0 var(--margin-small);
+  margin-left: var(--margin-small-neg);
+  box-sizing: border-box;
+  border: var(--border);
+  border-color: transparent;
+  border-radius: var(--radius-full);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.open #header {
+  position: relative;
+  z-index: 1;
+  background: var(--color-bg-main);
+  border-color: var(--color-line);
+  border-bottom: none;
+  transition: border-color .5s;
+}
+
+#header::after {
+  content: '\25bc';
+  padding-left: var(--margin-small);
+}
+
+#ref:not(.open) #header::after {
+  content: '\25bd';
+  color: var(--color-text-fainter);
+}
+
+#ext {
+  position: absolute;
+  top: calc(var(--font-line-height) - var(--line-width));
+  left: var(--margin-small-neg);
+  background: var(--color-bg-main);
+  border: var(--border);
+  border-radius: var(--radius-full);
+  border-top-left-radius: 0;
+  padding: var(--margin-small) var(--margin-base);
+  opacity: 1;
+  transition: opacity .5s;
+}
+
+:not(.open) > #ext {
+  visibility: hidden;
+  opacity: 0;
+}
