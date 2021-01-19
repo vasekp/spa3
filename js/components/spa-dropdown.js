@@ -1,11 +1,13 @@
+import ContainerElement from './spa-focus-container.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-dropdown.css"/>
-<span id="ref" tabindex="0" data-active="1"><span id="header"><slot name="header"></span></slot>
+<span id="ref"><span id="header" data-active="1"><slot name="header"></slot><button id="arrow" class="no-outline"></button></span>
 <div id="ext"><slot></slot></div>
 <span>`;
 
-class DropDownElement extends HTMLElement {
+class DropDownElement extends ContainerElement {
   constructor() {
     super();
     this.hidden = true;
@@ -13,7 +15,7 @@ class DropDownElement extends HTMLElement {
     root.appendChild(template.content.cloneNode(true));
     root.querySelector('link').addEventListener('load', () => this.hidden = false);
     const ref = root.getElementById('ref');
-    this.addEventListener('click', () => ref.classList.toggle('open'));
+    root.getElementById('header').addEventListener('click', () => ref.classList.toggle('open'));
   }
 }
 

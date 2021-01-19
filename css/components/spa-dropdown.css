@@ -36,12 +36,19 @@
   transition: border-color .5s;
 }
 
-#header::after {
-  content: '\25bc';
-  padding-left: var(--margin-small);
+#arrow {
+  margin-left: var(--margin-small);
 }
 
-#ref:not(.open) #header::after {
+#arrow:focus-visible {
+  text-shadow: var(--shadow-text);
+}
+
+#arrow::after {
+  content: '\25bc';
+}
+
+#ref:not(.open) #arrow::after {
   content: '\25bd';
   color: var(--color-text-fainter);
 }
