@@ -1,21 +1,90 @@
 <!doctype html>
 <main>
+  <div>
+  Seznam:
+  <spa-dropdown>
+    <span slot="header">Česká podstatná jména
+      <span id="no-caps-sm">(<span class="patch strikeout" data-content="A"></span>)</span>
+      <span id="no-caps-mid">(pouze slova malými písmeny)</span>
+    </span>
+    <label>
+      <input type="checkbox" checked class="patch show-state"/>
+      <span>Pouze malými</span>
+    </label>
+  </spa-dropdown>
+  </div>
   <div id="filters">
     <spa-dropdown class="filter-item">
-      <span slot="header">Obsahuje</span>
-      Dropdown selection
+      <span slot="header">Počet písmen</span>
+      <div class="optgroup">
+        <label>
+          <input type="radio" name="lcount" checked class="patch show-state"/>
+          <span>libovolný</span>
+        </label>
+        <label>
+          <input type="radio" name="lcount" class="patch show-state"/>
+          <span>přesně</span>
+        </label>
+        <label>
+          <input type="radio" name="lcount" class="patch show-state"/>
+          <span>rozsah</span>
+        </label>
+      </div>
     </spa-dropdown>
-    <input type="text" class="pre"/>
+    <div>
+      <button class="patch" data-content="–"></button>
+      3
+      <button class="patch" data-content="+"></button>
+      až
+      <button class="patch" data-content="–"></button>
+      6
+      <button class="patch" data-content="+"></button>
+    </div>
+    <span></span>
     <spa-dropdown class="filter-item">
       <span slot="header">Obsahuje</span>
-      Dropdown selection
+      <div class="optgroup">
+        <span>Uchytit</span>
+        <label>
+          <input type="checkbox" class="patch show-state"/>
+          <span>začátek</span>
+        </label>
+        <label>
+          <input type="checkbox" class="patch show-state"/>
+          <span>konec</span>
+        </label>
+      </div>
+      <div class="optgroup">
+        <label>
+          <input type="checkbox" class="patch show-state"/>
+          <span>Bez velikosti a diakritiky</span>
+        </label>
+      </div>
     </spa-dropdown>
     <input type="text" class="pre"/>
+    <button class="patch c-red" data-content="×" data-color="param"></button>
   </div>
-  <button id="run">Run</button>
+  <div>
+    <button class="patch c-green" data-content="+" data-color="param"> Přidat filtr</button>
+  </div>
   <spa-scroll>
-    <table id="list">
-      <tbody></tbody>
-    </table>
+    <ul>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+      <li>Výsledek</li>
+    </ul>
   </spa-scroll>
 </main>

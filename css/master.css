@@ -27,6 +27,7 @@
   --line-width: 1px;
   --margin-base: 10px;
   --margin-small: 5px;
+  --margin-tiny: 2.5px;
   --margin-base-neg: calc(-1 * var(--margin-base));
   --margin-small-neg: calc(-1 * var(--margin-small));
   --valign-em-patch: calc((var(--font-cap-size) - 1em)/2);
