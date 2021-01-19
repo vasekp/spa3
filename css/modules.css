@@ -107,6 +107,11 @@ label input[type="checkbox"].patch:not(:checked) + span {
   stroke-width: 2;
 }
 
+.svg-cb.stroke:focus-visible svg,
+.svg-cb.fill:focus-visible svg {
+  filter: drop-shadow(0 0 1px #888);
+}
+
 .img-cb :not(:checked) + img {
   opacity: .5;
 }
@@ -116,6 +121,10 @@ label input[type="checkbox"].patch:not(:checked) + span {
   margin-right: calc(var(--margin-base) - var(--font-space));
 }
 
-#m-set-lang img {
+#m-set-lang .img-cb {
   filter: drop-shadow(0 0 2px #888);
+}
+
+#m-set-lang .img-cb:focus-visible {
+  filter: drop-shadow(0 0 2px);
 }
