@@ -3,8 +3,8 @@
 
 #filter {
   display: grid;
-  grid-template-columns: 150px 1fr 1fr;
-  grid-gap: var(--margin-small);
+  grid-template-columns: auto 1fr 1fr;
+  grid-gap: var(--margin-small) var(--margin-base);
   margin-bottom: var(--margin-base);
 }
 
