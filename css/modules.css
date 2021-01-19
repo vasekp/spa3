@@ -26,11 +26,10 @@ main {
   display: inline-block;
   width: 1em;
   height: 1em;
-  line-height: 1em;
+  line-height: 1.084em; /* This cuts (1.424 - 1.084)/2 = 0.17em from top of line box, leaving 0.17em above capital letter and 0.17 below (0.66 + 2*0.17 = 1em) */
   text-align: center;
   border: var(--border);
   border-radius: var(--radius-small);
-  box-sizing: border-box;
   background: var(--bg);
   color: var(--fg);
   contain: size paint;
@@ -90,7 +89,7 @@ label input[type="checkbox"].patch:not(:checked) + span {
 .svg-cb svg,
 .img-cb img {
   height: calc(16 / 25 * var(--font-line-height));
-  vertical-align: var(--valign-em-patch);
+  vertical-align: var(--valign-em);
 }
 
 .svg-cb path {

@@ -79,7 +79,7 @@ input[name=filter-section] {
   background: url('../images/edit.svg') center / 100%;
   margin-right: calc(-1em - var(--font-space));
   margin-left: var(--font-space);
-  vertical-align: var(--valign-em-patch);
+  vertical-align: var(--valign-em);
 }
 
 :host([data-size="mid"]) .filter-header,
