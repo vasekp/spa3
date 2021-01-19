@@ -14,7 +14,9 @@ spa-plus-list {
   box-sizing: border-box;
   border-radius: 1rem;
   font-size: 2rem;
-  line-height: 1.018;
+  /* This centers caps within the target 2rem. We need text-top to be cap-size/2 + target/2 above baseline, which is (T+C)/2-A above ascent.
+   * We need the same padding below descent, making up the total (T+C)/2 + D + (T+C)/2-A = target + cap-size + descent - ascent. */
+  line-height: calc(2rem + var(--font-cap-size) + var(--font-descent) - var(--font-ascent));
   overflow-y: hidden;
   contain: strict;
 }
@@ -29,7 +31,7 @@ spa-plus-list {
   border-radius: 1.5rem;
   box-shadow: 2px 2px 4px #0004;
   font-size: 2.5rem;
-  line-height: 1.236; /* math axis: 330, ascent: 1024, descent 400:  */
+  line-height: calc(3rem + var(--font-cap-size) + var(--font-descent) - var(--font-ascent));
 }
 
 .spa-plus-button[data-size="big"]:focus-visible {
