@@ -50,6 +50,10 @@ input, textarea, button {
   color: inherit;
 }
 
+button {
+  cursor: inherit;
+}
+
 textarea {
   box-sizing: border-box;
   resize: none;

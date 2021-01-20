@@ -22,6 +22,7 @@
 
 #gdate {
   flex: none;
+  margin-right: var(--margin-small);
 }
 
 #tag-filter {
