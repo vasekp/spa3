@@ -36,14 +36,14 @@
   --color-text-fainter: hsl(0, 0%, var(--l25));
 }
 
-[data-color="cross"] {
-  --bg: linear-gradient(.125turn, transparent 42%, red 45% 55%, transparent 58%),
-        linear-gradient(-.125turn, transparent 42%, red 45% 55%, transparent 58%);
-}
-
 [data-color="grey"] {
   --hue: 0;
   --sat: 0%;
+}
+
+[data-color="cross"] {
+  --bg: inherit;
+  --color-line: hsl(0, 100%, 50%);
 }
 
 .color-fainter {
