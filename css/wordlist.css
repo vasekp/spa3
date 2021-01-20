@@ -7,7 +7,7 @@
 }
 
 #filters input[type="text"] {
-  border-bottom: 1px solid #ccc;
+  border-bottom: var(--border-fainter);
 }
 
 :host([data-size="small"]) #filters {
@@ -19,7 +19,7 @@
 }
 
 .pre {
-  font-family: 'Source Code Pro';
+  font-family: "Source Code Pro";
   line-height: 1.257em;
 }
 
@@ -27,9 +27,9 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  content: '';
-  background: url('../images/filter.svg') center / 100%;
-  vertical-align: var(--valign-em-patch);
+  content: "";
+  background: url("../images/filter.svg") center / 100%;
+  vertical-align: var(--valign-em);
 }
 
 :host([data-size="small"]) #no-caps-mid {

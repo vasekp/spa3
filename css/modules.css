@@ -56,11 +56,11 @@ label input[type="checkbox"].patch:not(:show-state):not(:checked) + span {
 }
 
 input[type="checkbox"].patch.show-state:checked::before {
-  content: '\2713';
+  content: "\2713";
 }
 
 input[type="radio"].patch.show-state:checked::before {
-  content: '\25cf';
+  content: "\25cf";
 }
 
 .patch.radio:checked {
