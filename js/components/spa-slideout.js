@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-slideout.css"/>
-<div id="expander" part="expander" tabindex="-1"><slot></slot></div>`;
+<div id="expander" part="expander" tabindex="-1"><div id="container"><slot></slot></div></div>`;
 
 class SlideOutElement extends HTMLElement {
   constructor() {
@@ -17,8 +17,10 @@ class SlideOutElement extends HTMLElement {
         e.preventDefault();
       }
     });
-    this.addEventListener('mouseenter', () => this.updateCount());
-    this.addEventListener('focusin', () => this.updateCount());
+    const update = () => this.updateCount();
+    this.addEventListener('mouseenter', update);
+    this.addEventListener('focusin', update);
+    root.addEventListener('slotchange', update);
   }
 
   updateCount() {
