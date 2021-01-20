@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 :not(:defined) {
   display: none;
 }
@@ -79,7 +77,7 @@ textarea {
 }
 
 .spa-loading::before {
-  content: '● ● ●';
+  content: '\25cf  \25cf  \25cf'; /* One space ignored after each unicode escape */
 }
 
 .spa-loading::after {

@@ -43,7 +43,7 @@ main {
 
 .patch.cross::before {
   color: var(--color-line);
-  content: '×';
+  content: '\d7';
 }
 
 label input[type="checkbox"].patch + span {
