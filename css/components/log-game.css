@@ -71,7 +71,6 @@ log-game[data-disabled] {
 
 .log-game-name-edit {
   flex: 1;
-  height: var(--font-line-height);
 }
 
 .log-game-confirm {

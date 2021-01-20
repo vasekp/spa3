@@ -4,7 +4,5 @@ spa-scroll {
 }
 
 #list > div {
-  padding: 0 var(--margin-base);
-  height: 2rem;
-  line-height: 2rem;
+  padding: var(--margin-small) var(--margin-base);
 }

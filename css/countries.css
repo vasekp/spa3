@@ -40,7 +40,7 @@ input[name=filter-section] {
   font-size: 80%;
   font-style: oblique;
   font-weight: 600;
-  line-height: 1em;
+  line-height: 1;
   margin-top: var(--margin-small);
 }
 

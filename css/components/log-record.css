@@ -26,7 +26,7 @@ log-record[data-state="edit"] .log-record-text {
   display: flex;
   border-bottom: var(--border);
   font-size: 80%;
-  line-height: 100%;
+  line-height: 1;
   align-items: center;
 }
 
@@ -40,7 +40,7 @@ log-record[data-state="edit"] .log-record-text {
 
 .log-record-text-container {
   margin: var(--margin-small);
-  min-height: var(--font-line-height);
+  min-height: var(--line-height-base);
   position: relative;
 }
 
@@ -70,7 +70,7 @@ log-record[data-state="edit"] .log-record-text {
 
 .log-record-colorsel {
   flex: 1;
-  line-height: 1em;
+  line-height: 1;
 }
 
 @keyframes geo-waiting {

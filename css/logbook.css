@@ -3,7 +3,6 @@
 @import "components/log-game.css";
 
 .header-line {
-  height: var(--font-line-height);
   overflow: hidden;
   display: flex;
   width: 100%;
@@ -95,7 +94,7 @@ log-record:last-child {
   color: var(--color-text-fainter);
   display: flex;
   font-size: 80%;
-  line-height: 100%;
+  line-height: 1;
   margin: 0 var(--margin-small-neg);
 }
 

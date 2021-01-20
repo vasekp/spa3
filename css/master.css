@@ -25,7 +25,6 @@
   --border-fainter: var(--line-width) solid var(--color-line-fainter);
   --font-ascent: 1.024em;
   --font-descent: 0.4em;
-  --font-line-height: 1.424em; /* = ascent + descent */
   --font-cap-size: 0.66em;
   --font-space: 0.2em;
   --line-width: 1px;
@@ -38,9 +37,10 @@
   --radius-small: 3px;
   --shadow-focus: 0 0 2px 1px #888;
   --shadow-modal: 0 0 var(--margin-base) hsl(0, 0%, calc(40% - var(--c) * 10%));
+  --line-height-base: 24px;
   font-family: 'Source Sans Pro';
-  font-size: 17.556px; /* = target line-height 25px / 1.424 */
-  line-height: var(--font-line-height);
+  font-size: 16px;
+  line-height: var(--line-height-base);
   width: 100%;
   height: 100%;
   background: var(--color-bg-sides);

@@ -26,8 +26,7 @@ main {
   display: inline-block;
   width: 1em;
   height: 1em;
-  /* This cuts half the difference between 1em and cap-size from the top of line box, so a 1em height (counted from top) will leave equal space above and below caps. */
-  line-height: calc(var(--font-line-height) - 1em + var(--font-cap-size));
+  line-height: 1em;
   text-align: center;
   border: var(--border);
   border-radius: var(--radius-small);
@@ -89,8 +88,8 @@ label input[type="checkbox"].patch:not(:checked) + span {
 
 .svg-cb svg,
 .img-cb img {
-  height: calc(16 / 25 * var(--font-line-height));
-  vertical-align: var(--valign-em);
+  height: 1em;
+  vertical-align: middle;
 }
 
 .svg-cb path {
