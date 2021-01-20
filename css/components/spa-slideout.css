@@ -2,10 +2,11 @@
 
 :host {
   --div-size: var(--line-height-base);
+  --div-size-border: calc(var(--div-size) + 2 * var(--line-width));
   --padding: calc((var(--div-size) - 1em) / 2);
   --count: 1; /* dummy */
-  width: var(--div-size);
-  height: var(--div-size);
+  width: var(--div-size-border);
+  height: var(--div-size-border);
   overflow: visible;
   margin-left: auto;
   display: flex;
@@ -17,9 +18,10 @@
   display: none;
 }
 
-#container {
-  width: var(--div-size);
-  height: var(--div-size);
+#expander {
+  width: var(--div-size-border);
+  height: var(--div-size-border);
+  box-sizing: border-box;
   flex: none;
   overflow: hidden;
   transition: width .5s, height .5s;
@@ -28,16 +30,17 @@
   border-radius: var(--div-size);
   display: flex;
   justify-content: flex-end;
+  padding: 0 var(--padding);
+  column-gap: calc(2 * var(--padding));
   contain: strict;
 }
 
-#container:hover, #container:focus, #container:focus-within {
-  width: calc(var(--count) * var(--div-size));
-  height: var(--div-size);
+#expander:hover, #expander:focus, #expander:focus-within {
+  width: calc(var(--count) * var(--div-size) + 2 * var(--line-width));
+  height: var(--div-size-border);
 }
 
 ::slotted(*) {
-  margin: 0 var(--padding) !important;
   flex: none;
   border-radius: var(--radius-small);
 }
