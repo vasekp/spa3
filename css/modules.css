@@ -30,15 +30,20 @@ main {
   text-align: center;
   border: var(--border);
   border-radius: var(--radius-small);
-  box-sizing: border-box;
   background: var(--bg);
   color: var(--fg);
   contain: size paint;
   content: attr(data-content);
 }
 
-.patch[data-content=""]::before, .patch:not([data-content])::before {
-  content: '\200B';
+.patch[data-content=""]::before,
+.patch:not([data-content])::before {
+  content: "\200B";
+}
+
+.patch.cross::before {
+  color: var(--color-line);
+  content: "\d7";
 }
 
 label input[type="checkbox"].patch + span {
@@ -90,11 +95,11 @@ label input[type="checkbox"].patch:not(:checked) + span {
 .svg-cb svg,
 .img-cb img {
   height: 1em;
-  vertical-align: var(--valign-em-patch);
+  vertical-align: middle;
 }
 
 .svg-cb path {
-  stroke-width: 0.4;
+  stroke-width: 1;
   stroke: currentcolor;
   fill: none;
 }
@@ -104,7 +109,12 @@ label input[type="checkbox"].patch:not(:checked) + span {
 }
 
 .svg-cb.stroke :checked + svg path {
-  stroke-width: 1.2;
+  stroke-width: 2;
+}
+
+.svg-cb.stroke:focus-visible svg,
+.svg-cb.fill:focus-visible svg {
+  filter: drop-shadow(0 0 1px #888);
 }
 
 .img-cb :not(:checked) + img {
@@ -116,6 +126,10 @@ label input[type="checkbox"].patch:not(:checked) + span {
   margin-right: calc(var(--margin-base) - var(--font-space));
 }
 
-#m-set-lang img {
+#m-set-lang .img-cb {
   filter: drop-shadow(0 0 2px #888);
+}
+
+#m-set-lang .img-cb:focus-visible {
+  filter: drop-shadow(0 0 2px);
 }

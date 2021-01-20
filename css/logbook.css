@@ -3,7 +3,6 @@
 @import "components/log-game.css";
 
 .header-line {
-  height: var(--font-line-height);
   overflow: hidden;
   display: flex;
   width: 100%;
@@ -23,6 +22,7 @@
 
 #gdate {
   flex: none;
+  margin-right: var(--margin-small);
 }
 
 #tag-filter {
@@ -95,7 +95,7 @@ log-record:last-child {
   color: var(--color-text-fainter);
   display: flex;
   font-size: 80%;
-  line-height: 100%;
+  line-height: 1;
   margin: 0 var(--margin-small-neg);
 }
 
@@ -103,7 +103,7 @@ log-record:last-child {
   height: var(--line-width);
   background: var(--color-line);
   flex: 1;
-  content: '';
+  content: "";
   margin: auto var(--margin-small);
 }
 

@@ -1,17 +1,14 @@
-@charset "UTF-8";
 @import "components/spa-color-elements.css";
 
 #filter {
   display: grid;
-  grid-template-columns: 150px 1fr 1fr;
-  grid-gap: var(--margin-small);
+  grid-template-columns: auto 1fr 1fr;
+  grid-gap: var(--margin-small) var(--margin-base);
   margin-bottom: var(--margin-base);
 }
 
 .filter-label {
   grid-column: 1/2;
-  font-weight: 600;
-  color: var(--color-text-fainter);
 }
 
 .filter-label::after {
@@ -19,7 +16,7 @@
 }
 
 input[type="text"] {
-  border-bottom: 1px solid #ccc;
+  border-bottom: var(--border-fainter);
 }
 
 .full-width {
@@ -41,7 +38,8 @@ input[name=filter-section] {
 :host([data-size="small"]) .filter-label {
   font-size: 80%;
   font-style: oblique;
-  line-height: 1em;
+  font-weight: 600;
+  line-height: 1;
   margin-top: var(--margin-small);
 }
 
@@ -72,14 +70,14 @@ input[name=filter-section] {
 }
 
 :host([data-size="small"]) input[name=filter-section]:not(:checked) + label.edited::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 1em;
   height: 1em;
-  background: url('../images/edit.svg') center / 100%;
+  background: url("../images/edit.svg") center / 100%;
   margin-right: calc(-1em - var(--font-space));
   margin-left: var(--font-space);
-  vertical-align: var(--valign-em-patch);
+  vertical-align: var(--valign-em);
 }
 
 :host([data-size="mid"]) .filter-header,

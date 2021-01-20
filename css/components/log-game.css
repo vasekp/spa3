@@ -71,7 +71,6 @@ log-game[data-disabled] {
 
 .log-game-name-edit {
   flex: 1;
-  height: var(--font-line-height);
 }
 
 .log-game-confirm {
@@ -80,4 +79,8 @@ log-game[data-disabled] {
   border-radius: .5rem;
   margin-left: calc(-1 * var(--margin-small));
   outline: none;
+}
+
+.log-game-color-edit {
+  margin: 0 calc(-1 * var(--line-width));
 }

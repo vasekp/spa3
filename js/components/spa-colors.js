@@ -18,7 +18,7 @@ class ColorSelElement extends HTMLElement {
     if(this.dataset.hasAll !== undefined)
       this._addPatch('all');
     if(this.dataset.hasZero !== undefined)
-      this._addPatch('cross');
+      this._addPatch('cross').classList.add('cross');
     this._updateCount();
     if(this._labels)
       this.labels = this._labels;
@@ -65,7 +65,8 @@ class ColorSelElement extends HTMLElement {
   set labels(labels) {
     if(this._constructed)
       for(const elm of this.children)
-        elm.dataset.content = labels[elm.dataset.color] || '';
+        if(elm.dataset.color !== 'cross')
+          elm.dataset.content = labels[elm.dataset.color] || '';
     else
       this._labels = labels;
   }
