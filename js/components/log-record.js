@@ -50,6 +50,7 @@ class RecordElement extends ContainerElement {
     id('geo-icon').addEventListener('click', () => this._geoShow());
     id('geo-button').addEventListener('click', e => this._geoSet());
     id('colorsel').addEventListener('color-click', e => this._colorsel(e));
+    this.setAttribute('tabindex', -1);
     this.addEventListener('focus-leave', () => this._close());
     this._constructed = true
   }
