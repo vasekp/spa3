@@ -1,15 +1,15 @@
 @import "../common.css";
 
 :host {
-  --div-size: var(--font-line-height);
+  --div-size: var(--line-height-base);
+  --div-size-border: calc(var(--div-size) + 2 * var(--line-width));
   --padding: calc((var(--div-size) - 1em) / 2);
   --count: 1; /* dummy */
-  width: calc(var(--div-size) + 2 * var(--line-width));
-  height: calc(var(--div-size) + 2 * var(--line-width));
+  width: var(--div-size-border);
+  height: var(--div-size-border);
   overflow: visible;
   margin-left: auto;
-  display: flex;
-  justify-content: flex-end;
+  position: relative;
   z-index: 1;
 }
 
@@ -17,29 +17,37 @@
   display: none;
 }
 
-#container {
+#expander {
+  position: absolute;
+  right: 0;
   width: var(--div-size);
   height: var(--div-size);
-  flex: none;
   overflow: hidden;
   transition: width .5s, height .5s;
   background: var(--color-bg-main);
   border: var(--border);
   border-radius: var(--div-size);
-  line-height: var(--div-size);
-  display: flex;
-  line-height: 1em;
-  justify-content: flex-end;
   contain: strict;
 }
 
-#container:hover, #container:focus, #container:focus-within {
+#container {
+  position: absolute;
+  top: var(--padding);
+  right: 0;
+  width: calc(var(--count) * var(--div-size));
+  height: 1em;
+  line-height: 1em;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#expander:hover, #expander:focus, #expander:focus-within {
   width: calc(var(--count) * var(--div-size));
   height: var(--div-size);
 }
 
 ::slotted(*) {
-  margin: var(--padding) !important;
   flex: none;
   border-radius: var(--radius-small);
 }

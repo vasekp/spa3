@@ -1,5 +1,3 @@
-@charset "UTF-8";
-
 :not(:defined) {
   display: none;
 }
@@ -52,6 +50,10 @@ input, textarea, button {
   color: inherit;
 }
 
+button {
+  cursor: inherit;
+}
+
 textarea {
   box-sizing: border-box;
   resize: none;
@@ -61,10 +63,9 @@ textarea {
   display: inline;
   height: 1em;
   width: 1em;
-  vertical-align: top;
   flex: none;
   box-sizing: content-box;
-  vertical-align: var(--valign-em-patch);
+  vertical-align: var(--valign-em);
 }
 
 @keyframes loading {
@@ -80,13 +81,13 @@ textarea {
 }
 
 .spa-loading::before {
-  content: '● ● ●';
+  content: "\25cf  \25cf  \25cf"; /* One space ignored after each unicode escape */
 }
 
 .spa-loading::after {
   display: inline-block;
   position: absolute;
-  content: '';
+  content: "";
   width: 3em;
   height: 100%;
   top: 0;

@@ -11,16 +11,16 @@
   z-index: 1;
 }
 
-#controls::part(container) {
+#controls::part(expander) {
   border-top: none;
   border-right: none;
   border-radius: 0;
   border-bottom-left-radius: calc(0.5 * var(--div-size));
 }
 
-#controls::part(container):not(:hover):not(:focus):not(:focus-within) {
-  width: calc(var(--div-size) / 2 - 1px);
-  height: calc(var(--div-size) / 2 - 1px);
+#controls::part(expander):not(:hover):not(:focus):not(:focus-within) {
+  width: calc((var(--div-size) - var(--line-width)) / 2);
+  height: calc((var(--div-size) - var(--line-width)) / 2);
 }
 
 #content {
