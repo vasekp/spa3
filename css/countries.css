@@ -10,8 +10,6 @@
 
 .filter-label {
   grid-column: 1/2;
-  font-weight: 600;
-  color: var(--color-text-fainter);
 }
 
 .filter-label::after {
@@ -41,6 +39,7 @@ input[name=filter-section] {
 :host([data-size="small"]) .filter-label {
   font-size: 80%;
   font-style: oblique;
+  font-weight: 600;
   line-height: 1em;
   margin-top: var(--margin-small);
 }
