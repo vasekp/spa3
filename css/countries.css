@@ -19,7 +19,7 @@
 }
 
 input[type="text"] {
-  border-bottom: var(--line-width) solid #ccc;
+  border-bottom: var(--border-fainter);
 }
 
 .full-width {

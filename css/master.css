@@ -8,6 +8,7 @@
   --l75: calc(50% + var(--c) * 25%);
   --l85: calc(50% + var(--c) * 35%);
   --color-line: hsl(0, 0%, 50%);
+  --color-line-fainter: hsl(0, 0%, var(--l75));
   --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
   --color-text-fainter: hsl(0, 0%, var(--l25));
   --color-text-semitrans: hsl(0, 0%, calc(50% - var(--c) * 50%), 50%);
@@ -21,6 +22,7 @@
   --color-bg-modal: hsl(0, 0%, 25%, 50%);
   --color-plus: hsl(100, 50%, 50%);
   --border: var(--line-width) solid var(--color-line);
+  --border-fainter: var(--line-width) solid var(--color-line-fainter);
   --font-cap-size: 0.66em;
   --font-line-height: 1.424em;
   --font-space: 0.2em;
