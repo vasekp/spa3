@@ -38,12 +38,12 @@ main {
 
 .patch[data-content=""]::before,
 .patch:not([data-content])::before {
-  content: '\200B';
+  content: "\200B";
 }
 
 .patch.cross::before {
   color: var(--color-line);
-  content: '\d7';
+  content: "\d7";
 }
 
 label input[type="checkbox"].patch + span {

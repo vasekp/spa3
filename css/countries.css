@@ -70,11 +70,11 @@ input[name=filter-section] {
 }
 
 :host([data-size="small"]) input[name=filter-section]:not(:checked) + label.edited::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 1em;
   height: 1em;
-  background: url('../images/edit.svg') center / 100%;
+  background: url("../images/edit.svg") center / 100%;
   margin-right: calc(-1em - var(--font-space));
   margin-left: var(--font-space);
   vertical-align: var(--valign-em);

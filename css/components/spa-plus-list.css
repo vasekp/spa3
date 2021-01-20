@@ -39,7 +39,7 @@ spa-plus-list {
 }
 
 .spa-plus-button::after {
-  content: '+';
+  content: "+";
 }
 
 .spa-plus-item {

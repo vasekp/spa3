@@ -43,9 +43,9 @@
 }
 
 :host([data-scroll~="up"])::before {
-  content: '';
+  content: "";
 }
 
 :host([data-scroll~="down"])::after {
-  content: '';
+  content: "";
 }

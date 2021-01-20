@@ -102,7 +102,7 @@ log-record:last-child {
   height: var(--line-width);
   background: var(--color-line);
   flex: 1;
-  content: '';
+  content: "";
   margin: auto var(--margin-small);
 }
 
