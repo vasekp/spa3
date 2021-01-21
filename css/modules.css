@@ -90,8 +90,6 @@ label input[type="checkbox"].patch:not(:checked) + span {
   grid-column: 1 / 6;
 }
 
-/* Common settings */
-
 .svg-cb svg,
 .img-cb img {
   height: 1em;
@@ -119,6 +117,14 @@ label input[type="checkbox"].patch:not(:checked) + span {
 
 .img-cb :not(:checked) + img {
   opacity: .5;
+}
+
+.alt-text-cb::before {
+  content: attr(data-text-off);
+}
+
+.alt-text-cb:checked::before {
+  content: attr(data-text-on);
 }
 
 #m-set-theme > *,
