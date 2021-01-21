@@ -98,8 +98,6 @@ input[type="radio"].patch.show-state:checked::before {
   grid-column: 1 / 6;
 }
 
-/* Common settings */
-
 .svg-cb svg,
 .img-cb img {
   height: 1em;
@@ -127,6 +125,19 @@ input[type="radio"].patch.show-state:checked::before {
 
 .img-cb :not(:checked) + img {
   opacity: .5;
+}
+
+.alt-text-cb::before {
+  content: attr(data-text-off);
+}
+
+.alt-text-cb:checked::before {
+  content: attr(data-text-on);
+}
+
+.alt-text-cb:focus-visible {
+  box-shadow: none;
+  text-shadow: var(--shadow-text);
 }
 
 #m-set-theme > *,
