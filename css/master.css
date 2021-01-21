@@ -36,9 +36,10 @@
   --radius-full: 5px;
   --radius-small: 3px;
   --shadow-focus: 0 0 2px 1px #888;
+  --shadow-text: 0 0 1px;
   --shadow-modal: 0 0 var(--margin-base) hsl(0, 0%, calc(40% - var(--c) * 10%));
   --line-height-base: 24px;
-  font-family: "Source Sans Pro";
+  font-family: "SPA3", "Source Sans Pro";
   font-size: 16px;
   line-height: var(--line-height-base);
   width: 100%;
