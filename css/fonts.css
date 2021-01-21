@@ -9,7 +9,7 @@
   font-family: "SPA3";
   font-style: normal;
   font-weight: 400;
-  unicode-range: U+204E, U+F000-F007;
+  unicode-range: U+204E, U+2713, U+F000-F007;
   src: url("../fonts/SPA3.woff2") format("woff2");
 }
 
