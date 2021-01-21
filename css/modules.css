@@ -51,7 +51,7 @@ label input[type="checkbox"].patch + span {
 }
 
 input[type="checkbox"].patch:not(.show-state):not(:checked),
-label input[type="checkbox"].patch:not(:show-state):not(:checked) + span {
+label input[type="checkbox"].patch:not(.show-state):not(:checked) + span {
   opacity: .5;
 }
 
