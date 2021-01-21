@@ -27,6 +27,7 @@ main {
   width: 1em;
   height: 1em;
   line-height: 1em;
+  margin: calc(-1 * var(--line-width));
   text-align: center;
   border: var(--border);
   border-radius: var(--radius-small);
