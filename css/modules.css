@@ -140,6 +140,10 @@ input[type="radio"].patch.show-state:checked::before {
   text-shadow: var(--shadow-text);
 }
 
+.alt-text-cb.favs:checked::before {
+  color: gold;
+}
+
 #m-set-theme > *,
 #m-set-lang > * {
   margin-right: calc(var(--margin-base) - var(--font-space));
