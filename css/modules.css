@@ -127,6 +127,11 @@ label input[type="checkbox"].patch:not(:checked) + span {
   content: attr(data-text-on);
 }
 
+.alt-text-cb:focus-visible {
+  box-shadow: none;
+  text-shadow: var(--shadow-text);
+}
+
 #m-set-theme > *,
 #m-set-lang > * {
   margin-right: calc(var(--margin-base) - var(--font-space));
