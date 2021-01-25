@@ -76,6 +76,8 @@ ul {
 
 li {
   padding: var(--margin-tiny) var(--margin-base);
+  height: var(--line-height-base);
+  contain: strict;
 }
 
 li:nth-child(odd) {

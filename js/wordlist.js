@@ -6,7 +6,20 @@ import debounce from './util/debounce.js';
 import _, * as i18n from './i18n.js';
 
 export default function(root) {
-  const table = root.getElementById('list');
+  const list = root.getElementById('list');
+  const linesP = loadFile('assets/any/wordlists/cs-subst.txt');
+  const reLowerCase = /^\p{Ll}/u;
+
+  {
+    const from = root.getElementById('lcount-from');
+    const to = root.getElementById('lcount-to');
+    from.addEventListener('change', () => { if(to.value < from.value) to.value = from.value; });
+    to.addEventListener('change', () => { if(from.value > to.value) from.value = to.value; });
+  }
+  const dbu = debounce(update, 300);
+  root.getElementById('filters').addEventListener('change', dbu);
+  root.getElementById('filters').addEventListener('input', dbu);
+  update();
 
   async function loadFile(file) {
     console.time('load');
@@ -20,37 +33,45 @@ export default function(root) {
           lastIndex = index + 1;
         }
       }
-    }
+    };
     const lines = [...lineIterator];
     console.timeEnd('load');
     return lines;
   }
 
-  const linesP = loadFile('assets/any/wordlists/cs-subst.txt');
-
   async function filter(f) {
+    console.log(f);
     const lines = await linesP;
     console.time('filter');
     let c = 0;
-    for(const line of lines) {
-      if(f(line)) {
-        if(++c < 100)
-          console.log(line)
-      }
+    const flines = (function*() {
+      for(const line of lines)
+        if(f(line))
+          yield line;
+    })();
+    for(const li of list.children) {
+      const {value, done} = flines.next();
+      if(done)
+        li.textContent = '';
+      else
+        li.textContent = value;
     }
-    console.log(c);
     console.timeEnd('filter');
   }
 
-  const re = /^\p{Lu}/u;
-  root.getElementById('run').addEventListener('click', () =>
-    filter(word => re.test(word) && word.includes('ř')));
-
-  {
-    const from = root.getElementById('lcount-from');
-    const to = root.getElementById('lcount-to');
-    from.addEventListener('change', () => { if(to.value < from.value) to.value = from.value; });
-    to.addEventListener('change', () => { if(from.value > to.value) from.value = to.value; });
+  function append(f, test) {
+    return text => f(text) && test(text);
   }
+
+  function update() {
+    const min = root.getElementById('lcount-from').value;
+    const max = root.getElementById('lcount-to').value;
+    let f = text => text.length >= min && text.length <= max && reLowerCase.test(text);
+    const re = new RegExp(root.getElementById('test-re').value);
+    if(re)
+      f = append(f, text => re.test(text));
+    filter(f);
+  }
+
   return {};
 }
