@@ -4,6 +4,7 @@ import './components/log-record.js';
 import './components/log-record-list.js';
 import './components/log-game.js';
 import './components/spa-scroll.js';
+import './components/spa-number-picker.js';
 import {db} from './log-db.js';
 import Enum from './util/enum.js';
 import {formatDate} from './util/datetime.js';
@@ -145,11 +146,11 @@ export default function(root) {
   function populateSettings(elm) {
     elm.append(root.getElementById('module-settings').content.cloneNode(true));
     {
-      let min = 5, max = 9;
+      const max = 9;
       let ccount = localStorage[lsKeys.ccount] || max;
-      const div = elm.querySelector('#log-set-ccount div');
-      const [minus, count, plus] = div.children;
+      const picker = elm.querySelector('#log-set-ccount spa-number-picker');
       const showHide = () => {
+        ccount = picker.value;
         for(const elm2 of elm.querySelector('#log-set-clabels').children) {
           const span = elm2.firstChild;
           elm2.hidden = span.dataset.color > ccount;
@@ -158,23 +159,13 @@ export default function(root) {
         root.getElementById('tag-filter').dataset.count = ccount;
       }
       showHide();
-      const showHideD = debounce(showHide, 500);
-      const update = () => {
-        ccount = Math.max(Math.min(ccount, max), min);
-        count.textContent = ccount;
-        minus.classList.toggle('inactive', ccount == min);
-        plus.classList.toggle('inactive', ccount == max);
-        showHideD();
-      }
+      picker.addEventListener('change', debounce(showHide, 500));
       (async () => {
-        min = Math.max(await recordStore.maxTag(), await gameStore.maxTag(), 5);
+        const min = Math.max(await recordStore.maxTag(), await gameStore.maxTag(), 5);
         if(min === max)
           elm.querySelector('#log-set-ccount').hidden = true;
-        update();
+        picker.min = min;
       })();
-      minus.addEventListener('click', () => { --ccount; update(); });
-      plus.addEventListener('click', () => { ++ccount; update(); });
-      update();
     }
     {
       const game = root.getElementById('record-list').game;
