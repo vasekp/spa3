@@ -13,8 +13,10 @@ class NumberPickerElement extends HTMLElement {
     minus.classList.add('patch');
     minus.dataset.content = '–';
     this.appendChild(minus);
-    const span = this._span = document.createElement('span');
-    this.appendChild(span);
+    const input = this._val = document.createElement('input');
+    input.type = 'text';
+    input.inputMode = 'numeric';
+    this.appendChild(input);
     const plus = this._plus = document.createElement('button');
     plus.classList.add('patch');
     plus.dataset.content = '+';
@@ -26,6 +28,11 @@ class NumberPickerElement extends HTMLElement {
     if(this.dataset.value === undefined)
       this.dataset.value = this.dataset.min;
     plus.addEventListener('click', () => ++this.dataset.value);
+    input.addEventListener('change', e => {
+      this.value = input.value;
+      e.stopPropagation(); // Will convert to our custom change event.
+    });
+    input.addEventListener('input', e => e.stopPropagation());
     minus.addEventListener('click', () => --this.dataset.value);
     this._update();
     this._constructed = true;
@@ -47,7 +54,7 @@ class NumberPickerElement extends HTMLElement {
       if(this.value > this.max)
         this.value = this.max;
     } else if(name === 'data-value') {
-      if(this.value < this.min)
+      if(this.value < this.min || isNaN(this.value))
         this.value = this.min;
       if(this.value > this.max)
         this.value = this.max;
@@ -67,7 +74,7 @@ class NumberPickerElement extends HTMLElement {
   _update() {
     this._plus.classList.toggle('inactive', this.dataset.value == this.dataset.max);
     this._minus.classList.toggle('inactive', this.dataset.value == this.dataset.min);
-    this._span.textContent = this.dataset.value;
+    this._val.value = this.dataset.value;
   }
 }
 

@@ -130,8 +130,7 @@ log-record:last-child {
   grid-column: 3 / 6;
 }
 
-spa-number-picker span {
-  display: inline-block;
+spa-number-picker input {
   width: 1.5rem;
   text-align: center;
 }

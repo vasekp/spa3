@@ -6,7 +6,7 @@
   align-items: baseline;
 }
 
-#filters input[type="text"] {
+#filters > input[type="text"] {
   border-bottom: var(--border-fainter);
 }
 
@@ -32,8 +32,7 @@
   vertical-align: var(--valign-em);
 }
 
-spa-number-picker span {
-  display: inline-block;
+spa-number-picker input {
   width: 3ch;
   text-align: center;
 }
