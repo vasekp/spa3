@@ -1,5 +1,6 @@
 import './components/spa-scroll.js';
 import './components/spa-dropdown.js';
+import './components/spa-number-picker.js';
 import normalize from './util/text.js';
 import debounce from './util/debounce.js';
 import _, * as i18n from './i18n.js';
@@ -45,5 +46,11 @@ export default function(root) {
   root.getElementById('run').addEventListener('click', () =>
     filter(word => re.test(word) && word.includes('ř')));
 
+  {
+    const from = root.getElementById('lcount-from');
+    const to = root.getElementById('lcount-to');
+    from.addEventListener('change', () => { if(to.value < from.value) to.value = from.value; });
+    to.addEventListener('change', () => { if(from.value > to.value) from.value = to.value; });
+  }
   return {};
 }

@@ -31,14 +31,10 @@
         </label>
       </div>
     </spa-dropdown>
-    <div>
-      <button class="patch" data-content="–"></button>
-      3
-      <button class="patch" data-content="+"></button>
-      až
-      <button class="patch" data-content="–"></button>
-      6
-      <button class="patch" data-content="+"></button>
+    <div id="lcount-range">
+      <spa-number-picker id="lcount-from" data-min="1" data-max="35" data-value="3"></spa-number-picker>
+      <span>až</span>
+      <spa-number-picker id="lcount-to" data-min="1" data-max="35" data-value="6"></spa-number-picker>
     </div>
     <span></span>
     <spa-dropdown class="filter-item">

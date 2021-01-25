@@ -32,6 +32,16 @@
   vertical-align: var(--valign-em);
 }
 
+spa-number-picker span {
+  display: inline-block;
+  width: 3ch;
+  text-align: center;
+}
+
+#lcount-range > span {
+  margin: 0 var(--font-space);
+}
+
 :host([data-size="small"]) #no-caps-mid {
   display: none;
 }
