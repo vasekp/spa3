@@ -35,12 +35,8 @@
 }
 
 spa-scroll {
-  margin: 0 var(--margin-base-neg);
+  margin: var(--margin-small) var(--margin-base-neg) 0;
   flex: 1;
-}
-
-spa-plus-list {
-  margin-top: var(--margin-small);
 }
 
 #record-list, #game-list {
