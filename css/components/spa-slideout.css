@@ -27,7 +27,18 @@
   background: var(--color-bg-main);
   border: var(--border);
   border-radius: var(--div-size);
-  contain: strict;
+}
+
+:host(.corner) #expander {
+  border-top: none;
+  border-right: none;
+  border-radius: 0;
+  border-bottom-left-radius: calc(0.5 * var(--div-size));
+}
+
+:host(.corner) #expander:not(:hover, :focus, :focus-within) {
+  width: calc((var(--div-size) - var(--line-width)) / 2);
+  height: calc((var(--div-size) - var(--line-width)) / 2);
 }
 
 #container {
@@ -44,10 +55,15 @@
 
 #expander:hover, #expander:focus, #expander:focus-within {
   width: calc(var(--count) * var(--div-size));
-  height: var(--div-size);
 }
 
 ::slotted(*) {
   flex: none;
   border-radius: var(--radius-small);
+  /* The following is needed as we are relying on overflow: hidden to do the clipping to the shape of #expander.
+     However, tab-focusing brings the element in view, scrolling the element in .corner mode.
+     The following negates the effect by requiring that --padding is left above the focused elements. */
+  scroll-margin-top: var(--padding);
+  /* And, *of course*, a nonstandard name for WebKit. */
+  scroll-snap-margin-top: var(--padding);
 }
