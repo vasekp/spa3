@@ -37,6 +37,14 @@ main {
   content: attr(data-content);
 }
 
+button.patch::before {
+  margin: 0;
+}
+
+button.patch {
+  margin: calc(-1 * var(--line-width));
+}
+
 .patch[data-content=""]::before,
 .patch:not([data-content])::before {
   content: "\200B";

@@ -25,7 +25,8 @@ export default function(root) {
       const div = document.createElement('div');
       div.textContent = item.displayName;
       div.dataset.moduleName = item.moduleName;
-      div.tabindex = 0;
+      div.setAttribute('tabindex', 0);
+      div.classList.add('inner-outline');
       div.dataset.active = 1;
       cont.appendChild(div);
     }
