@@ -155,13 +155,21 @@ export default function(root) {
     for(const filterDiv of root.querySelectorAll('.re-filter')) {
       const type = filterDiv.dataset.type;
       const value = filterDiv.querySelector('[data-id="value"]').value;
-      const re = new RegExp(`${type & filterBits.start ? '^' : ''}${value}${type & filterBits.end ? '$' : ''}`);
-      if(re) {
-        if(type & filterBits.neg)
-          f = append(f, text => !re.test(text));
-        else
-          f = append(f, text => re.test(text));
+      let error = false;
+      if(value) {
+        try {
+          const re = new RegExp(`${type & filterBits.start ? '^' : ''}${value}${type & filterBits.end ? '$' : ''}`);
+          if(re) {
+            if(type & filterBits.neg)
+              f = append(f, text => !re.test(text));
+            else
+              f = append(f, text => re.test(text));
+          }
+        } catch {
+          error = true;
+        }
       }
+      filterDiv.querySelector('[data-id="value"]').classList.toggle('error', error);
     }
     filter(f);
   }

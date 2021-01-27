@@ -10,6 +10,10 @@
   border-bottom: var(--border-fainter);
 }
 
+input.error {
+  background: var(--color-error);
+}
+
 :host([data-size="small"]) #filters {
   grid-template-columns: 1em 1fr calc(1em + var(--margin-small));
 }
