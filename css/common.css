@@ -66,6 +66,7 @@ textarea {
   flex: none;
   box-sizing: content-box;
   vertical-align: var(--valign-em);
+  align-self: center;
 }
 
 @keyframes loading {

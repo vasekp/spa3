@@ -55,8 +55,14 @@ button.patch {
   content: "\d7";
 }
 
-label input[type="checkbox"].patch + span {
-  margin-left: var(--font-space);
+label {
+  display: inline-flex;
+}
+
+label input.patch + span,
+label input.alt-text-cb + span,
+button > span {
+  margin-left: var(--margin-small);
 }
 
 input[type="checkbox"].patch:not(.show-state):not(:checked),

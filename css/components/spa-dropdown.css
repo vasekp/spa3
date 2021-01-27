@@ -1,7 +1,7 @@
 @import "../common.css";
 
 :host {
-  display: inline;
+  display: inline-flex;
 }
 
 :host([hidden]) {
