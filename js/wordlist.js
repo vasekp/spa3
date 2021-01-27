@@ -72,6 +72,8 @@ export default function(root) {
       }
     }
     loadMore(BASE - list.children.length, false);
+    if(list.children.length == BASE)
+      io.observe(list.children[BASE - MORE]);
     console.timeEnd('filter');
   }
 
