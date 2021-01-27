@@ -82,3 +82,10 @@
   visibility: hidden;
   opacity: 0;
 }
+
+#origin {
+  visibility: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
