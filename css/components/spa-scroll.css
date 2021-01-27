@@ -4,6 +4,10 @@
   position: relative;
 }
 
+:host([data-pause-scroll="1"]) {
+  overflow: hidden;
+}
+
 :host::-webkit-scrollbar {
   display: none;
 }

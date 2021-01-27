@@ -15,80 +15,82 @@
     </label>
   </spa-dropdown>
   </div>
-  <div id="filters">
-    <div class="trans" id="lcount">
-      <img class="inline" src="images/filter.svg"/>
-      <spa-dropdown class="filter-head">
-        <span slot="header">Počet písmen</span>
-        <div class="optgroup" id="lcount-variant">
-          <label>
-            <input type="radio" name="lcount" value="any" checked class="patch show-state"/>
-            <span>libovolný</span>
-          </label>
-          <label>
-            <input type="radio" name="lcount" value="exact" class="patch show-state"/>
-            <span>přesně</span>
-          </label>
-          <label>
-            <input type="radio" name="lcount" value="range" class="patch show-state"/>
-            <span>rozsah</span>
-          </label>
-        </div>
-      </spa-dropdown>
-      <div class="filter-body" id="lcount-variants" data-sel="any">
-        <div id="lcount-v-any">libovolný</div>
-        <div id="lcount-v-exact">
-          <spa-number-picker id="lcount-exact" data-min="1" data-max="35" data-value="3"></spa-number-picker>
-        </div>
-        <div id="lcount-v-range">
-          <spa-number-picker id="lcount-from" data-min="1" data-max="35" data-value="3"></spa-number-picker>
-          <span>až</span>
-          <spa-number-picker id="lcount-to" data-min="1" data-max="35" data-value="6"></spa-number-picker>
-        </div>
-      </div>
-      <span class="filter-tail"></span>
-    </div>
-    <template id="filter-template">
-      <div class="trans re-filter">
+  <spa-scroll id="filters-scroll">
+    <div id="filters">
+      <div class="trans" id="lcount">
         <img class="inline" src="images/filter.svg"/>
-        <spa-dropdown class="filter-head" data-type="0">
-          <span slot="header" data-id="header">Obsahuje</span>
-          <div class="optgroup">
-            <span>Uchytit</span>
+        <spa-dropdown class="filter-head">
+          <span slot="header">Počet písmen</span>
+          <div class="optgroup" id="lcount-variant">
             <label>
-              <input type="checkbox" class="patch show-state" data-id="fix-start"/>
-              <span>začátek</span>
+              <input type="radio" name="lcount" value="any" checked class="patch show-state"/>
+              <span>libovolný</span>
             </label>
             <label>
-              <input type="checkbox" class="patch show-state" data-id="fix-end"/>
-              <span>konec</span>
+              <input type="radio" name="lcount" value="exact" class="patch show-state"/>
+              <span>přesně</span>
+            </label>
+            <label>
+              <input type="radio" name="lcount" value="range" class="patch show-state"/>
+              <span>rozsah</span>
             </label>
           </div>
-          <div class="optgroup">
-            <label>
-              <input type="checkbox" class="patch show-state" data-id="neg"/>
-              <span>Negovat</span>
-            </label>
-            <!--label>
-              <input type="checkbox" class="patch show-state" data-id="baseform"/>
-              <span>Bez velikosti a diakritiky</span>
-            </label-->
-          </div>
-          <!--div class="optgroup">
-            <label>
-              <input type="checkbox" class="alt-text-cb favs" data-text-off="" data-text-on="" data-id="fav">
-              <span>Uložit pravidlo</span>
-          </div-->
         </spa-dropdown>
-        <input type="text" class="filter-body pre" data-id="value" placeholder="​"/>
-        <button class="filter-tail patch cross" data-color="cross" data-id="delete"></button>
+        <div class="filter-body" id="lcount-variants" data-sel="any">
+          <div id="lcount-v-any">libovolný</div>
+          <div id="lcount-v-exact">
+            <spa-number-picker id="lcount-exact" data-min="1" data-max="35" data-value="3"></spa-number-picker>
+          </div>
+          <div id="lcount-v-range">
+            <spa-number-picker id="lcount-from" data-min="1" data-max="35" data-value="3"></spa-number-picker>
+            <span>až</span>
+            <spa-number-picker id="lcount-to" data-min="1" data-max="35" data-value="6"></spa-number-picker>
+          </div>
+        </div>
+        <span class="filter-tail"></span>
       </div>
-    </template>
-  </div>
+      <template id="filter-template">
+        <div class="trans re-filter">
+          <img class="inline" src="images/filter.svg"/>
+          <spa-dropdown class="filter-head" data-type="0">
+            <span slot="header" data-id="header">Obsahuje</span>
+            <div class="optgroup">
+              <span>Uchytit</span>
+              <label>
+                <input type="checkbox" class="patch show-state" data-id="fix-start"/>
+                <span>začátek</span>
+              </label>
+              <label>
+                <input type="checkbox" class="patch show-state" data-id="fix-end"/>
+                <span>konec</span>
+              </label>
+            </div>
+            <div class="optgroup">
+              <label>
+                <input type="checkbox" class="patch show-state" data-id="neg"/>
+                <span>Negovat</span>
+              </label>
+              <!--label>
+                <input type="checkbox" class="patch show-state" data-id="baseform"/>
+                <span>Bez velikosti a diakritiky</span>
+              </label-->
+            </div>
+            <!--div class="optgroup">
+              <label>
+                <input type="checkbox" class="alt-text-cb favs" data-text-off="" data-text-on="" data-id="fav">
+                <span>Uložit pravidlo</span>
+            </div-->
+          </spa-dropdown>
+          <input type="text" class="filter-body pre" data-id="value" placeholder="​"/>
+          <button class="filter-tail patch cross" data-color="cross" data-id="delete"></button>
+        </div>
+      </template>
+    </div>
+  </spa-scroll>
   <div>
     <button id="add-filter" class="patch c-green" data-content="+" data-color="param"><span>Přidat filtr</span></button>
   </div>
-  <spa-scroll tabindex="0">
+  <spa-scroll id="list-scroll" tabindex="0">
     <ul id="list"></ul>
   </spa-scroll>
 </main>

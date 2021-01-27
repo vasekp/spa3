@@ -20,6 +20,8 @@ class ScrollElement extends HTMLElement {
     });
     io.observe(this.shadowRoot.getElementById('top'));
     io.observe(this.shadowRoot.getElementById('bottom'));
+
+    this.addEventListener('pause-scroll', e => this.dataset.pauseScroll = +e.detail.pause);
   }
 }
 
