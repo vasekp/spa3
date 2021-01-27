@@ -3,9 +3,18 @@ import './components/spa-dropdown.js';
 import './components/spa-number-picker.js';
 import normalize from './util/text.js';
 import debounce from './util/debounce.js';
+import Enum from './util/enum.js';
 import _, * as i18n from './i18n.js';
 
 const BASE = 200, MORE = 100;
+
+const filterBits = Enum.fromObj({
+  neg: 1,
+  start: 2,
+  end: 4,
+});
+
+const filterLabels = 'Obsahuje|Neobsahuje|Začíná|Nezačíná|Končí|Nekončí|Odpovídá|Neodpovídá'.split('|');
 
 export default function(root) {
   const list = root.getElementById('list');
@@ -23,9 +32,20 @@ export default function(root) {
     from.addEventListener('change', () => { if(to.value < from.value) to.value = from.value; });
     to.addEventListener('change', () => { if(from.value > to.value) from.value = to.value; });
   }
+  root.getElementById('lcase').addEventListener('input', e => {
+    root.getElementById('lcase-indicator').hidden = !e.currentTarget.checked;
+  });
+  root.getElementById('lcount-variant').addEventListener('input', e => {
+    const variant = e.currentTarget.querySelector(':checked').value;
+    root.getElementById('lcount-variants').dataset.sel = variant;
+  });
+  root.getElementById('add-filter').addEventListener('click', () => addFilter());
+  addFilter();
   const dbu = debounce(update, 300);
   root.getElementById('filters').addEventListener('change', dbu);
   root.getElementById('filters').addEventListener('input', dbu);
+  root.getElementById('filters').addEventListener('filter-removed', dbu);
+  root.getElementById('wordlist').addEventListener('input', dbu);
   update();
 
   async function loadFile(file) {
@@ -82,7 +102,6 @@ export default function(root) {
     rng.setStart(list, ix);
     rng.setEnd(list, list.childNodes.length);
     rng.deleteContents();
-    console.log(list.children.length);
   }
 
   function loadMore(upTo = MORE, scrolling = true) {
@@ -105,7 +124,6 @@ export default function(root) {
     }
     if(list.lastChild)
       io.observe(list.lastChild);
-    console.log(list.children.length);
   }
 
   function append(f, test) {
@@ -113,13 +131,72 @@ export default function(root) {
   }
 
   function update() {
-    const min = root.getElementById('lcount-from').value;
-    const max = root.getElementById('lcount-to').value;
-    let f = text => text.length >= min && text.length <= max && reLowerCase.test(text);
-    const re = new RegExp(root.getElementById('test-re').value);
-    if(re)
-      f = append(f, text => re.test(text));
+    let f;
+    switch(root.getElementById('lcount-variants').dataset.sel) {
+      case 'any':
+        f = () => true;
+        break;
+      case 'exact':
+        {
+          const len = root.getElementById('lcount-exact').value;
+          f = text => text.length == len;
+          break;
+        }
+      case 'range':
+        {
+          const min = root.getElementById('lcount-from').value;
+          const max = root.getElementById('lcount-to').value;
+          f = text => text.length >= min && text.length <= max;
+          break;
+        }
+    }
+    if(root.getElementById('lcase').checked)
+      f = append(f, text => reLowerCase.test(text));
+    for(const filterDiv of root.querySelectorAll('.re-filter')) {
+      const type = filterDiv.dataset.type;
+      const value = filterDiv.querySelector('[data-id="value"]').value;
+      const re = new RegExp(`${type & filterBits.start ? '^' : ''}${value}${type & filterBits.end ? '$' : ''}`);
+      if(re) {
+        if(type & filterBits.neg)
+          f = append(f, text => !re.test(text));
+        else
+          f = append(f, text => re.test(text));
+      }
+    }
     filter(f);
+  }
+
+  function addFilter() {
+    const div = root.getElementById('filter-template').content.firstElementChild.cloneNode(true);
+    root.getElementById('filters').appendChild(div);
+    div.addEventListener('input', e => {
+      const id = e.target.dataset.id;
+      let type = e.currentTarget.dataset.type;
+      switch(id) {
+        case 'fix-start':
+          type = e.target.checked ? type | filterBits.start : type & ~filterBits.start;
+          break;
+        case 'fix-end':
+          type = e.target.checked ? type | filterBits.end : type & ~filterBits.end;
+          break;
+        case 'neg':
+          type = e.target.checked ? type | filterBits.neg : type & ~filterBits.neg;
+          break;
+      }
+      if(type != e.currentTarget.dataset.type) {
+        e.currentTarget.dataset.type = type;
+        e.currentTarget.querySelector('[data-id="header"]').textContent = filterLabels[type];
+      }
+    });
+    div.addEventListener('click', e => {
+      const id = e.target.dataset.id;
+      switch(id) {
+        case 'delete':
+          e.currentTarget.dispatchEvent(new CustomEvent('filter-removed', { bubbles: true }));
+          e.currentTarget.remove();
+          break;
+      }
+    });
   }
 
   return {};
