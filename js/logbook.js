@@ -159,7 +159,7 @@ export default function(root) {
         root.getElementById('tag-filter').dataset.count = ccount;
       }
       showHide();
-      picker.addEventListener('change', debounce(showHide, 500));
+      picker.addEventListener('input', debounce(showHide, 500));
       (async () => {
         const min = Math.max(await recordStore.maxTag(), await gameStore.maxTag(), 5);
         if(min === max)
