@@ -60,8 +60,7 @@ export default function(root) {
   }
 
   async function addExampleData(adb) {
-    await i18n.loadTrans(`trans/${i18n.lang}/logbook-example-data.json`);
-    const data = _('log:example data');
+    const data = await (await fetch(`trans/${i18n.lang}/logbook-example-data.json`)).json();
     const tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
     for(const game of data) {
       const gid = (await gameStore.create(game.name, tx)).id;
@@ -159,7 +158,7 @@ export default function(root) {
         root.getElementById('tag-filter').dataset.count = ccount;
       }
       showHide();
-      picker.addEventListener('change', debounce(showHide, 500));
+      picker.addEventListener('input', debounce(showHide, 500));
       (async () => {
         const min = Math.max(await recordStore.maxTag(), await gameStore.maxTag(), 5);
         if(min === max)

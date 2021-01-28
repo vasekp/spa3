@@ -5,16 +5,16 @@
     <label tabindex="1" data-active="1" class="filter-header" for="filter-country">_(flg:tab country)</label>
     <div class="trans">
       <label class="filter-label" for="name">_(flg:name)</label>
-      <input class="full-width" type="text" id="name"/>
+      <input type="text" id="name" class="full-width underline"/>
       <label class="filter-label" for="capital">_(flg:capital)</label>
-      <input class="full-width" type="text" id="capital"/>
+      <input type="text" id="capital" class="full-width underline"/>
       <label class="filter-label">_(flg:continent)</label>
       <div class="full-width" id="continent">
-        <label><input type="checkbox" autocomplete="off" checked class="patch c-blue" data-color="param" data-value="E"/><span>_(flg:europe)</span></label>
-        <label><input type="checkbox" autocomplete="off" checked class="patch c-yellow" data-color="param" data-value="AS"/><span>_(flg:asia)</span></label>
-        <label><input type="checkbox" autocomplete="off" checked class="patch c-black" data-color="param" data-value="AF"/><span>_(flg:africa)</span></label>
-        <label><input type="checkbox" autocomplete="off" checked class="patch c-green" data-color="param" data-value="AO"/><span>_(flg:oceania)</span></label>
-        <label><input type="checkbox" autocomplete="off" checked class="patch c-red" data-color="param" data-value="AM"/><span>_(flg:americas)</span></label>
+        <input type="checkbox" autocomplete="off" checked class="patch c-blue" data-color="param" data-value="E" data-label="_(flg:europe)"/>
+        <input type="checkbox" autocomplete="off" checked class="patch c-yellow" data-color="param" data-value="AS" data-label="_(flg:asia)"/>
+        <input type="checkbox" autocomplete="off" checked class="patch c-black" data-color="param" data-value="AF" data-label="_(flg:africa)"/>
+        <input type="checkbox" autocomplete="off" checked class="patch c-green" data-color="param" data-value="AO" data-label="_(flg:oceania)"/>
+        <input type="checkbox" autocomplete="off" checked class="patch c-red" data-color="param" data-value="AM" data-label="_(flg:americas)"/>
       </div>
     </div>
     <input type="radio" name="filter-section" id="filter-flag"/>
@@ -105,10 +105,10 @@
       </div>
       <label class="filter-label">_(flg:emblems)</label>
       <div class="half-width" id="emblems">
-        <input type="checkbox" autocomplete="off" data-value="1" class="alt-text-cb" data-text-off="" data-text-on=""/>
-        <input type="checkbox" autocomplete="off" data-value="2" class="alt-text-cb" data-text-off="" data-text-on=""/>
-        <input type="checkbox" autocomplete="off" data-value="4" class="alt-text-cb" data-text-off="" data-text-on=""/>
-        <input type="checkbox" autocomplete="off" data-value="8" class="alt-text-cb" data-text-off="" data-text-on=""/>
+        <input type="checkbox" autocomplete="off" data-value="1" class="glyph-cb" data-glyph-off="&#xF000;" data-glyph-on="&#xF001;"/>
+        <input type="checkbox" autocomplete="off" data-value="2" class="glyph-cb" data-glyph-off="&#xF002;" data-glyph-on="&#xF003;"/>
+        <input type="checkbox" autocomplete="off" data-value="4" class="glyph-cb" data-glyph-off="&#xF004;" data-glyph-on="&#xF005;"/>
+        <input type="checkbox" autocomplete="off" data-value="8" class="glyph-cb" data-glyph-off="&#xF006;" data-glyph-on="&#xF007;"/>
       </div>
       <div class="half-width" id="ecolor">
         <input type="checkbox" autocomplete="off" checked class="checkbox patch" data-content="⁎" data-color="all"/>
@@ -124,8 +124,8 @@
     <label tabindex="3" data-active="1" class="filter-header" for="filter-currency">_(flg:tab currency)</label>
     <div class="trans">
       <label class="filter-label" for="currency">_(flg:currency)</label>
-      <input class="half-width" type="text" id="currency"/>
-      <input class="half-width" type="text" placeholder="_(flg:currency placeholder)" id="curr-code"/>
+      <input type="text" id="currency" class="half-width underline"/>
+      <input type="text" id="curr-code" class="half-width underline" placeholder="_(flg:currency placeholder)"/>
     </div>
   </div>
   <div class="spa-loading"></div>

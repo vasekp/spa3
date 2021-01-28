@@ -55,18 +55,17 @@ button.patch {
   content: "\d7";
 }
 
-label {
-  display: inline-flex;
-}
-
-label input.patch + span,
-label input.alt-text-cb + span,
-button > span {
+input[data-label]::after,
+button[data-label]::after {
+  content: attr(data-label);
   margin-left: var(--margin-small);
 }
 
-input[type="checkbox"].patch:not(.show-state):not(:checked),
-label input[type="checkbox"].patch:not(.show-state):not(:checked) + span {
+[data-label] {
+  white-space: nowrap;
+}
+
+input[type="checkbox"].patch:not(.show-state):not(:checked) {
   opacity: .5;
 }
 
@@ -76,6 +75,10 @@ input[type="checkbox"].patch.show-state:checked::before {
 
 input[type="radio"].patch.show-state:checked::before {
   content: "\25cf";
+}
+
+.underline {
+  border-bottom: var(--border-fainter);
 }
 
 .patch.radio:checked {
@@ -142,20 +145,20 @@ input[type="radio"].patch.show-state:checked::before {
   opacity: .5;
 }
 
-.alt-text-cb::before {
-  content: attr(data-text-off);
+.glyph-cb::before {
+  content: attr(data-glyph-off);
 }
 
-.alt-text-cb:checked::before {
-  content: attr(data-text-on);
+.glyph-cb:checked::before {
+  content: attr(data-glyph-on);
 }
 
-.alt-text-cb:focus-visible {
+.glyph-cb:focus-visible {
   box-shadow: none;
   text-shadow: var(--shadow-text);
 }
 
-.alt-text-cb.favs:checked::before {
+.glyph-cb.favs:checked::before {
   color: gold;
 }
 

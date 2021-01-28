@@ -68,17 +68,19 @@ export default function(root) {
     localStorage[lsKeys.wordlist] = item.filename;
 
     root.getElementById('title').textContent = item.title;
-    root.getElementById('opt-lcase').hidden = !item.showLCase;
+    root.getElementById('lcase').hidden = !item.showLCase;
     root.getElementById('lcase-indicator').hidden = !item.showLCase || !root.getElementById('lcase').checked;
     const list = root.getElementById('wordlists');
-    const template = root.getElementById('wordlist-template');
-    if(list.lastElementChild === template) {
+    if(!list.children.length) {
       for(const info of lists) {
-        const div = template.content.firstElementChild.cloneNode(true);
-        console.log(div);
-        div.children[1].textContent = info.title;
-        div.children[0].dataset.filename = info.filename;
-        list.appendChild(div);
+        const elm = document.createElement('input');
+        elm.type = 'radio';
+        elm.name = 'wordlist';
+        elm.classList.add('patch');
+        elm.classList.add('show-state');
+        elm.dataset.label = info.title;
+        elm.dataset.filename = info.filename;
+        list.appendChild(elm);
       }
     }
     list.querySelector(`[data-filename="${item.filename}"]`).checked = true;
