@@ -60,8 +60,7 @@ export default function(root) {
   }
 
   async function addExampleData(adb) {
-    await i18n.loadTrans(`trans/${i18n.lang}/logbook-example-data.json`);
-    const data = _('log:example data');
+    const data = await (await fetch(`trans/${i18n.lang}/logbook-example-data.json`)).json();
     const tx = adb.transaction(['log-gid', 'log-rec'], 'readwrite');
     for(const game of data) {
       const gid = (await gameStore.create(game.name, tx)).id;

@@ -1,15 +1,12 @@
-{
-  "_prefix": "log",
-  "example data": [
-    {
-      "name": "Example",
-      "records": [
-        { "tag": 1, "text": "Sample line 1" },
-        { "tag": 2, "text": "Sample line 2" },
-        { "tag": 3, "text": "Sample line 3" },
-        { "tag": 4, "text": "Sample line 4" },
-        { "tag": 5, "text": "Sample line 5" },
-      ]
-    }
-  ]
-}
+[
+  {
+    "name": "Example",
+    "records": [
+      { "tag": 1, "text": "Sample line 1" },
+      { "tag": 2, "text": "Sample line 2" },
+      { "tag": 3, "text": "Sample line 3" },
+      { "tag": 4, "text": "Sample line 4" },
+      { "tag": 5, "text": "Sample line 5" }
+    ]
+  }
+]
