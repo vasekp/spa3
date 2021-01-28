@@ -41,11 +41,11 @@ input.error {
   background: linear-gradient(-30deg, transparent 45%, red 45% 55%, transparent 55%);
 }
 
-.optgroup {
+.opt-row {
   white-space: nowrap;
 }
 
-.optgroup > :not(:first-child) {
+.opt-row > :not(:first-child) {
   margin-left: var(--margin-base);
 }
 

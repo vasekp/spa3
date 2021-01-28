@@ -21,7 +21,7 @@
         <img class="inline" src="images/filter.svg"/>
         <spa-dropdown class="filter-head">
           <span slot="header">_(rgx:letter count)</span>
-          <div class="optgroup" id="lcount-variant">
+          <div class="opt-row" id="lcount-variant">
             <input type="radio" name="lcount" value="any" checked class="patch show-state" data-label="_(rgx:count/any)"/>
             <input type="radio" name="lcount" value="exact" class="patch show-state" data-label="_(rgx:count/exactly)"/>
             <input type="radio" name="lcount" value="range" class="patch show-state" data-label="_(rgx:count/range)"/>
@@ -46,17 +46,17 @@
           <img class="inline" src="images/filter.svg"/>
           <spa-dropdown class="filter-head" data-type="0">
             <span slot="header" data-id="header">_(rgx:filter type default)</span>
-            <div class="optgroup">
+            <div class="opt-row">
               <span>_(rgx:fix)</span>
               <input type="checkbox" class="patch show-state" data-id="fix-start" data-label="_(rgx:fix/start)"/>
               <input type="checkbox" class="patch show-state" data-id="fix-end" data-label="_(rgx:fix/end)"/>
             </div>
-            <div class="optgroup">
+            <div class="opt-row">
               <input type="checkbox" class="patch show-state" data-id="neg" data-label="_(rgx:negate)"/>
               <input type="checkbox" class="patch show-state" data-id="norm" data-label="_(rgx:base form)"/>
             </div>
-            <!--div class="optgroup">
-              <input type="checkbox" class="alt-text-cb favs" data-text-off="&#xF004;" data-text-on="&#xF005;" data-id="fav" data-label="_(rgx:save fav)">
+            <!--div class="opt-row">
+              <input type="checkbox" class="glyph-cb favs" data-glyph-off="&#xF004;" data-glyph-on="&#xF005;" data-id="fav" data-label="_(rgx:save fav)">
             </div-->
           </spa-dropdown>
           <input type="text" class="filter-body pre underline" data-id="value" placeholder="&#x200B;"/>

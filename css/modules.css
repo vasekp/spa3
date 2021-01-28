@@ -145,20 +145,20 @@ input[type="radio"].patch.show-state:checked::before {
   opacity: .5;
 }
 
-.alt-text-cb::before {
-  content: attr(data-text-off);
+.glyph-cb::before {
+  content: attr(data-glyph-off);
 }
 
-.alt-text-cb:checked::before {
-  content: attr(data-text-on);
+.glyph-cb:checked::before {
+  content: attr(data-glyph-on);
 }
 
-.alt-text-cb:focus-visible {
+.glyph-cb:focus-visible {
   box-shadow: none;
   text-shadow: var(--shadow-text);
 }
 
-.alt-text-cb.favs:checked::before {
+.glyph-cb.favs:checked::before {
   color: gold;
 }
 
