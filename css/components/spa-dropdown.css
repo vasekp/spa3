@@ -26,7 +26,7 @@
   background: var(--color-bg-main);
 }
 
-#header::after {
+#header::before {
   content: "";
   position: absolute;
   left: 0;
@@ -40,25 +40,22 @@
   border-bottom-right-radius: 0;
 }
 
-.open #header::after {
+.open #header::before {
   border-color: var(--color-line);
   border-bottom-color: var(--color-bg-main);
   transition: border-color .5s;
 }
 
-#arrow {
+#header::after {
   margin-left: var(--margin-small);
-}
-
-#arrow:focus-visible {
-  text-shadow: var(--shadow-text);
-}
-
-#arrow::after {
   content: "\25bc";
 }
 
-#ref:not(.open) #arrow::after {
+#header:focus-visible::after {
+  text-shadow: var(--shadow-text);
+}
+
+#ref:not(.open) #header::after {
   content: "\25bd";
   color: var(--color-text-fainter);
 }
