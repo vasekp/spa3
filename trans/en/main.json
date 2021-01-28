@@ -3,7 +3,7 @@
   "normalize pattern": "áàäâãăčćçďđéěëęíîĺľłňńóöőôồřšśșťúůüűýžź‚‘’ʻ„“”",
   "normalize repl": "aaaaaacccddeeeeiilllnnooooorssstuuuuyzz''''\"\"\"",
   "day single letter": "d",
-  "common settings": "Common settings",
+  "common settings": "Shared settings",
   "theme": "Theme:",
   "language": "Language:",
   "error": "Error",
