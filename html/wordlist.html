@@ -11,16 +11,8 @@
       </span>
     </span>
     <div id="wordlists">
-      <template id="wordlist-template">
-        <label>
-          <input type="radio" name="wordlist" class="patch show-state"/><span></span>
-        </label>
-      </template>
     </div>
-    <label id="opt-lcase" hidden>
-      <input type="checkbox" checked id="lcase" class="patch show-state"/>
-      <span>_(rgx:no capitals checkbox)</span>
-    </label>
+    <input type="checkbox" checked id="lcase" class="patch show-state" data-label="_(rgx:no capitals checkbox)"/>
   </spa-dropdown>
   </div>
   <spa-scroll id="filters-scroll">
@@ -30,18 +22,9 @@
         <spa-dropdown class="filter-head">
           <span slot="header">_(rgx:letter count)</span>
           <div class="optgroup" id="lcount-variant">
-            <label>
-              <input type="radio" name="lcount" value="any" checked class="patch show-state"/>
-              <span>_(rgx:count/any)</span>
-            </label>
-            <label>
-              <input type="radio" name="lcount" value="exact" class="patch show-state"/>
-              <span>_(rgx:count/exactly)</span>
-            </label>
-            <label>
-              <input type="radio" name="lcount" value="range" class="patch show-state"/>
-              <span>_(rgx:count/range)</span>
-            </label>
+            <input type="radio" name="lcount" value="any" checked class="patch show-state" data-label="_(rgx:count/any)"/>
+            <input type="radio" name="lcount" value="exact" class="patch show-state" data-label="_(rgx:count/exactly)"/>
+            <input type="radio" name="lcount" value="range" class="patch show-state" data-label="_(rgx:count/range)"/>
           </div>
         </spa-dropdown>
         <div class="filter-body" id="lcount-variants" data-sel="any">
@@ -65,29 +48,15 @@
             <span slot="header" data-id="header">_(rgx:filter type default)</span>
             <div class="optgroup">
               <span>_(rgx:fix)</span>
-              <label>
-                <input type="checkbox" class="patch show-state" data-id="fix-start"/>
-                <span>_(rgx:fix/start)</span>
-              </label>
-              <label>
-                <input type="checkbox" class="patch show-state" data-id="fix-end"/>
-                <span>_(rgx:fix/end)</span>
-              </label>
+              <input type="checkbox" class="patch show-state" data-id="fix-start" data-label="_(rgx:fix/start)"/>
+              <input type="checkbox" class="patch show-state" data-id="fix-end" data-label="_(rgx:fix/end)"/>
             </div>
             <div class="optgroup">
-              <label>
-                <input type="checkbox" class="patch show-state" data-id="neg"/>
-                <span>_(rgx:negate)</span>
-              </label>
-              <label>
-                <input type="checkbox" class="patch show-state" data-id="norm"/>
-                <span>_(rgx:base form)</span>
-              </label>
+              <input type="checkbox" class="patch show-state" data-id="neg" data-label="_(rgx:negate)"/>
+              <input type="checkbox" class="patch show-state" data-id="norm" data-label="_(rgx:base form)"/>
             </div>
             <!--div class="optgroup">
-              <label>
-                <input type="checkbox" class="alt-text-cb favs" data-text-off="&#xF004;" data-text-on="&#xF005;" data-id="fav">
-                <span>_(rgx:save fav)</span>
+              <input type="checkbox" class="alt-text-cb favs" data-text-off="&#xF004;" data-text-on="&#xF005;" data-id="fav" data-label="_(rgx:save fav)">
             </div-->
           </spa-dropdown>
           <input type="text" class="filter-body pre underline" data-id="value" placeholder="&#x200B;"/>
@@ -97,7 +66,7 @@
     </div>
   </spa-scroll>
   <div>
-    <button id="add-filter" class="patch c-green" data-content="+" data-color="param"><span>_(rgx:add filter)</span></button>
+    <button id="add-filter" class="patch c-green" data-content="+" data-color="param" data-label="_(rgx:add filter)"></button>
   </div>
   <spa-scroll id="list-scroll" tabindex="0">
     <ul id="list"></ul>

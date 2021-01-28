@@ -111,7 +111,7 @@ li::before {
   display: none;
 }
 
-#wordlists > label {
+#wordlists > * {
   display: block;
   white-space: nowrap;
 }

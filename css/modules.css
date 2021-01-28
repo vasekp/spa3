@@ -55,18 +55,17 @@ button.patch {
   content: "\d7";
 }
 
-label {
-  display: inline-flex;
-}
-
-label input.patch + span,
-label input.alt-text-cb + span,
-button > span {
+input[data-label]::after,
+button[data-label]::after {
+  content: attr(data-label);
   margin-left: var(--margin-small);
 }
 
-input[type="checkbox"].patch:not(.show-state):not(:checked),
-label input[type="checkbox"].patch:not(.show-state):not(:checked) + span {
+[data-label] {
+  white-space: nowrap;
+}
+
+input[type="checkbox"].patch:not(.show-state):not(:checked) {
   opacity: .5;
 }
 
