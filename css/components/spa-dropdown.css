@@ -1,0 +1,88 @@
+@import "../common.css";
+
+:host {
+  display: inline-flex;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+#ref.open {
+  z-index: 3;
+}
+
+#header {
+  display: inline-block;
+  position: relative;
+  padding: 0 var(--margin-small);
+  margin-left: var(--margin-small-neg);
+  white-space: nowrap;
+  height: var(--line-height-base);
+}
+
+.open #header {
+  z-index: 1;
+  background: var(--color-bg-main);
+}
+
+#header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: var(--border);
+  border-color: transparent;
+  border-radius: var(--radius-full);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.open #header::before {
+  border-color: var(--color-line);
+  border-bottom-color: var(--color-bg-main);
+  transition: border-color .5s;
+}
+
+#header::after {
+  margin-left: var(--margin-small);
+  content: "\25bc";
+}
+
+#header:focus-visible::after {
+  text-shadow: var(--shadow-text);
+}
+
+#ref:not(.open) #header::after {
+  content: "\25bd";
+  color: var(--color-text-fainter);
+}
+
+#ext {
+  position: absolute;
+  top: calc(100% - var(--line-width));
+  left: var(--margin-small-neg);
+  min-width: calc(100% + var(--margin-small) + var(--radius-full));
+  box-sizing: border-box;
+  background: var(--color-bg-main);
+  border: var(--border);
+  border-radius: var(--radius-full);
+  border-top-left-radius: 0;
+  padding: var(--margin-small) var(--margin-base);
+  opacity: 1;
+  transition: opacity .5s;
+}
+
+:not(.open) > #ext {
+  visibility: hidden;
+  opacity: 0;
+}
+
+#origin {
+  visibility: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<main>
+  <div>
+  _(rgx:list)
+  <spa-dropdown id="wordlist">
+    <span slot="header">
+      <span id="title"><span class="spa-loading"></span></span>
+      <span id="lcase-indicator" hidden>
+        <span id="no-caps-sm">(<span class="patch strikeout" data-content="A"></span>)</span>
+        <span id="no-caps-full">(_(rgx:no capitals long))</span>
+      </span>
+    </span>
+    <div id="wordlists">
+      <template id="wordlist-template">
+        <label>
+          <input type="radio" name="wordlist" class="patch show-state"/><span></span>
+        </label>
+      </template>
+    </div>
+    <label id="opt-lcase" hidden>
+      <input type="checkbox" checked id="lcase" class="patch show-state"/>
+      <span>_(rgx:no capitals checkbox)</span>
+    </label>
+  </spa-dropdown>
+  </div>
+  <spa-scroll id="filters-scroll">
+    <div id="filters">
+      <div class="trans" id="lcount">
+        <img class="inline" src="images/filter.svg"/>
+        <spa-dropdown class="filter-head">
+          <span slot="header">_(rgx:letter count)</span>
+          <div class="optgroup" id="lcount-variant">
+            <label>
+              <input type="radio" name="lcount" value="any" checked class="patch show-state"/>
+              <span>_(rgx:count/any)</span>
+            </label>
+            <label>
+              <input type="radio" name="lcount" value="exact" class="patch show-state"/>
+              <span>_(rgx:count/exactly)</span>
+            </label>
+            <label>
+              <input type="radio" name="lcount" value="range" class="patch show-state"/>
+              <span>_(rgx:count/range)</span>
+            </label>
+          </div>
+        </spa-dropdown>
+        <div class="filter-body" id="lcount-variants" data-sel="any">
+          <div id="lcount-v-any">_(rgx:count/any)</div>
+          <div id="lcount-v-exact">
+            <spa-number-picker id="lcount-exact" data-min="1" data-max="35" data-value="3"></spa-number-picker>
+          </div>
+          <div id="lcount-v-range">
+            <span>_(rgx:range/from)</span>
+            <spa-number-picker id="lcount-min" data-min="1" data-max="35" data-value="3"></spa-number-picker>
+            <span>_(rgx:range/to)</span>
+            <spa-number-picker id="lcount-max" data-min="1" data-max="35" data-value="6"></spa-number-picker>
+          </div>
+        </div>
+        <span class="filter-tail"></span>
+      </div>
+      <template id="filter-template">
+        <div class="trans re-filter">
+          <img class="inline" src="images/filter.svg"/>
+          <spa-dropdown class="filter-head" data-type="0">
+            <span slot="header" data-id="header">_(rgx:filter type default)</span>
+            <div class="optgroup">
+              <span>_(rgx:fix)</span>
+              <label>
+                <input type="checkbox" class="patch show-state" data-id="fix-start"/>
+                <span>_(rgx:fix/start)</span>
+              </label>
+              <label>
+                <input type="checkbox" class="patch show-state" data-id="fix-end"/>
+                <span>_(rgx:fix/end)</span>
+              </label>
+            </div>
+            <div class="optgroup">
+              <label>
+                <input type="checkbox" class="patch show-state" data-id="neg"/>
+                <span>_(rgx:negate)</span>
+              </label>
+              <label>
+                <input type="checkbox" class="patch show-state" data-id="norm"/>
+                <span>_(rgx:base form)</span>
+              </label>
+            </div>
+            <!--div class="optgroup">
+              <label>
+                <input type="checkbox" class="alt-text-cb favs" data-text-off="" data-text-on="" data-id="fav">
+                <span>_(rgx:save fav)</span>
+            </div-->
+          </spa-dropdown>
+          <input type="text" class="filter-body pre" data-id="value" placeholder="​"/>
+          <button class="filter-tail patch cross" data-color="cross" data-id="delete"></button>
+        </div>
+      </template>
+    </div>
+  </spa-scroll>
+  <div>
+    <button id="add-filter" class="patch c-green" data-content="+" data-color="param"><span>_(rgx:add filter)</span></button>
+  </div>
+  <spa-scroll id="list-scroll" tabindex="0">
+    <ul id="list"></ul>
+  </spa-scroll>
+</main>

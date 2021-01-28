@@ -66,6 +66,7 @@ textarea {
   flex: none;
   box-sizing: content-box;
   vertical-align: var(--valign-em);
+  align-self: center;
 }
 
 @keyframes loading {
@@ -78,6 +79,10 @@ textarea {
   justify-content: center;
   margin: 0 var(--margin-small);
   position: relative;
+}
+
+span.spa-loading {
+  display: inline-flex;
 }
 
 .spa-loading::before {

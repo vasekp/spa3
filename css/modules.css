@@ -27,6 +27,7 @@ main {
   width: 1em;
   height: 1em;
   line-height: 1em;
+  margin: calc(-1 * var(--line-width));
   text-align: center;
   border: var(--border);
   border-radius: var(--radius-small);
@@ -54,13 +55,27 @@ button.patch {
   content: "\d7";
 }
 
-label input[type="checkbox"].patch + span {
-  margin-left: var(--font-space);
+label {
+  display: inline-flex;
 }
 
-input[type="checkbox"].patch:not(:checked),
-label input[type="checkbox"].patch:not(:checked) + span {
+label input.patch + span,
+label input.alt-text-cb + span,
+button > span {
+  margin-left: var(--margin-small);
+}
+
+input[type="checkbox"].patch:not(.show-state):not(:checked),
+label input[type="checkbox"].patch:not(.show-state):not(:checked) + span {
   opacity: .5;
+}
+
+input[type="checkbox"].patch.show-state:checked::before {
+  content: "\2713";
+}
+
+input[type="radio"].patch.show-state:checked::before {
+  content: "\25cf";
 }
 
 .patch.radio:checked {
@@ -138,6 +153,10 @@ label input[type="checkbox"].patch:not(:checked) + span {
 .alt-text-cb:focus-visible {
   box-shadow: none;
   text-shadow: var(--shadow-text);
+}
+
+.alt-text-cb.favs:checked::before {
+  color: gold;
 }
 
 #m-set-theme > *,

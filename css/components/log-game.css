@@ -80,7 +80,3 @@ log-game[data-disabled] {
   margin-left: calc(-1 * var(--margin-small));
   outline: none;
 }
-
-.log-game-color-edit {
-  margin: 0 calc(-1 * var(--line-width));
-}

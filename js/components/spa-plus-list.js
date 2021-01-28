@@ -46,9 +46,7 @@ class PlusListElement extends HTMLElement {
   _resized() {
     let parentSize = this.parentElement.clientHeight;
     let targetSize = this.clientHeight;
-    const cstyle = getComputedStyle(this._item);
-    let reservedSize = parseFloat(cstyle.height) + parseFloat(cstyle.marginTop);
-    this._state.scrolling = targetSize + reservedSize >= parentSize;
+    this._state.scrolling = targetSize >= parentSize;
   }
 
   get button() {

@@ -1,0 +1,20 @@
+{
+  "_prefix": "rgx",
+  "list": "Word list:",
+  "no capitals long": "lowercase words only",
+  "no capitals checkbox": "Only lowercase",
+  "letter count": "Letter count",
+  "count/any": "any",
+  "count/exactly": "exactly",
+  "count/range": "range",
+  "range/from": "between",
+  "range/to": "and",
+  "filter types": "Contains|¬ contains|Starts with|¬ starts with|Ends with|¬ ends with|Matches|¬ matches",
+  "filter type default": "Contains",
+  "fix": "Match word",
+  "fix/start": "beginning",
+  "fix/end": "end",
+  "negate": "Negate",
+  "base form": "Match normalized",
+  "add filter": "Add filter"
+}

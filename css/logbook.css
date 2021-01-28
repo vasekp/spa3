@@ -35,12 +35,8 @@
 }
 
 spa-scroll {
-  margin: 0 var(--margin-base-neg);
+  margin: var(--margin-small) var(--margin-base-neg) 0;
   flex: 1;
-}
-
-spa-plus-list {
-  margin-top: var(--margin-small);
 }
 
 #record-list, #game-list {
@@ -126,13 +122,12 @@ log-record:last-child {
   grid-column: 1 / 3;
 }
 
-#log-set-ccount > div {
+#log-set-ccount > spa-number-picker {
   grid-column: 3 / 6;
 }
 
-#log-set-ccount span {
-  display: inline-block;
-  width: 1rem;
+spa-number-picker input {
+  width: 1.5rem;
   text-align: center;
 }
 

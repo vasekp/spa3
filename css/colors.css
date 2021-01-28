@@ -43,7 +43,7 @@
 
 [data-color="cross"] {
   --bg: inherit;
-  --color-line: hsl(0, 100%, 50%);
+  --color-line: hsl(0, 90%, var(--l35));
 }
 
 .color-fainter {

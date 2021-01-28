@@ -82,20 +82,25 @@ class ViewElement extends HTMLElement {
   async loadModule(module) {
     const cont = this.shadowRoot.getElementById('content');
     const prevStyle = this.shadowRoot.getElementById('style');
-    if(prevStyle)
-      prevStyle.id = '';
     if(module !== 'list') // switching to menu should look fluid
       cont.innerHTML = '<div class="spa-loading"></div>';
-    const [responseText, script] = await Promise.all([
-      i18n.loadTrans(`trans/${i18n.lang}/${module}.json`).then(
-        () => i18n.loadTemplate(`html/${module}.html`)),
-      import(`../${module}.js`),
-      this.addStyleSheet(`css/${module}.css`)
-    ]);
-    cont.innerHTML = responseText;
-    if(prevStyle)
-      prevStyle.remove();
-    this.funcs = script.default(this.shadowRoot);
+    try {
+      const [responseText, script] = await Promise.all([
+        i18n.loadTrans(`trans/${i18n.lang}/${module}.json`).then(
+          () => i18n.loadTemplate(`html/${module}.html`)),
+        import(`../${module}.js`),
+        this.addStyleSheet(`css/${module}.css`)
+      ]);
+      if(prevStyle)
+        prevStyle.id = '';
+      cont.innerHTML = responseText;
+      if(prevStyle)
+        prevStyle.remove();
+      this.funcs = script.default(this.shadowRoot);
+    } catch(e) {
+      console.error(e);
+      throw e;
+    }
   }
 
   swap(otherId) {
@@ -114,7 +119,10 @@ class ViewElement extends HTMLElement {
     link.href = filename;
     link.id = 'style';
     this.shadowRoot.insertBefore(link, this.shadowRoot.getElementById('content'));
-    return new Promise(resolve => link.addEventListener('load', resolve));
+    return new Promise((resolve, reject) => {
+      link.addEventListener('load', resolve);
+      link.addEventListener('error', e => reject(`Could not load file ${filename}.`));
+    });
   }
 }
 

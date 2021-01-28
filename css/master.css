@@ -4,6 +4,7 @@
 :root {
   --c: 1;
   --l25: calc(50% - var(--c) * 25%);
+  --l35: calc(50% - var(--c) * 15%);
   --l60: calc(50% - var(--c) * 10%);
   --l75: calc(50% + var(--c) * 25%);
   --l85: calc(50% + var(--c) * 35%);
@@ -21,6 +22,7 @@
   --color-bg-emph: hsl(60, 90%, var(--l75));
   --color-bg-modal: hsl(0, 0%, 25%, 50%);
   --color-plus: hsl(100, 50%, 50%);
+  --color-error: hsla(0, 90%, 50%, 20%);
   --border: var(--line-width) solid var(--color-line);
   --border-fainter: var(--line-width) solid var(--color-line-fainter);
   --font-ascent: 1.024em;
@@ -30,6 +32,7 @@
   --line-width: 1px;
   --margin-base: 10px;
   --margin-small: 5px;
+  --margin-tiny: 2.5px;
   --margin-base-neg: calc(-1 * var(--margin-base));
   --margin-small-neg: calc(-1 * var(--margin-small));
   --valign-em: calc((var(--font-cap-size) - 1em) / 2);
