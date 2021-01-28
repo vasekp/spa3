@@ -110,10 +110,11 @@ export default function(root) {
   async function filter(f) {
     const lines = await linesP;
     console.time('filter');
-    let c = 0;
+    const lcase = root.getElementById('lcase').checked && !root.getElementById('lcase').hidden;
+    const f2 = lcase ? (text, norm) => reLowerCase.test(text) && f(text, norm) : f;
     flines = (function*() {
       for(const line of lines)
-        if(f.apply(null, line))
+        if(f2.apply(null, line))
           yield line[0];
     })();
     io.disconnect();
@@ -235,8 +236,6 @@ export default function(root) {
           break;
         }
     }
-    if(root.getElementById('lcase').checked)
-      f = append(f, text => reLowerCase.test(text));
     for(const filterDiv of root.querySelectorAll('.re-filter')) {
       const type = filterDiv.dataset.type;
       const value = filterDiv.querySelector('[data-id="value"]').value;
