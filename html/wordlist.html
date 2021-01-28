@@ -3,13 +3,21 @@
   <div>
   _(rgx:list)
   <spa-dropdown id="wordlist">
-    <span slot="header">_(rgx:demo list name)
-      <span id="lcase-indicator">
+    <span slot="header">
+      <span id="title"><span class="spa-loading"></span></span>
+      <span id="lcase-indicator" hidden>
         <span id="no-caps-sm">(<span class="patch strikeout" data-content="A"></span>)</span>
         <span id="no-caps-full">(_(rgx:no capitals long))</span>
       </span>
     </span>
-    <label>
+    <div id="wordlists">
+      <template id="wordlist-template">
+        <label>
+          <input type="radio" name="wordlist" class="patch show-state"/><span></span>
+        </label>
+      </template>
+    </div>
+    <label id="opt-lcase" hidden>
       <input type="checkbox" checked id="lcase" class="patch show-state"/>
       <span>_(rgx:no capitals checkbox)</span>
     </label>

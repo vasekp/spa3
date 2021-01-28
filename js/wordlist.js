@@ -27,7 +27,7 @@ const lsKeys = Enum.fromObj({
 
 export default function(root) {
   const list = root.getElementById('list');
-  const linesP = loadFile(`assets/any/wordlists/${_('rgx:demo list filename')}`);
+  let linesP = loadFile(localStorage[lsKeys.wordlist]);
   const reLowerCase = /^\p{Ll}/u;
   const io = new IntersectionObserver(entries => {
     if(entries.some(e => e.intersectionRatio > 0))
@@ -49,6 +49,10 @@ export default function(root) {
     root.getElementById('lcount-variants').dataset.sel = variant;
   });
   root.getElementById('add-filter').addEventListener('click', () => addFilter());
+  root.getElementById('wordlists').addEventListener('click', e => {
+    linesP = loadFile(e.target.dataset.filename);
+    update();
+  });
   loadSettings();
 
   const dbu = debounce(update, 300);
@@ -57,9 +61,30 @@ export default function(root) {
   root.getElementById('wordlist').addEventListener('input', dbu);
   update();
 
-  async function loadFile(file) {
+  async function loadFile(filename) {
+    const lists = await (await fetch(`trans/${i18n.lang}/wordlists.json`)).json();
+    const found = lists.find(entry => entry.filename === filename);
+    const item = found || lists[0];
+    localStorage[lsKeys.wordlist] = item.filename;
+
+    root.getElementById('title').textContent = item.title;
+    root.getElementById('opt-lcase').hidden = !item.showLCase;
+    root.getElementById('lcase-indicator').hidden = !item.showLCase || !root.getElementById('lcase').checked;
+    const list = root.getElementById('wordlists');
+    const template = root.getElementById('wordlist-template');
+    if(list.lastElementChild === template) {
+      for(const info of lists) {
+        const div = template.content.firstElementChild.cloneNode(true);
+        console.log(div);
+        div.children[1].textContent = info.title;
+        div.children[0].dataset.filename = info.filename;
+        list.appendChild(div);
+      }
+    }
+    list.querySelector(`[data-filename="${item.filename}"]`).checked = true;
+
     console.time('load');
-    const text = await (await fetch(file)).text();
+    const text = await (await fetch(`assets/any/wordlists/${item.filename}`)).text();
     console.timeLog('load');
     const lineIterator = function*(text) {
       let lastIndex = 0;
@@ -76,7 +101,7 @@ export default function(root) {
       const {value: lineN} = i2.next();
       lines.push([line, lineN]);
     }
-    console.timeLog('load');
+    console.timeEnd('load');
     return lines;
   }
 
@@ -266,6 +291,8 @@ export default function(root) {
 
   function loadSettings() {
     let sel = 'any';
+    root.getElementById('lcase').checked = localStorage[lsKeys.lcase];
+    root.getElementById('lcase').dispatchEvent(new CustomEvent('input'));
     if(localStorage[lsKeys.lcount]) {
       const lcount = JSON.parse(localStorage[lsKeys.lcount]);
       if(typeof lcount === 'number') {

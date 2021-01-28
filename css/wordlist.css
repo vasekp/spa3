@@ -114,3 +114,8 @@ li::before {
 :host([data-size="small"]) li::before {
   display: none;
 }
+
+#wordlists > label {
+  display: block;
+  white-space: nowrap;
+}

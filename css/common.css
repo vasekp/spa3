@@ -81,6 +81,10 @@ textarea {
   position: relative;
 }
 
+span.spa-loading {
+  display: inline-flex;
+}
+
 .spa-loading::before {
   content: "\25cf  \25cf  \25cf"; /* One space ignored after each unicode escape */
 }

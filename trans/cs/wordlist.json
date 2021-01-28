@@ -1,8 +1,6 @@
 {
   "_prefix": "rgx",
   "list": "Seznam:",
-  "demo list name": "Česká podstatná jména",
-  "demo list filename": "cs-subst.txt",
   "no capitals long": "pouze slova malými písmeny",
   "no capitals checkbox": "Pouze malými",
   "letter count": "Počet písmen",

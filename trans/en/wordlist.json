@@ -1,8 +1,6 @@
 {
   "_prefix": "rgx",
   "list": "Word list:",
-  "demo list name": "Czech nouns",
-  "demo list filename": "cs-subst.txt",
   "no capitals long": "lowercase words only",
   "no capitals checkbox": "Only lowercase",
   "letter count": "Letter count",
