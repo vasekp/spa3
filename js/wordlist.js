@@ -49,16 +49,16 @@ export default function(root) {
     root.getElementById('lcount-variants').dataset.sel = variant;
   });
   root.getElementById('add-filter').addEventListener('click', () => addFilter());
-  root.getElementById('wordlists').addEventListener('click', e => {
-    linesP = loadFile(e.target.dataset.filename);
-    update();
-  });
   loadSettings();
 
   const dbu = debounce(update, 300);
   root.getElementById('filters').addEventListener('input', dbu);
   root.getElementById('filters').addEventListener('filter-removed', dbu);
-  root.getElementById('wordlist').addEventListener('input', dbu);
+  root.getElementById('wordlist').addEventListener('input', e => {
+    if(e.target.dataset.filename)
+      linesP = loadFile(e.target.dataset.filename);
+    update();
+  });
   update();
 
   async function loadFile(filename) {
