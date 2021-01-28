@@ -15,10 +15,6 @@
   content: ":";
 }
 
-input[type="text"] {
-  border-bottom: var(--border-fainter);
-}
-
 .full-width {
   grid-column: 2/4;
 }

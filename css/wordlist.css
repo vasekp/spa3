@@ -6,10 +6,6 @@
   align-items: baseline;
 }
 
-#filters input[type="text"] {
-  border-bottom: var(--border-fainter);
-}
-
 input.error {
   background: var(--color-error);
 }
