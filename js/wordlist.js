@@ -16,7 +16,7 @@ const filterBits = Enum.fromObj({
   norm: 8,
 });
 
-const filterLabels = 'Obsahuje|Neobsahuje|Začíná|Nezačíná|Končí|Nekončí|Odpovídá|Neodpovídá'.split('|');
+const filterLabels = _('rgx:filter types').split('|');
 
 const lsKeys = Enum.fromObj({
   wordlist: 'rgx-wordlist',
@@ -27,7 +27,7 @@ const lsKeys = Enum.fromObj({
 
 export default function(root) {
   const list = root.getElementById('list');
-  const linesP = loadFile('assets/any/wordlists/cs-subst.txt');
+  const linesP = loadFile(`assets/any/wordlists/${_('rgx:demo list filename')}`);
   const reLowerCase = /^\p{Ll}/u;
   const io = new IntersectionObserver(entries => {
     if(entries.some(e => e.intersectionRatio > 0))

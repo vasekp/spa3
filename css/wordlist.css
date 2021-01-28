@@ -68,6 +68,10 @@ spa-number-picker input {
   margin: 0 var(--font-space);
 }
 
+#lcount-v-range > span:first-child {
+  margin-left: 0;
+}
+
 #filters-scroll {
   max-height: 50%;
   margin: 0 var(--margin-base-neg);

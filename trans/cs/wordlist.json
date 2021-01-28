@@ -1,1 +1,22 @@
-{}
+{
+  "_prefix": "rgx",
+  "list": "Seznam:",
+  "demo list name": "Česká podstatná jména",
+  "demo list filename": "cs-subst.txt",
+  "no capitals long": "pouze slova malými písmeny",
+  "no capitals checkbox": "Pouze malými",
+  "letter count": "Počet písmen",
+  "count/any": "libovolný",
+  "count/exactly": "přesně",
+  "count/range": "rozsah",
+  "range/from": "",
+  "range/to": "až",
+  "filter types": "Obsahuje|Neobsahuje|Začíná|Nezačíná|Končí|Nekončí|Odpovídá|Neodpovídá",
+  "filter type default": "Obsahuje",
+  "fix": "Uchytit",
+  "fix/start": "začátek",
+  "fix/end": "konec",
+  "negate": "Negovat",
+  "base form": "Bez velikosti a diakritiky",
+  "add filter": "Přidat filtr"
+}
