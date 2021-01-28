@@ -12,6 +12,8 @@ const filterBits = Enum.fromObj({
   neg: 1,
   start: 2,
   end: 4,
+  labelMask: 7,
+  norm: 8,
 });
 
 const filterLabels = 'Obsahuje|Neobsahuje|Začíná|Nezačíná|Končí|Nekončí|Odpovídá|Neodpovídá'.split('|');
@@ -51,18 +53,23 @@ export default function(root) {
   async function loadFile(file) {
     console.time('load');
     const text = await (await fetch(file)).text();
-    const lineIterator = {
-      [Symbol.iterator]: function*() {
-        let lastIndex = 0;
-        let index;
-        while((index = text.indexOf('\n', lastIndex)) >= 0) {
-          yield text.substring(lastIndex, index);
-          lastIndex = index + 1;
-        }
+    console.timeLog('load');
+    const lineIterator = function*(text) {
+      let lastIndex = 0;
+      let index;
+      while((index = text.indexOf('\n', lastIndex)) >= 0) {
+        yield text.substring(lastIndex, index);
+        lastIndex = index + 1;
       }
     };
-    const lines = [...lineIterator];
-    console.timeEnd('load');
+    const i1 = lineIterator(text);
+    const i2 = lineIterator(normalize(text));
+    const lines = [];
+    for(const line of i1) {
+      const {value: lineN} = i2.next();
+      lines.push([line, lineN]);
+    }
+    console.timeLog('load');
     return lines;
   }
 
@@ -72,8 +79,8 @@ export default function(root) {
     let c = 0;
     flines = (function*() {
       for(const line of lines)
-        if(f(line))
-          yield line;
+        if(f.apply(null, line))
+          yield line[0];
     })();
     io.disconnect();
     list.scrollIntoView();
@@ -127,7 +134,7 @@ export default function(root) {
   }
 
   function append(f, test) {
-    return text => f(text) && test(text);
+    return (text, norm) => f(text, norm) && test(text, norm);
   }
 
   function update() {
@@ -160,10 +167,17 @@ export default function(root) {
         try {
           const re = new RegExp(`${type & filterBits.start ? '^' : ''}${value}${type & filterBits.end ? '$' : ''}`);
           if(re) {
-            if(type & filterBits.neg)
-              f = append(f, text => !re.test(text));
-            else
-              f = append(f, text => re.test(text));
+            if(type & filterBits.norm) {
+              if(type & filterBits.neg)
+                f = append(f, (text, norm) => !re.test(norm));
+              else
+                f = append(f, (text, norm) => re.test(norm));
+            } else {
+              if(type & filterBits.neg)
+                f = append(f, text => !re.test(text));
+              else
+                f = append(f, text => re.test(text));
+            }
           }
         } catch {
           error = true;
@@ -190,10 +204,13 @@ export default function(root) {
         case 'neg':
           type = e.target.checked ? type | filterBits.neg : type & ~filterBits.neg;
           break;
+        case 'norm':
+          type = e.target.checked ? type | filterBits.norm : type & ~filterBits.norm;
+          break;
       }
       if(type != e.currentTarget.dataset.type) {
         e.currentTarget.dataset.type = type;
-        e.currentTarget.querySelector('[data-id="header"]').textContent = filterLabels[type];
+        e.currentTarget.querySelector('[data-id="header"]').textContent = filterLabels[type & filterBits.labelMask] + (type & filterBits.norm ? ' (⁎)' : '');
       }
     });
     div.addEventListener('click', e => {
