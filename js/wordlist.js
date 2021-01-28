@@ -18,6 +18,13 @@ const filterBits = Enum.fromObj({
 
 const filterLabels = 'Obsahuje|Neobsahuje|Začíná|Nezačíná|Končí|Nekončí|Odpovídá|Neodpovídá'.split('|');
 
+const lsKeys = Enum.fromObj({
+  wordlist: 'rgx-wordlist',
+  lcase: 'rgx-lcase',
+  lcount: 'rgx-lcount',
+  filters: 'rgx-filters',
+});
+
 export default function(root) {
   const list = root.getElementById('list');
   const linesP = loadFile('assets/any/wordlists/cs-subst.txt');
@@ -29,10 +36,10 @@ export default function(root) {
   let flines = null;
 
   {
-    const from = root.getElementById('lcount-from');
-    const to = root.getElementById('lcount-to');
-    from.addEventListener('change', () => { if(to.value < from.value) to.value = from.value; });
-    to.addEventListener('change', () => { if(from.value > to.value) from.value = to.value; });
+    const min = root.getElementById('lcount-min');
+    const max = root.getElementById('lcount-max');
+    min.addEventListener('input', () => { if(max.value < min.value) max.value = min.value; });
+    max.addEventListener('input', () => { if(min.value > max.value) min.value = max.value; });
   }
   root.getElementById('lcase').addEventListener('input', e => {
     root.getElementById('lcase-indicator').hidden = !e.currentTarget.checked;
@@ -42,9 +49,9 @@ export default function(root) {
     root.getElementById('lcount-variants').dataset.sel = variant;
   });
   root.getElementById('add-filter').addEventListener('click', () => addFilter());
-  addFilter();
+  loadSettings();
+
   const dbu = debounce(update, 300);
-  root.getElementById('filters').addEventListener('change', dbu);
   root.getElementById('filters').addEventListener('input', dbu);
   root.getElementById('filters').addEventListener('filter-removed', dbu);
   root.getElementById('wordlist').addEventListener('input', dbu);
@@ -133,11 +140,55 @@ export default function(root) {
       io.observe(list.lastChild);
   }
 
-  function append(f, test) {
-    return (text, norm) => f(text, norm) && test(text, norm);
+  function addFilter(type, value) {
+    const div = root.getElementById('filter-template').content.firstElementChild.cloneNode(true);
+    root.getElementById('filters').appendChild(div);
+    div.addEventListener('input', e => {
+      const id = e.target.dataset.id;
+      let type = +div.dataset.type;
+      switch(id) {
+        case 'fix-start':
+          type = e.target.checked ? type | filterBits.start : type & ~filterBits.start;
+          break;
+        case 'fix-end':
+          type = e.target.checked ? type | filterBits.end : type & ~filterBits.end;
+          break;
+        case 'neg':
+          type = e.target.checked ? type | filterBits.neg : type & ~filterBits.neg;
+          break;
+        case 'norm':
+          type = e.target.checked ? type | filterBits.norm : type & ~filterBits.norm;
+          break;
+      }
+      div.dataset.type = type;
+      div.querySelector('[data-id="header"]').textContent = filterLabels[type & filterBits.labelMask] + (type & filterBits.norm ? ' (⁎)' : '');
+    });
+    div.addEventListener('click', e => {
+      const id = e.target.dataset.id;
+      switch(id) {
+        case 'delete':
+          div.dispatchEvent(new CustomEvent('filter-removed', { bubbles: true }));
+          div.remove();
+          break;
+      }
+    });
+    if(type) {
+      div.querySelector('[data-id="fix-start"]').checked = type & filterBits.start;
+      div.querySelector('[data-id="fix-end"]').checked = type & filterBits.end;
+      div.querySelector('[data-id="neg"]').checked = type & filterBits.neg;
+      div.querySelector('[data-id="norm"]').checked = type & filterBits.norm;
+      div.dataset.type = type;
+      div.dispatchEvent(new CustomEvent('input'));
+    }
+    if(value)
+      div.querySelector('[data-id="value"]').value = value;
   }
 
   function update() {
+    function append(f, test) {
+      return (text, norm) => f(text, norm) && test(text, norm);
+    }
+
     let f;
     switch(root.getElementById('lcount-variants').dataset.sel) {
       case 'any':
@@ -151,8 +202,8 @@ export default function(root) {
         }
       case 'range':
         {
-          const min = root.getElementById('lcount-from').value;
-          const max = root.getElementById('lcount-to').value;
+          const min = root.getElementById('lcount-min').value;
+          const max = root.getElementById('lcount-max').value;
           f = text => text.length >= min && text.length <= max;
           break;
         }
@@ -186,42 +237,55 @@ export default function(root) {
       filterDiv.querySelector('[data-id="value"]').classList.toggle('error', error);
     }
     filter(f);
+    saveSettings();
   }
 
-  function addFilter() {
-    const div = root.getElementById('filter-template').content.firstElementChild.cloneNode(true);
-    root.getElementById('filters').appendChild(div);
-    div.addEventListener('input', e => {
-      const id = e.target.dataset.id;
-      let type = e.currentTarget.dataset.type;
-      switch(id) {
-        case 'fix-start':
-          type = e.target.checked ? type | filterBits.start : type & ~filterBits.start;
-          break;
-        case 'fix-end':
-          type = e.target.checked ? type | filterBits.end : type & ~filterBits.end;
-          break;
-        case 'neg':
-          type = e.target.checked ? type | filterBits.neg : type & ~filterBits.neg;
-          break;
-        case 'norm':
-          type = e.target.checked ? type | filterBits.norm : type & ~filterBits.norm;
-          break;
+  function saveSettings() {
+    switch(root.getElementById('lcount-variants').dataset.sel) {
+      case 'any':
+        localStorage[lsKeys.lcount] = '';
+        break;
+      case 'exact':
+        localStorage[lsKeys.lcount] = root.getElementById('lcount-exact').value;
+        break;
+      case 'range':
+        localStorage[lsKeys.lcount] = JSON.stringify([
+          root.getElementById('lcount-min').value,
+          root.getElementById('lcount-max').value]);
+        break;
+    }
+    localStorage[lsKeys.lcase] = +root.getElementById('lcase').checked;
+    const filters = [];
+    for(const filterDiv of root.querySelectorAll('.re-filter'))
+      filters.push({
+        type: filterDiv.dataset.type,
+        value: filterDiv.querySelector('[data-id="value"]').value
+      });
+    localStorage[lsKeys.filters] = JSON.stringify(filters);
+  }
+
+  function loadSettings() {
+    let sel = 'any';
+    if(localStorage[lsKeys.lcount]) {
+      const lcount = JSON.parse(localStorage[lsKeys.lcount]);
+      if(typeof lcount === 'number') {
+        root.getElementById('lcount-exact').value = lcount;
+        sel = 'exact';
+      } else {
+        root.getElementById('lcount-min').value = lcount[0];
+        root.getElementById('lcount-max').value = lcount[1];
+        sel = 'range';
       }
-      if(type != e.currentTarget.dataset.type) {
-        e.currentTarget.dataset.type = type;
-        e.currentTarget.querySelector('[data-id="header"]').textContent = filterLabels[type & filterBits.labelMask] + (type & filterBits.norm ? ' (⁎)' : '');
+    }
+    root.querySelector(`#lcount-variant [value="${sel}"]`).checked = true;
+    root.getElementById('lcount-variant').dispatchEvent(new CustomEvent('input'));
+    if(localStorage[lsKeys.filters]) {
+      const filters = JSON.parse(localStorage[lsKeys.filters]);
+      for(const {type, value} of filters) {
+        addFilter(type, value);
       }
-    });
-    div.addEventListener('click', e => {
-      const id = e.target.dataset.id;
-      switch(id) {
-        case 'delete':
-          e.currentTarget.dispatchEvent(new CustomEvent('filter-removed', { bubbles: true }));
-          e.currentTarget.remove();
-          break;
-      }
-    });
+    } else
+      addFilter();
   }
 
   return {};

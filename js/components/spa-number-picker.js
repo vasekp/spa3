@@ -58,7 +58,7 @@ class NumberPickerElement extends HTMLElement {
         this.value = this.min;
       if(this.value > this.max)
         this.value = this.max;
-      this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
+      this.dispatchEvent(new CustomEvent('input', { bubbles: true }));
     }
     if(this._constructed)
       this._update();
