@@ -6,5 +6,9 @@
   {
     "moduleName": "countries",
     "displayName": "Countries and Flags"
+  },
+  {
+    "moduleName": "wordlist",
+    "displayName": "Dictionary Search"
   }
 ]
