@@ -14,7 +14,7 @@
   outline: none;
 }
 
-*:focus-visible {
+*:not([tabindex="-1"]):focus-visible {
   box-shadow: var(--shadow-focus);
 }
 
