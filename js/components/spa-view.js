@@ -26,8 +26,10 @@ class ViewElement extends HTMLElement {
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
-    root.getElementById('home').addEventListener('click',
-      () => this.dataset.module = 'list');
+    root.getElementById('home').addEventListener('click', e => {
+      this.dataset.module = 'list';
+      e.currentTarget.blur();
+    });
     const settings = root.getElementById('settings-modal');
     root.getElementById('settings').addEventListener('click', () => {
       const s1 = root.getElementById('shared-settings-container');

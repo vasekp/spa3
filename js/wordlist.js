@@ -62,6 +62,7 @@ export default function(root) {
   update();
 
   async function loadFile(filename) {
+    root.getElementById('wordlist-loading').hidden = false;
     const lists = await (await fetch(`trans/${i18n.lang}/wordlists.json`)).json();
     const found = lists.find(entry => entry.filename === filename);
     const item = found || lists[0];
@@ -104,6 +105,7 @@ export default function(root) {
       lines.push([line, lineN]);
     }
     console.timeEnd('load');
+    root.getElementById('wordlist-loading').hidden = true;
     return lines;
   }
 

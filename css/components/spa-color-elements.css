@@ -12,6 +12,10 @@ spa-color-filter > .patch {
   position: relative;
 }
 
+spa-color-filter > [data-color="all"]:not(:checked) {
+  transition: opacity .5s;
+}
+
 spa-color-filter > [data-color="all"]:checked ~ * {
   margin-left: -1em;
   visibility: hidden;

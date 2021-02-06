@@ -211,7 +211,7 @@ export default function(root) {
     }
   }
 
-  root.querySelector('spa-plus-list').button.addEventListener('click', plus);
+  root.querySelector('spa-plus-list').addEventListener('plus-click', plus);
   root.getElementById('log-sel').addEventListener('click', gameList);
   root.getElementById('tag-filter').addEventListener('filter-change', filter);
   root.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
