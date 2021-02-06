@@ -36,9 +36,18 @@
   border-bottom-left-radius: calc(0.5 * var(--div-size));
 }
 
-:host(.corner) #expander:not(:hover):not(:focus):not(:focus-within) {
-  width: calc((var(--div-size) - var(--line-width)) / 2);
-  height: calc((var(--div-size) - var(--line-width)) / 2);
+@media (any-hover: hover) {
+  :host(.corner) #expander:not(:hover):not(:focus):not(:focus-within) {
+    width: calc((var(--div-size) - var(--line-width)) / 2);
+    height: calc((var(--div-size) - var(--line-width)) / 2);
+  }
+}
+
+@media (any-hover: none) {
+  :host(.corner) #expander:not(:focus):not(:focus-within) {
+    width: calc((var(--div-size) - var(--line-width)) / 2);
+    height: calc((var(--div-size) - var(--line-width)) / 2);
+  }
 }
 
 #container {
