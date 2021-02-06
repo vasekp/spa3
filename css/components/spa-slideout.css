@@ -36,7 +36,7 @@
   border-bottom-left-radius: calc(0.5 * var(--div-size));
 }
 
-:host(.corner) #expander:not(:hover, :focus, :focus-within) {
+:host(.corner) #expander:not(:hover):not(:focus):not(:focus-within) {
   width: calc((var(--div-size) - var(--line-width)) / 2);
   height: calc((var(--div-size) - var(--line-width)) / 2);
 }
