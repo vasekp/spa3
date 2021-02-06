@@ -1,8 +1,17 @@
-spa-plus-list {
+:host {
   display: block;
+  position: relative;
 }
 
-.spa-plus-button {
+:host([hidden]) {
+  display: none;
+}
+
+spa-scroll {
+  height: 100%;
+}
+
+#button {
   margin: 0 auto;
   transform: translateZ(0);
   background: var(--color-plus);
@@ -21,7 +30,7 @@ spa-plus-list {
   contain: strict;
 }
 
-.spa-plus-button[data-size="big"] {
+#button[data-size="big"] {
   position: absolute;
   z-index: 3;
   right: 1rem;
@@ -34,15 +43,15 @@ spa-plus-list {
   line-height: calc(3rem + var(--font-cap-size) + var(--font-descent) - var(--font-ascent));
 }
 
-.spa-plus-button[data-size="big"]:focus-visible {
+#button[data-size="big"]:focus-visible {
   box-shadow: 2px 2px 4px #0004, 0px 0px 5px var(--color-plus);
 }
 
-.spa-plus-button::after {
+#button::after {
   content: "+";
 }
 
-.spa-plus-item {
+#item {
   margin-top: var(--margin-base);
   height: calc(2rem + 1px);
 }

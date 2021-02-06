@@ -1,7 +1,11 @@
 :host {
+  display: block;
   overflow: auto;
   scrollbar-width: none;
-  position: relative;
+}
+
+:host([hidden]) {
+  display: none;
 }
 
 :host([data-pause-scroll="1"]) {

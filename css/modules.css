@@ -1,6 +1,5 @@
 @import "colors.css";
 @import "common.css";
-@import "components/spa-plus-list.css";
 main {
   display: flex;
   flex-direction: column;

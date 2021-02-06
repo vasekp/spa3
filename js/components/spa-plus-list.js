@@ -1,6 +1,25 @@
+const template = document.createElement('template');
+template.innerHTML = `
+<link rel="stylesheet" type="text/css" href="css/components/spa-plus-list.css"/>
+<spa-scroll>
+  <div id="content">
+    <slot></slot>
+    <div id="item"><div id="button"></div></div>
+  </div>
+</spa-scroll>`;
+
 class PlusListElement extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    this._content = this.shadowRoot.getElementById('content');
+    this._item = this.shadowRoot.getElementById('item');
+    this._button = this.shadowRoot.getElementById('button');
+  }
+
   connectedCallback() {
-    this._construct();
     this._state = new Proxy({
       scrolling: false,
       bottom: false,
@@ -10,7 +29,7 @@ class PlusListElement extends HTMLElement {
     /* Sets _state.scrolling (= content large enough to need scrolling) */
     const ro = new ResizeObserver(() => this._resized());
     ro.observe(this);
-    ro.observe(this.parentElement);
+    ro.observe(this._content);
 
     /* Sets _state.bottom (= scrolled low enough for extra "+" item to be visible) */
     const io = new IntersectionObserver(entries =>
@@ -27,30 +46,14 @@ class PlusListElement extends HTMLElement {
       attributes: true,
       attributeFilter: [ 'data-hide-plus' ]
     });
-  }
 
-  _construct() {
-    if(this._constructed)
-      return;
-    const item = document.createElement('div');
-    item.classList.add('spa-plus-item');
-    this.appendChild(item);
-    const button = document.createElement('div');
-    button.classList.add('spa-plus-button');
-    item.appendChild(button);
-    this._item = item;
-    this._button = button;
-    this._constructed = true;
+    this._button.addEventListener('click', () => this.dispatchEvent(new CustomEvent('plus-click', { bubbles: true })));
   }
 
   _resized() {
-    let parentSize = this.parentElement.clientHeight;
-    let targetSize = this.clientHeight;
-    this._state.scrolling = targetSize >= parentSize;
-  }
-
-  get button() {
-    return this._button;
+    const parentSize = this.clientHeight;
+    const childSize = this._content.clientHeight;
+    this._state.scrolling = childSize >= parentSize;
   }
 }
 

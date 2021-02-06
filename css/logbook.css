@@ -1,4 +1,5 @@
 @import "components/spa-color-elements.css";
+@import "components/spa-plus-list.css";
 @import "components/log-record.css";
 @import "components/log-game.css";
 
@@ -34,9 +35,10 @@
   cursor: pointer;
 }
 
-spa-scroll {
+spa-plus-list {
   margin: var(--margin-small) var(--margin-base-neg) 0;
   flex: 1;
+  overflow: hidden;
 }
 
 #record-list, #game-list {
