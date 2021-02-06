@@ -26,7 +26,8 @@ const ro = new ResizeObserver(entries => {
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
-  setTheme(localStorage[lsKeys.theme] || 'light');
+  const theme = localStorage[lsKeys.theme] || 'light';
+  setTheme(theme);
   await i18n.loadTrans(`trans/${i18n.lang}/main.json`);
   document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
@@ -52,6 +53,17 @@ window.addEventListener('DOMContentLoaded', async () => {
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
   document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
+  /* Update manifest */
+  const manifest = await (await fetch('manifest.json')).json();
+  manifest.name = _('title');
+  if(theme === 'dark')
+    manifest.background_color = manifest.theme_color = '#000000';
+  const urlPrefix = document.URL.substring(0, document.URL.lastIndexOf('/') + 1);
+  manifest.start_url = urlPrefix + manifest.start_url;
+  for(const entry of manifest.icons)
+    entry.src = urlPrefix + entry.src;
+  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  document.head.querySelector('link[rel="manifest"]').href = URL.createObjectURL(blob);
 });
 
 window.addEventListener('keydown', e => {
