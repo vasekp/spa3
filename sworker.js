@@ -63,7 +63,10 @@ async function update(dryrun = false) {
       promises.push(async function() {
         cache.put(f, await caches.match(f) || await fetch(f));
       }());
-    promises.push(cache.addAll(filesUpdate));
+    for(const f of filesUpdate)
+      promises.push(async function() {
+        cache.put(f, await fetch(f, { cache: 'no-cache' }));
+      }());
     await Promise.all(promises);
     for(const key of await caches.keys())
       if(key !== cacheName)
