@@ -112,7 +112,6 @@ export default function(root) {
   function popCnt(x) {
     let r = 0;
     while(x) {
-      console.log(x);
       r += x & 1;
       x >>= 1;
     }
