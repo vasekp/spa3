@@ -7,5 +7,7 @@
   "theme": "Theme:",
   "language": "Language:",
   "error": "Error",
-  "try dragging": "Try dragging the icon to another panel."
+  "try dragging": "Try dragging the icon to another panel.",
+  "update available": "New version available for offline use (size: {size}). Download now?",
+  "update finished": "New offline version is ready for use. Refresh window to apply. Refresh now?"
 }

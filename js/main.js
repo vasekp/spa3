@@ -108,5 +108,26 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
 });
 
 navigator.serviceWorker.addEventListener('message', m => {
-  console.log('w⇒c: ', m.data);
+  switch(m.data.update) {
+    case 'available': {
+      const templ = _('update available');
+      const sizeText = (size => {
+        if(size < 1024)
+          return '< 1 kB';
+        size /= 1024;
+        if(size < 1000)
+          return `${Math.round(size)} kB`;
+        size /= 1024;
+        return `${Math.round(size * 10) / 10} MB`;
+      })(m.data.dlSize);
+      const text = templ.replace('{size}', sizeText);
+      if(confirm(text))
+        navigator.serviceWorker.controller.postMessage({ dryrun: false });
+      break;
+    }
+    case 'updated':
+      if(confirm(_('update finished')))
+        location.reload();
+      break;
+  }
 });
