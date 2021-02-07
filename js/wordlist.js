@@ -294,7 +294,7 @@ export default function(root) {
 
   function loadSettings() {
     let sel = 'any';
-    root.getElementById('lcase').checked = localStorage[lsKeys.lcase];
+    root.getElementById('lcase').checked = +localStorage[lsKeys.lcase];
     root.getElementById('lcase').dispatchEvent(new CustomEvent('input'));
     if(localStorage[lsKeys.lcount]) {
       const lcount = JSON.parse(localStorage[lsKeys.lcount]);

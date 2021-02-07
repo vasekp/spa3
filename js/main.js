@@ -53,9 +53,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
   document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
-  /* Update manifest */
-  const manifest = await (await fetch('manifest.json')).json();
-  manifest.name = _('title');
+  /* Generate manifest */
+  const manifest = JSON.parse(await i18n.loadTemplate('manifest.json'));
   if(theme === 'dark')
     manifest.background_color = manifest.theme_color = '#000000';
   const urlPrefix = document.URL.substring(0, document.URL.lastIndexOf('/') + 1);
@@ -63,7 +62,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   for(const entry of manifest.icons)
     entry.src = urlPrefix + entry.src;
   const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-  document.head.querySelector('link[rel="manifest"]').href = URL.createObjectURL(blob);
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = URL.createObjectURL(blob);
+  document.head.appendChild(link);
+  /* Check for updates */
   if(navigator.serviceWorker.controller)
     navigator.serviceWorker.controller.postMessage({ dryrun: true });
 });

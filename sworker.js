@@ -1,15 +1,11 @@
-self.addEventListener('install', e => {
-  e.waitUntil(async function() {
-    self.skipWaiting();
-  }());
-});
+self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
 
 self.addEventListener('activate', e => e.waitUntil(clients.claim()));
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if(url.origin === location.origin)
-    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)).catch(() => null));
   else
     e.respondWith(fetch(e.request));
 });
@@ -32,7 +28,7 @@ async function update(dryrun = false) {
     const cacheName = `snapshot-${newV}`;
     const cache = await caches.open(cacheName);
     const filesKeep = [];
-    const filesUpdate = [];
+    const filesUpdate = ['./'];
     const filesIgnore = [
       '.github/FUNDING.yml',
       'fonts/SPA3.sfd',
@@ -63,7 +59,10 @@ async function update(dryrun = false) {
       promises.push(async function() {
         cache.put(f, await caches.match(f) || await fetch(f));
       }());
-    promises.push(cache.addAll(filesUpdate));
+    for(const f of filesUpdate)
+      promises.push(async function() {
+        cache.put(f, await fetch(f, { cache: 'no-cache' }));
+      }());
     await Promise.all(promises);
     for(const key of await caches.keys())
       if(key !== cacheName)
