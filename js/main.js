@@ -26,7 +26,8 @@ const ro = new ResizeObserver(entries => {
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
-  setTheme(localStorage[lsKeys.theme] || 'light');
+  const theme = localStorage[lsKeys.theme] || 'light';
+  setTheme(theme);
   await i18n.loadTrans(`trans/${i18n.lang}/main.json`);
   document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
@@ -52,6 +53,19 @@ window.addEventListener('DOMContentLoaded', async () => {
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
   document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
+  /* Update manifest */
+  const manifest = await (await fetch('manifest.json')).json();
+  manifest.name = _('title');
+  if(theme === 'dark')
+    manifest.background_color = manifest.theme_color = '#000000';
+  const urlPrefix = document.URL.substring(0, document.URL.lastIndexOf('/') + 1);
+  manifest.start_url = urlPrefix + manifest.start_url;
+  for(const entry of manifest.icons)
+    entry.src = urlPrefix + entry.src;
+  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  document.head.querySelector('link[rel="manifest"]').href = URL.createObjectURL(blob);
+  if(navigator.serviceWorker.controller)
+    navigator.serviceWorker.controller.postMessage({ dryrun: true });
 });
 
 window.addEventListener('keydown', e => {
@@ -86,3 +100,34 @@ export function setTheme(theme) {
 function getTheme() {
   return localStorage[lsKeys.theme];
 }
+
+window.addEventListener('load', () => navigator.serviceWorker.register('sworker.js'));
+
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+  navigator.serviceWorker.controller.postMessage({ dryrun: true });
+});
+
+navigator.serviceWorker.addEventListener('message', m => {
+  switch(m.data.update) {
+    case 'available': {
+      const templ = _('update available');
+      const sizeText = (size => {
+        if(size < 1024)
+          return '< 1 kB';
+        size /= 1024;
+        if(size < 1000)
+          return `${Math.round(size)} kB`;
+        size /= 1024;
+        return `${Math.round(size * 10) / 10} MB`;
+      })(m.data.dlSize);
+      const text = templ.replace('{size}', sizeText);
+      if(confirm(text))
+        navigator.serviceWorker.controller.postMessage({ dryrun: false });
+      break;
+    }
+    case 'updated':
+      if(confirm(_('update finished')))
+        location.reload();
+      break;
+  }
+});
