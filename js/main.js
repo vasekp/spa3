@@ -65,7 +65,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
   document.head.querySelector('link[rel="manifest"]').href = URL.createObjectURL(blob);
   if(navigator.serviceWorker.controller)
-    navigator.serviceWorker.controller.postMessage('on load');
+    navigator.serviceWorker.controller.postMessage({ dryrun: true });
 });
 
 window.addEventListener('keydown', e => {
@@ -104,9 +104,9 @@ function getTheme() {
 window.addEventListener('load', () => navigator.serviceWorker.register('sworker.js'));
 
 navigator.serviceWorker.addEventListener('controllerchange', () => {
-  navigator.serviceWorker.controller.postMessage('c change');
+  navigator.serviceWorker.controller.postMessage({ dryrun: true });
 });
 
 navigator.serviceWorker.addEventListener('message', m => {
-  console.log(`w⇒c: ${m.data}`);
+  console.log('w⇒c: ', m.data);
 });
