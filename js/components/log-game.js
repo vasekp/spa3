@@ -158,7 +158,11 @@ class GameRecordElement extends ContainerElement {
 
   _delete() {
     if(this.state === states.confirm) {
-      gameStore.delete(this.record).then(() => this.remove());
+      gameStore.delete(this.record).then(() => {
+        this.hidden = true;
+        this.dispatchEvent(new CustomEvent('game-deleted', { bubbles: true }));
+        this.remove()
+      });
     } else
       this.state = states.confirm;
   }

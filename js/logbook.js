@@ -108,7 +108,7 @@ export default function(root) {
     list.offsetHeight;
   }
 
-  function plus(e) {
+  function plus() {
     root.getElementById('tag-filter').selectAll();
     if(state.view === state.views.records) {
       const elm = document.createElement('log-record');
@@ -118,6 +118,7 @@ export default function(root) {
     } else {
       const elm = document.createElement('log-game');
       root.getElementById('game-list').appendChild(elm);
+      gameZebra();
       elm.scrollIntoView();
     }
   }
@@ -130,14 +131,21 @@ export default function(root) {
         elm.hidden = !show;
       }
     } else {
-      let odd = true;
       for(const elm of root.getElementById('game-list').querySelectorAll('log-game')) {
         const show = elm.record && elm.record.tag ? sel[elm.record.tag] : sel.all;
         elm.hidden = !show;
-        if(show) {
-          elm.classList.toggle('alt-row', odd);
-          odd = !odd;
-        }
+      }
+      gameZebra();
+    }
+  }
+
+  function gameZebra() {
+    let odd = true;
+    for(const elm of root.getElementById('game-list').querySelectorAll('log-game')) {
+      const show = !elm.hidden;
+      if(show) {
+        elm.classList.toggle('alt-row', odd);
+        odd = !odd;
       }
     }
   }
@@ -215,6 +223,7 @@ export default function(root) {
   root.getElementById('log-sel').addEventListener('click', gameList);
   root.getElementById('tag-filter').addEventListener('filter-change', filter);
   root.getElementById('game-list').addEventListener('game-chosen', e => recordList(e.detail.gameAwaitable));
+  root.getElementById('game-list').addEventListener('game-deleted', () => gameZebra());
   root.getElementById('no-games').addEventListener('click', plus);
   if(localStorage[lsKeys.ccount])
   root.getElementById('tag-filter').dataset.count = localStorage[lsKeys.ccount];
