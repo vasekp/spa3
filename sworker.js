@@ -32,7 +32,7 @@ async function update(dryrun = false) {
     const cacheName = `snapshot-${newV}`;
     const cache = await caches.open(cacheName);
     const filesKeep = [];
-    const filesUpdate = [];
+    const filesUpdate = ['./'];
     const filesIgnore = [
       '.github/FUNDING.yml',
       'fonts/SPA3.sfd',
