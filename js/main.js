@@ -64,6 +64,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     entry.src = urlPrefix + entry.src;
   const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
   document.head.querySelector('link[rel="manifest"]').href = URL.createObjectURL(blob);
+  if(navigator.serviceWorker.controller)
+    navigator.serviceWorker.controller.postMessage('on load');
 });
 
 window.addEventListener('keydown', e => {
@@ -98,3 +100,13 @@ export function setTheme(theme) {
 function getTheme() {
   return localStorage[lsKeys.theme];
 }
+
+window.addEventListener('load', () => navigator.serviceWorker.register('sworker.js'));
+
+navigator.serviceWorker.addEventListener('controllerchange', () => {
+  navigator.serviceWorker.controller.postMessage('c change');
+});
+
+navigator.serviceWorker.addEventListener('message', m => {
+  console.log(`w⇒c: ${m.data}`);
+});
