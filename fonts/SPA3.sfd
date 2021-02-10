@@ -6239,5 +6239,51 @@ SplineSet
 EndSplineSet
 Validated: 1
 EndChar
+
+StartChar: unif008
+Encoding: 61448 61448 74
+Width: 300
+LayerCount: 2
+Fore
+SplineSet
+250 330 m 0
+ 250 289 250 289 221 259 c 0
+ 191 230 191 230 150 230 c 0
+ 109 230 109 230 79 259 c 0
+ 50 289 50 289 50 330 c 0
+ 50 371 50 371 79 401 c 0
+ 109 430 109 430 150 430 c 0
+ 191 430 191 430 221 401 c 0
+ 250 371 250 371 250 330 c 0
+EndSplineSet
+EndChar
+
+StartChar: unif009
+Encoding: 61449 61449 75
+Width: 600
+LayerCount: 2
+Fore
+SplineSet
+50 280 m 1
+ 50 380 l 1
+ 550 380 l 1
+ 550 280 l 1
+ 50 280 l 1
+EndSplineSet
+EndChar
+
+StartChar: unif00a
+Encoding: 61450 61450 76
+Width: 300
+LayerCount: 2
+Fore
+SplineSet
+100 -100 m 1
+ 0 -100 l 1
+ 200 760 l 1
+ 300 760 l 1
+ 100 -100 l 1
+EndSplineSet
+EndChar
 EndChars
 EndSplineFont
