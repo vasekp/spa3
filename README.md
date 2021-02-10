@@ -16,6 +16,6 @@ Podporované prohlížeče jsou **výhradně nejnovější verze** Firefox, Chro
 
 ## Přispívání k projektu
 
-Opravy, nové funkce, překlady do jiných jazyků apod. uvítám ve formě Pull request.
+Opravy, nové funkce, překlady do jiných jazyků apod. uvítám ve formě Pull request. Další informace naleznete v souboru [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Na práci na projektu je také možno drobně přispět odkazem na [PayPal](http://paypal.me/vasekpotocek).
