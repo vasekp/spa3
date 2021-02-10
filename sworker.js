@@ -31,6 +31,9 @@ async function update(dryrun = false) {
     const filesUpdate = ['./'];
     const filesIgnore = [
       '.github/FUNDING.yml',
+      'README.md',
+      'LICENSE',
+      'CONTRIBUTING.md',
       'fonts/SPA3.sfd',
       'sworker.js'
     ];
