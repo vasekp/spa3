@@ -47,7 +47,8 @@ OS2Vendor: 'PfEd'
 OS2UnicodeRanges: 80000000.00000000.00000000.00000000
 MarkAttachClasses: 1
 DEI: 91125
-Encoding: Custom
+Encoding: UnicodeBmp
+Compacted: 1
 UnicodeInterp: none
 NameList: Adobe Glyph List
 DisplaySize: -48
@@ -58,10 +59,10 @@ BeginPrivate: 2
 BlueValues 45 [-410 -390 320 340 476 496 650 670 1014 1034]
 BlueFuzz 1 1
 EndPrivate
-BeginChars: 10 10
+BeginChars: 65536 10
 
 StartChar: uni204E
-Encoding: 0 8270 0
+Encoding: 8270 8270 0
 Width: 418
 Flags: MW
 LayerCount: 2
@@ -88,7 +89,7 @@ Validated: 1
 EndChar
 
 StartChar: sun.stroke
-Encoding: 1 61440 1
+Encoding: 61440 61440 1
 Width: 1000
 LayerCount: 2
 Fore
@@ -146,7 +147,7 @@ Validated: 1
 EndChar
 
 StartChar: sun.fill
-Encoding: 2 61441 2
+Encoding: 61441 61441 2
 Width: 1000
 LayerCount: 2
 Fore
@@ -180,7 +181,7 @@ Validated: 1
 EndChar
 
 StartChar: moon.stroke
-Encoding: 3 61442 3
+Encoding: 61442 61442 3
 Width: 1000
 LayerCount: 2
 Fore
@@ -214,7 +215,7 @@ Validated: 1
 EndChar
 
 StartChar: moon.fill
-Encoding: 4 61443 4
+Encoding: 61443 61443 4
 Width: 1000
 Flags: W
 LayerCount: 2
@@ -238,7 +239,7 @@ Validated: 1
 EndChar
 
 StartChar: star.stroke
-Encoding: 5 61444 5
+Encoding: 61444 61444 5
 Width: 1000
 LayerCount: 2
 Fore
@@ -270,7 +271,7 @@ Validated: 1
 EndChar
 
 StartChar: star.fill
-Encoding: 6 61445 6
+Encoding: 61445 61445 6
 Width: 1000
 Flags: W
 LayerCount: 2
@@ -292,7 +293,7 @@ Validated: 1
 EndChar
 
 StartChar: ellipsis.stroke
-Encoding: 7 61446 7
+Encoding: 61446 61446 7
 Width: 1000
 LayerCount: 2
 Fore
@@ -356,7 +357,7 @@ Validated: 1
 EndChar
 
 StartChar: ellipsis.fill
-Encoding: 8 61447 8
+Encoding: 61447 61447 8
 Width: 1000
 LayerCount: 2
 Fore
@@ -393,9 +394,9 @@ Validated: 1
 EndChar
 
 StartChar: uni2713
-Encoding: 9 10003 9
+Encoding: 10003 10003 9
 Width: 500
-Flags: MWO
+Flags: MW
 HStem: -15 63
 LayerCount: 2
 Fore
