@@ -14,6 +14,14 @@
 }
 
 @font-face {
+  font-family: "SPA3 flags";
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+F800-F8A0;
+  src: url("../fonts/SPA3-flags.woff2") format("woff2");
+}
+
+@font-face {
   font-family: "Source Sans Pro";
   font-style: italic;
   font-weight: 400;
