@@ -6,7 +6,7 @@
   display: none !important;
 }
 
-*[disabled], .inactive {
+.inactive {
   opacity: .5;
 }
 
@@ -24,7 +24,7 @@
 
 /* For browsers without :focus-visible. Separate rule as otherwise
  * the unsupported selector would invalidate it. */
-input[type="text"]:focus, textarea:focus {
+input[type="text"]:focus, textarea:focus, spa-textbox::part(area):focus {
   box-shadow: var(--shadow-focus);
 }
 
@@ -38,7 +38,7 @@ spa-scroll:focus-visible {
   box-shadow: none;
 }
 
-input, textarea, button {
+input, textarea, button, spa-textbox::part(area) {
   appearance: none;
   -webkit-appearance: none;
   font: inherit;
@@ -54,7 +54,7 @@ button {
   cursor: inherit;
 }
 
-textarea {
+textarea, spa-textbox::part(area) {
   box-sizing: border-box;
   resize: none;
 }

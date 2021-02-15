@@ -6,20 +6,12 @@ log-record {
 }
 
 log-record[data-state="nascent"] .log-record-header,
-log-record[data-state="nascent"] .log-record-text-container {
-  display: none;
-}
-
-log-record:not([data-state="edit"]) .log-record-area {
+log-record[data-state="nascent"] .log-record-text {
   display: none;
 }
 
 log-record[data-state="base"] .log-record-props {
   display: none;
-}
-
-log-record[data-state="edit"] .log-record-text {
-  visibility: hidden;
 }
 
 .log-record-header {
@@ -38,24 +30,8 @@ log-record[data-state="edit"] .log-record-text {
   border-top-right-radius: var(--radius-full);
 }
 
-.log-record-text-container {
-  margin: var(--margin-small);
-  min-height: var(--line-height-base);
-  position: relative;
-}
-
 .log-record-text {
-  padding: 0;
-  overflow: hidden;
-  white-space: pre-wrap;
-}
-
-.log-record-area {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  margin: var(--margin-small);
 }
 
 .log-record-fill {
