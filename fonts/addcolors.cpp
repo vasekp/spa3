@@ -292,7 +292,7 @@ int main() {
     /* Cache entire input OTF */
     {
       std::filebuf inBuf;
-      if(!inBuf.open("SPA3_flags.otf", std::ios_base::in | std::ios_base::binary))
+      if(!inBuf.open("SPA3.otf", std::ios_base::in | std::ios_base::binary))
         throw std::runtime_error("Can't open file for reading.");
       ICodec in{inBuf};
       check(in.read<Tag>() == "OTTO");
@@ -582,7 +582,7 @@ int main() {
 
     /* Dump file contents */
     std::filebuf outBuf;
-    if(!outBuf.open("SPA3-flags.otf", std::ios_base::out | std::ios_base::binary))
+    if(!outBuf.open("SPA3.otf", std::ios_base::out | std::ios_base::binary))
       throw std::runtime_error("Can't open file for reading.");
     OCodec oc{outBuf};
     oc << header;
