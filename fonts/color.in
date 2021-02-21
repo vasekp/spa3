@@ -1,0 +1,438 @@
+5
+FFFFFFFF
+FFFF00FF
+FF0000FF
+0000FFFF
+000000FF
+
+unif801 6
+unif801.white 0
+unif801.yellow 1
+unif801.red 2
+unif801.blue 3
+unif801.black 4
+unif801 -1
+
+unif802 6
+unif802.white 0
+unif802.yellow 1
+unif802.red 2
+unif802.blue 3
+unif802.black 4
+unif802 -1
+
+unif803 6
+unif803.white 0
+unif803.yellow 1
+unif803.red 2
+unif803.blue 3
+unif803.black 4
+unif803 -1
+
+unif804 6
+unif804.white 0
+unif804.yellow 1
+unif804.red 2
+unif804.blue 3
+unif804.black 4
+unif804 -1
+
+unif805 6
+unif805.white 0
+unif805.yellow 1
+unif805.red 2
+unif805.blue 3
+unif805.black 4
+unif805 -1
+
+unif806 6
+unif806.white 0
+unif806.yellow 1
+unif806.red 2
+unif806.blue 3
+unif806.black 4
+unif806 -1
+
+unif807 6
+unif807.white 0
+unif807.yellow 1
+unif807.red 2
+unif807.blue 3
+unif807.black 4
+unif807 -1
+
+unif808 6
+unif808.white 0
+unif808.yellow 1
+unif808.red 2
+unif808.blue 3
+unif808.black 4
+unif808 -1
+
+unif809 6
+unif809.white 0
+unif809.yellow 1
+unif809.red 2
+unif809.blue 3
+unif809.black 4
+unif809 -1
+
+unif80a 6
+unif80a.white 0
+unif80a.yellow 1
+unif80a.red 2
+unif80a.blue 3
+unif80a.black 4
+unif80a -1
+
+unif80b 6
+unif80b.white 0
+unif80b.yellow 1
+unif80b.red 2
+unif80b.blue 3
+unif80b.black 4
+unif80b -1
+
+unif80c 6
+unif80c.white 0
+unif80c.yellow 1
+unif80c.red 2
+unif80c.blue 3
+unif80c.black 4
+unif80c -1
+
+unif80d 6
+unif80d.white 0
+unif80d.yellow 1
+unif80d.red 2
+unif80d.blue 3
+unif80d.black 4
+unif80d -1
+
+unif80e 6
+unif80e.white 0
+unif80e.yellow 1
+unif80e.red 2
+unif80e.blue 3
+unif80e.black 4
+unif80e -1
+
+unif80f 6
+unif80f.white 0
+unif80f.yellow 1
+unif80f.red 2
+unif80f.blue 3
+unif80f.black 4
+unif80f -1
+
+unif810 6
+unif810.white 0
+unif810.yellow 1
+unif810.red 2
+unif810.blue 3
+unif810.black 4
+unif810 -1
+
+unif811 6
+unif811.white 0
+unif811.yellow 1
+unif811.red 2
+unif811.blue 3
+unif811.black 4
+unif811 -1
+
+unif812 6
+unif812.white 0
+unif812.yellow 1
+unif812.red 2
+unif812.blue 3
+unif812.black 4
+unif812 -1
+
+unif813 6
+unif813.white 0
+unif813.yellow 1
+unif813.red 2
+unif813.blue 3
+unif813.black 4
+unif813 -1
+
+unif814 6
+unif814.white 0
+unif814.yellow 1
+unif814.red 2
+unif814.blue 3
+unif814.black 4
+unif814 -1
+
+unif815 6
+unif815.white 0
+unif815.yellow 1
+unif815.red 2
+unif815.blue 3
+unif815.black 4
+unif815 -1
+
+unif816 6
+unif816.white 0
+unif816.yellow 1
+unif816.red 2
+unif816.blue 3
+unif816.black 4
+unif816 -1
+
+unif817 6
+unif817.white 0
+unif817.yellow 1
+unif817.red 2
+unif817.blue 3
+unif817.black 4
+unif817 -1
+
+unif818 6
+unif818.white 0
+unif818.yellow 1
+unif818.red 2
+unif818.blue 3
+unif818.black 4
+unif818 -1
+
+unif819 6
+unif819.white 0
+unif819.yellow 1
+unif819.red 2
+unif819.blue 3
+unif819.black 4
+unif819 -1
+
+unif81a 6
+unif81a.white 0
+unif81a.yellow 1
+unif81a.red 2
+unif81a.blue 3
+unif81a.black 4
+unif81a -1
+
+unif881 6
+smp.0.base -1
+smp.1.base -1
+smp.0.yellow 1
+smp.0.red 2
+smp.1.yellow 1
+smp.1.red 2
+
+unif882 6
+smp.0.base -1
+smp.2.base -1
+smp.0.yellow 1
+smp.0.red 2
+smp.2.yellow 1
+smp.2.red 2
+
+unif883 6
+smp.0.base -1
+smp.3.base -1
+smp.0.yellow 1
+smp.0.red 2
+smp.3.yellow 1
+smp.3.red 2
+
+unif884 6
+smp.0.base -1
+smp.4.base -1
+smp.0.yellow 1
+smp.0.red 2
+smp.4.yellow 1
+smp.4.red 2
+
+unif885 6
+smp.0.base -1
+smp.5.base -1
+smp.0.yellow 1
+smp.0.red 2
+smp.5.yellow 1
+smp.5.red 2
+
+unif886 6
+smp.0.base -1
+smp.6.base -1
+smp.0.yellow 1
+smp.0.red 2
+smp.6.yellow 1
+smp.6.red 2
+
+unif887 6
+smp.7.base -1
+smp.8.base -1
+smp.7.yellow 1
+smp.7.red 2
+smp.8.yellow 1
+smp.8.red 2
+
+unif88a 6
+smp.1.base -1
+smp.2.base -1
+smp.1.yellow 1
+smp.1.red 2
+smp.2.yellow 1
+smp.2.red 2
+
+unif88b 6
+smp.1.base -1
+smp.3.base -1
+smp.1.yellow 1
+smp.1.red 2
+smp.3.yellow 1
+smp.3.red 2
+
+unif88c 6
+smp.1.base -1
+smp.4.base -1
+smp.1.yellow 1
+smp.1.red 2
+smp.4.yellow 1
+smp.4.red 2
+
+unif88d 6
+smp.1.base -1
+smp.5.base -1
+smp.1.yellow 1
+smp.1.red 2
+smp.5.yellow 1
+smp.5.red 2
+
+unif88e 6
+smp.1.base -1
+smp.6.base -1
+smp.1.yellow 1
+smp.1.red 2
+smp.6.yellow 1
+smp.6.red 2
+
+unif88f 6
+smp.1.base -1
+smp.7.base -1
+smp.1.yellow 1
+smp.1.red 2
+smp.7.yellow 1
+smp.7.red 2
+
+unif893 6
+smp.2.base -1
+smp.3.base -1
+smp.2.yellow 1
+smp.2.red 2
+smp.3.yellow 1
+smp.3.red 2
+
+unif894 6
+smp.2.base -1
+smp.4.base -1
+smp.2.yellow 1
+smp.2.red 2
+smp.4.yellow 1
+smp.4.red 2
+
+unif895 6
+smp.2.base -1
+smp.5.base -1
+smp.2.yellow 1
+smp.2.red 2
+smp.5.yellow 1
+smp.5.red 2
+
+unif896 6
+smp.2.base -1
+smp.6.base -1
+smp.2.yellow 1
+smp.2.red 2
+smp.6.yellow 1
+smp.6.red 2
+
+unif897 6
+smp.2.base -1
+smp.7.base -1
+smp.2.yellow 1
+smp.2.red 2
+smp.7.yellow 1
+smp.7.red 2
+
+unif89c 6
+smp.3.base -1
+smp.4.base -1
+smp.3.yellow 1
+smp.3.red 2
+smp.4.yellow 1
+smp.4.red 2
+
+unif89d 6
+smp.3.base -1
+smp.5.base -1
+smp.3.yellow 1
+smp.3.red 2
+smp.5.yellow 1
+smp.5.red 2
+
+unif89e 6
+smp.3.base -1
+smp.6.base -1
+smp.3.yellow 1
+smp.3.red 2
+smp.6.yellow 1
+smp.6.red 2
+
+unif89f 6
+smp.3.base -1
+smp.7.base -1
+smp.3.yellow 1
+smp.3.red 2
+smp.7.yellow 1
+smp.7.red 2
+
+unif8a5 6
+smp.4.base -1
+smp.5.base -1
+smp.4.yellow 1
+smp.4.red 2
+smp.5.yellow 1
+smp.5.red 2
+
+unif8a6 6
+smp.4.base -1
+smp.6.base -1
+smp.4.yellow 1
+smp.4.red 2
+smp.6.yellow 1
+smp.6.red 2
+
+unif8a7 6
+smp.4.base -1
+smp.7.base -1
+smp.4.yellow 1
+smp.4.red 2
+smp.7.yellow 1
+smp.7.red 2
+
+unif8ae 6
+smp.5.base -1
+smp.6.base -1
+smp.5.yellow 1
+smp.5.red 2
+smp.6.yellow 1
+smp.6.red 2
+
+unif8af 6
+smp.5.base -1
+smp.7.base -1
+smp.5.yellow 1
+smp.5.red 2
+smp.7.yellow 1
+smp.7.red 2
+
+unif8b7 6
+smp.6.base -1
+smp.7.base -1
+smp.6.yellow 1
+smp.6.red 2
+smp.7.yellow 1
+smp.7.red 2
