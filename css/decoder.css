@@ -1,0 +1,11 @@
+spa-scroll {
+  max-height: 100px;
+}
+
+spa-scroll:focus-within {
+  box-shadow: var(--shadow-focus);
+}
+
+spa-textbox::part(area):focus {
+  box-shadow: none;
+}
