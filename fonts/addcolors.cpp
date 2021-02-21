@@ -489,6 +489,8 @@ int main() {
         << uint16(0); // colorRecordIndices
       for(const auto& entry : palette)
         cpal << entry[2] << entry[1] << entry[0] << entry[3];
+      if(auto it = std::find_if(tables.begin(), tables.end(), [](const Table& t) { return t.tag == "CPAL"; }); it != tables.end())
+        tables.erase(it);
       tables.push_back({Tag("CPAL"), buf.str()});
     }
 
@@ -527,6 +529,8 @@ int main() {
         for(const auto& layer : record.second)
           colr << layer.first // glyphID
             << layer.second; // paletteIndex
+      if(auto it = std::find_if(tables.begin(), tables.end(), [](const Table& t) { return t.tag == "COLR"; }); it != tables.end())
+        tables.erase(it);
       tables.push_back({Tag("COLR"), buf.str()});
     }
 
