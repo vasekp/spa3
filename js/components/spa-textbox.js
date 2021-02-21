@@ -1,11 +1,7 @@
 import './spa-slideout.js';
 
 const template = document.createElement('template');
-template.innerHTML = `
-<link rel="stylesheet" type="text/css" href="css/components/spa-textbox.css"/>
-<span></span>
-<textarea part="area" spellcheck="false"></textarea>
-<spa-slideout class="corner">
+template.innerHTML = `<spa-slideout class="corner">
   <button id="keyboard">&#x2800;</button>
   <button id="keyboard">&#xF008;&#xF00A;</button>
   <button id="keyboard">&#xF129;</button>
@@ -16,22 +12,23 @@ template.innerHTML = `
 </spa-slideout>`;
 
 class TextboxElement extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({mode: 'open'});
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this._area = this.shadowRoot.querySelector('textarea');
-    this._span = this.shadowRoot.querySelector('span');
-    this._area.addEventListener('input', () => this._span.textContent = this._area.value);
-  }
-
   connectedCallback() {
-    /* if value had been set before connecting, it would shadow the property */
+    if(this._constructed)
+      return;
+    this._span = document.createElement('span');
+    this._area = document.createElement('textarea');
+    this._area.classList.add('spa-tb-area');
+    this._area.setAttribute('spellcheck', false);
+    this._area.addEventListener('input', () => this._span.textContent = this._area.value);
+    /* if value was set before connecting, it shadows the property */
     for(const prop of ['value', 'disabled']) {
       let value = this[prop];
       delete this[prop];
       this[prop] = value;
     }
+    this.appendChild(this._span);
+    this.appendChild(this._area);
+    this.constructed = true;
   }
 
   set value(v) {
@@ -54,7 +51,7 @@ class TextboxElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['disabled'];
+    return ['disabled', 'ime'];
   }
 
   attributeChangedCallback(name, oldValue, value) {
@@ -63,6 +60,9 @@ class TextboxElement extends HTMLElement {
       this._area.disabled = isDisabled;
       if(isDisabled)
         this._area.blur();
+    } else if(name === 'ime' && !this._slideout) {
+      this._slideout = template.content.firstElementChild.cloneNode(true);
+      this.appendChild(this._slideout);
     }
   }
 

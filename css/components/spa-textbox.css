@@ -1,21 +1,20 @@
-@import "../common.css";
-
-:host {
+spa-textbox {
   display: block;
   position: relative;
   min-height: var(--line-height-base);
 }
 
-:host([hidden]) {
-  display: none;
-}
-
-span {
+spa-textbox > span {
   padding: 0;
   color: transparent;
 }
 
-textarea {
+spa-textbox > span, spa-textbox > textarea {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+spa-textbox > textarea {
   position: absolute;
   left: 0;
   top: 0;
@@ -23,20 +22,11 @@ textarea {
   height: 100%;
 }
 
-span, textarea {
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-}
-
-textarea:disabled {
-  background: inherit;
-  color: inherit;
-}
-
-:host(:not(:focus-within)) spa-slideout {
-  display: none;
-}
-
-spa-slideout > button {
+spa-textbox spa-slideout > button {
   width: 1em;
+}
+
+spa-textbox:not([ime]) spa-slideout,
+spa-textbox:not(:focus-within) spa-slideout {
+  display: none;
 }

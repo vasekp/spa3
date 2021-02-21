@@ -1,3 +1,5 @@
+@import "components/spa-textbox.css";
+
 spa-scroll {
   max-height: 100px;
 }
@@ -6,6 +8,6 @@ spa-scroll:focus-within {
   box-shadow: var(--shadow-focus);
 }
 
-spa-textbox::part(area):focus {
+spa-textbox > textarea:focus {
   box-shadow: none;
 }
