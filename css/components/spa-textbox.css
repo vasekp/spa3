@@ -1,3 +1,5 @@
+@import "../common.css";
+
 :host {
   display: block;
   position: relative;
@@ -29,4 +31,12 @@ span, textarea {
 textarea:disabled {
   background: inherit;
   color: inherit;
+}
+
+:host(:not(:focus-within)) spa-slideout {
+  display: none;
+}
+
+spa-slideout > button {
+  width: 1em;
 }

@@ -1,8 +1,19 @@
+import './spa-slideout.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-textbox.css"/>
 <span></span>
-<textarea part="area" spellcheck="false"></textarea>`;
+<textarea part="area" spellcheck="false"></textarea>
+<spa-slideout class="corner">
+  <button id="keyboard">&#x2800;</button>
+  <button id="keyboard">&#xF008;&#xF00A;</button>
+  <button id="keyboard">&#xF129;</button>
+  <button id="keyboard">&#xF146;</button>
+  <button id="keyboard">&#xF1FF;</button>
+  <button id="keyboard">&#xF801;</button>
+  <button id="keyboard">&#xF883;</button>
+</spa-slideout>`;
 
 class TextboxElement extends HTMLElement {
   constructor() {
