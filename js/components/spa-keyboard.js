@@ -17,12 +17,48 @@ template.innerHTML = `
     <button data-mod="default">Aa</button>
   </div>
   <div id="module"></div>
+  <button class="key" id="default" hidden></button>
   <button class="key" id="space">&#x2334;</button>
   <button class="key" id="bsp">&#x232B;</button>
   <button class="key" id="enter">&#x21B5;</button>
 </div>`;
 
-function modFlags(root, cont) {
+function modBraille(cont, defKey) {
+  cont.innerHTML = `
+  <div id="kbd-braille">
+    <div id="kbd-braille-glyph">&#x2800;</div>
+    <input type="checkbox" data-value="1"/>
+    <input type="checkbox" data-value="2"/>
+    <input type="checkbox" data-value="4"/>
+    <input type="checkbox" data-value="8"/>
+    <input type="checkbox" data-value="16"/>
+    <input type="checkbox" data-value="32"/>
+  </div>`;
+
+  const state = Object.defineProperty({}, 'value', {
+    set(v) {
+      this._v = v;
+      defKey.textContent
+        = cont.querySelector('#kbd-braille-glyph').textContent
+        = String.fromCodePoint(0x2800 + v);
+      defKey.hidden = false;
+    },
+    get() {
+      return this._v;
+    }
+  });
+
+  cont.children[0].addEventListener('input', e => {
+    state.value ^= +e.target.dataset.value;
+  });
+
+  defKey.afterClick = () => {
+    state.value = 0;
+    defKey.hidden = true;
+  };
+}
+
+function modFlags(cont) {
   const flgColors = [9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30];
 
   cont.innerHTML = `
@@ -39,7 +75,7 @@ function modFlags(root, cont) {
 
   function filter() {
     let cond = 0;
-    for(const elm of root.getElementById('kbd-flg-colors').children)
+    for(const elm of cont.querySelector('#kbd-flg-colors').children)
       if(elm.checked)
         cond += +elm.dataset.value;
     const sugg = cont.querySelector('#kbd-flg-sugg');
@@ -68,7 +104,7 @@ function modFlags(root, cont) {
   filter();
 }
 
-function modDigits(root, cont) {
+function modDigits(cont) {
   cont.innerHTML = `
   <div id="kbd-digits">
     <button class="key">0</button>
@@ -113,6 +149,11 @@ class KeyboardElement extends HTMLElement {
         case 'bsp':
           bspace(this._target);
           break;
+        case 'default':
+          insert(this._target, e.target.textContent);
+          if(e.target.afterClick)
+            e.target.afterClick();
+          break;
         default:
           insert(this._target, e.target.textContent);
           break;
@@ -141,18 +182,21 @@ class KeyboardElement extends HTMLElement {
   }
 
   openModule(mod) {
-    const root = this.shadowRoot;
-    const cont = root.getElementById('module');
+    const cont = this.shadowRoot.getElementById('module');
+    const defKey = this.shadowRoot.getElementById('default');
     switch(mod) {
       case 'default':
         if(this._exit)
           this._exit();
         break;
+      case 'braille':
+        modBraille(cont, defKey);
+        break;
       case 'flags':
-        modFlags(root, cont);
+        modFlags(cont);
         break;
       case 'digits':
-        modDigits(root, cont);
+        modDigits(cont);
         break;
       default:
         cont.innerHTML = '';
