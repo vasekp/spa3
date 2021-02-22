@@ -19,7 +19,7 @@ class TextboxElement extends HTMLElement {
     this._area = document.createElement('textarea');
     this._area.classList.add('spa-tb-area');
     this._area.setAttribute('spellcheck', false);
-    this._area.addEventListener('input', () => this._span.textContent = this._area.value);
+    this._area.addEventListener('input', () => this._span.textContent = this._area.value + '\u200B');
     /* if value was set before connecting, it shadows the property */
     for(const prop of ['value', 'disabled']) {
       let value = this[prop];
@@ -32,7 +32,8 @@ class TextboxElement extends HTMLElement {
   }
 
   set value(v) {
-    this._span.textContent = this._area.value = v;
+    this._area.value = v;
+    this._span.textContent = v + '\u200B';
   }
 
   get value() {
