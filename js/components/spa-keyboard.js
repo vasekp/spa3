@@ -3,33 +3,84 @@ template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-keyboard.css"/>
 <div id="main">
   <div id="side-left">
-    <button>&#x2800;</button>
-    <button>&#xF008;&#xF009;</button>
-    <button>&#xF129;</button>
-    <button>&#xF146;</button>
-    <button>&#xF1FF;</button>
+    <button data-mod="braille">&#x2800;</button>
+    <button data-mod="morse">&#xF008;&#xF009;</button>
+    <button data-mod="pigpen">&#xF129;</button>
+    <button data-mod="polyb">&#xF146;</button>
+    <button data-mod="segm">&#xF1FF;</button>
   </div>
   <div id="side-right">
-    <button>&#xF801;</button>
-    <button>&#xF883;</button>
-    <button>&#xF00B;</button>
-    <button>123</button>
-    <button>Aa</button>
+    <button data-mod="smph">&#xF883;</button>
+    <button data-mod="flags">&#xF801;</button>
+    <button data-mod="mobile">&#xF00B;</button>
+    <button data-mod="digits">123</button>
+    <button data-mod="default">Aa</button>
   </div>
+  <div id="module"></div>
   <button class="key" id="space">&#x2334;</button>
   <button class="key" id="bsp">&#x232B;</button>
   <button class="key" id="enter">&#x21B5;</button>
 </div>`;
 
+function modFlags(root, cont) {
+  const flgColors = [9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30];
+
+  cont.innerHTML = `
+  <div id="kbd-flags">
+    <div id="kbd-flg-colors">
+      <input type="checkbox" class="patch c-white" data-color="param" data-value="1"></input>
+      <input type="checkbox" class="patch c-yellow" data-color="param" data-value="2"></input>
+      <input type="checkbox" class="patch c-red" data-color="param" data-value="4"></input>
+      <input type="checkbox" class="patch c-blue" data-color="param" data-value="8"></input>
+      <input type="checkbox" class="patch c-black" data-color="param" data-value="16"></input>
+    </div>
+    <div id="kbd-flg-sugg"></div>
+  </div>`;
+
+  function filter() {
+    let cond = 0;
+    for(const elm of root.getElementById('kbd-flg-colors').children)
+      if(elm.checked)
+        cond += +elm.dataset.value;
+    const sugg = cont.querySelector('#kbd-flg-sugg');
+    const iter = sugg.children[Symbol.iterator]();
+    let count = 0;
+    for(let i = 0; i < 26; i++) {
+      if((flgColors[i] & cond) === cond) {
+        const elm = iter.next().value || (() => {
+          const elm = document.createElement('button');
+          elm.classList.add('key');
+          sugg.appendChild(elm);
+          return elm;
+        })();
+        elm.textContent = String.fromCodePoint(0xF801 + i);
+        elm.hidden = false;
+        if(++count == 21)
+          break;
+      }
+    }
+    let rest;
+    while(rest = iter.next().value)
+      rest.hidden = true;
+  }
+
+  cont.querySelector('#kbd-flg-colors').addEventListener('input', filter);
+  filter();
+}
+
 class KeyboardElement extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({mode: 'open'});
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    const root = this.attachShadow({mode: 'open'});
+    root.appendChild(template.content.cloneNode(true));
     this.addEventListener('mousedown', e => e.preventDefault());
-    this.shadowRoot.addEventListener('click', e => {
+    root.addEventListener('click', e => {
       if(!this._target || e.target.tagName !== 'BUTTON')
         return;
+      if(e.target.dataset.mod) {
+        this.openModule(e.target.dataset.mod);
+        return;
+      }
       switch(e.target.id) {
         case 'space':
           insert(this._target, ' ');
@@ -48,20 +99,40 @@ class KeyboardElement extends HTMLElement {
     });
   }
 
-  openFor(elm) {
+  openFor(elm, mod) {
+    this.openModule(mod);
     this.hidden = false;
     const cb = e => {
-      if(!elm.contains(e.relatedTarget)) {
-        //this.hidden = true;
-        elm.removeEventListener('focusout', cb);
-        this._target = null;
-        elm.removeAttribute('inputmode');
-      }
+      if(!elm.contains(e.relatedTarget))
+        this._exit();
+    };
+    this._exit = () => {
+      elm.removeEventListener('focusout', cb);
+      this._target = null;
+      this.hidden = true;
+      elm.removeAttribute('inputmode');
     };
     this._target = elm;
     elm.addEventListener('focusout', cb);
     elm.setAttribute('inputmode', 'none');
     elm.focus();
+  }
+
+  openModule(mod) {
+    const root = this.shadowRoot;
+    const cont = root.getElementById('module');
+    switch(mod) {
+      case 'default':
+        if(this._exit)
+          this._exit();
+        break;
+      case 'flags':
+        modFlags(root, cont);
+        break;
+      default:
+        cont.innerHTML = '';
+        break;
+    }
   }
 }
 

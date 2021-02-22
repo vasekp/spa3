@@ -2,13 +2,15 @@ import './spa-slideout.js';
 
 const template = document.createElement('template');
 template.innerHTML = `<spa-slideout class="corner">
-  <button id="keyboard">&#x2800;</button>
-  <button id="keyboard">&#xF008;&#xF009;</button>
-  <button id="keyboard">&#xF129;</button>
-  <button id="keyboard">&#xF146;</button>
-  <button id="keyboard">&#xF1FF;</button>
-  <button id="keyboard">&#xF801;</button>
-  <button id="keyboard">&#xF883;</button>
+  <button data-mod="braille">&#x2800;</button>
+  <button data-mod="morse">&#xF008;&#xF009;</button>
+  <button data-mod="pigpen">&#xF129;</button>
+  <button data-mod="polyb">&#xF146;</button>
+  <button data-mod="segm">&#xF1FF;</button>
+  <button data-mod="mobile">&#xF00B;</button>
+  <button data-mod="digits">12</button>
+  <button data-mod="flags">&#xF801;</button>
+  <button data-mod="smph">&#xF883;</button>
 </spa-slideout>`;
 
 class TextboxElement extends HTMLElement {
@@ -64,8 +66,10 @@ class TextboxElement extends HTMLElement {
         this._area.blur();
     } else if(name === 'ime' && !this._slideout) {
       this._slideout = template.content.firstElementChild.cloneNode(true);
-      this._slideout.addEventListener('click', () => {
-        document.querySelector('spa-keyboard').openFor(this._area);
+      this._slideout.addEventListener('click', e => {
+        const mod = e.target.dataset.mod;
+        if(mod)
+          document.querySelector('spa-keyboard').openFor(this._area, mod);
       });
       this.appendChild(this._slideout);
     }
