@@ -19,7 +19,6 @@ class TextboxElement extends HTMLElement {
       return;
     this._span = document.createElement('span');
     this._area = document.createElement('textarea');
-    this._area.classList.add('spa-tb-area');
     this._area.setAttribute('spellcheck', false);
     this._area.classList.add('no-outline');
     this._area.addEventListener('input', () => this._span.textContent = this._area.value + '\u200B');

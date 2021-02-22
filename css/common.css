@@ -34,11 +34,15 @@ spa-scroll:focus-visible {
   box-shadow: inset var(--shadow-focus);
 }
 
+.no-outline:focus {
+  box-shadow: none;
+}
+
 .no-outline:focus-visible {
   box-shadow: none;
 }
 
-input, textarea, button, spa-textbox::part(area) {
+input, textarea, button {
   appearance: none;
   -webkit-appearance: none;
   font: inherit;
@@ -54,7 +58,7 @@ button {
   cursor: inherit;
 }
 
-textarea, spa-textbox::part(area) {
+textarea {
   box-sizing: border-box;
   resize: none;
 }
