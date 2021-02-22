@@ -72,3 +72,11 @@ button.key {
   justify-content: center;
   margin-top: var(--margin-base);
 }
+
+#kbd-digits {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 10em;
+  margin: 0 auto;
+  align-items: center;
+}

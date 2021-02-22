@@ -68,6 +68,28 @@ function modFlags(root, cont) {
   filter();
 }
 
+function modDigits(root, cont) {
+  cont.innerHTML = `
+  <div id="kbd-digits">
+    <button class="key">0</button>
+    <button class="key">1</button>
+    <button class="key">2</button>
+    <button class="key">3</button>
+    <button class="key">4</button>
+    <button class="key">5</button>
+    <button class="key">6</button>
+    <button class="key">7</button>
+    <button class="key">8</button>
+    <button class="key">9</button>
+    <button class="key">A</button>
+    <button class="key">B</button>
+    <button class="key">C</button>
+    <button class="key">D</button>
+    <button class="key">E</button>
+    <button class="key">F</button>
+  </div>`;
+}
+
 class KeyboardElement extends HTMLElement {
   constructor() {
     super();
@@ -128,6 +150,9 @@ class KeyboardElement extends HTMLElement {
         break;
       case 'flags':
         modFlags(root, cont);
+        break;
+      case 'digits':
+        modDigits(root, cont);
         break;
       default:
         cont.innerHTML = '';
