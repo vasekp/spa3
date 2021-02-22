@@ -3,7 +3,7 @@ import './spa-slideout.js';
 const template = document.createElement('template');
 template.innerHTML = `<spa-slideout class="corner">
   <button id="keyboard">&#x2800;</button>
-  <button id="keyboard">&#xF008;&#xF00A;</button>
+  <button id="keyboard">&#xF008;&#xF009;</button>
   <button id="keyboard">&#xF129;</button>
   <button id="keyboard">&#xF146;</button>
   <button id="keyboard">&#xF1FF;</button>

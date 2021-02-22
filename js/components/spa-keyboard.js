@@ -2,6 +2,20 @@ const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-keyboard.css"/>
 <div id="main">
+  <div id="side-left">
+    <button>&#x2800;</button>
+    <button>&#xF008;&#xF009;</button>
+    <button>&#xF129;</button>
+    <button>&#xF146;</button>
+    <button>&#xF1FF;</button>
+  </div>
+  <div id="side-right">
+    <button>&#xF801;</button>
+    <button>&#xF883;</button>
+    <button>&#xF00B;</button>
+    <button>123</button>
+    <button>Aa</button>
+  </div>
   <button class="key" id="space">&#x2334;</button>
   <button class="key" id="bsp">&#x232B;</button>
   <button class="key" id="enter">&#x21B5;</button>
@@ -38,7 +52,7 @@ class KeyboardElement extends HTMLElement {
     this.hidden = false;
     const cb = e => {
       if(!elm.contains(e.relatedTarget)) {
-        this.hidden = true;
+        //this.hidden = true;
         elm.removeEventListener('focusout', cb);
         this._target = null;
         elm.removeAttribute('inputmode');

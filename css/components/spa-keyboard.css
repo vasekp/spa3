@@ -19,6 +19,8 @@
   margin: -10em auto 0;
   background: var(--color-bg-main);
   box-shadow: var(--shadow-modal);
+  display: grid;
+  grid: auto-flow dense 2em / [left] 2em 2em 1fr 2em [right] 2em;
 }
 
 button.key {
@@ -27,4 +29,24 @@ button.key {
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-kbd);
   margin: var(--margin-small);
+}
+
+#space { grid-area: 3/4/4/5; }
+#bsp { grid-area: 4/4/5/5; }
+#enter { grid-area: 5/4/6/5; }
+
+#side-left, #side-right { display: contents; }
+
+#side-left > * {
+  grid-column: left;
+  border-right: var(--border);
+}
+
+#side-right > * {
+  grid-column: right;
+  border-left: var(--border);
+}
+
+#side-left > *, #side-right > * {
+  background: var(--color-bg-alt);
 }
