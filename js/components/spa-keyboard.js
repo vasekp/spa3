@@ -1,3 +1,5 @@
+import debounce from '../util/debounce.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-keyboard.css"/>
@@ -64,7 +66,41 @@ function modMorse(cont) {
     <button class="key">&#xF008;</button>
     <button class="key">&#xF009;</button>
     <button class="key">&#xF00A;</button>
+    <button class="key managed" id="kbd-morse-telegraph">&#x25C9</button>
   </div>`;
+
+  const key = cont.querySelector('#kbd-morse-telegraph');
+
+  const debAddSeparator = debounce(x => {
+    if(x)
+    cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
+      detail: { key: String.fromCodePoint(0xF00A) }
+    }));
+  }, 500);
+
+  let pointer = null;
+  let time;
+  key.addEventListener('pointerdown', e => {
+    if(pointer !== null)
+      return;
+    pointer = e.pointerId;
+    time = e.timeStamp;
+    key.setPointerCapture(pointer);
+    debAddSeparator(false);
+  });
+  key.addEventListener('pointerup', e => {
+    if(e.pointerId !== pointer)
+      return;
+    key.releasePointerCapture(pointer);
+    const delta = e.timeStamp - time;
+    pointer = null;
+    cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
+      detail: { key: String.fromCodePoint(delta < 250 ? 0xF008 : 0xF009) }
+    }));
+    debAddSeparator(true);
+  });
 }
 
 function modFlags(cont) {
@@ -168,6 +204,11 @@ class KeyboardElement extends HTMLElement {
           break;
       }
       e.preventDefault();
+    });
+    root.addEventListener('kbd-input', e => {
+      if(!this._target)
+        return;
+      insert(this._target, e.detail.key);
     });
   }
 
