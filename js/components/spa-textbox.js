@@ -63,6 +63,9 @@ class TextboxElement extends HTMLElement {
         this._area.blur();
     } else if(name === 'ime' && !this._slideout) {
       this._slideout = template.content.firstElementChild.cloneNode(true);
+      this._slideout.addEventListener('click', () => {
+        document.querySelector('spa-keyboard').openFor(this._area);
+      });
       this.appendChild(this._slideout);
     }
   }

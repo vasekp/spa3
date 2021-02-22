@@ -1,0 +1,30 @@
+@import "../common.css";
+
+:host {
+  display: block;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+}
+
+:host([hidden]) {
+  display: none;
+}
+
+#main {
+  max-width: 400px;
+  height: 10em;
+  margin: -10em auto 0;
+  background: var(--color-bg-main);
+  box-shadow: var(--shadow-modal);
+}
+
+button.key {
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-kbd);
+  margin: var(--margin-small);
+}
