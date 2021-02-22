@@ -24,7 +24,7 @@
 
 /* For browsers without :focus-visible. Separate rule as otherwise
  * the unsupported selector would invalidate it. */
-input[type="text"]:focus, textarea:focus, spa-textbox::part(area):focus {
+input[type="text"]:focus, textarea:focus, spa-textbox:focus-within {
   box-shadow: var(--shadow-focus);
 }
 
