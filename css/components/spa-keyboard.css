@@ -92,6 +92,12 @@ button.key {
   pointer-events: none;
 }
 
+#kbd-morse {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #kbd-flg-colors {
   display: flex;
   justify-content: space-evenly;

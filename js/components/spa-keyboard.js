@@ -58,6 +58,15 @@ function modBraille(cont, defKey) {
   };
 }
 
+function modMorse(cont) {
+  cont.innerHTML = `
+  <div id="kbd-morse">
+    <button class="key">&#xF008;</button>
+    <button class="key">&#xF009;</button>
+    <button class="key">&#xF00A;</button>
+  </div>`;
+}
+
 function modFlags(cont) {
   const flgColors = [9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30];
 
@@ -191,6 +200,9 @@ class KeyboardElement extends HTMLElement {
         break;
       case 'braille':
         modBraille(cont, defKey);
+        break;
+      case 'morse':
+        modMorse(cont);
         break;
       case 'flags':
         modFlags(cont);
