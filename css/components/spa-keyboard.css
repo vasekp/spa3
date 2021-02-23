@@ -183,8 +183,12 @@ button.key:active {
 }
 
 #kbd-digits {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 10em;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#kbd-digits div {
+  display: flex;
+  justify-content: center;
 }

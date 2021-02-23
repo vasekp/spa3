@@ -310,22 +310,28 @@ function modFlags(cont) {
 function modDigits(cont) {
   cont.innerHTML = `
   <div id="kbd-digits">
-    <button class="key">0</button>
-    <button class="key">1</button>
-    <button class="key">2</button>
-    <button class="key">3</button>
-    <button class="key">4</button>
-    <button class="key">5</button>
-    <button class="key">6</button>
-    <button class="key">7</button>
-    <button class="key">8</button>
-    <button class="key">9</button>
-    <button class="key">A</button>
-    <button class="key">B</button>
-    <button class="key">C</button>
-    <button class="key">D</button>
-    <button class="key">E</button>
-    <button class="key">F</button>
+    <div>
+      <button class="key">0</button>
+      <button class="key">1</button>
+      <button class="key">2</button>
+      <button class="key">3</button>
+      <button class="key">4</button>
+    </div>
+    <div>
+      <button class="key">5</button>
+      <button class="key">6</button>
+      <button class="key">7</button>
+      <button class="key">8</button>
+      <button class="key">9</button>
+    </div>
+    <div>
+      <button class="key">A</button>
+      <button class="key">B</button>
+      <button class="key">C</button>
+      <button class="key">D</button>
+      <button class="key">E</button>
+      <button class="key">F</button>
+    </div>
   </div>`;
 }
 
