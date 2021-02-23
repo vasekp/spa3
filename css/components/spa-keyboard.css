@@ -165,6 +165,10 @@ button.key:active {
   text-fill-color: transparent;
 }
 
+#kbd-smp use:not(.selected) {
+  opacity: .5;
+}
+
 #kbd-flg-colors {
   display: flex;
   justify-content: space-evenly;

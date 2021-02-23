@@ -194,6 +194,73 @@ function modSegment(cont, defKey) {
   };
 }
 
+function modSemaphore(cont, defKey) {
+  cont.innerHTML = `
+  <svg id="kbd-smp" xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160">
+    <defs>
+      <g id="flag">
+        <path d="M -15 15 L 15 15 -15 -15 z" fill="#FF0"/>
+        <path d="M 15 -15 L 15 15 -15 -15 z" fill="#F00"/>
+        <path d="M -15 -15 L -15 15 15 15 m 0 0 L -15 -15 15 -15 z" fill="none"
+          stroke="currentcolor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </defs>
+    <use href="#flag" data-pos="0" x="0" y="60"/>
+    <use href="#flag" data-pos="1" x="-42" y="42"/>
+    <use href="#flag" data-pos="2" x="-60" y="0"/>
+    <use href="#flag" data-pos="3" x="-42" y="-42"/>
+    <use href="#flag" data-pos="4" x="0" y="-60"/>
+    <use href="#flag" data-pos="5" x="42" y="-42"/>
+    <use href="#flag" data-pos="6" x="60" y="0"/>
+    <use href="#flag" data-pos="7" x="42" y="42"/>
+  </svg>`;
+
+  const sel = [];
+
+  const deselect = () => {
+    for(const elm of cont.querySelectorAll('use'))
+      elm.classList.remove('selected');
+    sel.splice(0);
+  };
+
+  const dbConfirm = debounce(() => {
+    if(sel.length !== 2)
+      return;
+    cont.dispatchEvent(new CustomEvent('kbd-input', {
+      detail: { key: defKey.textContent }
+    }));
+    defKey.hidden = true;
+    deselect();
+  }, 500);
+
+  defKey.afterClick = () => {
+    defKey.hidden = true;
+    deselect();
+  };
+
+  cont.firstElementChild.addEventListener('click', e => {
+    if(e.target.tagName != 'use')
+      return;
+    const pos = e.target.dataset.pos;
+    if(sel.includes(pos))
+      sel.splice(sel.indexOf(pos), 1);
+    else {
+      sel.push(pos);
+      while(sel.length > 2)
+        sel.shift();
+    }
+    for(const elm of cont.querySelectorAll('use'))
+      elm.classList.toggle('selected', sel.includes(elm.dataset.pos));
+    if(sel.length == 2) {
+      const code = 0xF880 + 8 * Math.min(sel[0], sel[1]) + Math.max(sel[0], sel[1]);
+      defKey.textContent = String.fromCodePoint(code);
+      defKey.hidden = false;
+      dbConfirm();
+    } else
+      defKey.hidden = true;
+  });
+}
+
 function modFlags(cont) {
   const flgColors = [9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30];
 
@@ -342,6 +409,9 @@ class KeyboardElement extends HTMLElement {
         break;
       case 'segm':
         modSegment(cont, defKey);
+        break;
+      case 'smph':
+        modSemaphore(cont, defKey);
         break;
       case 'flags':
         modFlags(cont);
