@@ -119,6 +119,33 @@ button.key:active {
   box-shadow: var(--shadow-kbd-press);
 }
 
+#kbd-sgm {
+  position: relative;
+}
+
+.kbd-sgm-glyph {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* The skeletons of these glyphs are cap-size = 0.66em high. We make this fill exactly 2/3 of the area. */
+  font-size: calc(10rem * 2 / 3 / 0.66);
+  /* Center within a 10rem box exactly the same way as in braille. */
+  line-height: calc(10rem + var(--font-cap-size) + var(--font-descent) - var(--font-ascent));
+  text-align: center;
+  color: var(--color-text-light);
+  pointer-events: none;
+}
+
+#kbd-sgm-back {
+  -webkit-text-stroke-width: var(--line-width);
+  -webkit-text-fill-color: transparent;
+  /* Maybe we'll see this standardized someday. */
+  text-stroke-width: var(--line-width);
+  text-fill-color: transparent;
+}
+
 #kbd-flg-colors {
   display: flex;
   justify-content: space-evenly;

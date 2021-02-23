@@ -43,14 +43,14 @@ function modBraille(cont, defKey) {
       defKey.textContent
         = cont.querySelector('#kbd-braille-glyph').textContent
         = String.fromCodePoint(0x2800 + v);
-      defKey.hidden = false;
+      defKey.hidden = v === 0;
     },
     get() {
       return this._v;
     }
   });
 
-  cont.children[0].addEventListener('input', e => {
+  cont.firstElementChild.addEventListener('input', e => {
     state.value ^= +e.target.dataset.value;
   });
 
@@ -101,6 +101,49 @@ function modMorse(cont) {
     }));
     debAddSeparator(true);
   });
+}
+
+function modSegment(cont, defKey) {
+  cont.innerHTML = `
+  <div id="kbd-sgm">
+    <div class="kbd-sgm-glyph" id="kbd-sgm-back">&#xF1FF;</div>
+    <div class="kbd-sgm-glyph" id="kbd-sgm-fore">&#xF180;</div>
+  </div>`;
+
+  const state = Object.defineProperty({}, 'value', {
+    set(v) {
+      this._v = v;
+      defKey.textContent
+        = cont.querySelector('#kbd-sgm-fore').textContent
+        = String.fromCodePoint(0xF180 + v);
+      defKey.hidden = v === 0;
+    },
+    get() {
+      return this._v;
+    }
+  });
+
+  cont.firstElementChild.addEventListener('pointerdown', e => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - (rect.left + rect.right) / 2) / rect.height * 3; // not a typo
+    const y = -(e.clientY - (rect.top + rect.bottom) / 2) / rect.height * 3;
+    const sgm = (() => {
+      if(Math.abs(x) + Math.abs(y) < 1/2)
+        return 6;
+      else if(Math.abs(x) > Math.abs(Math.abs(y) - 1/2))
+        return x > 0
+          ? (y > 0 ? 1 : 2)
+          : (y > 0 ? 5 : 4);
+      else
+        return (y > 0 ? 0 : 3);
+    })();
+    state.value ^= 1 << sgm;
+  });
+
+  defKey.afterClick = () => {
+    state.value = 0;
+    defKey.hidden = true;
+  };
 }
 
 function modFlags(cont) {
@@ -178,12 +221,13 @@ class KeyboardElement extends HTMLElement {
     root.appendChild(template.content.cloneNode(true));
     this.addEventListener('mousedown', e => e.preventDefault());
     root.addEventListener('click', e => {
-      if(!this._target || e.target.tagName !== 'BUTTON')
-        return;
       if(e.target.dataset.mod) {
         this.openModule(e.target.dataset.mod);
         return;
       }
+      if(!this._target || e.target.tagName !== 'BUTTON'
+          || !e.target.classList.contains('key') || e.target.classList.contains('managed'))
+        return;
       switch(e.target.id) {
         case 'space':
           insert(this._target, ' ');
@@ -244,6 +288,9 @@ class KeyboardElement extends HTMLElement {
         break;
       case 'morse':
         modMorse(cont);
+        break;
+      case 'segm':
+        modSegment(cont, defKey);
         break;
       case 'flags':
         modFlags(cont);
