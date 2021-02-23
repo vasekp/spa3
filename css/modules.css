@@ -81,7 +81,7 @@ input[type="radio"].patch.show-state:checked::before {
   border-bottom: var(--border-fainter);
 }
 
-.patch.radio:checked {
+.patch.radio:checked::before {
   background: var(--color-bg-emph);
 }
 

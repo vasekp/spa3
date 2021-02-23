@@ -119,6 +119,25 @@ button.key:active {
   box-shadow: var(--shadow-kbd-press);
 }
 
+#kbd-polybius {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#kbd-plb-vert {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+#kbd-plb-horz {
+  display: flex;
+  justify-content: space-evenly;
+  width: 10rem;
+}
+
 #kbd-sgm {
   position: relative;
 }

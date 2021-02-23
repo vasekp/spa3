@@ -74,7 +74,6 @@ function modMorse(cont) {
   const debAddSeparator = debounce(x => {
     if(x)
     cont.dispatchEvent(new CustomEvent('kbd-input', {
-      bubbles: true,
       detail: { key: String.fromCodePoint(0xF00A) }
     }));
   }, 500);
@@ -96,10 +95,59 @@ function modMorse(cont) {
     const delta = e.timeStamp - time;
     pointer = null;
     cont.dispatchEvent(new CustomEvent('kbd-input', {
-      bubbles: true,
       detail: { key: String.fromCodePoint(delta < 250 ? 0xF008 : 0xF009) }
     }));
     debAddSeparator(true);
+  });
+}
+
+function modPolybius(cont, defKey) {
+  cont.innerHTML = `
+  <div id="kbd-polybius">
+    <div id="kbd-plb-vert">
+      <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="1">
+      <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="2">
+      <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="3">
+      <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="4">
+      <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="5">
+    </div>
+    <div id="kbd-plb-horz">
+      <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="1">
+      <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="2">
+      <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="3">
+      <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="4">
+      <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="5">
+    </div>
+  </div>`;
+
+  const deselect = () => {
+    for(const elm of cont.querySelectorAll(':checked'))
+      elm.checked = false;
+  };
+
+  const dbConfirm = debounce(() => {
+    cont.dispatchEvent(new CustomEvent('kbd-input', {
+      detail: { key: defKey.textContent }
+    }));
+    defKey.hidden = true;
+    deselect();
+  }, 500);
+
+  defKey.afterClick = () => {
+    defKey.hidden = true;
+    deselect();
+  };
+
+  cont.firstElementChild.addEventListener('input', () => {
+    const q = cont.querySelectorAll(':checked');
+    if(q.length === 2) {
+      const coord = [];
+      for(const elm of q)
+        coord[+elm.dataset.coord] = +elm.dataset.content - 1;
+      defKey.textContent = String.fromCodePoint(0xF140 + 5 * coord[0] + coord[1]);
+      defKey.hidden = false;
+      dbConfirm();
+    }
   });
 }
 
@@ -249,7 +297,7 @@ class KeyboardElement extends HTMLElement {
       }
       e.preventDefault();
     });
-    root.addEventListener('kbd-input', e => {
+    root.getElementById('module').addEventListener('kbd-input', e => {
       if(!this._target)
         return;
       insert(this._target, e.detail.key);
@@ -288,6 +336,9 @@ class KeyboardElement extends HTMLElement {
         break;
       case 'morse':
         modMorse(cont);
+        break;
+      case 'polyb':
+        modPolybius(cont, defKey);
         break;
       case 'segm':
         modSegment(cont, defKey);
