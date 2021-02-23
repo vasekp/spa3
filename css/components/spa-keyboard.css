@@ -23,7 +23,7 @@
   grid: auto-flow dense 2em / [left] 2em 2em 1fr 2em [right] 2em;
 }
 
-button.key {
+.key {
   width: 1.4em;
   height: 1.4em;
   border-radius: var(--radius-full);
@@ -31,7 +31,7 @@ button.key {
   margin: var(--margin-small);
 }
 
-button.key:active {
+.key:active {
   box-shadow: var(--shadow-kbd-press);
 }
 
@@ -109,14 +109,7 @@ button.key:active {
 #kbd-morse-telegraph {
   width: calc(3 * 1.4em + 4 * var(--margin-small));
   height: 2em;
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-kbd);
-  margin: var(--margin-small);
   touch-action: none;
-}
-
-#kbd-morse-telegraph:active {
-  box-shadow: var(--shadow-kbd-press);
 }
 
 #kbd-polybius {
@@ -186,6 +179,20 @@ button.key:active {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+#kbd-mobile {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+#kbd-mobile .key {
+  width: 3rem;
+  height: 2.5rem;
+  ruby-position: under;
 }
 
 #kbd-digits div {

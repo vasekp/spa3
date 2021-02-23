@@ -307,6 +307,42 @@ function modFlags(cont) {
   filter();
 }
 
+function modMobile(cont) {
+  cont.innerHTML = `
+  <div id="kbd-mobile">
+    <button class="key managed" data-digit="1" data-letters=" "><ruby>1<rt>&#x2334;</rt></ruby></button>
+    <button class="key managed" data-digit="2" data-letters="ABC"><ruby>2<rt>ABC</rt></ruby></button>
+    <button class="key managed" data-digit="3" data-letters="DEF"><ruby>3<rt>DEF</rt></ruby></button>
+    <button class="key managed" data-digit="4" data-letters="GHI"><ruby>4<rt>GHI</rt></ruby></button>
+    <button class="key managed" data-digit="5" data-letters="JKL"><ruby>5<rt>JKL</rt></ruby></button>
+    <button class="key managed" data-digit="6" data-letters="MNO"><ruby>6<rt>MNO</rt></ruby></button>
+    <button class="key managed" data-digit="7" data-letters="PQRS"><ruby>7<rt>PQRS</rt></ruby></button>
+    <button class="key managed" data-digit="8" data-letters="TUV"><ruby>8<rt>TUV</rt></ruby></button>
+    <button class="key managed" data-digit="9" data-letters="WXYZ"><ruby>9<rt>WXYZ</rt></ruby></button>
+  </div>`;
+
+  const repl = [];
+  for(const elm of cont.firstElementChild.children) {
+    const dig = elm.dataset.digit;
+    const chain = elm.dataset.letters + dig + elm.dataset.letters[0];
+    repl[+dig] = (c) => {
+      if(c.length === 1 && chain.includes(c))
+        return chain[chain.indexOf(c) + 1];
+      else
+        return chain[0];
+    };
+  }
+
+  cont.firstElementChild.addEventListener('click', e => {
+    const tgt = e.target.closest('button');
+    if(!tgt)
+      return;
+    cont.dispatchEvent(new CustomEvent('kbd-input', {
+      detail: { func: repl[+tgt.dataset.digit] }
+    }));
+  });
+}
+
 function modDigits(cont) {
   cont.innerHTML = `
   <div id="kbd-digits">
@@ -373,7 +409,11 @@ class KeyboardElement extends HTMLElement {
     root.getElementById('module').addEventListener('kbd-input', e => {
       if(!this._target)
         return;
-      insert(this._target, e.detail.key);
+      if(e.detail.func) {
+        replace(this._target, e.detail.func);
+        this._dbConfirm();
+      } else
+        insert(this._target, e.detail.key);
     });
   }
 
@@ -391,6 +431,7 @@ class KeyboardElement extends HTMLElement {
       elm.removeAttribute('inputmode');
     };
     this._target = elm;
+    this._dbConfirm = debounce(() => elm.selectionStart = elm.selectionEnd, 500);
     elm.addEventListener('focusout', cb);
     elm.setAttribute('inputmode', 'none');
     elm.focus();
@@ -422,6 +463,9 @@ class KeyboardElement extends HTMLElement {
       case 'flags':
         modFlags(cont);
         break;
+      case 'mobile':
+        modMobile(cont);
+        break;
       case 'digits':
         modDigits(cont);
         break;
@@ -433,7 +477,13 @@ class KeyboardElement extends HTMLElement {
 }
 
 function insert(tgt, key) {
-  tgt.setRangeText(key, tgt.selectionStart, tgt.selectionEnd, "end");
+  tgt.setRangeText(key, tgt.selectionStart, tgt.selectionEnd, 'end');
+  tgt.dispatchEvent(new CustomEvent('input'));
+}
+
+function replace(tgt, func) {
+  const prev = tgt.value.substring(tgt.selectionStart, tgt.selectionEnd);
+  tgt.setRangeText(func(prev), tgt.selectionStart, tgt.selectionEnd, 'select');
   tgt.dispatchEvent(new CustomEvent('input'));
 }
 
