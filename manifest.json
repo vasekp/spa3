@@ -2,6 +2,11 @@
   "name": "_(title)",
   "icons": [
     {
+      "src": "images/icon.png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
       "src": "images/icon.svg",
       "sizes": "512x512",
       "purpose": "any"
@@ -12,6 +17,8 @@
       "purpose": "maskable"
     }
   ],
+  "background_color": "#fff",
+  "theme_color": "#ccc",
   "start_url": "index.html",
   "display": "standalone"
 }
