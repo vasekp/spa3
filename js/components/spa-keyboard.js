@@ -333,12 +333,17 @@ function modMobile(cont) {
     };
   }
 
+  let lastDigit = 0;
+
   cont.firstElementChild.addEventListener('click', e => {
     const tgt = e.target.closest('button');
     if(!tgt)
       return;
+    const digit = +tgt.dataset.digit;
+    const append = (lastDigit !== 0 && digit !== lastDigit);
+    lastDigit = digit;
     cont.dispatchEvent(new CustomEvent('kbd-input', {
-      detail: { func: repl[+tgt.dataset.digit] }
+      detail: { func: repl[digit], append, select: true }
     }));
   });
 }
@@ -407,13 +412,15 @@ class KeyboardElement extends HTMLElement {
       e.preventDefault();
     });
     root.getElementById('module').addEventListener('kbd-input', e => {
-      if(!this._target)
+      const tgt = this._target;
+      if(!tgt)
         return;
-      if(e.detail.func) {
-        replace(this._target, e.detail.func);
-        this._dbConfirm();
-      } else
-        insert(this._target, e.detail.key);
+      const newText = e.detail.func
+        ? e.detail.func(tgt.value.substring(tgt.selectionStart, tgt.selectionEnd))
+        : e.detail.key;
+      insert(tgt, newText, { append: e.detail.append, select: e.detail.select });
+      if(e.detail.select)
+        dbConfirm(tgt);
     });
   }
 
@@ -431,7 +438,6 @@ class KeyboardElement extends HTMLElement {
       elm.removeAttribute('inputmode');
     };
     this._target = elm;
-    this._dbConfirm = debounce(() => elm.selectionStart = elm.selectionEnd, 500);
     elm.addEventListener('focusout', cb);
     elm.setAttribute('inputmode', 'none');
     elm.focus();
@@ -476,14 +482,12 @@ class KeyboardElement extends HTMLElement {
   }
 }
 
-function insert(tgt, key) {
-  tgt.setRangeText(key, tgt.selectionStart, tgt.selectionEnd, 'end');
-  tgt.dispatchEvent(new CustomEvent('input'));
-}
+const dbConfirm = debounce(elm => elm.selectionStart = elm.selectionEnd, 500);
 
-function replace(tgt, func) {
-  const prev = tgt.value.substring(tgt.selectionStart, tgt.selectionEnd);
-  tgt.setRangeText(func(prev), tgt.selectionStart, tgt.selectionEnd, 'select');
+function insert(tgt, key, opts = {}) {
+  if(opts.append)
+    tgt.selectionStart = tgt.selectionEnd;
+  tgt.setRangeText(key, tgt.selectionStart, tgt.selectionEnd, opts.select ? 'select' : 'end');
   tgt.dispatchEvent(new CustomEvent('input'));
 }
 
