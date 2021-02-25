@@ -572,7 +572,6 @@ class KeyboardElement extends HTMLElement {
           insert(this._target, '\n');
           break;
         case 'bsp':
-          bspace(this._target);
           break;
         case 'default':
           insert(this._target, e.target.textContent);
@@ -585,6 +584,15 @@ class KeyboardElement extends HTMLElement {
       }
       e.preventDefault();
     });
+    let bspTimer = null;
+    root.getElementById('bsp').addEventListener('pointerdown', () => {
+      bspace(this._target);
+      bspTimer = setTimeout(() => {
+        bspTimer = setInterval(() => bspace(this._target), 100);
+      }, 500);
+    });
+    for(const n of ['pointerup', 'pointercancel'])
+      root.getElementById('bsp').addEventListener(n, () => clearTimeout(bspTimer));
     root.getElementById('module').addEventListener('kbd-input', e => {
       const tgt = this._target;
       if(!tgt)
@@ -602,6 +610,10 @@ class KeyboardElement extends HTMLElement {
     this.openModule(mod);
     this.hidden = false;
     const cb = e => {
+      if(e.relatedTarget === this) {
+        this._target.focus();
+        return;
+      }
       if(!elm.contains(e.relatedTarget))
         this._exit();
     };
