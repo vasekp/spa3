@@ -538,6 +538,18 @@ function modDigits(cont) {
   </div>`;
 }
 
+const modules = {
+  braille: modBraille,
+  morse: modMorse,
+  pigpen: modPigpen,
+  polyb: modPolybius,
+  segm: modSegment,
+  smph: modSemaphore,
+  flags: modFlags,
+  mobile: modMobile,
+  digits: modDigits,
+};
+
 class KeyboardElement extends HTMLElement {
   constructor() {
     super();
@@ -608,42 +620,11 @@ class KeyboardElement extends HTMLElement {
   openModule(mod) {
     const cont = this.shadowRoot.getElementById('module');
     const defKey = this.shadowRoot.getElementById('default');
-    switch(mod) {
-      case 'default':
-        if(this._exit)
-          this._exit();
-        break;
-      case 'braille':
-        modBraille(cont, defKey);
-        break;
-      case 'morse':
-        modMorse(cont);
-        break;
-      case 'pigpen':
-        modPigpen(cont);
-        break;
-      case 'polyb':
-        modPolybius(cont, defKey);
-        break;
-      case 'segm':
-        modSegment(cont, defKey);
-        break;
-      case 'smph':
-        modSemaphore(cont, defKey);
-        break;
-      case 'flags':
-        modFlags(cont);
-        break;
-      case 'mobile':
-        modMobile(cont);
-        break;
-      case 'digits':
-        modDigits(cont);
-        break;
-      default:
-        cont.innerHTML = '';
-        break;
-    }
+    if(mod === 'default') {
+      if(this._exit)
+        this._exit();
+    } else
+      modules[mod](cont, defKey);
   }
 }
 
