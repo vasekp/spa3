@@ -7,8 +7,8 @@ template.innerHTML = `
   <div id="side-left">
     <button data-mod="braille">&#x2800;</button>
     <button data-mod="morse">&#xF008;&#xF009;</button>
-    <button data-mod="pigpen">&#xF129;</button>
-    <button data-mod="polyb">&#xF146;</button>
+    <button data-mod="pigpen">&#xF121;</button>
+    <button data-mod="polyb">&#xF166;</button>
     <button data-mod="segm">&#xF1FF;</button>
   </div>
   <div id="side-right">
@@ -144,7 +144,7 @@ function modPolybius(cont, defKey) {
       const coord = [];
       for(const elm of q)
         coord[+elm.dataset.coord] = +elm.dataset.content - 1;
-      defKey.textContent = String.fromCodePoint(0xF140 + 5 * coord[0] + coord[1]);
+      defKey.textContent = String.fromCodePoint(0xF160 + 5 * coord[0] + coord[1]);
       defKey.hidden = false;
       dbConfirm();
     }

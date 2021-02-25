@@ -4,8 +4,8 @@ const template = document.createElement('template');
 template.innerHTML = `<spa-slideout class="corner">
   <button data-mod="braille">&#x2800;</button>
   <button data-mod="morse">&#xF008;&#xF009;</button>
-  <button data-mod="pigpen">&#xF129;</button>
-  <button data-mod="polyb">&#xF146;</button>
+  <button data-mod="pigpen">&#xF121;</button>
+  <button data-mod="polyb">&#xF166;</button>
   <button data-mod="segm">&#xF1FF;</button>
   <button data-mod="mobile">&#xF00B;</button>
   <button data-mod="digits">12</button>
