@@ -28,21 +28,28 @@ template.innerHTML = `
 function modBraille(cont, defKey) {
   cont.innerHTML = `
   <div id="kbd-braille">
-    <div id="kbd-braille-glyph">&#x2800;</div>
     <input type="checkbox" data-value="1"/>
     <input type="checkbox" data-value="2"/>
     <input type="checkbox" data-value="4"/>
     <input type="checkbox" data-value="8"/>
     <input type="checkbox" data-value="16"/>
     <input type="checkbox" data-value="32"/>
+    <svg id="kbd-braille-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-48 -64 96 128">
+      <g fill="none" stroke="var(--color-text-light)" stroke-width="1">
+        <circle cx="-21" cy="-42" r="12"/>
+        <circle cx="-21" cy="0" r="12"/>
+        <circle cx="-21" cy="42" r="12"/>
+        <circle cx="21" cy="-42" r="12"/>
+        <circle cx="21" cy="0" r="12"/>
+        <circle cx="21" cy="42" r="12"/>
+      </g>
+    </svg>
   </div>`;
 
   const state = Object.defineProperty({}, 'value', {
     set(v) {
       this._v = v;
-      defKey.textContent
-        = cont.querySelector('#kbd-braille-glyph').textContent
-        = String.fromCodePoint(0x2800 + v);
+      defKey.textContent = String.fromCodePoint(0x2800 + v);
       defKey.hidden = v === 0;
     },
     get() {
@@ -51,11 +58,15 @@ function modBraille(cont, defKey) {
   });
 
   cont.firstElementChild.addEventListener('input', e => {
-    state.value ^= +e.target.dataset.value;
+    state.value &= ~+e.target.dataset.value;
+    if(e.target.checked)
+      state.value |= +e.target.dataset.value;
   });
 
   defKey.afterClick = () => {
     state.value = 0;
+    for(const cb of cont.querySelectorAll('input'))
+      cb.checked = false;
     defKey.hidden = true;
   };
 }
