@@ -34,7 +34,7 @@ main {
   background: var(--bg);
   color: var(--fg);
   contain: size paint;
-  content: attr(data-content);
+  content: attr(data-content) "\200B";
 }
 
 button.patch::before {
@@ -43,11 +43,6 @@ button.patch::before {
 
 button.patch {
   margin: calc(-1 * var(--line-width));
-}
-
-.patch[data-content=""]::before,
-.patch:not([data-content])::before {
-  content: "\200B";
 }
 
 .patch.cross::before {
