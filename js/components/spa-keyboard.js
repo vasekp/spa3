@@ -99,7 +99,169 @@ function modMorse(cont) {
     }));
     debAddSeparator(true);
   });
+  key.addEventListener('pointercancel', e => {
+    if(e.pointerID === pointer)
+      pointer = null;
+  })
 }
+
+function modPigpen(cont) {
+  cont.innerHTML = `
+  <div id="kbd-pigpen-cont">
+    <div id="kbd-pigpen-border">
+      <svg id="kbd-pigpen-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160" data-mode="rect">
+        <g id="kbd-pigpen-rect" fill="var(--color-text-light)">
+          <circle cx="40" cy="40" r="7"/>
+          <circle cx="-40" cy="40" r="7"/>
+          <circle cx="-40" cy="-40" r="7"/>
+          <circle cx="40" cy="-40" r="7"/>
+          <path fill="none" stroke="var(--color-text-light)" stroke-width="1" stroke-dasharray="5 5" stroke-dashoffset="2.5" d="M 40 40 H -40 V -40 H 40 z"/>
+          <path id="kbd-pigpen-path" fill="none" stroke="var(--color-text-light)" stroke-width="14" stroke-linejoin="round" stroke-linecap="round" d=""/>
+        </g>
+      </svg>
+      <input id="kbd-pigpen-dir" xmlns="http://www.w3.org/1999/xhtml"
+        type="checkbox" class="glyph-cb" data-glyph-off="&#xF00D" data-glyph-on="&#xF00C"/>
+    </div>
+    <div id="kbd-pigpen-sugg">
+      <div id="kbd-pigpen-row" hidden>
+        <button class="key"></button>
+        <button class="key"></button>
+        <button class="key"></button>
+      </div>
+      <div id="kbd-pigpen-row" hidden>
+        <button class="key"></button>
+        <button class="key"></button>
+        <button class="key"></button>
+      </div>
+      <div id="kbd-pigpen-row" hidden>
+        <button class="key"></button>
+        <button class="key"></button>
+      </div>
+    </div>
+  </div>
+  `;
+
+  const diag = cont.querySelector('#kbd-pigpen-dir');
+  const svg = cont.querySelector('#kbd-pigpen-svg');
+  const path = cont.querySelector('#kbd-pigpen-path');
+  const sugg = cont.querySelector('#kbd-pigpen-sugg');
+  let pointer = null;
+  let cRect = null;
+  let arr = [];
+
+  diag.addEventListener('input', () => {
+    svg.dataset.mode = diag.checked ? 'diag' : 'rect';
+    path.setAttribute('d', '');
+  });
+
+  function adjacent(a, b) {
+    const d = a ^ b;
+    return !(d & (d-1));
+  }
+
+  function xya(e) {
+    let x = (e.clientX - cRect.left) / cRect.width * 160 - 80;
+    let y = (e.clientY - cRect.top) / cRect.height * 160 - 80;
+    if(diag.checked)
+      [x, y] = [0.7071*(y + x), 0.7071*(y - x)];
+    let a = (y > 0 ? 2 : 0) + (x > 0 ? 1 : 0);
+    return [x, y, a];
+  }
+
+  function buildPath(arr, cur) {
+    if(cur)
+      return `M ${cur[0]} ${cur[1]} L` + arr.map(a => ` ${a&1?40:-40} ${a&2?40:-40}`).join();
+    else
+      return `M ` + arr.map(a => ` ${a&1?40:-40} ${a&2?40:-40}`).join(' L ');
+  }
+
+  const wRect = [6, 14, 12, 7, 15, 13, 3, 11, 9];
+  const wDiag = [6, 3, 12, 9];
+
+  function updateSugg() {
+    let w = 0;
+    for(let i = 1; i < arr.length; i++) {
+      const flip = arr[i] ^ arr[i - 1];
+      const other = arr[i] & (flip ^ 3);
+      const bit = flip === 1
+        ? other ? 2 : 0
+        : other ? 1 : 3;
+      w |= 1 << bit;
+    }
+    const i = (diag.checked ? wDiag : wRect).indexOf(w);
+    const keys = [];
+    if(i >= 0) {
+      if(!diag.checked) {
+        keys.push([], []);
+        for(let j = 0; j < 3; j++) {
+          keys[0].push(0xF100 + 3*i + j);
+          keys[1].push(0xF140 + 3*i + j);
+        }
+        keys[2] = [0xF120 + 2*i, 0xF120 + 2*i + 1];
+      } else {
+        keys[2] = [0xF132 + 2*i, 0xF132 + 2*i + 1];
+      }
+    }
+    for(let j = 0; j < 3; j++) {
+      const row = sugg.children[j];
+      if(keys[j]) {
+        for(let k = 0; k < keys[j].length; k++)
+          row.children[k].textContent = String.fromCodePoint(keys[j][k]);
+        row.hidden = false;
+      } else
+        row.hidden = true;
+    }
+  }
+
+  svg.addEventListener('pointerdown', e => {
+    if(pointer !== null)
+      return;
+    pointer = e.pointerId;
+    cRect = svg.getBoundingClientRect();
+    const [x, y, a] = xya(e);
+    arr = [a];
+  });
+
+  svg.addEventListener('pointermove', e => {
+    if(e.pointerId !== pointer)
+      return;
+    const [x, y, a] = xya(e);
+    if(adjacent(a, arr[0])) {
+      const i = arr.indexOf(a);
+      if(i == -1 || i == 3)
+        arr.unshift(a);
+    }
+    if(arr.length == 5) {
+      path.setAttribute('d', buildPath(arr));
+      pointer = null;
+      updateSugg();
+    } else
+      path.setAttribute('d', buildPath(arr, [x, y]));
+  });
+
+  svg.addEventListener('pointerup', e => {
+    if(e.pointerId !== pointer)
+      return;
+    path.setAttribute('d', buildPath(arr));
+    pointer = null;
+    updateSugg();
+  });
+
+  svg.addEventListener('pointercancel', e => {
+    if(e.pointerId !== pointer)
+      return;
+    path.setAttribute('d', '');
+    pointer = null;
+    updateSugg();
+  });
+
+  sugg.addEventListener('click', () => {
+    path.setAttribute('d', '');
+    arr = [];
+    pointer = null;
+    updateSugg();
+  });
+};
 
 function modPolybius(cont, defKey) {
   cont.innerHTML = `
@@ -456,6 +618,9 @@ class KeyboardElement extends HTMLElement {
         break;
       case 'morse':
         modMorse(cont);
+        break;
+      case 'pigpen':
+        modPigpen(cont);
         break;
       case 'polyb':
         modPolybius(cont, defKey);

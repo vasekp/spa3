@@ -22,7 +22,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 0
 CreationTime: 1611141588
-ModificationTime: 1614262948
+ModificationTime: 1614263733
 PfmFamily: 17
 TTFWeight: 400
 TTFWidth: 5
@@ -54,12 +54,12 @@ NameList: Adobe Glyph List
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-WinInfo: 0 20 14
+WinInfo: 60 20 14
 BeginPrivate: 2
 BlueValues 45 [-410 -390 320 340 476 496 650 670 1014 1034]
 BlueFuzz 1 1
 EndPrivate
-BeginChars: 65693 525
+BeginChars: 65693 527
 
 StartChar: uni204E
 Encoding: 8270 8270 0
@@ -18148,6 +18148,47 @@ SplineSet
  150 620 l 1,0,-1
 EndSplineSet
 Validated: 1
+EndChar
+
+StartChar: uniF00C
+Encoding: 61452 61452 525
+Width: 900
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+120 0 m 1,0,-1
+ 120 660 l 1,1,-1
+ 780 660 l 1,2,-1
+ 780 0 l 1,3,-1
+ 120 0 l 1,0,-1
+720 600 m 1,4,-1
+ 180 600 l 1,5,-1
+ 180 60 l 1,6,-1
+ 720 60 l 1,7,-1
+ 720 600 l 1,4,-1
+EndSplineSet
+Validated: 1
+EndChar
+
+StartChar: uniF00D
+Encoding: 61453 61453 526
+Width: 900
+Flags: W
+LayerCount: 2
+Fore
+SplineSet
+450 -127 m 1,0,-1
+ -7 330 l 1,1,-1
+ 450 787 l 1,2,-1
+ 907 330 l 1,3,-1
+ 450 -127 l 1,0,-1
+450 702 m 1,4,-1
+ 78 330 l 1,5,-1
+ 450 -42 l 1,6,-1
+ 822 330 l 1,7,-1
+ 450 702 l 1,4,-1
+EndSplineSet
 EndChar
 EndChars
 EndSplineFont
