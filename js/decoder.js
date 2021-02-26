@@ -7,19 +7,34 @@ export default function(root) {
   const out = root.getElementById('out');
 
   inp.addEventListener('input', e => {
-    out.replaceChildren(...inp.value.split('').map(decode));
+    out.replaceChildren(...decode(inp.value));
   });
 
   return {};
 }
 
-function decode(ch) {
-  const c = ch.codePointAt(0);
-  const [func, base] = category(c);
-  if(!func)
-    return ch;
-  else
-    return func(c - base) || markError(ch);
+function* decode(str) {
+  let lastFunc = null;
+  let state = {};
+  for(const ch of str) {
+    const c = ch.codePointAt(0);
+    const [func, base] = category(c);
+    if(func !== lastFunc) {
+      if(lastFunc && Object.keys(state).length > 0)
+        yield lastFunc(null, null, state);
+      state = {};
+    }
+    if(!func) {
+      lastFunc = null;
+      yield ch;
+    } else {
+      lastFunc = func;
+      const ret = func(c - base, ch, state);
+      yield ret !== null ? ret : markError(ch);
+    }
+  }
+  if(lastFunc && Object.keys(state).length > 0)
+    yield lastFunc(null, null, state);
 }
 
 function category(c) {
@@ -41,6 +56,25 @@ function braille(c) {
   const letters = [1, 3, 9, 25, 17, 11, 27, 19, 10, 26, 5, 7, 13, 29, 21, 15, 31, 23, 14, 30, 37, 39, 55, 45, 61, 53];
   const i = letters.indexOf(c);
   return i >= 0 ? String.fromCharCode(0x41 + i) : null;
+}
+
+function morse(c, ch, state) {
+  const letters = [12, 2111, 2121, 211, 1, 1121, 221, 1111, 11, 1222, 212, 1211, 22, 21, 222, 1221, 2212, 121, 111, 2, 112, 1112, 122, 2112, 2122, 2211];
+  if(c === 2 || c === null) {
+    if(!state.x)
+      return ' ';
+    /* else */
+    const i = letters.indexOf(state.x);
+    state.in = (state.in || '') + (ch || '');
+    const ret = i >= 0 ? String.fromCharCode(0x41 + i) : markError(state.in);
+    state.x = 0;
+    state.in = '';
+    return ret;
+  } else {
+    state.x = 10 * (state.x || 0) + c + 1;
+    state.in = (state.in || '') + ch;
+    return '';
+  }
 }
 
 function pigpen1(c) {
@@ -90,6 +124,8 @@ function semaphore(c) {
 const map = [
   [0x2800, braille],
   [0x2840, null],
+  [0xF008, morse],
+  [0xF00B, null],
   [0xF100, pigpen1],
   [0xF120, pigpen2],
   [0xF140, pigpen3],

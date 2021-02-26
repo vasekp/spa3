@@ -1,5 +1,11 @@
 @import "components/spa-textbox.css";
 
-spa-textbox {
+#in {
   max-height: 100px;
+}
+
+#out {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  user-select: text;
 }
