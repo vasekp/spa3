@@ -77,6 +77,10 @@ class TextboxElement extends HTMLElement {
   focus() {
     this._area.focus();
   }
+
+  get area() {
+    return this._area;
+  }
 }
 
 window.customElements.define('spa-textbox', TextboxElement);
