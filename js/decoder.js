@@ -5,8 +5,9 @@ import * as i18n from './i18n.js';
 export default function(root) {
   const inp = root.getElementById('in');
   const out = root.getElementById('out');
+
   inp.addEventListener('input', e => {
-    out.value = inp.value.split('').map(decode).join('');
+    out.replaceChildren(...inp.value.split('').map(decode));
   });
 
   return {};
@@ -18,7 +19,7 @@ function decode(ch) {
   if(!func)
     return ch;
   else
-    return func(c - base) || ch;
+    return func(c - base) || markError(ch);
 }
 
 function category(c) {
@@ -27,6 +28,13 @@ function category(c) {
       return [func, start];
   /* else */
   return [];
+}
+
+function markError(ch) {
+  const span = document.createElement('span');
+  span.className = 'err';
+  span.textContent = ch;
+  return span;
 }
 
 function braille(c) {

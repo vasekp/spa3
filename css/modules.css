@@ -76,6 +76,10 @@ input[type="radio"].patch.show-state:checked::before {
   border-bottom: var(--border-fainter);
 }
 
+.err {
+  color: var(--color-error);
+}
+
 .patch.radio:checked::before {
   background: var(--color-bg-emph);
 }
