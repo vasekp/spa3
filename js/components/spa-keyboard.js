@@ -643,6 +643,7 @@ class KeyboardElement extends HTMLElement {
   openModule(mod) {
     const cont = this.shadowRoot.getElementById('module');
     const defKey = this.shadowRoot.getElementById('default');
+    defKey.hidden = true;
     if(mod === 'default') {
       if(this._exit)
         this._exit();
