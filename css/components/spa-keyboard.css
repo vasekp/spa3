@@ -215,19 +215,26 @@
   opacity: .5;
 }
 
+#kbd-flags {
+  display: flex;
+  flex-direction: column;
+}
+
 #kbd-flg-colors {
   display: flex;
   justify-content: space-evenly;
   margin-top: var(--margin-base);
 }
 
+#kbd-flg-sugg-cont {
+  margin-top: var(--margin-base);
+  flex: 1;
+}
+
 #kbd-flg-sugg {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: var(--margin-base);
-  height: calc(3 * (var(--line-height-base) + 2 * var(--margin-small)));
-  overflow: hidden;
 }
 
 #kbd-digits {

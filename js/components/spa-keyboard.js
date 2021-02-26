@@ -1,3 +1,4 @@
+import './spa-scroll.js';
 import debounce from '../util/debounce.js';
 
 const template = document.createElement('template');
@@ -465,7 +466,9 @@ function modFlags(cont) {
       <input type="checkbox" class="patch c-blue" data-color="param" data-value="8"></input>
       <input type="checkbox" class="patch c-black" data-color="param" data-value="16"></input>
     </div>
-    <div id="kbd-flg-sugg"></div>
+    <spa-scroll id="kbd-flg-sugg-cont">
+      <div id="kbd-flg-sugg"></div>
+    </spa-scroll>
   </div>`;
 
   function filter() {
