@@ -486,8 +486,6 @@ function modFlags(cont) {
         })();
         elm.textContent = String.fromCodePoint(0xF801 + i);
         elm.hidden = false;
-        if(++count == 21)
-          break;
       }
     }
     let rest;

@@ -24,12 +24,11 @@
 }
 
 .key {
-  width: 1.4em;
-  height: 1.4em;
+  width: var(--line-height-base);
+  height: var(--line-height-base);
   border-radius: var(--radius-full);
   border: var(--border-fainter);
   box-shadow: var(--shadow-kbd);
-  box-sizing: content-box;
   margin: var(--margin-small);
 }
 
@@ -227,6 +226,8 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-top: var(--margin-base);
+  height: calc(3 * (var(--line-height-base) + 2 * var(--margin-small)));
+  overflow: hidden;
 }
 
 #kbd-digits {
