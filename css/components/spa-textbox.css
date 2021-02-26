@@ -23,7 +23,11 @@ spa-textbox > textarea {
 }
 
 spa-textbox spa-slideout > button {
-  width: 1em;
+  width: 1rem;
+}
+
+button[data-mod="flags"] {
+  font-size: 83%;
 }
 
 spa-textbox:not([ime]) spa-slideout,
