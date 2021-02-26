@@ -9,7 +9,13 @@ export default function(root) {
 
   inp.addEventListener('input', e => {
     substMorse(inp.area);
-    out.replaceChildren(...markErrors(decode(inp.value)));
+    if(out.replaceChildren)
+      out.replaceChildren(...markErrors(decode(inp.value)))
+    else {
+      while(out.lastChild)
+        out.removeChild(out.lastChild);
+      out.append(...markErrors(decode(inp.value)));
+    }
   });
 
   return {};
