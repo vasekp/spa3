@@ -35,13 +35,21 @@ function modBraille(cont, defKey) {
     <input type="checkbox" data-value="16"/>
     <input type="checkbox" data-value="32"/>
     <svg id="kbd-braille-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-48 -64 96 128">
-      <g fill="none" stroke="var(--color-text-light)" stroke-width="1">
+      <g fill="none" stroke="currentcolor" stroke-width="1">
         <circle cx="-21" cy="-42" r="12"/>
         <circle cx="-21" cy="0" r="12"/>
         <circle cx="-21" cy="42" r="12"/>
         <circle cx="21" cy="-42" r="12"/>
         <circle cx="21" cy="0" r="12"/>
         <circle cx="21" cy="42" r="12"/>
+      </g>
+      <g font-size="12" text-anchor="middle" fill="currentcolor">
+        <text x="-21" y="-38">1</text>
+        <text x="-21" y="4">2</text>
+        <text x="-21" y="46">3</text>
+        <text x="21" y="-38">4</text>
+        <text x="21" y="4">5</text>
+        <text x="21" y="46">6</text>
       </g>
     </svg>
   </div>`;
@@ -121,13 +129,13 @@ function modPigpen(cont) {
   <div id="kbd-pigpen-cont">
     <div id="kbd-pigpen-border">
       <svg id="kbd-pigpen-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160" data-mode="rect">
-        <g id="kbd-pigpen-rect" fill="var(--color-text-light)">
+        <g id="kbd-pigpen-rect" fill="currentcolor">
           <circle cx="40" cy="40" r="7"/>
           <circle cx="-40" cy="40" r="7"/>
           <circle cx="-40" cy="-40" r="7"/>
           <circle cx="40" cy="-40" r="7"/>
-          <path fill="none" stroke="var(--color-text-light)" stroke-width="1" stroke-dasharray="5 5" stroke-dashoffset="2.5" d="M 40 40 H -40 V -40 H 40 z"/>
-          <path id="kbd-pigpen-path" fill="none" stroke="var(--color-text-light)" stroke-width="14" stroke-linejoin="round" stroke-linecap="round" d=""/>
+          <path fill="none" stroke="currentcolor" stroke-width="1" stroke-dasharray="5 5" stroke-dashoffset="2.5" d="M 40 40 H -40 V -40 H 40 z"/>
+          <path id="kbd-pigpen-path" fill="none" stroke="currentcolor" stroke-width="14" stroke-linejoin="round" stroke-linecap="round" d=""/>
         </g>
       </svg>
       <input id="kbd-pigpen-dir" xmlns="http://www.w3.org/1999/xhtml"
@@ -327,8 +335,19 @@ function modPolybius(cont, defKey) {
 function modSegment(cont, defKey) {
   cont.innerHTML = `
   <div id="kbd-sgm">
-    <div class="kbd-sgm-glyph" id="kbd-sgm-back">&#xF1FF;</div>
-    <div class="kbd-sgm-glyph" id="kbd-sgm-fore">&#xF180;</div>
+    <div id="kbd-sgm-back">&#xF1FF;</div>
+    <div id="kbd-sgm-fore">&#xF180;</div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160">
+      <g font-size="12" text-anchor="middle" fill="currentcolor">
+        <text x="0" y="-50">a</text>
+        <text x="26" y="-24">b</text>
+        <text x="26" y="30">c</text>
+        <text x="0" y="56">d</text>
+        <text x="-27" y="30">e</text>
+        <text x="-27" y="-24">f</text>
+        <text x="0" y="2">g</text>
+      </g>
+    </svg>
   </div>`;
 
   const state = Object.defineProperty({}, 'value', {
