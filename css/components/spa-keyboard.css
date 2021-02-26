@@ -27,12 +27,19 @@
   width: 1.4em;
   height: 1.4em;
   border-radius: var(--radius-full);
+  border: var(--border-fainter);
   box-shadow: var(--shadow-kbd);
+  box-sizing: content-box;
   margin: var(--margin-small);
 }
 
 .key:active {
   box-shadow: var(--shadow-kbd-press);
+  transform: translate(1px, 1px);
+}
+
+#main > .key {
+  margin: auto;
 }
 
 #space { grid-area: 3/4/4/5; }

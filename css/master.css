@@ -9,7 +9,7 @@
   --l75: calc(50% + var(--c) * 25%);
   --l85: calc(50% + var(--c) * 35%);
   --color-line: hsl(0, 0%, 50%);
-  --color-line-fainter: hsl(0, 0%, var(--l75));
+  --color-line-fainter: hsl(0, 0%, 50%, 50%);
   --color-text-main: hsl(0, 0%, calc(50% - var(--c) * 50%));
   --color-text-fainter: hsl(0, 0%, var(--l25));
   --color-text-semitrans: hsl(0, 0%, calc(50% - var(--c) * 50%), 50%);
