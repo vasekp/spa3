@@ -675,14 +675,14 @@ function insert(tgt, key, opts = {}) {
   if(opts.append)
     tgt.selectionStart = tgt.selectionEnd;
   tgt.setRangeText(key, tgt.selectionStart, tgt.selectionEnd, opts.select ? 'select' : 'end');
-  tgt.dispatchEvent(new CustomEvent('input'));
+  tgt.dispatchEvent(new CustomEvent('input', { bubbles: true }));
 }
 
 function bspace(tgt) {
   if(tgt.selectionStart == tgt.selectionEnd && tgt.selectionStart > 0)
     tgt.selectionStart--;
   tgt.setRangeText('');
-  tgt.dispatchEvent(new CustomEvent('input'));
+  tgt.dispatchEvent(new CustomEvent('input', { bubbles: true }));
 }
 
 window.customElements.define('spa-keyboard', KeyboardElement);
