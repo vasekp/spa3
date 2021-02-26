@@ -1,5 +1,7 @@
 const latin = i => String.fromCharCode(0x40 + i);
 const digit = i => String.fromCharCode(0x30 + i);
+const latinIfGT0 = i => i >= 0 ? latin(i + 1) : null;
+const digitIfGT0 = i => i >= 0 ? digit(i) : null;
 
 function Err(e) {
   this.toString = () => e;
@@ -11,22 +13,24 @@ export const braille = (() => {
   const letters = [1, 3, 9, 25, 17, 11, 27, 19, 10, 26, 5, 7, 13, 29, 21, 15, 31, 23, 14, 30, 37, 39, 55, 45, 61, 53];
 
   return function(c, ch) {
-    const i = letters.indexOf(c);
-    return i >= 0 ? latin(i + 1) : new Err(ch);
+    return latinIfGT0(letters.indexOf(c)) || new Err(ch);
   }
 })();
 
 export const morse = (() => {
   const letters = [12, 2111, 2121, 211, 1, 1121, 221, 1111, 11, 1222, 212, 1211, 22, 21, 222, 1221, 2212, 121, 111, 2, 112, 1112, 122, 2112, 2122, 2211];
+  const digits = [22222, 12222, 11222, 11122, 11112, 11111, 21111, 22111, 22211, 22221];
 
   return function morse(c, ch, state) {
     if(c === 2 || c === null) {
       if(!state.x)
         return ' ';
       /* else */
-      const i = letters.indexOf(state.x);
       state.in = (state.in || '') + (ch || '');
-      const ret = i >= 0 ? latin(i + 1) : new Err(state.in);
+      const ret =
+        latinIfGT0(letters.indexOf(state.x))
+          || digitIfGT0(digits.indexOf(state.x))
+          || new Err(state.in);
       state.x = 0;
       state.in = '';
       return ret;
@@ -64,14 +68,9 @@ export const segments = (() => {
   const letters = [0b1110111, 0b1111100, 0b1011000, 0b1011110, 0b1111001, 0b1110001, 0b0111101, 0b1110100, 0b0110000, 0b0011110, 0b1110101, 0b0111000, 0b0110111, 0b1010100, 0b1011100, 0b1110011, 0b1100111, 0b1010000, 0b1101101, 0b1111000, 0b0011100, 0b0111110, 0b1111110, 0b1110110, 0b1101110, 0b1011011]; /* S = 5, Z = 2 */
 
   return function(c, ch) {
-    let i = digits.indexOf(c);
-    if(i >= 0)
-      return digit(i);
-    i = letters.indexOf(c);
-    if(i >= 0)
-      return latin(i + 1);
-    /* else */
-    return new Err(ch);
+    return digitIfGT0(digits.indexOf(c))
+      || latinIfGT0(letters.indexOf(c))
+      || new Err(ch);
   }
 })();
 
@@ -83,8 +82,7 @@ export const semaphore = (() => {
   const letters = [1, 2, 3, 4, 5, 6, 7, 10, 11, 38, 12, 13, 14, 15, 19, 20, 21, 22, 23, 28, 29, 39, 46, 47, 30, 55];
 
   return function(c, ch) {
-    const i = letters.indexOf(c);
-    return i >= 0 ? latin(i + 1) : new Err(ch);
+    return latinIfGT0(letters.indexOf(c)) || new Err(ch);
   }
 })();
 
