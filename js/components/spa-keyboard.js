@@ -459,7 +459,11 @@ function modSemaphore(cont, defKey) {
 }
 
 function modFlags(cont) {
-  const flgColors = [9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30];
+  const flgColors = [
+    9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30,
+    6, 5, 9, 13, 5, 10, 17, 6, 5, 23,
+    9, 6, 6, 12, 5, 10, 9, 5, 10, 9
+  ];
 
   cont.innerHTML = `
   <div id="kbd-flags">
@@ -476,12 +480,15 @@ function modFlags(cont) {
   </div>`;
 
   const sugg = cont.querySelector('#kbd-flg-sugg');
-  for(let i = 0; i < 26; i++) {
-    const elm = document.createElement('button');
-    elm.className = 'key';
-    elm.textContent = String.fromCodePoint(0xF801 + i);
-    sugg.appendChild(elm);
-  }
+  for(const [off, len] of [[1, 26], [32, 10], [48, 10]])
+    for(let i = 0; i < len; i++) {
+      const elm = document.createElement('button');
+      elm.className = 'key';
+      if(off === 32) /* ICS numbers */
+        elm.classList.add('ics');
+      elm.textContent = String.fromCodePoint(0xF800 + off + i);
+      sugg.appendChild(elm);
+    }
   const children = sugg.children;
 
   function filter() {
@@ -489,12 +496,11 @@ function modFlags(cont) {
     for(const elm of cont.querySelector('#kbd-flg-colors').children)
       if(elm.checked)
         cond += +elm.dataset.value;
-    for(let i = 0; i < 26; i++)
+    for(let i = 0; i < 46; i++)
       children[i].hidden = !((flgColors[i] & cond) === cond);
   }
 
   cont.querySelector('#kbd-flg-colors').addEventListener('input', filter);
-  filter();
 
   cont.querySelector('#kbd-flg-sugg').addEventListener('kbd-input', () => {
     for(const elm of cont.querySelector('#kbd-flg-colors').children)

@@ -45,7 +45,7 @@
   --shadow-modal: 0 0 var(--margin-base) hsl(0, 0%, calc(40% - var(--c) * 10%));
   --shadow-kbd: 1px 1px 3px #888;
   --shadow-kbd-press: 0px 0px 2px #888;
-  --line-height-base: 1.5em;
+  --line-height-base: 1.5rem;
   font-family: "SPA3", "Source Sans Pro";
   font-size: 16px;
   line-height: var(--line-height-base);

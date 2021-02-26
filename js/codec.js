@@ -75,7 +75,14 @@ export const segments = (() => {
 })();
 
 export function flags(c, ch) {
-  return (c >= 1 && c <= 26) ? latin(c) : new Err(ch);
+  if(c >= 1 && c <= 26)
+    return latin(c);
+  else if(c >= 32 && c < 42)
+    return digit(c - 32);
+  else if(c >= 48 && c < 58)
+    return digit(c - 48);
+  else
+    return new Err(ch);
 }
 
 export const semaphore = (() => {
@@ -98,7 +105,7 @@ const map = [
   [0xF180, segments],
   [0xF200, null],
   [0xF800, flags],
-  [0xF820, null],
+  [0xF840, null],
   [0xF880, semaphore],
   [0xF8C0, null]
 ].reduce((() => {

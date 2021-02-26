@@ -237,6 +237,10 @@
   justify-content: center;
 }
 
+.ics {
+  font-size: 70%;
+}
+
 #kbd-digits {
   display: flex;
   flex-direction: column;
