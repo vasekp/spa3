@@ -578,6 +578,22 @@ const modules = {
   digits: modDigits,
 };
 
+function insert(tgt, key, opts = {}) {
+  if(opts.append)
+    tgt.selectionStart = tgt.selectionEnd;
+  tgt.setRangeText(key, tgt.selectionStart, tgt.selectionEnd, opts.select ? 'select' : 'end');
+  tgt.dispatchEvent(new CustomEvent('input', { bubbles: true }));
+}
+
+function bspace(tgt) {
+  if(tgt.selectionStart == tgt.selectionEnd && tgt.selectionStart > 0)
+    tgt.selectionStart--;
+  tgt.setRangeText('');
+  tgt.dispatchEvent(new CustomEvent('input', { bubbles: true }));
+}
+
+const dbConfirm = debounce(elm => elm.selectionStart = elm.selectionEnd, 500);
+
 class KeyboardElement extends HTMLElement {
   constructor() {
     super();
@@ -667,22 +683,6 @@ class KeyboardElement extends HTMLElement {
     } else
       modules[mod](cont, defKey);
   }
-}
-
-const dbConfirm = debounce(elm => elm.selectionStart = elm.selectionEnd, 500);
-
-function insert(tgt, key, opts = {}) {
-  if(opts.append)
-    tgt.selectionStart = tgt.selectionEnd;
-  tgt.setRangeText(key, tgt.selectionStart, tgt.selectionEnd, opts.select ? 'select' : 'end');
-  tgt.dispatchEvent(new CustomEvent('input', { bubbles: true }));
-}
-
-function bspace(tgt) {
-  if(tgt.selectionStart == tgt.selectionEnd && tgt.selectionStart > 0)
-    tgt.selectionStart--;
-  tgt.setRangeText('');
-  tgt.dispatchEvent(new CustomEvent('input', { bubbles: true }));
 }
 
 window.customElements.define('spa-keyboard', KeyboardElement);
