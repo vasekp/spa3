@@ -94,6 +94,7 @@ function modMorse(cont) {
   const debAddSeparator = debounce(x => {
     if(x)
     cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
       detail: { key: String.fromCodePoint(0xF00A) }
     }));
   }, 500);
@@ -115,6 +116,7 @@ function modMorse(cont) {
     const delta = e.timeStamp - time;
     pointer = null;
     cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
       detail: { key: String.fromCodePoint(delta < 250 ? 0xF008 : 0xF009) }
     }));
     debAddSeparator(true);
@@ -275,7 +277,7 @@ function modPigpen(cont) {
     updateSugg();
   });
 
-  sugg.addEventListener('click', () => {
+  sugg.addEventListener('kbd-input', () => {
     path.setAttribute('d', '');
     arr = [];
     pointer = null;
@@ -309,6 +311,7 @@ function modPolybius(cont, defKey) {
 
   const dbConfirm = debounce(() => {
     cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
       detail: { key: defKey.textContent }
     }));
     defKey.hidden = true;
@@ -420,6 +423,7 @@ function modSemaphore(cont, defKey) {
     if(sel.length !== 2)
       return;
     cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
       detail: { key: defKey.textContent }
     }));
     defKey.hidden = true;
@@ -471,33 +475,32 @@ function modFlags(cont) {
     </spa-scroll>
   </div>`;
 
+  const sugg = cont.querySelector('#kbd-flg-sugg');
+  for(let i = 0; i < 26; i++) {
+    const elm = document.createElement('button');
+    elm.className = 'key';
+    elm.textContent = String.fromCodePoint(0xF801 + i);
+    sugg.appendChild(elm);
+  }
+  const children = sugg.children;
+
   function filter() {
     let cond = 0;
     for(const elm of cont.querySelector('#kbd-flg-colors').children)
       if(elm.checked)
         cond += +elm.dataset.value;
-    const sugg = cont.querySelector('#kbd-flg-sugg');
-    const iter = sugg.children[Symbol.iterator]();
-    let count = 0;
-    for(let i = 0; i < 26; i++) {
-      if((flgColors[i] & cond) === cond) {
-        const elm = iter.next().value || (() => {
-          const elm = document.createElement('button');
-          elm.classList.add('key');
-          sugg.appendChild(elm);
-          return elm;
-        })();
-        elm.textContent = String.fromCodePoint(0xF801 + i);
-        elm.hidden = false;
-      }
-    }
-    let rest;
-    while(rest = iter.next().value)
-      rest.hidden = true;
+    for(let i = 0; i < 26; i++)
+      children[i].hidden = !((flgColors[i] & cond) === cond);
   }
 
   cont.querySelector('#kbd-flg-colors').addEventListener('input', filter);
   filter();
+
+  cont.querySelector('#kbd-flg-sugg').addEventListener('kbd-input', () => {
+    for(const elm of cont.querySelector('#kbd-flg-colors').children)
+      elm.checked = false;
+    filter();
+  });
 }
 
 function modMobile(cont) {
@@ -536,6 +539,7 @@ function modMobile(cont) {
     const append = (lastDigit !== 0 && digit !== lastDigit);
     lastDigit = digit;
     cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
       detail: { func: repl[digit], append, select: true }
     }));
   });
@@ -602,7 +606,13 @@ class KeyboardElement extends HTMLElement {
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
+
+    /* Prevent keyboard from taking focus */
     this.addEventListener('mousedown', e => e.preventDefault());
+
+    /* Main button listener */
+    const sendInsert = (tgt, key) =>
+      tgt.dispatchEvent(new CustomEvent('kbd-input', { bubbles: true, detail: { key } }));
     root.addEventListener('click', e => {
       if(e.target.dataset.mod) {
         this.openModule(e.target.dataset.mod);
@@ -613,24 +623,26 @@ class KeyboardElement extends HTMLElement {
         return;
       switch(e.target.id) {
         case 'space':
-          insert(this._target, ' ');
+          sendInsert(e.target, ' ');
           break;
         case 'enter':
-          insert(this._target, '\n');
+          sendInsert(e.target, '\n');
           break;
         case 'bsp':
           break;
         case 'default':
-          insert(this._target, e.target.textContent);
+          sendInsert(e.target, e.target.textContent);
           if(e.target.afterClick)
             e.target.afterClick();
           break;
         default:
-          insert(this._target, e.target.textContent);
+          sendInsert(e.target, e.target.textContent);
           break;
       }
       e.preventDefault();
     });
+
+    /* Backspace repeater */
     let bspTimer = null;
     root.getElementById('bsp').addEventListener('pointerdown', () => {
       bspace(this._target);
@@ -640,7 +652,9 @@ class KeyboardElement extends HTMLElement {
     });
     for(const n of ['pointerup', 'pointercancel'])
       root.getElementById('bsp').addEventListener(n, () => clearTimeout(bspTimer));
-    root.getElementById('module').addEventListener('kbd-input', e => {
+
+    /* All input handled via this event */
+    root.addEventListener('kbd-input', e => {
       const tgt = this._target;
       if(!tgt)
         return;
