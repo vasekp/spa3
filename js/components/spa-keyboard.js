@@ -105,16 +105,16 @@ function modMorse(cont) {
     if(pointer !== null)
       return;
     pointer = e.pointerId;
-    time = e.timeStamp;
     key.setPointerCapture(pointer);
+    time = e.timeStamp;
     debAddSeparator(false);
   });
   key.addEventListener('pointerup', e => {
     if(e.pointerId !== pointer)
       return;
     key.releasePointerCapture(pointer);
-    const delta = e.timeStamp - time;
     pointer = null;
+    const delta = e.timeStamp - time;
     cont.dispatchEvent(new CustomEvent('kbd-input', {
       bubbles: true,
       detail: { key: String.fromCodePoint(delta < 250 ? 0xF008 : 0xF009) }
@@ -122,6 +122,7 @@ function modMorse(cont) {
     debAddSeparator(true);
   });
   key.addEventListener('pointercancel', e => {
+    key.releasePointerCapture(pointer);
     if(e.pointerID === pointer)
       pointer = null;
   })
@@ -239,6 +240,7 @@ function modPigpen(cont) {
     if(pointer !== null)
       return;
     pointer = e.pointerId;
+    svg.setPointerCapture(pointer);
     cRect = svg.getBoundingClientRect();
     const [x, y, a] = xya(e);
     arr = [a];
@@ -265,6 +267,7 @@ function modPigpen(cont) {
     if(e.pointerId !== pointer)
       return;
     path.setAttribute('d', buildPath(arr));
+    svg.releasePointerCapture(pointer);
     pointer = null;
     updateSugg();
   });
@@ -273,6 +276,7 @@ function modPigpen(cont) {
     if(e.pointerId !== pointer)
       return;
     path.setAttribute('d', '');
+    svg.releasePointerCapture(pointer);
     pointer = null;
     updateSugg();
   });
