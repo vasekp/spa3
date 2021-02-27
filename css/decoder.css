@@ -9,3 +9,15 @@
   overflow-wrap: break-word;
   user-select: text;
 }
+
+#dcd-set-defaults > label {
+  grid-column: 1/3;
+}
+
+#dcd-set-defaults > div {
+  grid-column: 3/6;
+}
+
+.dcd-set-row input {
+  margin-right: var(--margin-base);
+}
