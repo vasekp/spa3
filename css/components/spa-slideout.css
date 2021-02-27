@@ -55,11 +55,9 @@
   position: absolute;
   top: var(--padding);
   right: 0;
-  width: calc(var(--count) * var(--div-size));
   height: 1em;
   line-height: 1em;
   display: flex;
-  justify-content: space-around;
   align-items: center;
 }
 
@@ -76,4 +74,5 @@
   scroll-margin-top: var(--padding);
   /* And, *of course*, a nonstandard name for WebKit. */
   scroll-snap-margin-top: var(--padding);
+  margin: 0 var(--padding) !important; /* couldn't override button's margin:0 with specificity */
 }
