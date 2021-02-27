@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-slideout.css"/>
-<div id="expander" tabindex="-1"><div id="container"><slot></slot></div></div>`;
+<div id="expander" tabindex="-1"><div id="top"></div><div id="container"><slot></slot></div></div>`;
 
 class SlideOutElement extends HTMLElement {
   constructor() {
@@ -10,6 +10,7 @@ class SlideOutElement extends HTMLElement {
     const root = this.attachShadow({ mode: 'open' });
     root.appendChild(template.content.cloneNode(true));
     root.querySelector('link').addEventListener('load', () => this.hidden = false);
+
     const cont = root.getElementById('expander');
     this.addEventListener('touchend', e => {
       if(!cont.matches(':focus-within')) {
@@ -17,6 +18,13 @@ class SlideOutElement extends HTMLElement {
         e.preventDefault();
       }
     });
+
+    const io = new IntersectionObserver(entries => {
+      if(entries[0].intersectionRatio < 1)
+        entries[0].target.scrollIntoView();
+    });
+    io.observe(root.getElementById('top'));
+
     const update = () => this.updateCount();
     this.addEventListener('mouseenter', update);
     this.addEventListener('focusin', update);
