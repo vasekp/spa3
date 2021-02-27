@@ -5,16 +5,34 @@
   --div-size-border: calc(var(--div-size) + 2 * var(--line-width));
   --padding: calc((var(--div-size) - 1em) / 2);
   --count: 1; /* dummy */
+  display: block;
   width: var(--div-size-border);
   height: var(--div-size-border);
   overflow: visible;
   margin-left: auto;
   position: relative;
   z-index: 1;
+  transition: z-index 1s steps(2, jump-both);
+}
+
+:host(:focus-within),
+:host(:hover) {
+  z-index: 3;
+  transition-timing-function: step-start;
+}
+
+:host(.corner) {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 :host([hidden]) {
   display: none;
+}
+
+:root:focus-within {
+  z-index: 2;
 }
 
 #expander {

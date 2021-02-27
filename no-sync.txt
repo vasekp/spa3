@@ -1,0 +1,10 @@
+.github/FUNDING.yml
+README.md
+LICENSE
+CONTRIBUTING.md
+sworker.js
+no-sync.txt
+fonts/Makefile
+fonts/SPA3.sfd
+fonts/addcolors.cpp
+fonts/color.in

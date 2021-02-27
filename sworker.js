@@ -29,14 +29,7 @@ async function update(dryrun = false) {
     const cache = await caches.open(cacheName);
     const filesKeep = [];
     const filesUpdate = ['./'];
-    const filesIgnore = [
-      '.github/FUNDING.yml',
-      'README.md',
-      'LICENSE',
-      'CONTRIBUTING.md',
-      'fonts/SPA3.sfd',
-      'sworker.js'
-    ];
+    const filesIgnore = (await (await fetch('no-sync.txt')).text()).split('\n').filter(w => w.length > 0);
     let dlSize = 0;
     for(const newEntry of newTree.tree) {
       if(newEntry.type !== 'blob')

@@ -10,5 +10,9 @@
   {
     "moduleName": "wordlist",
     "displayName": "Hledání slov"
+  },
+  {
+    "moduleName": "decoder",
+    "displayName": "Dekodér"
   }
 ]

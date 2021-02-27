@@ -4,6 +4,7 @@ import recordStore from '../log-record-store.js';
 import {lsKeys, getGameLabels} from '../logbook.js';
 import ContainerElement from './spa-focus-container.js';
 import _ from '../i18n.js';
+import './spa-textbox.js';
 
 const templateBase = document.createElement('template');
 templateBase.innerHTML = `
@@ -16,10 +17,7 @@ templateBase.innerHTML = `
   <button class="log-record-geo-icon inline"></button>
   <button class="log-record-edit"><img class="inline" src="images/edit.svg"></button>
 </div>
-<div class="log-record-text-container">
-  <span class="log-record-text"></span>
-  <textarea class="log-record-area"></textarea>
-</div>
+<spa-textbox class="log-record-text"></spa-textbox>
 <div class="log-record-props">
   <spa-color-sel class="log-record-colorsel" data-delayed="1"></spa-color-sel>
   <button class="log-record-geo-button inline"></button>
@@ -44,8 +42,8 @@ class RecordElement extends ContainerElement {
     this.dataset.color = 'grey';
     this.appendChild(templateBase.content.cloneNode(true));
     const id = this._id = id => this.querySelector(`.log-record-${id}`);
-    id('area').addEventListener('input', () => this._input());
-    id('area').addEventListener('keydown', e => this._keydown(e));
+    id('text').addEventListener('input', () => this._input());
+    id('text').addEventListener('keydown', e => this._keydown(e));
     id('edit').addEventListener('click', e => this.state = states.edit);
     id('geo-icon').addEventListener('click', () => this._geoShow());
     id('geo-button').addEventListener('click', e => this._geoSet());
@@ -74,7 +72,7 @@ class RecordElement extends ContainerElement {
   }
 
   set text(text) {
-    this._id('area').value = this._id('text').textContent = text;
+    this._id('text').value = text;
   }
 
   set tag(tag) {
@@ -107,13 +105,14 @@ class RecordElement extends ContainerElement {
       colorsel.labels = getGameLabels(game)[1];
       colorsel.dataset.count = localStorage[lsKeys.ccount];
     }
+    this._id('text').disabled = !(state === states.edit || state === states.nascent);
     if(state === states.edit)
       this._open();
   }
 
   _open() {
     this._oldText = this._record.text;
-    this._id('area').focus();
+    this._id('text').focus();
   }
 
   _close() {
@@ -146,7 +145,7 @@ class RecordElement extends ContainerElement {
   }
 
   _input() {
-    this._record.text = this._id('area').value;
+    this._record.text = this._id('text').value;
   }
 
   _keydown(e) {

@@ -1,0 +1,36 @@
+spa-textbox {
+  display: block;
+  position: relative;
+  min-height: var(--line-height-base);
+}
+
+spa-textbox > span {
+  padding: 0;
+  color: transparent;
+}
+
+spa-textbox > span, spa-textbox > textarea {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+spa-textbox > textarea {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+spa-textbox spa-slideout > button {
+  width: 1rem;
+}
+
+button[data-mod="flags"] {
+  font-size: 83%;
+}
+
+spa-textbox:not([ime]) spa-slideout,
+spa-textbox:not(:focus-within) spa-slideout {
+  display: none;
+}

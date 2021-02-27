@@ -7,7 +7,7 @@
 }
 
 input.error {
-  background: var(--color-error);
+  background: var(--color-bg-error);
 }
 
 :host([data-size="small"]) #filters {

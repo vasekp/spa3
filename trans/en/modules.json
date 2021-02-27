@@ -10,5 +10,9 @@
   {
     "moduleName": "wordlist",
     "displayName": "Dictionary Search"
+  },
+  {
+    "moduleName": "decoder",
+    "displayName": "Decoder"
   }
 ]

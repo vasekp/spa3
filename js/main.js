@@ -1,4 +1,5 @@
 import './components/spa-view.js';
+import './components/spa-keyboard.js';
 import Enum from './util/enum.js';
 import _, * as i18n from './i18n.js';
 
