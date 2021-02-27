@@ -104,3 +104,8 @@ span.spa-loading {
   background: linear-gradient(90deg, var(--color-bg-00) 0%, var(--color-bg-main) 50%, var(--color-bg-00) 100%) repeat 0/200%;
   animation: loading 1s linear infinite running;
 }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -68,7 +68,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   link.href = URL.createObjectURL(blob);
   document.head.appendChild(link);
   /* Check for updates */
-  if(navigator.serviceWorker.controller)
+  if(navigator.serviceWorker && navigator.serviceWorker.controller)
     navigator.serviceWorker.controller.postMessage({ dryrun: true });
 });
 
@@ -105,33 +105,36 @@ function getTheme() {
   return localStorage[lsKeys.theme];
 }
 
-window.addEventListener('load', () => navigator.serviceWorker.register('sworker.js'));
+const url = new URL(document.URL);
+if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWorker) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sworker.js'));
 
-navigator.serviceWorker.addEventListener('controllerchange', () => {
-  navigator.serviceWorker.controller.postMessage({ dryrun: true });
-});
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    navigator.serviceWorker.controller.postMessage({ dryrun: true });
+  });
 
-navigator.serviceWorker.addEventListener('message', m => {
-  switch(m.data.update) {
-    case 'available': {
-      const templ = _('update available');
-      const sizeText = (size => {
-        if(size < 1024)
-          return '< 1 kB';
-        size /= 1024;
-        if(size < 1000)
-          return `${Math.round(size)} kB`;
-        size /= 1024;
-        return `${Math.round(size * 10) / 10} MB`;
-      })(m.data.dlSize);
-      const text = templ.replace('{size}', sizeText);
-      if(confirm(text))
-        navigator.serviceWorker.controller.postMessage({ dryrun: false });
-      break;
+  navigator.serviceWorker.addEventListener('message', m => {
+    switch(m.data.update) {
+      case 'available': {
+        const templ = _('update available');
+        const sizeText = (size => {
+          if(size < 1024)
+            return '< 1 kB';
+          size /= 1024;
+          if(size < 1000)
+            return `${Math.round(size)} kB`;
+          size /= 1024;
+          return `${Math.round(size * 10) / 10} MB`;
+        })(m.data.dlSize);
+        const text = templ.replace('{size}', sizeText);
+        if(confirm(text))
+          navigator.serviceWorker.controller.postMessage({ dryrun: false });
+        break;
+      }
+      case 'updated':
+        if(confirm(_('update finished')))
+          location.reload();
+        break;
     }
-    case 'updated':
-      if(confirm(_('update finished')))
-        location.reload();
-      break;
-  }
-});
+  });
+}
