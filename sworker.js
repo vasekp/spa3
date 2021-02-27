@@ -19,9 +19,9 @@ self.addEventListener('message', m => {
 async function update(dryrun = false) {
   const m = await caches.match('cachedVersion');
   const oldV = m ? await m.text() : null;
-  const newTree = await (await fetch(`https://api.github.com/repos/vasekp/spa3/git/trees/master?recursive=1`)).json();
-  const newV = newTree.sha;
+  const newV = (await (await fetch('https://api.github.com/repos/vasekp/spa3/deployments')).json())[0].sha;
   if(newV !== oldV) {
+    const newTree = await (await fetch(`https://api.github.com/repos/vasekp/spa3/git/trees/${newV}?recursive=1`)).json();
     const oldTree = oldV
       ? await (await fetch(`https://api.github.com/repos/vasekp/spa3/git/trees/${oldV}?recursive=1`)).json()
       : { tree: [] };
