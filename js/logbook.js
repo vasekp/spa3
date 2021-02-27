@@ -229,9 +229,7 @@ export default function(root) {
   root.getElementById('tag-filter').dataset.count = localStorage[lsKeys.ccount];
   db.then(dbReady);
 
-  return {
-    populateSettings,
-  }
+  return { populateSettings };
 };
 
 export const lsKeys = Enum.fromObj({

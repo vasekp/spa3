@@ -132,7 +132,7 @@ function modPigpen(cont) {
   cont.innerHTML = `
   <div id="kbd-pigpen-cont">
     <div id="kbd-pigpen-border">
-      <svg id="kbd-pigpen-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160" data-mode="rect">
+      <svg id="kbd-pigpen-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-64 -80 128 160" data-mode="rect">
         <g id="kbd-pigpen-rect" fill="currentcolor">
           <circle cx="40" cy="40" r="7"/>
           <circle cx="-40" cy="40" r="7"/>

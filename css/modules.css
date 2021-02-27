@@ -93,7 +93,7 @@ input[type="radio"].patch.show-state:checked::before {
   display: grid;
   grid-template-columns: 1em auto 1em auto 1em;
   grid-gap: var(--margin-base);
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 0;
 }
 

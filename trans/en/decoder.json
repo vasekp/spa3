@@ -1,5 +1,15 @@
 {
   "_prefix": "dcd",
   "input": "Input:",
-  "output": "Output:"
+  "output": "Output:",
+  "settings title": "Decoder defaults",
+  "set:pigpen1": "Rosicrucian:",
+  "pgp:czech": "Czech",
+  "pgp:english": "International",
+  "set:pigpen2": "0–1–2 dots:",
+  "set:pigpen3": "Masonic:",
+  "set:polybius": "Polybius:",
+  "plb:q": "sans Q",
+  "plb:j": "sans J",
+  "plb:k": "sans K"
 }

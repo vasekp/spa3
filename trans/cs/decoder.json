@@ -1,5 +1,15 @@
 {
   "_prefix": "dcd",
   "input": "Vstup:",
-  "output": "Výstup:"
+  "output": "Výstup:",
+  "settings title": "Dekodér",
+  "set:pigpen1": "Polský kříž:",
+  "pgp:czech": "s Ch",
+  "pgp:english": "bez Ch",
+  "set:pigpen2": "Hebrejština:",
+  "set:pigpen3": "Malý polský kříž:",
+  "set:polybius": "Polybius:",
+  "plb:q": "bez Q",
+  "plb:j": "bez J",
+  "plb:k": "bez K"
 }

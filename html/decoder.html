@@ -4,4 +4,31 @@
   <spa-textbox id="in" class="underline" ime="1"></spa-textbox>
   <div>_(dcd:output)</div>
   <div id="out"></div>
+  <template id="module-settings">
+    <div class="settings-header">_(dcd:settings title)</div>
+    <div class="trans" id="dcd-set-defaults">
+      <label>_(dcd:set:pigpen1)</label>
+      <div class="dcd-set-row">
+        <input type="radio" name="pigpen1" class="patch show-state" data-value="cz" data-label="_(dcd:pgp:czech)">
+        <input type="radio" name="pigpen1" class="patch show-state" data-value="int" data-label="_(dcd:pgp:english)">
+      </div>
+      <label>_(dcd:set:pigpen2)</label>
+      <div class="dcd-set-row">
+        <input type="radio" name="pigpen2" class="patch show-state" data-value="9-dot" data-label="B = &#xF143;">
+        <input type="radio" name="pigpen2" class="patch show-state" data-value="dot-9" data-label="B = &#xF141;">
+      </div>
+      <label>_(dcd:set:pigpen3)</label>
+      <div class="dcd-set-row">
+        <input type="radio" name="pigpen3" class="patch show-state" data-value="9-dot-4" data-label="&#xF122; < &#xF121; < &#xF132;">
+        <input type="radio" name="pigpen3" class="patch show-state" data-value="dot-9-4" data-label="&#xF121; < &#xF122; < &#xF132;">
+        <input type="radio" name="pigpen3" class="patch show-state" data-value="9-4-dot" data-label="&#xF122; < &#xF132; < &#xF121;">
+      </div>
+      <label>_(dcd:set:polybius)</label>
+      <div class="dcd-set-row">
+        <input type="radio" name="polybius" class="patch show-state" data-value="q" data-label="_(dcd:plb:q)">
+        <input type="radio" name="polybius" class="patch show-state" data-value="j" data-label="_(dcd:plb:j)">
+        <input type="radio" name="polybius" class="patch show-state" data-value="k" data-label="_(dcd:plb:k)">
+      </div>
+    </div>
+  </template>
 </main>
