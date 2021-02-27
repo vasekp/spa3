@@ -23,6 +23,7 @@
   width: var(--div-size);
   height: var(--div-size);
   overflow: hidden;
+  overflow: clip;
   transition: width .5s, height .5s;
   background: var(--color-bg-main);
   border: var(--border);
