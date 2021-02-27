@@ -21,24 +21,31 @@ export const morse = (() => {
   const letters = [12, 2111, 2121, 211, 1, 1121, 221, 1111, 11, 1222, 212, 1211, 22, 21, 222, 1221, 2212, 121, 111, 2, 112, 1112, 122, 2112, 2122, 2211];
   const digits = [22222, 12222, 11222, 11122, 11112, 11111, 21111, 22111, 22211, 22221];
 
-  return () => function(c, ch, state) {
-    if(c === 2 || c === null) {
-      if(!state.x)
-        return ' ';
-      /* else */
-      state.in = (state.in || '') + (ch || '');
-      const ret =
-        latinIfGT0(letters.indexOf(state.x))
-          || digitIfGT0(digits.indexOf(state.x))
-          || new Err(state.in);
-      state.x = 0;
-      state.in = '';
-      return ret;
-    } else {
-      state.x = 10 * (state.x || 0) + c + 1;
-      state.in = (state.in || '') + ch;
-      return '';
-    }
+  return () => {
+    const state = {};
+
+    const f = function(c, ch) {
+      if(c === 2 || c === undefined) {
+        if(!state.x)
+          return ' ';
+        /* else */
+        state.in = (state.in || '') + (ch || '');
+        const ret =
+          latinIfGT0(letters.indexOf(state.x))
+            || digitIfGT0(digits.indexOf(state.x))
+            || new Err(state.in);
+        state.x = 0;
+        state.in = '';
+        return ret;
+      } else {
+        state.x = 10 * (state.x || 0) + c + 1;
+        state.in = (state.in || '') + ch;
+        return '';
+      }
+    };
+
+    f.stateful = true;
+    return f;
   };
 })();
 
@@ -156,28 +163,25 @@ function category(c) {
   return [];
 }
 
+const trivialDecoder = (c, ch) => ch;
+
 export function* decode(str, conf) {
   let lastFunc = null;
-  let decoder = null;
-  let state = {};
+  let decoder = trivialDecoder;
   for(const ch of str) {
     const c = ch.codePointAt(0);
     const [func, base] = category(c);
     if(func !== lastFunc) {
-      if(decoder && Object.keys(state).length > 0)
-        yield decoder(null, null, state);
-      state = {};
-    }
-    if(!func) {
-      lastFunc = null;
-      yield ch;
-    } else {
+      if(decoder.stateful)
+        yield decoder();
+      if(func)
+        decoder = func(conf);
+      else
+        decoder = trivialDecoder;
       lastFunc = func;
-      decoder = func(conf);
-      const ret = decoder(c - base, ch, state);
-      yield ret !== null ? ret : new Err(ch);
     }
+    yield decoder(c - base, ch);
   }
-  if(decoder && Object.keys(state).length > 0)
-    yield decoder(null, null, state);
+  if(decoder.stateful)
+    yield decoder();
 }
