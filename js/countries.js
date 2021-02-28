@@ -2,7 +2,12 @@ import './components/spa-scroll.js';
 import './components/spa-modal.js';
 import normalize from './util/text.js';
 import debounce from './util/debounce.js';
+import Enum from './util/enum.js';
 import _, * as i18n from './i18n.js';
+
+const lsKeys = Enum.fromObj({
+  tab: 'flg-tab',
+});
 
 export default function(root) {
   const dbf = debounce(filter, 300);
@@ -18,6 +23,8 @@ export default function(root) {
   root.getElementById('curr-code').addEventListener('input', dbf);
   root.getElementById('list').addEventListener('click', flagClicked);
   root.getElementById('details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
+  for(const elm of root.querySelectorAll('input[name="filter-section"]'))
+    elm.addEventListener('input', saveTab);
   loadData();
 
   function firstOrMulti(e) {
@@ -67,7 +74,7 @@ export default function(root) {
     const lines = [];
     for(const line of text.split('\n')) {
       if(!line) break;
-      lines.push(line.split(':'));
+      lines.push(line.split(';'));
     }
     lines.sort((a, b) => i18n.compare(a[0], b[0]));
     for(const arr of lines) {
@@ -96,6 +103,7 @@ export default function(root) {
       tr.dataset.flagShape = arr[8];
       tr.dataset.emblems = arr[9];
       tr.dataset.emblemColor = arr[10];
+      tr.dataset.wiki = arr[11];
       tr.dataset.active = 1;
       tr.tabIndex = 0;
       tr.classList.add('inner-outline');
@@ -219,8 +227,15 @@ export default function(root) {
     root.getElementById('d-name').textContent = tr.dataset.name;
     root.getElementById('d-capital').textContent = tr.dataset.capital;
     root.getElementById('d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
+    root.getElementById('d-wiki').href = `${tr.dataset.wiki}`;
     root.getElementById('details-modal').show();
   }
+
+  function saveTab(e) {
+    localStorage[lsKeys.tab] = e.target.id;
+  }
+
+  root.getElementById(localStorage[lsKeys.tab] || 'filter-country').checked = true;
 
   return {};
 }
