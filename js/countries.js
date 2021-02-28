@@ -2,7 +2,12 @@ import './components/spa-scroll.js';
 import './components/spa-modal.js';
 import normalize from './util/text.js';
 import debounce from './util/debounce.js';
+import Enum from './util/enum.js';
 import _, * as i18n from './i18n.js';
+
+const lsKeys = Enum.fromObj({
+  tab: 'flg-tab',
+});
 
 export default function(root) {
   const dbf = debounce(filter, 300);
@@ -18,6 +23,8 @@ export default function(root) {
   root.getElementById('curr-code').addEventListener('input', dbf);
   root.getElementById('list').addEventListener('click', flagClicked);
   root.getElementById('details-modal').addEventListener('click', e => e.currentTarget.hidden = true);
+  for(const elm of root.querySelectorAll('input[name="filter-section"]'))
+    elm.addEventListener('input', saveTab);
   loadData();
 
   function firstOrMulti(e) {
@@ -223,6 +230,12 @@ export default function(root) {
     root.getElementById('d-wiki').href = `${tr.dataset.wiki}`;
     root.getElementById('details-modal').show();
   }
+
+  function saveTab(e) {
+    localStorage[lsKeys.tab] = e.target.id;
+  }
+
+  root.getElementById(localStorage[lsKeys.tab] || 'filter-country').checked = true;
 
   return {};
 }
