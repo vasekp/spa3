@@ -17,5 +17,6 @@
   "shape": "Shape",
   "emblems": "Emblems",
   "currency": "Currency",
-  "currency placeholder": "code"
+  "currency placeholder": "code",
+  "wiki": "Wikipedia entry"
 }

@@ -174,3 +174,8 @@ spa-scroll {
   font-weight: 600;
   content: attr(data-label) ": ";
 }
+
+#d-wiki::before {
+  content: "\F00E";
+  margin-right: var(--margin-small);
+}

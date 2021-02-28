@@ -67,7 +67,7 @@ export default function(root) {
     const lines = [];
     for(const line of text.split('\n')) {
       if(!line) break;
-      lines.push(line.split(':'));
+      lines.push(line.split(';'));
     }
     lines.sort((a, b) => i18n.compare(a[0], b[0]));
     for(const arr of lines) {
@@ -96,6 +96,7 @@ export default function(root) {
       tr.dataset.flagShape = arr[8];
       tr.dataset.emblems = arr[9];
       tr.dataset.emblemColor = arr[10];
+      tr.dataset.wiki = arr[11];
       tr.dataset.active = 1;
       tr.tabIndex = 0;
       tr.classList.add('inner-outline');
@@ -219,6 +220,7 @@ export default function(root) {
     root.getElementById('d-name').textContent = tr.dataset.name;
     root.getElementById('d-capital').textContent = tr.dataset.capital;
     root.getElementById('d-currency').textContent = `${tr.dataset.currency} (${tr.dataset.abbrCurr})`;
+    root.getElementById('d-wiki').href = `${tr.dataset.wiki}`;
     root.getElementById('details-modal').show();
   }
 
