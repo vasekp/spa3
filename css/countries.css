@@ -170,12 +170,18 @@ spa-scroll {
   font-weight: 600;
 }
 
+#d-currency::before,
+#d-wiki::before {
+  display: inline-block;
+  width: 1.2rem;
+  margin-right: var(--margin-small);
+  text-align: center;
+}
+
 #d-currency::before {
-  font-weight: 600;
-  content: attr(data-label) ": ";
+  content: "\F010";
 }
 
 #d-wiki::before {
   content: "\F00E";
-  margin-right: var(--margin-small);
 }
