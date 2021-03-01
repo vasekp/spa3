@@ -8,3 +8,5 @@ fonts/Makefile
 fonts/SPA3.sfd
 fonts/addcolors.cpp
 fonts/color.in
+assets/any/wordlists/COPYING
+assets/any/wordlists/cs-subst.copyright
