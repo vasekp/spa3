@@ -19,3 +19,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+For separate licence terms for included data packages see respective files:
+
+assets/any/wordlists/cs-subst.txt:
+- assets/any/wordlists/cs-subst.copyright
+- assets/any/wordlists/COPYING
+
+assets/any/flags/*.svg:
+- All of these files are believed to be ineligible for copyright, because they consist entirely of information that is common property and contains no original authorship. Mass downloaded from Wikipedia November 11, 2020. Claim based on a manual inspection of copyright information on a representative sample.
+
+assets/cs/countries.csv, assets/en/countries.csv:
+- Own work, subject to the overall license given in the beginning of this file.
