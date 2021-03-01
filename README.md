@@ -14,6 +14,12 @@ Pro jakákoli chybová hlášení prosím používejte **výhradně** tento repo
 
 Podporované prohlížeče jsou **výhradně nejnovější verze** Firefox, Chrome, Edge, Safari, jejich mobilní protějšky a prohlížeče využívající stejný kód (Chromium, Samsung Internet). Před hlášením chyby se prosím ujistěte, že váš prohlížeč je aktuální; funkční rozdíly způsobené zastaralou verzí nebudou považovány za chybu. Zkuste také "force refresh" (často Ctrl+F5 nebo Shift+F5).
 
+### Známé problémy
+
+Tyto chyby ve vykreslování v jinak podporovaných prohlížečích jsou dány limitacemi jednotlivých platforem a je mimo mé možnosti a zájem je jakkoli adresovat, dokud nebudou zmíněné prohlížeče respektovat patřičné specifikace.
+* Firefox: klávesy virtuální klávesnice nereagují vizuálně na stisk.
+* Chrome, Safari, Edge: okraje barevných prvků fontu v tmavém režimu zůstávají černé.
+
 ## Přispívání k projektu
 
 Opravy, nové funkce, překlady do jiných jazyků apod. uvítám ve formě Pull request. Další informace naleznete v souboru [CONTRIBUTING.md](CONTRIBUTING.md).
