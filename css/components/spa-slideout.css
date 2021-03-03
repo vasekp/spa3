@@ -12,19 +12,24 @@
   margin-left: auto;
   position: relative;
   z-index: 1;
-  transition: z-index 1s steps(2, jump-both);
+  transition: z-index 1s steps(2, jump-both), opacity .5s;
 }
 
 :host(:focus-within),
 :host(:hover) {
   z-index: 3;
-  transition-timing-function: step-start;
+  transition-timing-function: step-start, ease-in-out;
 }
 
 :host(.corner) {
   position: absolute;
   top: 0;
   right: 0;
+  opacity: 0.5;
+}
+
+:host(.corner:focus-within) {
+  opacity: 1;
 }
 
 :host([hidden]) {
@@ -64,20 +69,6 @@
   border-bottom-left-radius: calc(0.5 * var(--div-size));
 }
 
-@media (any-hover: hover) {
-  :host(.corner) #expander:not(:hover):not(:focus):not(:focus-within) {
-    width: calc((var(--div-size) - var(--line-width)) / 2);
-    height: calc((var(--div-size) - var(--line-width)) / 2);
-  }
-}
-
-@media (any-hover: none) {
-  :host(.corner) #expander:not(:focus):not(:focus-within) {
-    width: calc((var(--div-size) - var(--line-width)) / 2);
-    height: calc((var(--div-size) - var(--line-width)) / 2);
-  }
-}
-
 #container {
   position: absolute;
   top: var(--padding);
@@ -88,7 +79,7 @@
   align-items: center;
 }
 
-#expander:hover, #expander:focus, #expander:focus-within {
+#expander:focus, #expander:focus-within {
   width: calc(var(--count) * var(--div-size));
 }
 
@@ -96,4 +87,14 @@
   flex: none;
   border-radius: var(--radius-small);
   margin: 0 var(--padding) !important; /* couldn't override button's margin:0 with specificity */
+}
+
+@media (any-hover: hover) {
+  #expander:hover {
+    width: calc(var(--count) * var(--div-size));
+  }
+
+  :host(.corner:hover) {
+    opacity: 1;
+  }
 }
