@@ -22,6 +22,10 @@ spa-textbox > textarea {
   height: 100%;
 }
 
+spa-textbox > textarea:disabled {
+  touch-action: pan-y pinch-zoom;
+}
+
 spa-textbox spa-slideout > button {
   width: 1rem;
 }
