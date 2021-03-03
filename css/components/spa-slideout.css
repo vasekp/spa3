@@ -28,8 +28,7 @@
   opacity: 0.5;
 }
 
-:host(.corner:focus-within),
-:host(.corner:hover) {
+:host(.corner:focus-within) {
   opacity: 1;
 }
 
@@ -80,7 +79,7 @@
   align-items: center;
 }
 
-#expander:hover, #expander:focus, #expander:focus-within {
+#expander:focus, #expander:focus-within {
   width: calc(var(--count) * var(--div-size));
 }
 
@@ -88,4 +87,14 @@
   flex: none;
   border-radius: var(--radius-small);
   margin: 0 var(--padding) !important; /* couldn't override button's margin:0 with specificity */
+}
+
+@media (any-hover: hover) {
+  #expander:hover {
+    width: calc(var(--count) * var(--div-size));
+  }
+
+  :host(.corner:hover) {
+    opacity: 1;
+  }
 }
