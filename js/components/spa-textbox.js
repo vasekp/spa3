@@ -7,10 +7,10 @@ template.innerHTML = `<spa-slideout class="corner">
   <button data-mod="pigpen">&#xF121;</button>
   <button data-mod="polyb">&#xF166;</button>
   <button data-mod="segm">&#xF1FF;</button>
-  <button data-mod="mobile">&#xF00B;</button>
-  <button data-mod="digits">12</button>
-  <button data-mod="flags">&#xF801;</button>
   <button data-mod="smph">&#xF883;</button>
+  <button data-mod="flags">&#xF801;</button>
+  <button data-mod="digits">12</button>
+  <button data-mod="mobile">&#xF00B;</button>
 </spa-slideout>`;
 
 class TextboxElement extends HTMLElement {
