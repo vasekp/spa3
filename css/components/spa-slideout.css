@@ -12,19 +12,25 @@
   margin-left: auto;
   position: relative;
   z-index: 1;
-  transition: z-index 1s steps(2, jump-both);
+  transition: z-index 1s steps(2, jump-both), opacity .5s;
 }
 
 :host(:focus-within),
 :host(:hover) {
   z-index: 3;
-  transition-timing-function: step-start;
+  transition-timing-function: step-start, ease-in-out;
 }
 
 :host(.corner) {
   position: absolute;
   top: 0;
   right: 0;
+  opacity: 0.5;
+}
+
+:host(.corner:focus-within),
+:host(.corner:hover) {
+  opacity: 1;
 }
 
 :host([hidden]) {
@@ -62,20 +68,6 @@
   border-right: none;
   border-radius: 0;
   border-bottom-left-radius: calc(0.5 * var(--div-size));
-}
-
-@media (any-hover: hover) {
-  :host(.corner) #expander:not(:hover):not(:focus):not(:focus-within) {
-    width: calc((var(--div-size) - var(--line-width)) / 2);
-    height: calc((var(--div-size) - var(--line-width)) / 2);
-  }
-}
-
-@media (any-hover: none) {
-  :host(.corner) #expander:not(:focus):not(:focus-within) {
-    width: calc((var(--div-size) - var(--line-width)) / 2);
-    height: calc((var(--div-size) - var(--line-width)) / 2);
-  }
 }
 
 #container {
