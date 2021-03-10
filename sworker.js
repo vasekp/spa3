@@ -26,7 +26,6 @@ async function update(dryrun = false) {
       ? await (await fetch(`https://api.github.com/repos/vasekp/spa3/git/trees/${oldV}?recursive=1`)).json()
       : { tree: [] };
     const cacheName = `snapshot-${newV}`;
-    const cache = await caches.open(cacheName);
     const filesKeep = [];
     const filesUpdate = ['./'];
     const filesIgnore = (await (await fetch('no-sync.txt')).text()).split('\n').filter(w => w.length > 0);
@@ -50,6 +49,7 @@ async function update(dryrun = false) {
         oldV, newV,
         dlSize
       };
+    const cache = await caches.open(cacheName);
     const promises = [];
     for(const f of filesKeep)
       promises.push(async function() {
