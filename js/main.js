@@ -126,17 +126,18 @@ if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWor
           return `${Math.round(size * 10) / 10} MB`;
         })(m.data.dlSize);
         document.body.dataset.updateSize = sizeText;
+        if(m.data.oldV)
+          document.body.dataset.oldVersion = m.data.oldV;
         break;
       }
       case 'updated':
-        if(confirm(_('update finished')))
-          location.reload();
+        location.reload();
         break;
     }
   });
 
   window.addEventListener('update-click', () => {
-    const templ = _('update available');
+    const templ = document.body.dataset.oldVersion ? _('update available') : _('download available');
     const text = templ.replace('{size}', document.body.dataset.updateSize);
     if(confirm(text))
       navigator.serviceWorker.controller.postMessage({ dryrun: false });
