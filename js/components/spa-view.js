@@ -11,6 +11,7 @@ template.innerHTML = `
 <spa-slideout id="controls" class="corner">
   <button id="move" part="move-icon" draggable="true"><img class="inline" src="images/move.svg"/></button>
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
+  <button id="update"><img class="inline" src="images/download.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
   <button id="home"><img class="inline" src="images/home.svg"/></button>
 </spa-slideout>
 <div id="content"><div class="spa-loading"></div></div>
@@ -41,6 +42,8 @@ class ViewElement extends HTMLElement {
         this.funcs.populateSettings(s2);
       settings.show();
     });
+    root.getElementById('update').addEventListener('click',
+      () => window.dispatchEvent(new CustomEvent('update-click')));
     root.getElementById('move').addEventListener('click',
       () => alert(_('try dragging')));
     root.getElementById('move').addEventListener('dragstart', e => {

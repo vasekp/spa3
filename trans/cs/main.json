@@ -8,8 +8,8 @@
   "language": "Jazyk:",
   "error": "Chyba",
   "try dragging": "Ikonku zkuste táhnout a pustit do jiného panelu.",
-  "update available": "Nová verze ke stažení offline (velikost: {size}). Stáhnout nyní?",
-  "update finished": "Nová offline verze je připravena k použití. Pro dokončení obnovte okno. Obnovit nyní?",
+  "download available": "Aplikaci je možno stáhnout do zařízení pro použití offline. Stáhnout nyní (velikost: {size})?",
+  "update available": "Je k dispozici nová verze ke stažení (velikost: {size}). Stáhnout nyní?",
   "about app": "O aplikaci",
   "homepage": "Domovská stránka",
   "report bug": "Nahlásit chybu"

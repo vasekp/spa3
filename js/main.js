@@ -116,7 +116,6 @@ if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWor
   navigator.serviceWorker.addEventListener('message', m => {
     switch(m.data.update) {
       case 'available': {
-        const templ = _('update available');
         const sizeText = (size => {
           if(size < 1024)
             return '< 1 kB';
@@ -126,15 +125,21 @@ if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWor
           size /= 1024;
           return `${Math.round(size * 10) / 10} MB`;
         })(m.data.dlSize);
-        const text = templ.replace('{size}', sizeText);
-        if(confirm(text))
-          navigator.serviceWorker.controller.postMessage({ dryrun: false });
+        document.body.dataset.updateSize = sizeText;
+        if(m.data.oldV)
+          document.body.dataset.oldVersion = m.data.oldV;
         break;
       }
       case 'updated':
-        if(confirm(_('update finished')))
-          location.reload();
+        location.reload();
         break;
     }
+  });
+
+  window.addEventListener('update-click', () => {
+    const templ = document.body.dataset.oldVersion ? _('update available') : _('download available');
+    const text = templ.replace('{size}', document.body.dataset.updateSize);
+    if(confirm(text))
+      navigator.serviceWorker.controller.postMessage({ dryrun: false });
   });
 }
