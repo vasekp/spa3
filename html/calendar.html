@@ -1,0 +1,103 @@
+<!doctype html>
+<main>
+  <div id="filters">
+    <label>_(nam:list)</label>
+    <spa-dropdown id="calendar">
+      <span slot="header">
+        <span id="cal-title"><span class="spa-loading"></span></span>
+      </span>
+      <div id="calendars"></div>
+    </spa-dropdown>
+    <label for="name">_(nam:name)</label>
+    <input type="text" id="name" class="underline"/>
+    <label id="date-label" for="_(nam:id1)">_(nam:date)</label>
+    <span id="date-span">
+      <span>_(nam:sep0)</span>
+      <input type="text" id="_(nam:id1)" class="underline" inputmode="numeric" maxlength="2"/>
+      <span>_(nam:sep1)</span>
+      <input type="text" id="_(nam:id2)" class="underline" inputmode="numeric" maxlength="2"/>
+      <span>_(nam:sep2)</span>
+    </span>
+    <div id="months">
+      <input type="checkbox" autocomplete="off" checked class="patch c-blue" data-color="param" data-value="1" data-content="_(nam:m1)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-blue" data-color="param" data-value="2" data-content="_(nam:m2)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-green" data-color="param" data-value="3" data-content="_(nam:m3)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-green" data-color="param" data-value="4" data-content="_(nam:m4)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-green" data-color="param" data-value="5" data-content="_(nam:m5)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-red" data-color="param" data-value="6" data-content="_(nam:m6)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-red" data-color="param" data-value="7" data-content="_(nam:m7)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-red" data-color="param" data-value="8" data-content="_(nam:m8)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-yellow" data-color="param" data-value="9" data-content="_(nam:m9)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-yellow" data-color="param" data-value="10" data-content="_(nam:m10)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-yellow" data-color="param" data-value="11" data-content="_(nam:m11)"/>
+      <input type="checkbox" autocomplete="off" checked class="patch c-blue" data-color="param" data-value="12" data-content="_(nam:m12)"/>
+    </div>
+  </div>
+  <spa-scroll id="sugg">
+    <table id="sugg-table">
+      <colgroup>
+        <col id="sugg-name"/>
+        <col id="sugg-date"/>
+      </colgroup>
+      <tr>
+        <td>Anežka</td>
+        <td>29. 12.</td>
+      </tr>
+      <tr>
+        <td>Basil</td>
+        <td>1. 2.</td>
+      </tr>
+      <tr>
+        <td>Anežka</td>
+        <td>x. y.</td>
+      </tr>
+      <tr>
+        <td>Basil</td>
+        <td>x. y.</td>
+      </tr>
+    </table>
+  </spa-scroll>
+  <div id="prev-header">
+    <div>
+      <input type="radio" checked name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;"/>
+    </div>
+    <div>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;"/>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25b2;" data-glyph-off="&#x25b3;"/>
+    </div>
+    <div>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;"/>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25b2;" data-glyph-off="&#x25b3;"/>
+    </div>
+    <button class="patch c-red" data-color="param" data-content="×"></button>
+  </div>
+  <spa-scroll id="prev">
+    <table id="prev-table">
+      <colgroup>
+        <col id="prev-counter"/>
+        <col id="prev-name"/>
+        <col id="prev-date"/>
+      </colgroup>
+      <tr>
+        <td>1</td>
+        <td>Anežka</td>
+        <td>29. 12.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Basil</td>
+        <td>x. y.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Anežka</td>
+        <td>x. y.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Basil</td>
+        <td>x. y.</td>
+      </tr>
+    </table>
+  </spa-scroll>
+</main>

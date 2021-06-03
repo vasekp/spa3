@@ -26,6 +26,7 @@
   --color-plus: hsl(100, 50%, 50%);
   --color-error: hsl(0, 90%, var(--l25));
   --border: var(--line-width) solid var(--color-line);
+  --border-double: calc(3 * var(--line-width)) double var(--color-line);
   --border-fainter: var(--line-width) solid var(--color-line-fainter);
   --font-ascent: 1.024em;
   --font-descent: 0.4em;

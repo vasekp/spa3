@@ -14,5 +14,9 @@
   {
     "moduleName": "decoder",
     "displayName": "Dekodér"
+  },
+  {
+    "moduleName": "calendar",
+    "displayName": "Kalendář"
   }
 ]
