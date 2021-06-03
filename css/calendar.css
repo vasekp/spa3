@@ -82,6 +82,10 @@ tr:nth-of-type(2n+1) {
   background: var(--color-bg-alt);
 }
 
+td[data-special="true"] {
+  font-style: italic;
+}
+
 #sugg-date {
   width: calc(6ch + var(--margin-base));
 }
