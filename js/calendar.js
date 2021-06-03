@@ -1,5 +1,7 @@
 import './components/spa-dropdown.js';
 import './components/spa-scroll.js';
+import normalize from './util/text.js';
+import debounce from './util/debounce.js';
 import Enum from './util/enum.js';
 import _, * as i18n from './i18n.js';
 
@@ -9,7 +11,11 @@ const lsKeys = Enum.fromObj({
 
 export default function(root) {
   let dataP = loadFile(localStorage[lsKeys.calendar]);
-  showAll();
+  const dbf = debounce(filter, 100);
+
+  root.getElementById('name').addEventListener('input', dbf);
+  root.getElementById('month').addEventListener('input', dbf);
+  root.getElementById('day').addEventListener('input', dbf);
 
   const format = (() => {
     const sep = [_('nam:sep0'), _('nam:sep1'), _('nam:sep2')];
@@ -50,6 +56,7 @@ export default function(root) {
           const special = name0[0] === '*';
           const name = special ? name0.substring(1) : name0
           data.push({name,
+            nameN: normalize(name),
             day: +day+1,
             month: +month+1,
             ord: 12*(+month) + (+day),
@@ -61,18 +68,48 @@ export default function(root) {
     return data;
   }
 
-  async function showAll() {
+  function addCondition(f, cond) {
+    return dataset => cond(dataset) && f(dataset);
+  }
+
+  async function filter() {
+    const fTrue = () => true;
+    let f = fTrue;
+
+    {
+      const cname = normalize(root.getElementById('name').value);
+      if(cname)
+        f = addCondition(f, item => item.nameN.includes(cname));
+      const month = root.getElementById('month').value;
+      if(month !== '')
+        f = addCondition(f, item => item.month === +month);
+      const day = root.getElementById('day').value;
+      if(day !== '')
+        f = addCondition(f, item => item.day === +day);
+    }
+
+    /* no filter = no results */
+    if(f === fTrue)
+      f = () => false;
+
     const data = await dataP;
     const table = root.getElementById('sugg-table').tBodies[0];
-    while(table.rows.length)
-      table.deleteRow(0);
+    const liveRows = table.rows;
+    let count = 0;
     for(const item of data) {
-      const row = table.insertRow();
+      if(!f(item))
+        continue;
+      const row = count < liveRows.length ? liveRows[count] : table.insertRow();
+      while(row.cells.length)
+        row.deleteCell(0);
       const cellName = row.insertCell();
       cellName.textContent = item.name;
       cellName.dataset.special = item.special;
       row.insertCell().textContent = format(item.day, item.month);
+      count++;
     }
+    while(liveRows.length > count)
+      table.deleteRow(count);
   }
 
   return {};
