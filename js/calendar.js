@@ -16,6 +16,7 @@ export default function(root) {
   root.getElementById('name').addEventListener('input', dbf);
   root.getElementById('month').addEventListener('input', dbf);
   root.getElementById('day').addEventListener('input', dbf);
+  root.getElementById('months').addEventListener('change', oneOrAll);
 
   const format = (() => {
     const sep = [_('nam:sep0'), _('nam:sep1'), _('nam:sep2')];
@@ -68,6 +69,26 @@ export default function(root) {
     return data;
   }
 
+  function oneOrAll(e) {
+    const siblings = e.target.closest('div').querySelectorAll('input');
+    let totalAfter = 0;
+    for(const elm of siblings)
+      totalAfter += elm.checked;
+    if(totalAfter === siblings.length - 1 || totalAfter === 0) {
+      for(const elm of siblings)
+        elm.checked = !elm.checked;
+      totalAfter = siblings.length - totalAfter;
+    } else {
+      for(const elm of siblings)
+        elm.checked = elm === e.target;
+      totalAfter = 1;
+    }
+    const choice = totalAfter === 1 ? e.target.dataset.value : 0;
+    root.getElementById('months').dataset.choice = choice;
+    root.getElementById('month').value = choice ? choice : '';
+    filter();
+  }
+
   function addCondition(f, cond) {
     return dataset => cond(dataset) && f(dataset);
   }
@@ -86,6 +107,11 @@ export default function(root) {
       const day = root.getElementById('day').value;
       if(day !== '')
         f = addCondition(f, item => item.day === +day);
+    }
+    {
+      const month = +root.getElementById('months').dataset.choice;
+      if(month)
+        f = addCondition(f, item => item.month === month);
     }
 
     /* no filter = no results */
