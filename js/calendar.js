@@ -22,6 +22,19 @@ export default function(root) {
   root.getElementById('clear').addEventListener('click', clear);
   root.getElementById('prev-header').addEventListener('change', orderPrev);
 
+  {
+    /* Facilitate quicker entering of successive dates */
+    const elms = root.getElementById('date-span').querySelectorAll('input');
+    for(const elm of elms)
+      elm.addEventListener('click', e => e.target.select());
+    elms[0].addEventListener('input', () => {
+      if(elms[0].value.length === 2) {
+        elms[1].focus();
+        elms[1].select();
+      }
+    });
+  }
+
   const format = (() => {
     const sep = [_('nam:sep0'), _('nam:sep1'), _('nam:sep2')];
     if(_('nam:id1') === 'day')
