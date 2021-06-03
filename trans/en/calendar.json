@@ -1,3 +1,23 @@
 {
-  "_prefix": ""
+  "_prefix": "nam",
+  "list": "Calendar:",
+  "name": "Name:",
+  "date": "Date:",
+  "id1": "day",
+  "id2": "month",
+  "sep0": "",
+  "sep1": "/",
+  "sep2": "",
+  "m1": "J",
+  "m2": "F",
+  "m3": "M",
+  "m4": "A",
+  "m5": "M",
+  "m6": "Jn",
+  "m7": "Jl",
+  "m8": "A",
+  "m9": "S",
+  "m10": "O",
+  "m11": "N",
+  "m12": "D"
 }
