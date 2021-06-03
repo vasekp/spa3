@@ -19,6 +19,7 @@ label {
 
 #date-span {
   display: flex;
+  align-items: baseline;
 }
 
 #date-span span {
@@ -36,8 +37,17 @@ label {
   justify-content: center;
 }
 
-#months input {
+#months button {
   margin-right: var(--margin-base);
+}
+
+[data-choice="1"] :not([value="1"]), [data-choice="2"] :not([value="2"]),
+[data-choice="3"] :not([value="3"]), [data-choice="4"] :not([value="4"]),
+[data-choice="5"] :not([value="5"]), [data-choice="6"] :not([value="6"]),
+[data-choice="7"] :not([value="7"]), [data-choice="8"] :not([value="8"]),
+[data-choice="9"] :not([value="9"]), [data-choice="10"] :not([value="10"]),
+[data-choice="11"] :not([value="11"]), [data-choice="12"] :not([value="12"]) {
+  opacity: .5;
 }
 
 #sugg {

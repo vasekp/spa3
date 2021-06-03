@@ -16,7 +16,7 @@ export default function(root) {
   root.getElementById('name').addEventListener('input', dbf);
   root.getElementById('month').addEventListener('input', dbf);
   root.getElementById('day').addEventListener('input', dbf);
-  root.getElementById('months').addEventListener('change', oneOrAll);
+  root.getElementById('months').addEventListener('click', oneOrAll);
 
   const format = (() => {
     const sep = [_('nam:sep0'), _('nam:sep1'), _('nam:sep2')];
@@ -70,22 +70,13 @@ export default function(root) {
   }
 
   function oneOrAll(e) {
-    const siblings = e.target.closest('div').querySelectorAll('input');
-    let totalAfter = 0;
-    for(const elm of siblings)
-      totalAfter += elm.checked;
-    if(totalAfter === siblings.length - 1 || totalAfter === 0) {
-      for(const elm of siblings)
-        elm.checked = !elm.checked;
-      totalAfter = siblings.length - totalAfter;
-    } else {
-      for(const elm of siblings)
-        elm.checked = elm === e.target;
-      totalAfter = 1;
-    }
-    const choice = totalAfter === 1 ? e.target.dataset.value : 0;
-    root.getElementById('months').dataset.choice = choice;
-    root.getElementById('month').value = choice ? choice : '';
+    const div = e.target.closest('div');
+    if(e.target.value === div.dataset.choice)
+      div.dataset.choice = 0;
+    else
+      div.dataset.choice = e.target.value;
+    const choice = div.dataset.choice;
+    root.getElementById('month').value = +choice ? choice : '';
     filter();
   }
 
