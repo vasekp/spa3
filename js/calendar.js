@@ -20,6 +20,7 @@ export default function(root) {
   root.getElementById('months').addEventListener('click', oneOrAll);
   root.getElementById('sugg-table').addEventListener('click', record);
   root.getElementById('clear').addEventListener('click', clear);
+  root.getElementById('prev-header').addEventListener('change', orderPrev);
 
   const format = (() => {
     const sep = [_('nam:sep0'), _('nam:sep1'), _('nam:sep2')];
@@ -172,6 +173,30 @@ export default function(root) {
     prev = [];
     root.getElementById('prev').hidden = true;
     root.getElementById('prev-header').hidden = true;
+  }
+
+  function orderPrev(e) {
+    const key = e.target.dataset.key;
+    const cfFun = key === 'name' ? i18n.compare : (a, b) => a - b;
+    const compare = e.target.dataset.ord === 'asc'
+      ? (a, b) => cfFun(a[key], b[key])
+      : (a, b) => cfFun(b[key], a[key]);
+    prev.sort(compare);
+    const table = root.getElementById('prev-table').tBodies[0];
+    const liveRows = table.rows;
+    let count = 0;
+    for(const item of prev) {
+      const row = liveRows[count];
+      while(row.cells.length)
+        row.deleteCell(0);
+      row.insertCell().textContent = item.counter;
+      const cellName = row.insertCell();
+      cellName.textContent = item.name;
+      cellName.dataset.special = item.special;
+      row.insertCell().textContent = format(item.day, item.month);
+      row.id = count;
+      count++;
+    }
   }
 
   return {};
