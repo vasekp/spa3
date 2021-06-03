@@ -42,7 +42,7 @@
       <tbody></tbody>
     </table>
   </spa-scroll>
-  <div id="prev-header">
+  <div id="prev-header" hidden>
     <div>
       <input type="radio" checked name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;"/>
     </div>
@@ -54,35 +54,16 @@
       <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;"/>
       <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25b2;" data-glyph-off="&#x25b3;"/>
     </div>
-    <button class="patch c-red" data-color="param" data-content="×"></button>
+    <button id="clear" class="patch c-red" data-color="param" data-content="×"></button>
   </div>
-  <spa-scroll id="prev">
+  <spa-scroll id="prev" hidden>
     <table id="prev-table">
       <colgroup>
         <col id="prev-counter"/>
         <col id="prev-name"/>
         <col id="prev-date"/>
       </colgroup>
-      <tr>
-        <td>1</td>
-        <td>Anežka</td>
-        <td>29. 12.</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Basil</td>
-        <td>x. y.</td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>Anežka</td>
-        <td>x. y.</td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>Basil</td>
-        <td>x. y.</td>
-      </tr>
+      <tbody></tbody>
     </table>
   </spa-scroll>
 </main>

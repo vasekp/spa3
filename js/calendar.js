@@ -12,11 +12,14 @@ const lsKeys = Enum.fromObj({
 export default function(root) {
   let dataP = loadFile(localStorage[lsKeys.calendar]);
   const dbf = debounce(filter, 100);
+  let prev = [];
 
   root.getElementById('name').addEventListener('input', dbf);
   root.getElementById('month').addEventListener('input', dbf);
   root.getElementById('day').addEventListener('input', dbf);
   root.getElementById('months').addEventListener('click', oneOrAll);
+  root.getElementById('sugg-table').addEventListener('click', record);
+  root.getElementById('clear').addEventListener('click', clear);
 
   const format = (() => {
     const sep = [_('nam:sep0'), _('nam:sep1'), _('nam:sep2')];
@@ -61,6 +64,7 @@ export default function(root) {
             day: +day+1,
             month: +month+1,
             ord: 12*(+month) + (+day),
+            id: data.length,
             special
           });
         }
@@ -123,10 +127,51 @@ export default function(root) {
       cellName.textContent = item.name;
       cellName.dataset.special = item.special;
       row.insertCell().textContent = format(item.day, item.month);
+      row.dataset.id = item.id;
       count++;
     }
     while(liveRows.length > count)
       table.deleteRow(count);
+  }
+
+  function reset() {
+    root.getElementById('name').value = '';
+    root.getElementById('month').value = '';
+    root.getElementById('day').value = '';
+    root.getElementById('months').dataset.choice = 0;
+    filter();
+  }
+
+  async function record(e) {
+    const data = await dataP;
+    prev.push({counter: prev.length + 1,
+      ...data[e.target.closest('tr').dataset.id]});
+    const table = root.getElementById('prev-table').tBodies[0];
+    const liveRows = table.rows;
+    let count = 0;
+    for(const item of prev) {
+      const row = count < liveRows.length ? liveRows[count] : table.insertRow();
+      while(row.cells.length)
+        row.deleteCell(0);
+      row.insertCell().textContent = item.counter;
+      const cellName = row.insertCell();
+      cellName.textContent = item.name;
+      cellName.dataset.special = item.special;
+      row.insertCell().textContent = format(item.day, item.month);
+      row.id = count;
+      count++;
+    }
+    while(liveRows.length > count)
+      table.deleteRow(count);
+    root.getElementById('prev').hidden = false;
+    root.getElementById('prev-header').hidden = false;
+    reset();
+  }
+
+  function clear() {
+    prev = [];
+    root.getElementById('prev').hidden = true;
+    root.getElementById('prev-header').hidden = true;
   }
 
   return {};
