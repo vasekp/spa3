@@ -14,7 +14,10 @@ export default function(root) {
   const dbf = debounce(filter, 100);
 
   root.getElementById('name').addEventListener('input', dbf);
-  root.getElementById('month').addEventListener('input', dbf);
+  root.getElementById('month').addEventListener('input', () => {
+    root.getElementById('months').dataset.choice = 0;
+    dbf();
+  });
   root.getElementById('day').addEventListener('input', dbf);
   root.getElementById('months').addEventListener('click', oneOrAll);
   root.getElementById('sugg-table').addEventListener('click', record);
