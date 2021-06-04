@@ -1,0 +1,69 @@
+<!doctype html>
+<main>
+  <div id="filters">
+    <label>_(nam:list)</label>
+    <spa-dropdown id="calendar">
+      <span slot="header">
+        <span id="cal-title"><span class="spa-loading"></span></span>
+      </span>
+      <div id="calendars"></div>
+    </spa-dropdown>
+    <label for="name">_(nam:name)</label>
+    <input type="text" id="name" class="underline"/>
+    <label id="date-label" for="_(nam:id1)">_(nam:date)</label>
+    <span id="date-span">
+      <span>_(nam:sep0)</span>
+      <input type="text" id="_(nam:id1)" inputmode="numeric" maxlength="2" placeholder="&#x204e;"/>
+      <span>_(nam:sep1)</span>
+      <input type="text" id="_(nam:id2)" inputmode="numeric" maxlength="2" placeholder="&#x204e;"/>
+      <span>_(nam:sep2)</span>
+    </span>
+    <div id="months">
+      <button class="patch c-blue" data-color="param" value="1" data-content="_(nam:m1)"></button>
+      <button class="patch c-blue" data-color="param" value="2" data-content="_(nam:m2)"></button>
+      <button class="patch c-green" data-color="param" value="3" data-content="_(nam:m3)"></button>
+      <button class="patch c-green" data-color="param" value="4" data-content="_(nam:m4)"></button>
+      <button class="patch c-green" data-color="param" value="5" data-content="_(nam:m5)"></button>
+      <button class="patch c-red" data-color="param" value="6" data-content="_(nam:m6)"></button>
+      <button class="patch c-red" data-color="param" value="7" data-content="_(nam:m7)"></button>
+      <button class="patch c-red" data-color="param" value="8" data-content="_(nam:m8)"></button>
+      <button class="patch c-yellow" data-color="param" value="9" data-content="_(nam:m9)"></button>
+      <button class="patch c-yellow" data-color="param" value="10" data-content="_(nam:m10)"></button>
+      <button class="patch c-yellow" data-color="param" value="11" data-content="_(nam:m11)"></button>
+      <button class="patch c-blue" data-color="param" value="12" data-content="_(nam:m12)"></button>
+    </div>
+  </div>
+  <spa-scroll id="sugg">
+    <table id="sugg-table">
+      <colgroup>
+        <col id="sugg-name"/>
+        <col id="sugg-date"/>
+      </colgroup>
+      <tbody></tbody>
+    </table>
+  </spa-scroll>
+  <div id="prev-header" hidden>
+    <div>
+      <input type="radio" checked name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;" data-key="counter" data-ord="asc"/>
+    </div>
+    <div>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;" data-key="name" data-ord="asc"/>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25b2;" data-glyph-off="&#x25b3;" data-key="name" data-ord="desc"/>
+    </div>
+    <div>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25bc;" data-glyph-off="&#x25bd;" data-key="ord" data-ord="asc"/>
+      <input type="radio" name="sort" class="glyph-cb" data-glyph-on="&#x25b2;" data-glyph-off="&#x25b3;" data-key="ord" data-ord="desc"/>
+    </div>
+    <button id="clear" class="patch c-red" data-color="param" data-content="×"></button>
+  </div>
+  <spa-scroll id="prev" hidden>
+    <table id="prev-table">
+      <colgroup>
+        <col id="prev-counter"/>
+        <col id="prev-name"/>
+        <col id="prev-date"/>
+      </colgroup>
+      <tbody></tbody>
+    </table>
+  </spa-scroll>
+</main>

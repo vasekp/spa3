@@ -1,0 +1,128 @@
+#filters {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  grid-gap: var(--margin-small) var(--margin-base);
+  margin-bottom: var(--margin-base);
+}
+
+label {
+  grid-column: 1/2;
+}
+
+#date-label {
+  grid-column: 3/4;
+}
+
+#name {
+  width: 100%;
+}
+
+#date-span {
+  display: flex;
+  align-items: baseline;
+}
+
+#date-span span {
+  white-space: pre;
+}
+
+#date-span input {
+  width: 2ch;
+  text-align: right;
+}
+
+#months {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: center;
+}
+
+#months button {
+  margin-right: var(--margin-base);
+}
+
+[data-choice="1"] :not([value="1"]), [data-choice="2"] :not([value="2"]),
+[data-choice="3"] :not([value="3"]), [data-choice="4"] :not([value="4"]),
+[data-choice="5"] :not([value="5"]), [data-choice="6"] :not([value="6"]),
+[data-choice="7"] :not([value="7"]), [data-choice="8"] :not([value="8"]),
+[data-choice="9"] :not([value="9"]), [data-choice="10"] :not([value="10"]),
+[data-choice="11"] :not([value="11"]), [data-choice="12"] :not([value="12"]) {
+  opacity: .5;
+}
+
+#sugg {
+  flex: 1;
+}
+
+#prev {
+  flex: 0.5 1;
+}
+
+spa-scroll {
+  margin: 0 var(--margin-base-neg);
+}
+
+#prev-header {
+  display: grid;
+  grid-template-columns: 2ch 1fr 6ch 1em;
+  grid-gap: var(--margin-base);
+  justify-items: center;
+  border-top: var(--border-double);
+  margin: 0 var(--margin-base-neg);
+  padding: 0 var(--margin-base);
+}
+
+#prev-header :nth-child(2) {
+  justify-self: start;
+}
+
+#prev-header input {
+  width: 1em;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  padding: var(--margin-base-neg);
+}
+
+tr:nth-of-type(2n+1) {
+  background: var(--color-bg-alt);
+}
+
+td[data-special="true"] {
+  font-style: italic;
+}
+
+#sugg-date {
+  width: calc(6ch + var(--margin-base));
+}
+
+#sugg-table td:nth-child(1) {
+  padding-left: var(--margin-base);
+}
+
+#sugg-table td:nth-child(2) {
+  padding-right: var(--margin-base);
+  text-align: center;
+}
+
+#prev-counter {
+  width: calc(2ch + 2 * var(--margin-base));
+}
+
+#prev-date {
+  width: calc(6ch + 1em + 2 * var(--margin-base));
+}
+
+#prev-table td:nth-child(1) {
+  text-align: right;
+  padding: 0 var(--margin-base);
+}
+
+#prev-table td:nth-child(3) {
+  text-align: center;
+  padding-right: calc(1em + 2 * var(--margin-base));
+}

@@ -14,5 +14,9 @@
   {
     "moduleName": "decoder",
     "displayName": "Decoder"
+  },
+  {
+    "moduleName": "calendar",
+    "displayName": "Name Days"
   }
 ]
