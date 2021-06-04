@@ -12,5 +12,6 @@
   "update available": "New version available for offline use (size: {size}). Download and refresh now?",
   "about app": "About",
   "homepage": "Project homepage",
-  "report bug": "Report a bug"
+  "report bug": "Report a bug",
+  "share link": "Share link"
 }
