@@ -13,6 +13,9 @@ template.innerHTML = `<spa-slideout class="corner">
   <button data-mod="mobile">&#xF00B;</button>
 </spa-slideout>`;
 
+const reMorseFix = /([\uF008-\uF00A]*)([.\/-]+)$/;
+const morseRepls = { '.': '\uF008', '-': '\uF009', '/': '\uF00A' };
+
 class TextboxElement extends HTMLElement {
   connectedCallback() {
     if(this._constructed)
@@ -21,7 +24,7 @@ class TextboxElement extends HTMLElement {
     this._area = document.createElement('textarea');
     this._area.setAttribute('spellcheck', false);
     this._area.classList.add('no-outline');
-    this._area.addEventListener('input', () => this._span.textContent = this._area.value + '\u200B');
+    this._area.addEventListener('input', () => this._update());
     /* if value was set before connecting, it shadows the property */
     for(const prop of ['value', 'disabled']) {
       let value = this[prop];
@@ -80,6 +83,32 @@ class TextboxElement extends HTMLElement {
 
   get area() {
     return this._area;
+  }
+
+  _update() {
+    // Detect and interpret Morse input
+    (area => {
+      const pos = area.selectionStart;
+      if(pos === 0 || area.selectionEnd !== pos)
+        return;
+      const str = area.value.substring(0, pos);
+      const last = str[pos - 1];
+      if(last !== '.' && last !== '-' && last !== '/')
+        return;
+      const m = reMorseFix.exec(str);
+      if(!m)
+        return;
+      if(m[1].length > 0 || m[2].length > 3 || (m[2].length === 3 && m[2].slice(-3) !== '...')) {
+        const sPre = str.substring(0, pos - m[2].length);
+        const sMid = m[2].replace(/[.\/-]/g, c => morseRepls[c]);
+        const sPost = area.value.substring(pos);
+        area.value = sPre + sMid + sPost;
+        area.selectionStart = area.selectionEnd = pos;
+      }
+    })(this._area);
+
+    // Useful for trailing newlines
+    this._span.textContent = this._area.value + 'ž\u200B';
   }
 }
 
