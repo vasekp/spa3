@@ -12,7 +12,6 @@ const lsKeys = Enum.fromObj({
 export default function(root) {
   let dataP = loadFile(localStorage[lsKeys.calendar]);
   const dbf = debounce(filter, 100);
-  let prev = [];
 
   root.getElementById('name').addEventListener('input', dbf);
   root.getElementById('month').addEventListener('input', dbf);
@@ -34,6 +33,58 @@ export default function(root) {
       }
     });
   }
+
+  const prev = {
+    _list: [],
+    _compare: null,
+
+    _update: function() {
+      const table = root.getElementById('prev-table').tBodies[0];
+      const liveRows = table.rows;
+      let count = 0;
+      for(const item of this._list) {
+        const row = count < liveRows.length ? liveRows[count] : table.insertRow();
+        while(row.cells.length)
+          row.deleteCell(0);
+        row.insertCell().textContent = item.counter;
+        const cellName = row.insertCell();
+        cellName.textContent = item.name;
+        cellName.dataset.special = item.special;
+        row.insertCell().textContent = format(item.day, item.month);
+        row.dataset.id = item.counter;
+        count++;
+      }
+      while(liveRows.length > count)
+        table.deleteRow(count);
+      root.getElementById('prev').hidden = false;
+      root.getElementById('prev-header').hidden = false;
+    },
+
+    _sort: function() {
+      if(this._compare)
+        this._list.sort(this._compare);
+      this._update();
+    },
+
+    add: function(item) {
+      this._list.push({counter: this._list.length + 1, ...item});
+      this._sort();
+      this._update();
+      root.getElementById('prev-table').querySelector(`[data-id="${this._list.length}"]`).scrollIntoView();
+    },
+
+    reorder: function(key, ord) {
+      const cfFun = key === 'name' ? i18n.compare : (a, b) => a - b;
+      this._compare = ord === 'asc'
+        ? (a, b) => cfFun(a[key], b[key])
+        : (a, b) => cfFun(b[key], a[key]);
+      this._sort();
+    },
+
+    clear: function() {
+      this._list = [];
+    }
+  };
 
   const format = (() => {
     const sep = [_('nam:sep0'), _('nam:sep1'), _('nam:sep2')];
@@ -158,58 +209,18 @@ export default function(root) {
 
   async function record(e) {
     const data = await dataP;
-    prev.push({counter: prev.length + 1,
-      ...data[e.target.closest('tr').dataset.id]});
-    const table = root.getElementById('prev-table').tBodies[0];
-    const liveRows = table.rows;
-    let count = 0;
-    for(const item of prev) {
-      const row = count < liveRows.length ? liveRows[count] : table.insertRow();
-      while(row.cells.length)
-        row.deleteCell(0);
-      row.insertCell().textContent = item.counter;
-      const cellName = row.insertCell();
-      cellName.textContent = item.name;
-      cellName.dataset.special = item.special;
-      row.insertCell().textContent = format(item.day, item.month);
-      row.id = count;
-      count++;
-    }
-    while(liveRows.length > count)
-      table.deleteRow(count);
-    root.getElementById('prev').hidden = false;
-    root.getElementById('prev-header').hidden = false;
+    prev.add(data[e.target.closest('tr').dataset.id]);
     reset();
   }
 
   function clear() {
-    prev = [];
+    prev.clear();
     root.getElementById('prev').hidden = true;
     root.getElementById('prev-header').hidden = true;
   }
 
   function orderPrev(e) {
-    const key = e.target.dataset.key;
-    const cfFun = key === 'name' ? i18n.compare : (a, b) => a - b;
-    const compare = e.target.dataset.ord === 'asc'
-      ? (a, b) => cfFun(a[key], b[key])
-      : (a, b) => cfFun(b[key], a[key]);
-    prev.sort(compare);
-    const table = root.getElementById('prev-table').tBodies[0];
-    const liveRows = table.rows;
-    let count = 0;
-    for(const item of prev) {
-      const row = liveRows[count];
-      while(row.cells.length)
-        row.deleteCell(0);
-      row.insertCell().textContent = item.counter;
-      const cellName = row.insertCell();
-      cellName.textContent = item.name;
-      cellName.dataset.special = item.special;
-      row.insertCell().textContent = format(item.day, item.month);
-      row.id = count;
-      count++;
-    }
+    prev.reorder(e.target.dataset.key, e.target.dataset.ord);
   }
 
   return {};
