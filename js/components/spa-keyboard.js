@@ -66,18 +66,20 @@ function modBraille(cont, defKey) {
     }
   });
 
+  const reset = () => {
+    state.value = 0;
+    for(const cb of cont.querySelectorAll('input'))
+      cb.checked = false;
+    defKey.hidden = true;
+  };
+
   cont.firstElementChild.addEventListener('input', e => {
     state.value &= ~+e.target.dataset.value;
     if(e.target.checked)
       state.value |= +e.target.dataset.value;
   });
 
-  defKey.afterClick = () => {
-    state.value = 0;
-    for(const cb of cont.querySelectorAll('input'))
-      cb.checked = false;
-    defKey.hidden = true;
-  };
+  return { reset };
 }
 
 function modMorse(cont) {
@@ -281,12 +283,16 @@ function modPigpen(cont) {
     updateSugg();
   });
 
-  sugg.addEventListener('kbd-input', () => {
+  const reset = () => {
     path.setAttribute('d', '');
     arr = [];
     pointer = null;
     updateSugg();
-  });
+  };
+
+  sugg.addEventListener('kbd-input', reset);
+
+  return { reset };
 };
 
 function modPolybius(cont, defKey) {
@@ -322,7 +328,7 @@ function modPolybius(cont, defKey) {
     deselect();
   }, 500);
 
-  defKey.afterClick = () => {
+  const reset = () => {
     defKey.hidden = true;
     deselect();
   };
@@ -338,6 +344,8 @@ function modPolybius(cont, defKey) {
       dbConfirm();
     }
   });
+
+  return { reset };
 }
 
 function modSegment(cont, defKey) {
@@ -388,10 +396,12 @@ function modSegment(cont, defKey) {
     state.value ^= 1 << sgm;
   });
 
-  defKey.afterClick = () => {
+  const reset = () => {
     state.value = 0;
     defKey.hidden = true;
   };
+
+  return { reset };
 }
 
 function modSemaphore(cont, defKey) {
@@ -434,7 +444,7 @@ function modSemaphore(cont, defKey) {
     deselect();
   }, 500);
 
-  defKey.afterClick = () => {
+  const reset = () => {
     defKey.hidden = true;
     deselect();
   };
@@ -460,6 +470,8 @@ function modSemaphore(cont, defKey) {
     } else
       defKey.hidden = true;
   });
+
+  return { reset };
 }
 
 function modFlags(cont) {
@@ -642,13 +654,13 @@ class KeyboardElement extends HTMLElement {
           break;
         case 'default':
           sendInsert(e.target, e.target.textContent);
-          if(e.target.afterClick)
-            e.target.afterClick();
           break;
         default:
           sendInsert(e.target, e.target.textContent);
           break;
       }
+      if(this._module && this._module.reset)
+        this._module.reset();
       e.preventDefault();
     });
 
@@ -708,7 +720,7 @@ class KeyboardElement extends HTMLElement {
       if(this._exit)
         this._exit();
     } else
-      modules[mod](cont, defKey);
+      this._module = modules[mod](cont, defKey);
   }
 }
 
