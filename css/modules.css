@@ -175,13 +175,10 @@ input[type="radio"].patch.show-state:checked::before {
 }
 
 .m-set-icon {
-  display: contents;
+  grid-column: 1/-1;
 }
 
-.m-set-icon :nth-child(1) {
-  grid-column: 1/2;
-}
-
-.m-set-icon :nth-child(2) {
-  grid-column: 2/6;
+.m-set-icon :first-child {
+  width: 1em;
+  margin-right: var(--margin-small);
 }

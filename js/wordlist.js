@@ -86,9 +86,7 @@ export default function(root) {
     }
     list.querySelector(`[data-filename="${item.filename}"]`).checked = true;
 
-    console.time('load');
     const text = await (await fetch(`assets/any/wordlists/${item.filename}`)).text();
-    console.timeLog('load');
     const lineIterator = function*(text) {
       let lastIndex = 0;
       let index;
@@ -104,14 +102,12 @@ export default function(root) {
       const {value: lineN} = i2.next();
       lines.push([line, lineN]);
     }
-    console.timeEnd('load');
     root.getElementById('wordlist-loading').hidden = true;
     return lines;
   }
 
   async function filter(f) {
     const lines = await linesP;
-    console.time('filter');
     const lcase = root.getElementById('lcase').checked && !root.getElementById('lcase').hidden;
     const f2 = lcase ? (text, norm) => reLowerCase.test(text) && f(text, norm) : f;
     flines = (function*() {
@@ -138,7 +134,6 @@ export default function(root) {
     loadMore(BASE - list.children.length, false);
     if(list.children.length == BASE)
       io.observe(list.children[BASE - MORE]);
-    console.timeEnd('filter');
   }
 
   function clearFrom(ix) {
