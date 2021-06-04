@@ -9,7 +9,7 @@ template.innerHTML = `
     <button data-mod="braille">&#x2800;</button>
     <button data-mod="morse">&#xF008;&#xF009;</button>
     <button data-mod="pigpen">&#xF121;</button>
-    <button data-mod="polyb">&#xF166;</button>
+    <button data-mod="polyb">&#xF163;</button>
     <button data-mod="segm">&#xF1FF;</button>
   </div>
   <div id="side-right">
@@ -298,24 +298,29 @@ function modPigpen(cont) {
 function modPolybius(cont, defKey) {
   cont.innerHTML = `
   <div id="kbd-polybius">
-    <div id="kbd-plb-vert">
+    <input type="checkbox" id="kbd-plb-size" class="patch show-state" data-label="6×6">
+    <div id="kbd-plb-vert" class="trans">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="1">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="2">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="3">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="4">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="5">
+      <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="6">
     </div>
-    <div id="kbd-plb-horz">
+    <div id="kbd-plb-horz" class="trans">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="1">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="2">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="3">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="4">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="5">
+      <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="6">
     </div>
   </div>`;
 
+  const lsKey = 'kbd-plb-six';
+
   const deselect = () => {
-    for(const elm of cont.querySelectorAll(':checked'))
+    for(const elm of cont.querySelectorAll('[type=radio]:checked'))
       elm.checked = false;
   };
 
@@ -334,16 +339,21 @@ function modPolybius(cont, defKey) {
   };
 
   cont.firstElementChild.addEventListener('input', () => {
-    const q = cont.querySelectorAll(':checked');
+    const q = cont.querySelectorAll('[type=radio]:checked');
     if(q.length === 2) {
       const coord = [];
       for(const elm of q)
         coord[+elm.dataset.coord] = +elm.dataset.content - 1;
-      defKey.textContent = String.fromCodePoint(0xF160 + 5 * coord[0] + coord[1]);
+      defKey.textContent = String.fromCodePoint(0xF15C + 6 * coord[0] + coord[1]);
       defKey.hidden = false;
       dbConfirm();
     }
   });
+
+  cont.querySelector('#kbd-plb-size').addEventListener('change', e =>
+    localStorage[lsKey] = +e.currentTarget.checked);
+
+  cont.querySelector('#kbd-plb-size').checked = +localStorage[lsKey];
 
   return { reset };
 }
