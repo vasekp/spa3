@@ -19,6 +19,7 @@ Podporované prohlížeče jsou **výhradně nejnovější verze** Firefox, Chro
 Tyto chyby ve vykreslování v jinak podporovaných prohlížečích jsou dány limitacemi jednotlivých platforem a je mimo mé možnosti a zájem je jakkoli adresovat, dokud nebudou zmíněné prohlížeče respektovat patřičné specifikace.
 * Firefox: klávesy virtuální klávesnice nereagují vizuálně na stisk.
 * Chrome, Safari, Edge: okraje barevných prvků fontu v tmavém režimu zůstávají černé.
+* Firefox: problémy s vykreslováním barevného fontu v aktuálních verzích.
 
 ## Přispívání k projektu
 
