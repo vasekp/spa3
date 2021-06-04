@@ -131,7 +131,7 @@ export default function(root) {
             nameN: normalize(name),
             day: +day+1,
             month: +month+1,
-            ord: 12*(+month) + (+day),
+            ord: 32*(+month) + (+day),
             id: data.length,
             special
           });
