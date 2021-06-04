@@ -96,10 +96,18 @@ class Pigpen3 {
 }
 
 class Polybius {
+  static wrap5x5 = func => ((c, ch) => {
+    const [x, y] = [c % 6, Math.floor(c / 6)];
+    if(x >= 5 || y >= 5)
+      return new Err(ch);
+    else
+      return func(5 * y + x);
+  });
+
   static funcs = {
-    'q': (c, ch) => c < 16 ? latin(c + 1) : c < 25 ? latin(c + 2) : new Err(ch),
-    'j': (c, ch) => c < 9 ? latin(c + 1) : c < 25 ? latin(c + 2) : new Err(ch),
-    'k': (c, ch) => c < 10 ? latin(c + 1) : c < 25 ? latin(c + 2) : new Err(ch)
+    'q': Polybius.wrap5x5(c => c < 16 ? latin(c + 1) : latin(c + 2)),
+    'j': Polybius.wrap5x5(c => c < 9 ? latin(c + 1) : latin(c + 2)),
+    'k': Polybius.wrap5x5(c => c < 10 ? latin(c + 1) : latin(c + 2)),
   };
 
   static decoder(conf) {
