@@ -43,10 +43,7 @@ class GameRecordElement extends ContainerElement {
       this.state = states.color;
       e.target.focus()
     });
-    id('delete').addEventListener('click', e => {
-      this._delete();
-      e.currentTarget.focus();
-    });
+    id('delete').addEventListener('click', e => this._delete(e));
     id('name-edit').addEventListener('keydown', e => this._keydown(e));
     id('color-sel').addEventListener('color-click', e => { this._colorClicked(e.detail.color); e.preventDefault(); });
     id('tools').addEventListener('click', e => e.preventDefault());
@@ -156,15 +153,18 @@ class GameRecordElement extends ContainerElement {
     return promise;
   }
 
-  _delete() {
+  _delete(e) {
     if(this.state === states.confirm) {
       gameStore.delete(this.record).then(() => {
         this.hidden = true;
         this.dispatchEvent(new CustomEvent('game-deleted', { bubbles: true }));
         this.remove()
       });
-    } else
+    } else {
       this.state = states.confirm;
+      e.currentTarget.focus();
+      e.currentTarget.addEventListener('blur', () => this.state = states.base, { once: true });
+    }
   }
 
   _keydown(e) {
