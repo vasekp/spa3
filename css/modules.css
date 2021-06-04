@@ -176,9 +176,24 @@ input[type="radio"].patch.show-state:checked::before {
 
 .m-set-icon {
   grid-column: 1/-1;
+  text-align: left;
 }
 
 .m-set-icon :first-child {
   width: 1em;
   margin-right: var(--margin-small);
+}
+
+#m-share-modal img {
+  width: 250px;
+  height: 250px;
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: pixelated;
+}
+
+#m-share-modal span {
+  display: block;
+  margin-top: var(--margin-small);
+  text-align: center;
 }

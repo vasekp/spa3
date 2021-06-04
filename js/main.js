@@ -94,6 +94,14 @@ export function populateSettings(elm) {
   elm.querySelector(`#m-set-lang [value=${i18n.lang}]`).checked = true;
   elm.querySelector('#m-set-lang').addEventListener('change', e =>
     i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
+  const thisModal = elm.closest('spa-modal');
+  const shareModal = elm.querySelector('#m-share-modal');
+  thisModal.after(shareModal);
+  elm.querySelector('#m-set-share').addEventListener('click', e => {
+    thisModal.hide();
+    shareModal.show();
+  });
+  shareModal.addEventListener('click', () => shareModal.hide());
 }
 
 export function setTheme(theme) {

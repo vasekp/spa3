@@ -18,5 +18,19 @@
   </label>
 </div>
 <div class="settings-header">_(about app)</div>
-<a target="_blank" href="https://github.com/vasekp/spa3/" class="m-set-icon"><span>&#xF00E;</span><span>_(homepage)</span></a>
-<a target="_blank" href="https://github.com/vasekp/spa3/issues/new/" class="m-set-icon"><span>&#xF00F;</span><span>_(report bug)</span></a>
+<a target="_blank" href="https://github.com/vasekp/spa3/" class="m-set-icon">
+  <span>&#xF00E;</span>
+  <span>_(homepage)</span>
+</a>
+<a target="_blank" href="https://github.com/vasekp/spa3/issues/new/" class="m-set-icon">
+  <span>&#xF00F;</span>
+  <span>_(report bug)</span>
+</a>
+<button id="m-set-share" class="m-set-icon">
+  <span>&#xF011;</span>
+  <span>_(share link)</span>
+</button>
+<spa-modal id="m-share-modal" hidden>
+  <img src="images/qr.png">
+  <span>https://vasekp.github.io/spa3/</span>
+</spa-modal>
