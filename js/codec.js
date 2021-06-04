@@ -108,6 +108,7 @@ class Polybius {
     'q': Polybius.wrap5x5(c => c < 16 ? latin(c + 1) : latin(c + 2)),
     'j': Polybius.wrap5x5(c => c < 9 ? latin(c + 1) : latin(c + 2)),
     'k': Polybius.wrap5x5(c => c < 10 ? latin(c + 1) : latin(c + 2)),
+    'dig': c => c < 26 ? latin(c + 1) : digit(c - 26),
   };
 
   static decoder(conf) {
