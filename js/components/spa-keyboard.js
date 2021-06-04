@@ -9,7 +9,7 @@ template.innerHTML = `
     <button data-mod="braille">&#x2800;</button>
     <button data-mod="morse">&#xF008;&#xF009;</button>
     <button data-mod="pigpen">&#xF121;</button>
-    <button data-mod="polyb">&#xF166;</button>
+    <button data-mod="polyb">&#xF163;</button>
     <button data-mod="segm">&#xF1FF;</button>
   </div>
   <div id="side-right">

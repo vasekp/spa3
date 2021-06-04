@@ -161,7 +161,7 @@ const map = [
   [0xF100, Pigpen1],
   [0xF120, Pigpen3],
   [0xF140, Pigpen2],
-  [0xF160, Polybius],
+  [0xF15C, Polybius],
   [0xF180, Segments],
   [0xF200, null],
   [0xF800, Flags],
