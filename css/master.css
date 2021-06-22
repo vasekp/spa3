@@ -11,6 +11,7 @@
   --l85: calc(50% + var(--c) * 35%);
   --color-line: hsl(0, 0%, 50%);
   --color-line-fainter: hsl(0, 0%, 50%, 50%);
+  --color-line-error: hsl(0, 90%, 50%);
   --color-text-main: hsl(0, 0%, var(--l00));
   --color-text-fainter: hsl(0, 0%, var(--l25));
   --color-text-semitrans: hsl(0, 0%, var(--l00), 50%);
@@ -26,6 +27,7 @@
   --color-plus: hsl(100, 50%, 50%);
   --color-error: hsl(0, 90%, var(--l25));
   --border: var(--line-width) solid var(--color-line);
+  --border-error: var(--line-width) dashed var(--color-line-error);
   --border-double: calc(3 * var(--line-width)) double var(--color-line);
   --border-fainter: var(--line-width) solid var(--color-line-fainter);
   --font-ascent: 1.024em;

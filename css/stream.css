@@ -23,6 +23,14 @@
   background: var(--color-bg-alt);
 }
 
+#error {
+  border: var(--border-error);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-error);
+  padding: 0 var(--margin-small);
+  margin-bottom: var(--margin-base);
+}
+
 .input {
   font-size: 80%;
   font-weight: 600;
