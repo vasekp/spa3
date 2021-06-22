@@ -116,7 +116,7 @@ class TextboxElement extends HTMLElement {
     })(this._area);
 
     // Useful for trailing newlines
-    this._span.textContent = this._area.value + 'ž\u200B';
+    this._span.textContent = this._area.value + '\u200B';
   }
 }
 
