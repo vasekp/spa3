@@ -32,6 +32,9 @@ class TextboxElement extends HTMLElement {
       }
     });
     this._area.addEventListener('input', () => this._update());
+    this._area.addEventListener('scroll', () =>
+      this._span.style.top = `-${this._area.scrollTop}px`,
+      {passive: true});
     /* if value was set before connecting, it shadows the property */
     for(const prop of ['value', 'disabled']) {
       let value = this[prop];
@@ -117,6 +120,18 @@ class TextboxElement extends HTMLElement {
 
     // Useful for trailing newlines
     this._span.textContent = this._area.value + '\u200B';
+  }
+
+  mark(start, len) {
+    if(len) {
+      const mark = document.createElement('mark');
+      mark.textContent = this._area.value.substring(start, start + len);
+      this._span.textContent = '';
+      this._span.append(this._area.value.substring(0, start),
+        mark,
+        this._area.value.substring(start + len) + '\u200B');
+    } else
+      this._span.textContent = this._area.value + '\u200B';
   }
 }
 
