@@ -18,5 +18,9 @@
   {
     "moduleName": "calendar",
     "displayName": "Kalendář"
+  },
+  {
+    "moduleName": "stream",
+    "displayName": "Stream"
   }
 ]
