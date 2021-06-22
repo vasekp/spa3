@@ -16,6 +16,17 @@ export default function(root) {
     if(e.data.type === 'ok') {
       textbox.mark();
       errbox.hidden = true;
+      if(e.data.cmd === 'exec') {
+        const div = document.createElement('div');
+        const dIn = document.createElement('div');
+        dIn.classList.add('input');
+        dIn.textContent = e.data.input;
+        const dOut = document.createElement('div');
+        dOut.classList.add('output');
+        dOut.textContent = e.data.output;
+        div.append(dIn, dOut);
+        root.getElementById('hist').prepend(div);
+      }
     } else {
       textbox.mark(e.data.pos, e.data.len);
       if(e.data.cmd === 'exec') {

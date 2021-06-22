@@ -37,7 +37,7 @@
   line-height: 1.5;
 }
 
-.input::before {
+.input[data-lead]::before {
   content: attr(data-lead) ':';
   margin-right: var(--font-space);
   font-style: italic;
