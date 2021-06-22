@@ -3,5 +3,6 @@ import './components/spa-textbox.js';
 import _, * as i18n from './i18n.js';
 
 export default function(root) {
+  root.getElementById('in').addEventListener('tb-submit', e => console.log(e.detail.text));
   return {};
 }

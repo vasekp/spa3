@@ -24,6 +24,13 @@ class TextboxElement extends HTMLElement {
     this._area = document.createElement('textarea');
     this._area.setAttribute('spellcheck', false);
     this._area.classList.add('no-outline');
+    this._area.addEventListener('keydown', e => {
+      if(this._submit && e.key === 'Enter') {
+        this.dispatchEvent(new CustomEvent('tb-submit',
+          {detail: {text: this._area.value}}));
+        e.preventDefault();
+      }
+    });
     this._area.addEventListener('input', () => this._update());
     /* if value was set before connecting, it shadows the property */
     for(const prop of ['value', 'disabled']) {
@@ -57,7 +64,7 @@ class TextboxElement extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['disabled', 'ime'];
+    return ['disabled', 'ime', 'submit'];
   }
 
   attributeChangedCallback(name, oldValue, value) {
@@ -74,7 +81,8 @@ class TextboxElement extends HTMLElement {
           document.querySelector('spa-keyboard').openFor(this._area, mod);
       });
       this.appendChild(this._slideout);
-    }
+    } else if(name === 'submit')
+      this._submit = value !== null;
   }
 
   focus() {
