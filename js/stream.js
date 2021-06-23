@@ -48,7 +48,8 @@ export default function(root) {
     } else {
       textbox.mark(data.pos, data.len);
       if(data.cmd === 'exec') {
-        errbox.textContent = data.msg;
+        errbox.children[0].textContent = data.input;
+        errbox.children[1].textContent = data.msg;
         errbox.hidden = false;
       } else
         errbox.hidden = true;

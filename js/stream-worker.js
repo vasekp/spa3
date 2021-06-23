@@ -48,7 +48,7 @@ export function exec(data) {
     else if(err instanceof TimeoutError)
       return {
         type: 'error',
-        msg: err.msg,
+        msg: 'Timed out',
         cmd: data.cmd
       };
     else
