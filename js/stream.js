@@ -40,6 +40,8 @@ export default function(root) {
         const dIn = document.createElement('div');
         dIn.classList.add('input');
         dIn.textContent = data.input;
+        if(data.history)
+          dIn.dataset.lead = `$${data.history}`;
         const dOut = document.createElement('div');
         dOut.classList.add('output');
         dOut.textContent = data.output;

@@ -2,9 +2,10 @@ import './stream/filters/basic.js';
 import './stream/filters/arith.js';
 import './stream/filters/string.js';
 import {parse, ParseError} from './stream/parser.js';
-import {StreamError, TimeoutError} from './stream/base.js';
+import {History, StreamError, TimeoutError} from './stream/base.js';
 
 const LEN = 200;
+const history = new History();
 
 export function exec(data) {
   try {
@@ -18,13 +19,15 @@ export function exec(data) {
           cmd: data.cmd,
           input: data.input};
       case 'exec':
-        const st = parse(data.input);
-        const out = st.prepareT().writeoutT(LEN);
+        const node = parse(data.input).withScope({history}).prepareT();
+        const out = node.writeoutT(LEN);
+        const hid = history.add(node);
         return {
           type: 'ok',
           cmd: data.cmd,
           input: data.input,
-          output: out
+          output: out,
+          history: hid
         };
     }
   } catch(err) {

@@ -47,7 +47,6 @@
 .input[data-lead]::before {
   content: attr(data-lead) ':';
   margin-right: var(--font-space);
-  font-style: italic;
   color: var(--color-text-light);
 }
 
