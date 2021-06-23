@@ -6,8 +6,8 @@ const iface = (() => {
   const func = new Promise((resolve, reject) => {
     try {
       const worker = new Worker('./js/stream-worker.js', {type: 'module'});
-      worker.addEventListener('error', e => reject(), {once: true});
-      worker.addEventListener('message', e => resolve(worker), {once: true});
+      worker.addEventListener('error', () => reject(), {once: true});
+      worker.addEventListener('message', () => resolve(worker), {once: true});
       worker.postMessage({cmd: 'ping'});
     } catch(e) {
       reject();
@@ -47,6 +47,8 @@ export default function(root) {
         dOut.textContent = data.output;
         div.append(dIn, dOut);
         root.getElementById('hist').prepend(div);
+        root.getElementById('prev').disabled = false;
+        textbox.value = '';
       }
     } else {
       textbox.mark(data.pos, data.len);
@@ -59,14 +61,23 @@ export default function(root) {
     };
   }
 
-  textbox.addEventListener('input', e =>
-    iface({cmd: 'parse', input: textbox.value}).then(result));
-  textbox.addEventListener('tb-submit', e => {
+  function run() {
     textbox.disabled = true;
     iface({cmd: 'exec', input: textbox.value}).then(r => {
       textbox.disabled = false;
       result(r);
+      textbox.focus();
     })
+  }
+
+  textbox.addEventListener('input', () =>
+    iface({cmd: 'parse', input: textbox.value}).then(result));
+  textbox.addEventListener('tb-submit', run);
+  root.getElementById('run').addEventListener('click', run);
+  root.getElementById('prev').addEventListener('click', () => {
+    const last = root.getElementById('hist').firstElementChild;
+    textbox.value = last.firstElementChild.textContent;
+    textbox.focus();
   });
   return {};
 }
