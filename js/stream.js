@@ -10,7 +10,14 @@ const iface = (() => {
       return 'module';
     }
   };
-  new Worker('data:', opts).terminate();
+  try {
+    new Worker('data:', opts).terminate();
+  } catch(e) {
+    if(e.name === 'SecurityError')
+      support = true;
+    else
+      support = false;
+  }
 
   if(support) {
     console.log('Worker');
