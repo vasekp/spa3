@@ -30,6 +30,8 @@
   --border-error: var(--line-width) dashed var(--color-line-error);
   --border-double: calc(3 * var(--line-width)) double var(--color-line);
   --border-fainter: var(--line-width) solid var(--color-line-fainter);
+  --font-main: "SPA3", "Source Sans Pro";
+  --font-mono: "SPA3", "Source Code Pro";
   --font-ascent: 1.024em;
   --font-descent: 0.4em;
   --font-cap-size: 0.66em;
@@ -50,7 +52,7 @@
   --shadow-kbd-press: 0px 0px 2px #888;
   --line-height-base: 1.5rem;
   --display-update: none;
-  font-family: "SPA3", "Source Sans Pro";
+  font-family: var(--font-main);
   font-size: 16px;
   line-height: var(--line-height-base);
   width: 100%;

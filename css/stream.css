@@ -1,6 +1,7 @@
 @import "components/spa-textbox.css";
 
 #in {
+  font-family: var(--font-mono);
   max-height: calc(3 * var(--line-height-base));
 }
 
@@ -37,7 +38,8 @@
 }
 
 .input {
-  font-size: 80%;
+  font-family: var(--font-mono);
+  font-size: 75%;
   font-weight: 600;
   line-height: 1.5;
 }
