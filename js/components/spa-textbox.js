@@ -72,6 +72,8 @@ class TextboxElement extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, value) {
     if(name === 'disabled') {
+      if(!this._area)
+        return;
       const isDisabled = value !== null;
       this._area.disabled = isDisabled;
       if(isDisabled)

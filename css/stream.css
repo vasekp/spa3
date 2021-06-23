@@ -4,6 +4,11 @@
   max-height: calc(3 * var(--line-height-base));
 }
 
+#in[disabled] {
+  color: var(--color-text-light);
+  transition: color .5s;
+}
+
 #actions {
   display: flex;
   justify-content: space-between;

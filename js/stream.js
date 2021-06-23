@@ -59,7 +59,12 @@ export default function(root) {
 
   textbox.addEventListener('input', e =>
     iface({cmd: 'parse', input: textbox.value}).then(result));
-  textbox.addEventListener('tb-submit', e =>
-    iface({cmd: 'exec', input: textbox.value}).then(result));
+  textbox.addEventListener('tb-submit', e => {
+    textbox.disabled = true;
+    iface({cmd: 'exec', input: textbox.value}).then(r => {
+      textbox.disabled = false;
+      result(r);
+    })
+  });
   return {};
 }
