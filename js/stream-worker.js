@@ -6,52 +6,56 @@ import {StreamError, TimeoutError} from './stream/base.js';
 
 const LEN = 200;
 
-onmessage = function(e) {
+export function exec(data) {
   try {
-    switch(e.data.cmd) {
+    switch(data.cmd) {
       case 'parse':
-        parse(e.data.input);
-        postMessage({
+        parse(data.input);
+        return {
           type: 'ok',
-          cmd: e.data.cmd,
-          input: e.data.input});
+          cmd: data.cmd,
+          input: data.input};
         break;
       case 'exec':
-        const st = parse(e.data.input);
+        const st = parse(data.input);
         const out = st.prepareT().writeoutT(LEN);
-        postMessage({
+        return {
           type: 'ok',
-          cmd: e.data.cmd,
-          input: e.data.input,
+          cmd: data.cmd,
+          input: data.input,
           output: out
-        });
+        };
         break;
     }
   } catch(err) {
     if(err instanceof ParseError)
-      postMessage({
+      return {
         type: 'error',
         pos: err.pos,
         len: err.len,
         msg: err.msg,
-        cmd: e.data.cmd
-      });
+        cmd: data.cmd
+      };
     else if(err instanceof StreamError)
-      postMessage({
+      return {
         type: 'error',
         pos: err.node ? err.node.token.pos : null,
         len: err.node ? err.node.token.value.length : null,
         input: err.node ? err.node.desc() : null,
         msg: err.msg,
-        cmd: e.data.cmd
-      });
+        cmd: data.cmd
+      };
     else if(err instanceof TimeoutError)
-      postMessage({
+      return {
         type: 'error',
         msg: err.msg,
-        cmd: e.data.cmd
-      });
+        cmd: data.cmd
+      };
     else
       console.error(err);
   }
+}
+
+onmessage = function(e) {
+  postMessage(exec(e.data));
 }

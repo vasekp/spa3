@@ -2,39 +2,62 @@ import './components/spa-scroll.js';
 import './components/spa-textbox.js';
 import _, * as i18n from './i18n.js';
 
-const worker = new Worker('./js/stream-worker.js', {type: 'module'});
+const iface = (() => {
+  let support = false;
+  const opts = {
+    get type() {
+      support = true;
+      return 'module';
+    }
+  };
+  new Worker('data:', opts).terminate();
+
+  if(support) {
+    console.log('Worker');
+    const worker = new Worker('./js/stream-worker.js', opts);
+    return msg => new Promise(resolve => {
+      worker.postMessage(msg);
+      worker.addEventListener('message', e => resolve(e.data), {once: true});
+    });
+  } else {
+    console.log('Sync');
+    const impPromise = import('./stream-worker.js');
+    return msg => impPromise.then(imp => imp.exec(msg));
+  }
+})();
 
 export default function(root) {
   const textbox = root.getElementById('in');
-  textbox.addEventListener('input', e =>
-    worker.postMessage({cmd: 'parse', input: textbox.value}));
-  textbox.addEventListener('tb-submit', e =>
-    worker.postMessage({cmd: 'exec', input: textbox.value}));
-
   const errbox = root.getElementById('error');
-  worker.addEventListener('message', e => {
-    if(e.data.type === 'ok') {
+
+  function result(data) {
+    if(data.type === 'ok') {
       textbox.mark();
       errbox.hidden = true;
-      if(e.data.cmd === 'exec') {
+      if(data.cmd === 'exec') {
         const div = document.createElement('div');
         const dIn = document.createElement('div');
         dIn.classList.add('input');
-        dIn.textContent = e.data.input;
+        dIn.textContent = data.input;
         const dOut = document.createElement('div');
         dOut.classList.add('output');
-        dOut.textContent = e.data.output;
+        dOut.textContent = data.output;
         div.append(dIn, dOut);
         root.getElementById('hist').prepend(div);
       }
     } else {
-      textbox.mark(e.data.pos, e.data.len);
-      if(e.data.cmd === 'exec') {
-        errbox.textContent = e.data.msg;
+      textbox.mark(data.pos, data.len);
+      if(data.cmd === 'exec') {
+        errbox.textContent = data.msg;
         errbox.hidden = false;
       } else
         errbox.hidden = true;
     };
-  });
+  }
+
+  textbox.addEventListener('input', e =>
+    iface({cmd: 'parse', input: textbox.value}).then(result));
+  textbox.addEventListener('tb-submit', e =>
+    iface({cmd: 'exec', input: textbox.value}).then(result));
   return {};
 }
