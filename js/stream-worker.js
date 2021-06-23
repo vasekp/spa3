@@ -9,13 +9,14 @@ const LEN = 200;
 export function exec(data) {
   try {
     switch(data.cmd) {
+      case 'ping':
+        return data;
       case 'parse':
         parse(data.input);
         return {
           type: 'ok',
           cmd: data.cmd,
           input: data.input};
-        break;
       case 'exec':
         const st = parse(data.input);
         const out = st.prepareT().writeoutT(LEN);
@@ -25,7 +26,6 @@ export function exec(data) {
           input: data.input,
           output: out
         };
-        break;
     }
   } catch(err) {
     if(err instanceof ParseError)

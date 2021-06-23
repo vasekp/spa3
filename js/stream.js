@@ -3,34 +3,28 @@ import './components/spa-textbox.js';
 import _, * as i18n from './i18n.js';
 
 const iface = (() => {
-  let support = false;
-  const opts = {
-    get type() {
-      support = true;
-      return 'module';
+  const func = new Promise((resolve, reject) => {
+    try {
+      const worker = new Worker('./js/stream-worker.js', {type: 'module'});
+      worker.addEventListener('error', e => reject(), {once: true});
+      worker.addEventListener('message', e => resolve(worker), {once: true});
+      worker.postMessage({cmd: 'ping'});
+    } catch(e) {
+      reject();
     }
-  };
-  try {
-    new Worker('data:', opts).terminate();
-  } catch(e) {
-    if(e.name === 'SecurityError')
-      support = true;
-    else
-      support = false;
-  }
-
-  if(support) {
+  }).then(worker => {
     console.log('Worker');
-    const worker = new Worker('./js/stream-worker.js', opts);
     return msg => new Promise(resolve => {
       worker.postMessage(msg);
       worker.addEventListener('message', e => resolve(e.data), {once: true});
     });
-  } else {
+  }).catch(() => {
     console.log('Sync');
     const impPromise = import('./stream-worker.js');
     return msg => impPromise.then(imp => imp.exec(msg));
-  }
+  });
+
+  return async msg => (await func)(msg);
 })();
 
 export default function(root) {
