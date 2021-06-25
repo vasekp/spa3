@@ -62,3 +62,7 @@ button:disabled {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.input, .output {
+  white-space: pre;
+}
