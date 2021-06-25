@@ -75,15 +75,25 @@ export default function(root) {
     })
   }
 
+  function prev() {
+    const last = root.getElementById('hist').firstElementChild;
+    if(!last)
+      return;
+    textbox.value = last.firstElementChild.textContent;
+    textbox.focus();
+  }
+
   sendCommand('init');
   textbox.addEventListener('input', () =>
     sendCommand('parse', {input: textbox.value}).then(result));
   textbox.addEventListener('tb-submit', run);
-  root.getElementById('run').addEventListener('click', run);
-  root.getElementById('prev').addEventListener('click', () => {
-    const last = root.getElementById('hist').firstElementChild;
-    textbox.value = last.firstElementChild.textContent;
-    textbox.focus();
+  textbox.addEventListener('keydown', e => {
+    if(e.key === 'ArrowUp') {
+      prev();
+      e.preventDefault();
+    }
   });
+  root.getElementById('run').addEventListener('click', run);
+  root.getElementById('prev').addEventListener('click', prev);
   return {};
 }
