@@ -86,9 +86,11 @@ export default function(root) {
   sendCommand('init');
   textbox.addEventListener('input', () =>
     sendCommand('parse', {input: textbox.value}).then(result));
-  textbox.addEventListener('tb-submit', run);
   textbox.addEventListener('keydown', e => {
-    if(e.key === 'ArrowUp') {
+    if(e.key === 'Enter') {
+      run();
+      e.preventDefault();
+    } else if(e.key === 'ArrowUp') {
       prev();
       e.preventDefault();
     }
