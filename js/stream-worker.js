@@ -58,7 +58,11 @@ export function exec(data) {
         cmd: data.cmd
       };
     else
-      console.error(err);
+      return {
+        type: 'error',
+        msg: err.toString(),
+        cmd: data.cmd
+      };
   }
 }
 
