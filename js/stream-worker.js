@@ -2,10 +2,11 @@ import './stream/filters/basic.js';
 import './stream/filters/arith.js';
 import './stream/filters/string.js';
 import {parse, ParseError} from './stream/parser.js';
-import {History, StreamError, TimeoutError} from './stream/base.js';
+import {History, Register, StreamError, TimeoutError, mainReg} from './stream/base.js';
 
 const LEN = 200;
 const history = new History();
+const userReg = new Register(mainReg);
 
 export function exec(data) {
   try {
@@ -22,7 +23,12 @@ export function exec(data) {
           cmd: data.cmd,
           input: data.input};
       case 'exec':
-        const node = parse(data.input).withScope({history}).timeConstr().prepare();
+        let node = parse(data.input);
+        if(node.ident === 'equal')
+          node = node.toAssign();
+        node = node
+          .withScope({history, register: userReg})
+          .timeConstr().prepare();
         const out = node.timeConstr().writeout(LEN);
         const hid = history.add(node);
         return {
@@ -45,9 +51,9 @@ export function exec(data) {
     else if(err instanceof StreamError)
       return {
         type: 'error',
-        pos: err.node ? err.node.token.pos : null,
-        len: err.node ? err.node.token.value.length : null,
-        input: err.node ? err.node.desc() : null,
+        pos: err.pos,
+        len: err.len,
+        input: err.desc,
         msg: err.msg,
         cmd: data.cmd
       };
