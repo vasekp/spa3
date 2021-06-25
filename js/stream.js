@@ -62,8 +62,13 @@ export default function(root) {
   }
 
   function run() {
+    const str = textbox.value
+      .replace(/^[ \t\n\r]+/, '')
+      .replace(/ [\t\n\r]+$/, '');
+    if(!str)
+      return;
     textbox.disabled = true;
-    iface({cmd: 'exec', input: textbox.value}).then(r => {
+    iface({cmd: 'exec', input: str}).then(r => {
       textbox.disabled = false;
       result(r);
       textbox.focus();
