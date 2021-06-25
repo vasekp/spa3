@@ -2,7 +2,7 @@ import './components/spa-scroll.js';
 import './components/spa-textbox.js';
 import _, * as i18n from './i18n.js';
 
-const iface = (() => {
+const sendCommand = (() => {
   const func = new Promise((resolve, reject) => {
     try {
       const worker = new Worker('./js/stream-worker.js', {type: 'module'});
@@ -24,7 +24,7 @@ const iface = (() => {
     return msg => impPromise.then(imp => imp.exec(msg));
   });
 
-  return async msg => (await func)(msg);
+  return async (command, data) => (await func)({cmd: command, ...data});
 })();
 
 export default function(root) {
@@ -68,16 +68,16 @@ export default function(root) {
     if(!str)
       return;
     textbox.disabled = true;
-    iface({cmd: 'exec', input: str}).then(r => {
+    sendCommand('exec', {input: str}).then(r => {
       textbox.disabled = false;
       result(r);
       textbox.focus();
     })
   }
 
-  iface({cmd: 'init'});
+  sendCommand('init');
   textbox.addEventListener('input', () =>
-    iface({cmd: 'parse', input: textbox.value}).then(result));
+    sendCommand('parse', {input: textbox.value}).then(result));
   textbox.addEventListener('tb-submit', run);
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', () => {
