@@ -19,8 +19,8 @@ export function exec(data) {
           cmd: data.cmd,
           input: data.input};
       case 'exec':
-        const node = parse(data.input).withScope({history}).prepareT();
-        const out = node.writeoutT(LEN);
+        const node = parse(data.input).withScope({history}).timeConstr().prepare();
+        const out = node.timeConstr().writeout(LEN);
         const hid = history.add(node);
         return {
           type: 'ok',
