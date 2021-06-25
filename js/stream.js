@@ -75,6 +75,7 @@ export default function(root) {
     })
   }
 
+  iface({cmd: 'init'});
   textbox.addEventListener('input', () =>
     iface({cmd: 'parse', input: textbox.value}).then(result));
   textbox.addEventListener('tb-submit', run);

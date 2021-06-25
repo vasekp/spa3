@@ -12,6 +12,9 @@ export function exec(data) {
     switch(data.cmd) {
       case 'ping':
         return data;
+      case 'init':
+        history.clear();
+        return data;
       case 'parse':
         parse(data.input);
         return {
