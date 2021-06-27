@@ -1,8 +1,10 @@
-import './stream/filters/basic.js';
-import './stream/filters/arith.js';
+import './stream/filters/lang.js';
+import './stream/filters/streams.js';
+import './stream/filters/numeric.js';
 import './stream/filters/string.js';
-import {parse, ParseError} from './stream/parser.js';
-import {History, Register, StreamError, TimeoutError, mainReg} from './stream/base.js';
+import {StreamError, TimeoutError, ParseError} from './stream/errors.js';
+import {parse} from './stream/parser.js';
+import {History, Register, mainReg} from './stream/base.js';
 
 const LEN = 200;
 const history = new History();
@@ -26,10 +28,8 @@ export function exec(data) {
         let node = parse(data.input);
         if(node.ident === 'equal')
           node = node.toAssign();
-        node = node
-          .withScope({history, register: userReg})
-          .timeConstr().prepare();
-        const out = node.timeConstr().writeout(LEN);
+        node = node.timed(n => n.prepare({history, register: userReg}));
+        const out = node.timed(n => n.writeout(LEN))
         const hid = history.add(node);
         return {
           type: 'ok',
