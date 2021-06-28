@@ -27,7 +27,7 @@ export function exec(data) {
           input: data.input};
       case 'exec':
         let node = parse(data.input);
-        if(node.ident === 'equal')
+        if(node.ident === 'equal' && node.token.value === '=' && !node.src && node.args[0] && node.args[0].type === 'symbol')
           node = node.toAssign();
         const rng = new RNG();
         node = node.timed(n => n.prepare({history, register: userReg, rng}));
