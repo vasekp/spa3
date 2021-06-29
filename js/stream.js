@@ -47,6 +47,7 @@ const sendCommand = (() => {
 export default function(root) {
   const textbox = root.getElementById('in');
   const errbox = root.getElementById('error');
+  let histEmpty = true;
 
   function result(data) {
     if(data.type === 'ok') {
@@ -65,6 +66,7 @@ export default function(root) {
         div.append(dIn, dOut);
         root.getElementById('hist').prepend(div);
         root.getElementById('prev').disabled = false;
+        histEmpty = false;
         textbox.value = '';
       }
     } else {
@@ -100,6 +102,26 @@ export default function(root) {
     textbox.focus();
   }
 
+  function populateVars() {
+    const pDiv = root.getElementById('vars');
+    while(pDiv.firstChild)
+      pDiv.removeChild(pDiv.firstChild);
+    pDiv.append(...Object
+      .keys(userVars)
+      .sort()
+      .map(key => {
+        const div = document.createElement('div');
+        const dIn = document.createElement('div');
+        dIn.classList.add('input');
+        dIn.textContent = key;
+        const dOut = document.createElement('div');
+        dOut.classList.add('output');
+        dOut.textContent = userVars[key];
+        div.append(dIn, dOut);
+        return div;
+      }));
+  }
+
   sendCommand('init', {vars: Object.entries(userVars)});
   textbox.addEventListener('input', () =>
     sendCommand('parse', {input: textbox.value}).then(result));
@@ -114,6 +136,15 @@ export default function(root) {
   });
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', prev);
+  root.getElementById('vars-cb').addEventListener('input', e => {
+    const ch = e.currentTarget.checked;
+    if(ch)
+      populateVars();
+    root.getElementById('in').disabled = ch;
+    root.getElementById('in').classList.toggle('skipAnim', ch);
+    root.getElementById('run').disabled = ch;
+    root.getElementById('prev').disabled = ch || histEmpty;
+  });
   return {};
 }
 

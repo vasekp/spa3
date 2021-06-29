@@ -10,13 +10,17 @@
   transition: color .5s;
 }
 
+#in.skipAnim {
+  transition: none;
+}
+
 #actions {
   display: flex;
   justify-content: space-between;
   margin: var(--margin-small) auto;
 }
 
-#actions > button {
+#actions > * {
   margin: 0 var(--margin-base);
 }
 
@@ -24,15 +28,15 @@ button:disabled {
   opacity: .5;
 }
 
-#hist {
+spa-scroll {
   margin: 0 var(--margin-base-neg);
 }
 
-#hist > div {
+spa-scroll > div {
   padding: var(--margin-small) var(--margin-base);
 }
 
-#hist > div:nth-child(odd) {
+spa-scroll > div:nth-child(odd) {
   background: var(--color-bg-alt);
 }
 
@@ -65,4 +69,16 @@ button:disabled {
 
 .input, .output {
   white-space: pre;
+}
+
+#vars .output {
+  font-family: var(--font-mono);
+}
+
+#vars-cb,
+#vars-cb:checked ~ div #vars-off,
+#vars-cb:not(:checked) ~ div #vars-on,
+#vars-cb:checked ~ #hist,
+#vars-cb:not(:checked) ~ #vars {
+  display: none;
 }

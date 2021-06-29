@@ -2,14 +2,19 @@
 <main>
   <spa-textbox id="in" class="underline">
   </spa-textbox>
+  <input type="checkbox" id="vars-cb"/>
   <div id="actions">
     <button id="run" class="patch c-green" data-color="param" data-content="&#x25B6;"></button>
     <button id="prev" class="patch c-yellow" data-color="param" data-content="&#x25B2;" disabled></button>
+    <label for="vars-cb" id="vars-off" class="patch c-blue" data-color="param" data-content="="></label>
+    <label for="vars-cb" id="vars-on" class="patch c-blue" data-color="param" data-content="&#x21A9;"></label>
   </div>
   <div id="error" hidden>
     <div class="input"></div>
     <div class="output"></div>
   </div>
   <spa-scroll id="hist">
+  </spa-scroll>
+  <spa-scroll id="vars">
   </spa-scroll>
 </main>
