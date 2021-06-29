@@ -19,6 +19,7 @@ export function exec(data) {
         return data;
       case 'init':
         history.clear();
+        userReg.init(data.vars);
         return data;
       case 'parse':
         parse(data.input);
@@ -75,6 +76,19 @@ export function exec(data) {
   }
 }
 
-onmessage = function(e) {
-  postMessage(exec(e.data));
+if(self.document === undefined)
+  onmessage = e => postMessage(exec(e.data));
+
+export const et = new EventTarget();
+
+function regEvent(e) {
+  if(self.document !== undefined)
+    et.dispatchEvent(new CustomEvent(e.type, {detail: e.detail}));
+  else
+    postMessage({
+      type: e.type,
+      ...e.detail
+    });
 }
+
+userReg.addEventListener('register', regEvent);

@@ -1,6 +1,13 @@
 import './components/spa-scroll.js';
 import './components/spa-textbox.js';
+import Enum from './util/enum.js';
 import _, * as i18n from './i18n.js';
+
+const lsKeys = Enum.fromObj({
+  register: 'stm-vars'
+});
+
+const userVars = JSON.parse(localStorage[lsKeys.register] || '{}');
 
 const sendCommand = (() => {
   const func = new Promise((resolve, reject) => {
@@ -16,11 +23,21 @@ const sendCommand = (() => {
     console.log('Worker');
     return msg => new Promise(resolve => {
       worker.postMessage(msg);
-      worker.addEventListener('message', e => resolve(e.data), {once: true});
+      const cb = e => {
+        if(e.data.type === 'register')
+          regEvent(e.data.key, e.data.value);
+        else {
+          resolve(e.data);
+          worker.removeEventListener('message', cb);
+        }
+      }
+      worker.addEventListener('message', cb);
     });
   }).catch(() => {
     console.log('Sync');
     const impPromise = import('./stream-worker.js');
+    impPromise.then(imp =>
+      imp.et.addEventListener('register', e => regEvent(e.detail.key, e.detail.value)));
     return msg => impPromise.then(imp => imp.exec(msg));
   });
 
@@ -83,7 +100,7 @@ export default function(root) {
     textbox.focus();
   }
 
-  sendCommand('init');
+  sendCommand('init', {vars: Object.entries(userVars)});
   textbox.addEventListener('input', () =>
     sendCommand('parse', {input: textbox.value}).then(result));
   textbox.addEventListener('keydown', e => {
@@ -98,4 +115,12 @@ export default function(root) {
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', prev);
   return {};
+}
+
+function regEvent(key, value) {
+  if(value)
+    userVars[key] = value;
+  else
+    delete userVars[key];
+  localStorage[lsKeys.register] = JSON.stringify(userVars);
 }
