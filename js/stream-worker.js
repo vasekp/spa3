@@ -3,13 +3,14 @@ import './stream/filters/streams.js';
 import './stream/filters/numeric.js';
 import './stream/filters/string.js';
 import {StreamError, TimeoutError, ParseError} from './stream/errors.js';
-import {parse} from './stream/parser.js';
-import {History, Register, mainReg} from './stream/base.js';
-import {RNG} from './stream/random.js';
+import parse from './stream/parser.js';
+import RNG from './stream/random.js';
+import mainReg from './stream/register.js';
+import History from './stream/history.js';
 
 const LEN = 200;
 const history = new History();
-const userReg = new Register(mainReg);
+const userReg = mainReg.child();
 
 export function exec(data) {
   try {
