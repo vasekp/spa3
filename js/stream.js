@@ -116,7 +116,7 @@ export default function(root) {
         const dIn = document.createElement('div');
         dIn.classList.add('input');
         dIn.textContent = key;
-        dIn.dataset.lead = reg === 'save' ? '(Saved)' : '(Sess)';
+        dIn.dataset.lead = reg === 'save' ? _('stm:saved') : _('stm:session');
         const dOut = document.createElement('div');
         dOut.classList.add('output');
         dOut.textContent = (reg === 'save' ? saveVars : sessVars)[key];
