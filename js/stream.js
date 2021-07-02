@@ -7,7 +7,8 @@ const lsKeys = Enum.fromObj({
   register: 'stm-vars'
 });
 
-const userVars = JSON.parse(localStorage[lsKeys.register] || '{}');
+const saveVars = JSON.parse(localStorage[lsKeys.register] || '{}');
+const sessVars = {};
 
 const sendCommand = (() => {
   const func = new Promise((resolve, reject) => {
@@ -25,7 +26,7 @@ const sendCommand = (() => {
       worker.postMessage(msg);
       const cb = e => {
         if(e.data.type === 'register')
-          regEvent(e.data.key, e.data.value);
+          regEvent(e.data.key, e.data.value, e.data.register);
         else {
           resolve(e.data);
           worker.removeEventListener('message', cb);
@@ -37,7 +38,7 @@ const sendCommand = (() => {
     console.log('Sync');
     const impPromise = import('./stream-worker.js');
     impPromise.then(imp =>
-      imp.et.addEventListener('register', e => regEvent(e.detail.key, e.detail.value)));
+      imp.et.addEventListener('register', e => regEvent(e.detail.key, e.detail.value, e.detail.register)));
     return msg => impPromise.then(imp => imp.exec(msg));
   });
 
@@ -59,7 +60,7 @@ export default function(root) {
         dIn.classList.add('input');
         dIn.textContent = data.input;
         if(data.history)
-          dIn.dataset.lead = `$${data.history}`;
+          dIn.dataset.lead = `$${data.history}:`;
         const dOut = document.createElement('div');
         dOut.classList.add('output');
         dOut.textContent = data.output;
@@ -106,23 +107,27 @@ export default function(root) {
     const pDiv = root.getElementById('vars');
     while(pDiv.firstChild)
       pDiv.removeChild(pDiv.firstChild);
-    pDiv.append(...Object
-      .keys(userVars)
-      .sort()
-      .map(key => {
+    const keys = [].concat(
+        [...Object.keys(saveVars)].map(key => [key, 'save']),
+        [...Object.keys(sessVars)].map(key => [key, 'sess'])
+      ).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
+    pDiv.append(...keys.map(([key, reg]) => {
         const div = document.createElement('div');
         const dIn = document.createElement('div');
         dIn.classList.add('input');
         dIn.textContent = key;
+        dIn.dataset.lead = reg === 'save' ? '(Saved)' : '(Sess)';
         const dOut = document.createElement('div');
         dOut.classList.add('output');
-        dOut.textContent = userVars[key];
+        dOut.textContent = (reg === 'save' ? saveVars : sessVars)[key];
         div.append(dIn, dOut);
+        if(reg === 'save' && keys.some(([k, r]) => k === key && r === 'sess'))
+          div.classList.add('shadowed');
         return div;
       }));
   }
 
-  sendCommand('init', {vars: Object.entries(userVars)});
+  sendCommand('init', {vars: Object.entries(saveVars)});
   textbox.addEventListener('input', () =>
     sendCommand('parse', {input: textbox.value}).then(result));
   textbox.addEventListener('keydown', e => {
@@ -148,10 +153,12 @@ export default function(root) {
   return {};
 }
 
-function regEvent(key, value) {
+function regEvent(key, value, register) {
+  const local = register === 'save' ? saveVars : sessVars;
   if(value)
-    userVars[key] = value;
+    local[key] = value;
   else
-    delete userVars[key];
-  localStorage[lsKeys.register] = JSON.stringify(userVars);
+    delete local[key];
+  if(register === 'save')
+    localStorage[lsKeys.register] = JSON.stringify(saveVars);
 }

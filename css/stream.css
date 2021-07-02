@@ -56,7 +56,7 @@ spa-scroll > div:nth-child(odd) {
 }
 
 .input[data-lead]::before {
-  content: attr(data-lead) ':';
+  content: attr(data-lead);
   margin-right: var(--font-space);
   color: var(--color-text-light);
 }
@@ -69,6 +69,10 @@ spa-scroll > div:nth-child(odd) {
 
 .input, .output {
   white-space: pre;
+}
+
+.shadowed {
+  color: var(--color-text-light);
 }
 
 #vars .output {

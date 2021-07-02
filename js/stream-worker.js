@@ -2,6 +2,8 @@ import './stream/filters/lang.js';
 import './stream/filters/streams.js';
 import './stream/filters/numeric.js';
 import './stream/filters/string.js';
+import './stream/filters/combi.js';
+import './stream/filters/iface.js';
 import {StreamError, TimeoutError, ParseError} from './stream/errors.js';
 import parse from './stream/parser.js';
 import RNG from './stream/random.js';
@@ -10,7 +12,8 @@ import History from './stream/history.js';
 
 const LEN = 200;
 const history = new History();
-const userReg = mainReg.child();
+const saveReg = mainReg.child();
+const sessReg = saveReg.child();
 
 export function exec(data) {
   try {
@@ -19,7 +22,8 @@ export function exec(data) {
         return data;
       case 'init':
         history.clear();
-        userReg.init(data.vars);
+        saveReg.init(data.vars);
+        sessReg.init();
         return data;
       case 'parse':
         parse(data.input);
@@ -32,7 +36,7 @@ export function exec(data) {
         if(node.ident === 'equal' && node.token.value === '=' && !node.src && node.args[0] && node.args[0].type === 'symbol')
           node = node.toAssign();
         const rng = new RNG();
-        node = node.timed(n => n.prepare({history, register: userReg, rng}));
+        node = node.timed(n => n.prepare({history, register: sessReg, rng}));
         const out = node.timed(n => n.writeout(LEN))
         const hid = history.add(node);
         return {
@@ -82,13 +86,16 @@ if(self.document === undefined)
 export const et = new EventTarget();
 
 function regEvent(e) {
+  const register = e.target === saveReg ? 'save' : 'session';
   if(self.document !== undefined)
-    et.dispatchEvent(new CustomEvent(e.type, {detail: e.detail}));
+    et.dispatchEvent(new CustomEvent(e.type, {detail: {...e.detail, register}}));
   else
     postMessage({
       type: e.type,
-      ...e.detail
+      ...e.detail,
+      register
     });
 }
 
-userReg.addEventListener('register', regEvent);
+sessReg.addEventListener('register', regEvent);
+saveReg.addEventListener('register', regEvent);
