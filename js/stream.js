@@ -67,6 +67,7 @@ export default function(root) {
         div.append(dIn, dOut);
         root.getElementById('hist').prepend(div);
         root.getElementById('prev').disabled = false;
+        div.scrollIntoView();
         histEmpty = false;
         textbox.value = '';
       }
