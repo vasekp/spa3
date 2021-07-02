@@ -127,6 +127,13 @@ export default function(root) {
       }));
   }
 
+  function histclear() {
+    sendCommand('histclear', {vars: Object.entries(saveVars)})
+    const pDiv = root.getElementById('hist');
+    while(pDiv.firstChild)
+      pDiv.removeChild(pDiv.firstChild);
+  }
+
   sendCommand('init', {vars: Object.entries(saveVars)});
   textbox.addEventListener('input', () =>
     sendCommand('parse', {input: textbox.value}).then(result));
@@ -141,6 +148,7 @@ export default function(root) {
   });
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', prev);
+  root.getElementById('clear').addEventListener('click', histclear);
   root.getElementById('vars-cb').addEventListener('input', e => {
     const ch = e.currentTarget.checked;
     if(ch)
@@ -149,6 +157,7 @@ export default function(root) {
     root.getElementById('in').classList.toggle('skipAnim', ch);
     root.getElementById('run').disabled = ch;
     root.getElementById('prev').disabled = ch || histEmpty;
+    root.getElementById('clear').disabled = ch;
   });
   return {};
 }

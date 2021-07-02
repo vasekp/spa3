@@ -25,6 +25,9 @@ export function exec(data) {
         saveReg.init(data.vars);
         sessReg.init();
         return data;
+      case 'histclear':
+        history.clear();
+        return data;
       case 'parse':
         parse(data.input);
         return {
