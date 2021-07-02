@@ -1,5 +1,6 @@
 {
   "_prefix": "stm",
   "saved": "(Saved)",
-  "session": "(Sess.)"
+  "session": "(Sess.)",
+  "no vars": "No saved variables."
 }

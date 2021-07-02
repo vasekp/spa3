@@ -111,6 +111,11 @@ export default function(root) {
         [...Object.keys(saveVars)].map(key => [key, 'save']),
         [...Object.keys(sessVars)].map(key => [key, 'sess'])
       ).sort((a, b) => a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
+    if(!keys.length) {
+      errbox.children[0].textContent = '';
+      errbox.children[1].textContent = _('stm:no vars');
+      errbox.hidden = false;
+    }
     pDiv.append(...keys.map(([key, reg]) => {
         const div = document.createElement('div');
         const dIn = document.createElement('div');
@@ -151,6 +156,8 @@ export default function(root) {
   root.getElementById('clear').addEventListener('click', histclear);
   root.getElementById('vars-cb').addEventListener('input', e => {
     const ch = e.currentTarget.checked;
+    textbox.mark();
+    errbox.hidden = true;
     if(ch)
       populateVars();
     root.getElementById('in').disabled = ch;
