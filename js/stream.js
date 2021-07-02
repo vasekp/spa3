@@ -160,12 +160,12 @@ export default function(root) {
     errbox.hidden = true;
     if(ch)
       populateVars();
-    root.getElementById('in').disabled = ch;
     root.getElementById('in').classList.toggle('skipAnim', ch);
     root.getElementById('run').disabled = ch;
     root.getElementById('prev').disabled = ch || histEmpty;
     root.getElementById('clear').disabled = ch;
   });
+  root.getElementById('in').addEventListener('focusin', () => root.getElementById('vars-cb').checked = false);
   return {};
 }
 
