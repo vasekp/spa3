@@ -38,8 +38,7 @@ export function exec(data) {
         let node = parse(data.input);
         if(node.ident === 'equal' && node.token.value === '=' && !node.src && node.args[0] && node.args[0].type === 'symbol')
           node = node.toAssign();
-        const rng = new RNG();
-        node = node.timed(n => n.prepare({history, register: sessReg, rng}));
+        node = node.timed(n => n.prepare({history, register: sessReg, seed: RNG.seed()}));
         const out = node.timed(n => n.writeout(LEN))
         const hid = history.add(node);
         return {
