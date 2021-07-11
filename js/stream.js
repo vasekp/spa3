@@ -226,6 +226,7 @@ export default function(root) {
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', prev);
   root.getElementById('clear').addEventListener('click', histclear);
+  root.getElementById('help').addEventListener('click', _ => location.assign('js/stream/help.html'));
   root.getElementById('view').addEventListener('click', e => {
     textbox.mark();
     errbox.hidden = true;
