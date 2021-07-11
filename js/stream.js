@@ -8,6 +8,7 @@ const lsKeys = Enum.fromObj({
 });
 
 const views = Enum.fromArray(['prompt', 'vars', 'browse']);
+const browseStack = [];
 
 const saveVars = JSON.parse(localStorage[lsKeys.register] || '{}');
 const sessVars = {};
@@ -154,12 +155,17 @@ export default function(root) {
     const div = e.target.closest('.item');
     if(!div || div.dataset.explorable !== 'true')
       return;
+    browseCmd(div.firstElementChild.dataset.cmd);
+  }
+
+  function browseCmd(cmd) {
     const pDiv = root.getElementById('browse');
     while(pDiv.firstChild)
       pDiv.removeChild(pDiv.firstChild);
     state.view = views.browse;
     pDiv.scrollTop = 0;
-    sendCommand('browse', {input: div.firstElementChild.dataset.cmd}).then(async data => {
+    browseStack.push(cmd);
+    sendCommand('browse', {input: cmd}).then(async data => {
       const handle = data.handle;
       for(let cnt = 1; ; cnt++) {
         // Firefox compositor would not kick in here otherwise
@@ -207,6 +213,8 @@ export default function(root) {
       root.getElementById('prev').disabled = !(v === views.prompt && !histEmpty);
       root.getElementById('clear').disabled = !(v === views.prompt);
       root.getElementById('view').dataset.content = v === views.prompt ? '=' : '\u21A9';
+      if(v !== views.browse)
+        browseStack.splice(0, browseStack.length);
     }
   }
   state.view = views.prompt;
@@ -235,6 +243,15 @@ export default function(root) {
         populateVars();
         state.view = views.vars;
         break;
+      case views.browse: {
+        browseStack.pop(); // current
+        const prev = browseStack.pop(); // previous
+        if(prev)
+          browseCmd(prev);
+        else
+          state.view = views.prompt;
+        break;
+      }
       default:
         state.view = views.prompt;
     }
