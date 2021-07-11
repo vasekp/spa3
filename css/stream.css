@@ -30,15 +30,16 @@ button:disabled {
   opacity: .5;
 }
 
-spa-scroll {
+spa-scroll, spa-inf-scroll {
   margin: 0 var(--margin-base-neg);
 }
 
-spa-scroll > div {
+spa-scroll > div, spa-inf-scroll > div {
   padding: var(--margin-small) var(--margin-base);
 }
 
-spa-scroll > div:nth-child(odd) {
+spa-scroll > div:nth-child(odd),
+spa-inf-scroll > div:nth-child(odd) {
   background: var(--color-bg-alt);
 }
 

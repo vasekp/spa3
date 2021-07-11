@@ -154,7 +154,11 @@ export default function(root) {
     state.view = views.browse;
     pDiv.scrollTop = 0;
     sendCommand('browse', {input: div.firstElementChild.dataset.cmd}).then(async () => {
-      for(let cnt = 1; cnt < 200 /* XXX */; cnt++) {
+      for(let cnt = 1; ; cnt++) {
+        // Firefox compositor would not kick in here otherwise
+        if(cnt % 20 === 0)
+          await new Promise(resolve => setTimeout(resolve, 1));
+        await pDiv.loadMore;
         const data = await sendCommand('next');
         if(!data.output) // XXX errors
           return;

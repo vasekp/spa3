@@ -25,4 +25,28 @@ class ScrollElement extends HTMLElement {
   }
 }
 
+class InfScrollElement extends ScrollElement {
+  constructor() {
+    super();
+    const div = document.createElement('div');
+    div.id = 'guard';
+    this.shadowRoot.append(div);
+
+    let resolvePromise;
+    const exec = resolve => resolvePromise = resolve;
+    this.loadMore = new Promise(exec);
+
+    const io = new IntersectionObserver(entries => {
+      const visible = entries.some(e => e.intersectionRatio > 0);
+      if(visible) {
+        this.dispatchEvent(new CustomEvent('loadmore'));
+        resolvePromise();
+      } else
+        this.loadMore = new Promise(exec);
+    });
+    io.observe(div);
+  }
+}
+
 window.customElements.define('spa-scroll', ScrollElement);
+window.customElements.define('spa-inf-scroll', InfScrollElement);
