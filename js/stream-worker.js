@@ -9,6 +9,7 @@ import parse from './stream/parser.js';
 import RNG from './stream/random.js';
 import mainReg from './stream/register.js';
 import History from './stream/history.js';
+import {types} from './stream/base.js';
 
 const LEN = 200;
 const history = new History();
@@ -17,6 +18,8 @@ const sessReg = saveReg.child();
 
 let browseStream = null;
 let browseHandle = 0;
+
+const typeMap = type => type === types.expr || type === types.symbol ? 'stream' : type;
 
 export function exec(data) {
   try {
@@ -46,6 +49,7 @@ export function exec(data) {
           const hid = history.add(node);
           return {...data,
             type: 'ok',
+            dataType: typeMap(node.type),
             output: out,
             history: hid
           };
@@ -81,7 +85,7 @@ export function exec(data) {
             handle: browseHandle,
             input: next.toString(),
             output: next.timed(n => n.writeout(LEN)),
-            ntype: next.type
+            dataType: typeMap(next.type)
           };
         }
     }

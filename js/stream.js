@@ -76,6 +76,7 @@ export default function(root) {
         div.append(dIn, dOut);
         root.getElementById('hist').prepend(div);
         root.getElementById('prev').disabled = false;
+        div.dataset.explorable = data.dataType === 'stream' && data.output !== '[]';
         div.scrollIntoView();
         histEmpty = false;
         textbox.value = '';
@@ -151,7 +152,7 @@ export default function(root) {
 
   function browse(e) {
     const div = e.target.closest('.item');
-    if(!div)
+    if(!div || div.dataset.explorable !== 'true')
       return;
     const pDiv = root.getElementById('browse');
     while(pDiv.firstChild)
@@ -169,16 +170,17 @@ export default function(root) {
         if(!data.output) // XXX errors
           return;
         const div = document.createElement('div');
+        div.classList.add('item');
         const dIn = document.createElement('div');
         dIn.classList.add('input');
-        dIn.textContent = data.ntype;
+        dIn.textContent = data.dataType;
         dIn.dataset.cmd = data.input;
         dIn.dataset.lead = `[${cnt}]:`;
         const dOut = document.createElement('div');
         dOut.classList.add('output');
         dOut.textContent = data.output;
         div.append(dIn, dOut);
-        div.classList.add('item');
+        div.dataset.explorable = data.dataType === 'stream' && data.output !== '[]';
         pDiv.append(div);
       }
     });
