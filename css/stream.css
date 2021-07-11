@@ -3,6 +3,8 @@
 #in {
   font-family: var(--font-mono);
   max-height: calc(3 * var(--line-height-base));
+  flex-shrink: 0;
+  word-break: break-all;
 }
 
 #in[disabled] {
@@ -48,6 +50,12 @@ spa-scroll > div:nth-child(odd) {
   margin-bottom: var(--margin-base);
 }
 
+.input, .output {
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .input {
   font-family: var(--font-mono);
   font-size: 75%;
@@ -59,16 +67,6 @@ spa-scroll > div:nth-child(odd) {
   content: attr(data-lead);
   margin-right: var(--font-space);
   color: var(--color-text-light);
-}
-
-.output {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.input, .output {
-  white-space: pre;
 }
 
 .shadowed {
