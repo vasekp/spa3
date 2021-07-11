@@ -16,6 +16,7 @@ const saveReg = mainReg.child();
 const sessReg = saveReg.child();
 
 let browseStream = null;
+let browseHandle = 0;
 
 export function exec(data) {
   try {
@@ -34,10 +35,7 @@ export function exec(data) {
         return data;
       case 'parse':
         parse(data.input);
-        return {
-          type: 'ok',
-          cmd: data.cmd,
-          input: data.input};
+        return {...data, type: 'ok'};
       case 'exec':
         {
           let node = parse(data.input);
@@ -46,10 +44,8 @@ export function exec(data) {
           node = node.timed(n => n.prepare({history, register: sessReg, seed: RNG.seed()}));
           const out = node.timed(n => n.writeout(LEN))
           const hid = history.add(node);
-          return {
+          return {...data,
             type: 'ok',
-            cmd: data.cmd,
-            input: data.input,
             output: out,
             history: hid
           };
@@ -59,45 +55,51 @@ export function exec(data) {
           let node = parse(data.input);
           node = node.timed(n => n.prepare({history, register: sessReg, seed: RNG.seed()}));
           browseStream = node.timed(n => n.eval());
-          return {
+          browseHandle++;
+          return {...data,
             type: 'ok',
-            cmd: data.cmd
+            handle: browseHandle
           };
         }
       case 'next':
-        if(!browseStream)
-          return {
+        if(!browseStream || data.handle !== browseHandle)
+          return {...data,
             type: 'error',
             msg: 'Browse cancelled'
           };
         const next = browseStream.timed(s => s.next()).value;
-        if(!next)
+        if(!next) {
           browseStream = null;
-        return {
-          type: 'browse',
-          cmd: data.cmd,
-          input: next ? next.toString() : null,
-          output: next ? next.timed(n => n.writeout(LEN)) : null,
-          ntype: next ? next.type : null
-        };
+          return {...data,
+            type: 'browse',
+            handle: browseHandle,
+            done: true
+          };
+        } else {
+          return {...data,
+            type: 'browse',
+            handle: browseHandle,
+            input: next.toString(),
+            output: next.timed(n => n.writeout(LEN)),
+            ntype: next.type
+          };
+        }
     }
   } catch(err) {
     if(err instanceof ParseError)
-      return {
+      return {...data,
         type: 'error',
         pos: err.pos,
         len: err.len,
-        msg: err.msg,
-        cmd: data.cmd
+        msg: err.msg
       };
     else if(err instanceof StreamError)
-      return {
+      return {...data,
         type: 'error',
         pos: err.pos,
         len: err.len,
         input: err.desc,
-        msg: err.msg,
-        cmd: data.cmd
+        msg: err.msg
       };
     else if(err instanceof TimeoutError)
       return {

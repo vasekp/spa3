@@ -13,6 +13,7 @@ const saveVars = JSON.parse(localStorage[lsKeys.register] || '{}');
 const sessVars = {};
 
 const sendCommand = (() => {
+  let id = 0;
   const func = new Promise((resolve, reject) => {
     try {
       const worker = new Worker('./js/stream-worker.js', {type: 'module'});
@@ -24,17 +25,21 @@ const sendCommand = (() => {
     }
   }).then(worker => {
     console.log('Worker');
+    worker.addEventListener('message', e => {
+      if(e.data.type === 'register')
+        regEvent(e.data.key, e.data.value, e.data.register);
+    });
     return msg => new Promise(resolve => {
-      worker.postMessage(msg);
+      let thisID = id;
+      worker.postMessage({...msg, id});
       const cb = e => {
-        if(e.data.type === 'register')
-          regEvent(e.data.key, e.data.value, e.data.register);
-        else {
+        if(e.data.id === thisID) {
           resolve(e.data);
           worker.removeEventListener('message', cb);
         }
       }
       worker.addEventListener('message', cb);
+      id++;
     });
   }).catch(() => {
     console.log('Sync');
@@ -153,13 +158,14 @@ export default function(root) {
       pDiv.removeChild(pDiv.firstChild);
     state.view = views.browse;
     pDiv.scrollTop = 0;
-    sendCommand('browse', {input: div.firstElementChild.dataset.cmd}).then(async () => {
+    sendCommand('browse', {input: div.firstElementChild.dataset.cmd}).then(async data => {
+      const handle = data.handle;
       for(let cnt = 1; ; cnt++) {
         // Firefox compositor would not kick in here otherwise
         if(cnt % 20 === 0)
           await new Promise(resolve => setTimeout(resolve, 1));
         await pDiv.loadMore;
-        const data = await sendCommand('next');
+        const data = await sendCommand('next', {handle});
         if(!data.output) // XXX errors
           return;
         const div = document.createElement('div');
