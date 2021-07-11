@@ -77,10 +77,12 @@ spa-scroll > div:nth-child(odd) {
   font-family: var(--font-mono);
 }
 
-#vars-cb,
-#vars-cb:checked ~ div #vars-off,
-#vars-cb:not(:checked) ~ div #vars-on,
-#vars-cb:checked ~ #hist,
-#vars-cb:not(:checked) ~ #vars {
+input[name="view"] {
+  display: none;
+}
+
+input[name="view"][value="prompt"]:not(:checked) ~ #hist,
+input[name="view"][value="vars"]:not(:checked) ~ #vars,
+input[name="view"][value="browse"]:not(:checked) ~ #browse {
   display: none;
 }

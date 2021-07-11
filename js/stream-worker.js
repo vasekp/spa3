@@ -15,8 +15,12 @@ const history = new History();
 const saveReg = mainReg.child();
 const sessReg = saveReg.child();
 
+let browseStream = null;
+
 export function exec(data) {
   try {
+    if(data.cmd !== 'next')
+      browseStream = null;
     switch(data.cmd) {
       case 'ping':
         return data;
@@ -35,18 +39,46 @@ export function exec(data) {
           cmd: data.cmd,
           input: data.input};
       case 'exec':
-        let node = parse(data.input);
-        if(node.ident === 'equal' && node.token.value === '=' && !node.src && node.args[0] && node.args[0].type === 'symbol')
-          node = node.toAssign();
-        node = node.timed(n => n.prepare({history, register: sessReg, seed: RNG.seed()}));
-        const out = node.timed(n => n.writeout(LEN))
-        const hid = history.add(node);
+        {
+          let node = parse(data.input);
+          if(node.ident === 'equal' && node.token.value === '=' && !node.src && node.args[0] && node.args[0].type === 'symbol')
+            node = node.toAssign();
+          node = node.timed(n => n.prepare({history, register: sessReg, seed: RNG.seed()}));
+          const out = node.timed(n => n.writeout(LEN))
+          const hid = history.add(node);
+          return {
+            type: 'ok',
+            cmd: data.cmd,
+            input: data.input,
+            output: out,
+            history: hid
+          };
+        }
+      case 'browse':
+        {
+          let node = parse(data.input);
+          node = node.timed(n => n.prepare({history, register: sessReg, seed: RNG.seed()}));
+          browseStream = node.timed(n => n.eval());
+          return {
+            type: 'ok',
+            cmd: data.cmd
+          };
+        }
+      case 'next':
+        if(!browseStream)
+          return {
+            type: 'error',
+            msg: 'Browse cancelled'
+          };
+        const next = browseStream.timed(s => s.next()).value;
+        if(!next)
+          browseStream = null;
         return {
-          type: 'ok',
+          type: 'browse',
           cmd: data.cmd,
-          input: data.input,
-          output: out,
-          history: hid
+          input: next ? next.toString() : null,
+          output: next ? next.timed(n => n.writeout(LEN)) : null,
+          ntype: next ? next.type : null
         };
     }
   } catch(err) {

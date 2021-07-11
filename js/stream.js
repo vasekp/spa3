@@ -7,6 +7,8 @@ const lsKeys = Enum.fromObj({
   register: 'stm-vars'
 });
 
+const views = Enum.fromArray(['prompt', 'vars', 'browse']);
+
 const saveVars = JSON.parse(localStorage[lsKeys.register] || '{}');
 const sessVars = {};
 
@@ -56,9 +58,11 @@ export default function(root) {
       errbox.hidden = true;
       if(data.cmd === 'exec') {
         const div = document.createElement('div');
+        div.classList.add('item');
         const dIn = document.createElement('div');
         dIn.classList.add('input');
         dIn.textContent = data.input;
+        dIn.dataset.cmd = data.input;
         if(data.history)
           dIn.dataset.lead = `$${data.history}:`;
         const dOut = document.createElement('div');
@@ -140,12 +144,60 @@ export default function(root) {
       pDiv.removeChild(pDiv.firstChild);
   }
 
-  function buttons() {
-    const state = root.getElementById('vars-cb').checked ? 'vars' : 'hist';
-    root.getElementById('run').disabled = !(state === 'hist');
-    root.getElementById('prev').disabled = !(state === 'hist' && !histEmpty);
-    root.getElementById('clear').disabled = !(state === 'hist');
+  function browse(e) {
+    const div = e.target.closest('.item');
+    if(!div)
+      return;
+    const pDiv = root.getElementById('browse');
+    while(pDiv.firstChild)
+      pDiv.removeChild(pDiv.firstChild);
+    state.view = views.browse;
+    pDiv.scrollTop = 0;
+    sendCommand('browse', {input: div.firstElementChild.dataset.cmd}).then(async () => {
+      for(let cnt = 1; cnt < 200 /* XXX */; cnt++) {
+        const data = await sendCommand('next');
+        if(!data.output) // XXX errors
+          return;
+        const div = document.createElement('div');
+        const dIn = document.createElement('div');
+        dIn.classList.add('input');
+        dIn.textContent = data.ntype;
+        dIn.dataset.cmd = data.input;
+        dIn.dataset.lead = `[${cnt}]:`;
+        const dOut = document.createElement('div');
+        dOut.classList.add('output');
+        dOut.textContent = data.output;
+        div.append(dIn, dOut);
+        div.classList.add('item');
+        pDiv.append(div);
+      }
+    });
   }
+
+  const viewRadios = {};
+  const main = root.querySelector('main');
+  for(const view in views) {
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'view';
+    input.value = view;
+    viewRadios[view] = input;
+    main.prepend(input);
+  }
+
+  const state = {
+    get view() {
+      return root.querySelector('input[name="view"]:checked').value;
+    },
+    set view(v) {
+      viewRadios[v].checked = true;
+      root.getElementById('run').disabled = !(v === views.prompt);
+      root.getElementById('prev').disabled = !(v === views.prompt && !histEmpty);
+      root.getElementById('clear').disabled = !(v === views.prompt);
+      root.getElementById('view').dataset.content = v === views.prompt ? '=' : '\u21A9';
+    }
+  }
+  state.view = views.prompt;
 
   sendCommand('init', {vars: Object.entries(saveVars)});
   textbox.addEventListener('input', () =>
@@ -162,19 +214,22 @@ export default function(root) {
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', prev);
   root.getElementById('clear').addEventListener('click', histclear);
-  root.getElementById('vars-cb').addEventListener('input', e => {
-    const ch = e.currentTarget.checked;
+  root.getElementById('view').addEventListener('click', e => {
     textbox.mark();
     errbox.hidden = true;
-    if(ch)
-      populateVars();
-    root.getElementById('in').classList.toggle('skipAnim', ch);
-    buttons();
+    switch(state.view) {
+      case views.prompt:
+        populateVars();
+        state.view = views.vars;
+        break;
+      default:
+        state.view = views.prompt;
+    }
+    root.getElementById('in').classList.toggle('skipAnim', state.view !== views.prompt);
   });
-  root.getElementById('in').addEventListener('focusin', () => {
-    root.getElementById('vars-cb').checked = false;
-    buttons();
-  });
+  root.getElementById('in').addEventListener('focusin', () => state.view = views.prompt);
+  root.getElementById('hist').addEventListener('click', e => browse(e));
+  root.getElementById('browse').addEventListener('click', e => browse(e));
   return {};
 }
 
