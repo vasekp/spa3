@@ -140,6 +140,13 @@ export default function(root) {
       pDiv.removeChild(pDiv.firstChild);
   }
 
+  function buttons() {
+    const state = root.getElementById('vars-cb').checked ? 'vars' : 'hist';
+    root.getElementById('run').disabled = !(state === 'hist');
+    root.getElementById('prev').disabled = !(state === 'hist' && !histEmpty);
+    root.getElementById('clear').disabled = !(state === 'hist');
+  }
+
   sendCommand('init', {vars: Object.entries(saveVars)});
   textbox.addEventListener('input', () =>
     sendCommand('parse', {input: textbox.value}).then(result));
@@ -147,7 +154,7 @@ export default function(root) {
     if(e.key === 'Enter') {
       run();
       e.preventDefault();
-    } else if(e.key === 'ArrowUp') {
+    } else if(e.key === 'ArrowUp' && e.currentTarget.value === '') {
       prev();
       e.preventDefault();
     }
@@ -162,11 +169,12 @@ export default function(root) {
     if(ch)
       populateVars();
     root.getElementById('in').classList.toggle('skipAnim', ch);
-    root.getElementById('run').disabled = ch;
-    root.getElementById('prev').disabled = ch || histEmpty;
-    root.getElementById('clear').disabled = ch;
+    buttons();
   });
-  root.getElementById('in').addEventListener('focusin', () => root.getElementById('vars-cb').checked = false);
+  root.getElementById('in').addEventListener('focusin', () => {
+    root.getElementById('vars-cb').checked = false;
+    buttons();
+  });
   return {};
 }
 
