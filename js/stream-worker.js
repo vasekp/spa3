@@ -19,8 +19,6 @@ const sessReg = saveReg.child();
 let browseStream = null;
 let browseHandle = 0;
 
-const typeMap = type => type === types.expr || type === types.symbol ? 'stream' : type;
-
 export function exec(data) {
   try {
     if(data.cmd !== 'next')
@@ -45,11 +43,12 @@ export function exec(data) {
           if(node.ident === 'equal' && node.token.value === '=' && !node.src && node.args[0] && node.args[0].type === 'symbol')
             node = node.toAssign();
           node = node.timed(n => n.prepare({history, register: sessReg, seed: RNG.seed()}));
-          const out = node.timed(n => n.writeout(LEN))
+          const ev = node.timed(n => n.eval());
+          const out = node.timed(n => ev.writeout(LEN))
           const hid = history.add(node);
           return {...data,
             type: 'ok',
-            dataType: typeMap(node.type),
+            dataType: ev.type,
             output: out,
             history: hid
           };
@@ -71,7 +70,7 @@ export function exec(data) {
             type: 'error',
             msg: 'Browse cancelled'
           };
-        const next = browseStream.timed(s => s.next()).value;
+        const next = browseStream.timed(s => s.next().value?.eval());
         if(!next) {
           browseStream = null;
           return {...data,
@@ -85,7 +84,7 @@ export function exec(data) {
             handle: browseHandle,
             input: next.toString(),
             output: next.timed(n => n.writeout(LEN)),
-            dataType: typeMap(next.type)
+            dataType: next.type
           };
         }
     }
