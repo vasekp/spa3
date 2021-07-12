@@ -2,5 +2,10 @@
   "_prefix": "stm",
   "saved": "(Ulož.)",
   "session": "(Doč.)",
-  "no vars": "Žádné uložené proměnné."
+  "no vars": "Žádné uložené proměnné.",
+  "browse": "Procházet",
+  "edit": "Upravit",
+  "save": "Uložit",
+  "empty stream": "(prázdný proud)",
+  "empty string": "(prázdný řetězec)"
 }

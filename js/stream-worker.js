@@ -50,6 +50,7 @@ export function exec(data) {
             type: 'ok',
             prep: node.toString(),
             dataType: ev.type,
+            dataRaw: ev.isAtom ? ev.value.toString() : null,
             output: out,
             history: hid
           };
@@ -85,7 +86,8 @@ export function exec(data) {
             handle: browseHandle,
             input: next.toString(),
             output: next.timed(n => n.writeout(LEN)),
-            dataType: next.type
+            dataType: next.type,
+            dataRaw: next.isAtom ? next.value.toString() : null
           };
         }
     }

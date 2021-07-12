@@ -87,3 +87,38 @@ input[name="view"][value="vars"]:not(:checked) ~ #vars,
 input[name="view"][value="browse"]:not(:checked) ~ #browse {
   display: none;
 }
+
+#v-cont {
+  display: flex;
+  flex-direction: column;
+  margin: var(--margin-base-neg);
+}
+
+#v-cont > * {
+  text-align: center;
+  padding: var(--margin-base);
+}
+
+#v-value {
+  font-family: var(--font-mono);
+  word-break: break-all;
+  background: var(--color-bg-fainter);
+}
+
+#itemview button {
+  width: 100%;
+}
+
+#itemview button:not(:first-of-type) {
+  border-top: var(--border);
+}
+
+#itemview[data-explorable="true"] #v-value,
+#itemview[data-explorable="false"] #v-browse {
+  display: none;
+}
+
+#v-value.empty {
+  font-family: inherit;
+  font-style: italic;
+}

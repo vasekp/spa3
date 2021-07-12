@@ -2,5 +2,10 @@
   "_prefix": "stm",
   "saved": "(Saved)",
   "session": "(Sess.)",
-  "no vars": "No saved variables."
+  "no vars": "No saved variables.",
+  "browse": "Browse",
+  "edit": "Edit",
+  "save": "Save",
+  "empty stream": "(empty stream)",
+  "empty string": "(empty string)"
 }

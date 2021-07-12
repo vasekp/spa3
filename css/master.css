@@ -17,6 +17,7 @@
   --color-text-semitrans: hsl(0, 0%, var(--l00), 50%);
   --color-text-light: hsl(0, 0%, 50%);
   --color-bg-main: hsl(0, 0%, calc(55% + var(--c) * 45%));
+  --color-bg-fainter: hsl(0, 0%, calc(55% + var(--c) * 35%));
   --color-bg-75: hsla(0, 0%, calc(55% + var(--c) * 45%), 0.75);
   --color-bg-00: hsla(0, 0%, calc(55% + var(--c) * 45%), 0);
   --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));

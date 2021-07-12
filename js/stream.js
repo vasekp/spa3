@@ -1,5 +1,6 @@
 import './components/spa-scroll.js';
 import './components/spa-textbox.js';
+import './components/spa-modal.js';
 import Enum from './util/enum.js';
 import _, * as i18n from './i18n.js';
 
@@ -56,6 +57,7 @@ const sendCommand = (() => {
 export default function(root) {
   const textbox = root.getElementById('in');
   const errbox = root.getElementById('error');
+  const modal = root.getElementById('itemview');
   let histEmpty = true;
 
   function result(data) {
@@ -68,7 +70,6 @@ export default function(root) {
         const dIn = document.createElement('div');
         dIn.classList.add('input');
         dIn.textContent = data.input;
-        dIn.dataset.cmd = data.prep;
         if(data.history)
           dIn.dataset.lead = `$${data.history}:`;
         const dOut = document.createElement('div');
@@ -77,7 +78,10 @@ export default function(root) {
         div.append(dIn, dOut);
         root.getElementById('hist').prepend(div);
         root.getElementById('prev').disabled = false;
-        div.dataset.explorable = data.dataType === 'stream' && data.output !== '[]';
+        div.dataset.cmd = data.prep;
+        div.dataset.type = data.dataType;
+        div.dataset.output = data.output;
+        div.dataset.raw = data.dataRaw;
         div.scrollIntoView();
         histEmpty = false;
         textbox.value = '';
@@ -151,14 +155,45 @@ export default function(root) {
       pDiv.removeChild(pDiv.firstChild);
   }
 
-  function browse(e) {
-    const div = e.target.closest('.item');
-    if(!div || div.dataset.explorable !== 'true')
-      return;
-    browseCmd(div.firstElementChild.dataset.cmd);
+  function viewClick() {
+    textbox.mark();
+    errbox.hidden = true;
+    switch(state.view) {
+      case views.prompt:
+        populateVars();
+        state.view = views.vars;
+        break;
+      case views.browse: {
+        browseStack.pop(); // current
+        const prev = browseStack.pop(); // previous
+        if(prev)
+          browse(prev);
+        else
+          state.view = views.prompt;
+        break;
+      }
+      default:
+        state.view = views.prompt;
+    }
+    root.getElementById('in').classList.toggle('skipAnim', state.view !== views.prompt);
   }
 
-  function browseCmd(cmd) {
+  function showMenu(e) {
+    const div = e.target.closest('.item');
+    if(!div)
+      return;
+    const data = div.dataset;
+    const vDiv = root.getElementById('v-value');
+    modal.dataset.explorable = data.type === 'stream' && data.output !== '[]';
+    modal.dataset.cmd = data.cmd;
+    vDiv.textContent = data.output === '[]' ? _('empty stream')
+      : data.output === '""' ? _('empty string')
+      : data.raw;
+    vDiv.classList.toggle('empty', data.output === '[]' || data.output === '""');
+    modal.show();
+  }
+
+  function browse(cmd) {
     const pDiv = root.getElementById('browse');
     while(pDiv.firstChild)
       pDiv.removeChild(pDiv.firstChild);
@@ -180,16 +215,43 @@ export default function(root) {
         const dIn = document.createElement('div');
         dIn.classList.add('input');
         dIn.textContent = data.dataType;
-        dIn.dataset.cmd = data.input;
         dIn.dataset.lead = `[${cnt}]:`;
         const dOut = document.createElement('div');
         dOut.classList.add('output');
         dOut.textContent = data.output;
         div.append(dIn, dOut);
-        div.dataset.explorable = data.dataType === 'stream' && data.output !== '[]';
+        div.dataset.cmd = data.input;
+        div.dataset.type = data.dataType;
+        div.dataset.output = data.output;
+        div.dataset.raw = data.dataRaw;
         pDiv.append(div);
       }
     });
+    modal.hide();
+  }
+
+  function edit(cmd) {
+    textbox.value = cmd;
+    modal.hide();
+    state.view = views.prompt;
+    textbox.focus();
+  }
+
+  function save(cmd) {
+    const rx = /^r(\d+)$/;
+    const lastIx = [...Object.keys(sessVars)]
+      .flatMap(s => {
+        const r = rx.exec(s);
+        return r ? r[1] : [];
+      })
+      .reduce((a, b) => Math.max(a, b), 0);
+    const saveCmd = `r${lastIx + 1}=${cmd}`;
+    modal.hide();
+    sendCommand('exec', {input: saveCmd}).then(r => {
+      state.view = views.prompt;
+      result(r);
+      textbox.focus();
+    })
   }
 
   const viewRadios = {};
@@ -235,31 +297,13 @@ export default function(root) {
   root.getElementById('prev').addEventListener('click', prev);
   root.getElementById('clear').addEventListener('click', histclear);
   root.getElementById('help').addEventListener('click', _ => location.assign('js/stream/help.html'));
-  root.getElementById('view').addEventListener('click', e => {
-    textbox.mark();
-    errbox.hidden = true;
-    switch(state.view) {
-      case views.prompt:
-        populateVars();
-        state.view = views.vars;
-        break;
-      case views.browse: {
-        browseStack.pop(); // current
-        const prev = browseStack.pop(); // previous
-        if(prev)
-          browseCmd(prev);
-        else
-          state.view = views.prompt;
-        break;
-      }
-      default:
-        state.view = views.prompt;
-    }
-    root.getElementById('in').classList.toggle('skipAnim', state.view !== views.prompt);
-  });
+  root.getElementById('view').addEventListener('click', viewClick);
   root.getElementById('in').addEventListener('focusin', () => state.view = views.prompt);
-  root.getElementById('hist').addEventListener('click', e => browse(e));
-  root.getElementById('browse').addEventListener('click', e => browse(e));
+  root.getElementById('hist').addEventListener('click', e => showMenu(e));
+  root.getElementById('browse').addEventListener('click', e => showMenu(e));
+  root.getElementById('v-browse').addEventListener('click', e => browse(modal.dataset.cmd));
+  root.getElementById('v-edit').addEventListener('click', e => edit(modal.dataset.cmd));
+  root.getElementById('v-save').addEventListener('click', e => save(modal.dataset.cmd));
   return {};
 }
 
