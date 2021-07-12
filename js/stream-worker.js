@@ -48,6 +48,7 @@ export function exec(data) {
           const hid = history.add(node);
           return {...data,
             type: 'ok',
+            prep: node.toString(),
             dataType: ev.type,
             output: out,
             history: hid

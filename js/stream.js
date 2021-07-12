@@ -68,7 +68,7 @@ export default function(root) {
         const dIn = document.createElement('div');
         dIn.classList.add('input');
         dIn.textContent = data.input;
-        dIn.dataset.cmd = data.input;
+        dIn.dataset.cmd = data.prep;
         if(data.history)
           dIn.dataset.lead = `$${data.history}:`;
         const dOut = document.createElement('div');
