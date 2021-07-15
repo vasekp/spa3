@@ -343,8 +343,10 @@ export default function(root) {
   root.getElementById('help').addEventListener('click', _ => location.assign(`js/stream/help.html?lang=${i18n.lang}`));
   root.getElementById('view').addEventListener('click', viewClick);
   root.getElementById('in').addEventListener('focusin', () => {
-    errbox.hidden = true;
-    state.view = views.prompt;
+    if(state.view !== views.prompt) {
+      errbox.hidden = true;
+      state.view = views.prompt;
+    }
   });
   root.getElementById('hist').addEventListener('click', e => showMenu(e));
   root.getElementById('browse').addEventListener('click', e => showMenu(e));
