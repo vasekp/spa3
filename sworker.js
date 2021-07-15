@@ -22,8 +22,14 @@ async function update(dryrun = false) {
   const newV = (await (await fetch('https://api.github.com/repos/vasekp/spa3/deployments')).json())[0].sha;
   if(newV !== oldV) {
     const newTree = await (await fetch(`https://api.github.com/repos/vasekp/spa3/git/trees/${newV}?recursive=1`)).json();
+    const newStreamV = newTree.tree.find(item => item.path === 'js/stream').sha;
+    const newStreamTree = await (await fetch(`https://api.github.com/repos/vasekp/stream/git/trees/${newStreamV}?recursive=1`)).json();
     const oldTree = oldV
       ? await (await fetch(`https://api.github.com/repos/vasekp/spa3/git/trees/${oldV}?recursive=1`)).json()
+      : { tree: [] };
+    const oldStreamV = oldTree.tree.find(item => item.path === 'js/stream')?.sha;
+    const oldStreamTree = oldStreamV
+      ? await (await fetch(`https://api.github.com/repos/vasekp/stream/git/trees/${oldStreamV}?recursive=1`)).json()
       : { tree: [] };
     const cacheName = `snapshot-${newV}`;
     const filesKeep = [];
@@ -40,6 +46,17 @@ async function update(dryrun = false) {
         filesKeep.push(newEntry.path);
       else {
         filesUpdate.push(newEntry.path);
+        dlSize += newEntry.size;
+      }
+    }
+    for(const newEntry of newStreamTree.tree) {
+      if(newEntry.type !== 'blob')
+        continue;
+      const oldEntry = oldStreamTree.tree.find(other => other.path === newEntry.path);
+      if(oldEntry && oldEntry.sha === newEntry.sha)
+        filesKeep.push('js/stream/' + newEntry.path);
+      else {
+        filesUpdate.push('js/stream/' + newEntry.path);
         dlSize += newEntry.size;
       }
     }
