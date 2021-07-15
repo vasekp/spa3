@@ -296,7 +296,7 @@ export default function(root) {
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', prev);
   root.getElementById('clear').addEventListener('click', histclear);
-  root.getElementById('help').addEventListener('click', _ => location.assign('js/stream/help.html'));
+  root.getElementById('help').addEventListener('click', _ => location.assign(`js/stream/help.html?lang=${i18n.lang}`));
   root.getElementById('view').addEventListener('click', viewClick);
   root.getElementById('in').addEventListener('focusin', () => state.view = views.prompt);
   root.getElementById('hist').addEventListener('click', e => showMenu(e));
