@@ -4,10 +4,11 @@ self.addEventListener('activate', e => e.waitUntil(clients.claim()));
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+  url.search = '';
   if(url.origin === location.origin)
-    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)).catch(() => null));
+    e.respondWith(caches.match(url.href).then(r => r || fetch(url.href)).catch(() => null));
   else
-    e.respondWith(fetch(e.request));
+    e.respondWith(fetch(url.href));
 });
 
 self.addEventListener('message', m => {
