@@ -88,37 +88,47 @@ input[name="view"][value="browse"]:not(:checked) ~ #browse {
   display: none;
 }
 
-#v-cont {
+#itemview[data-mode="item"] #v-cont,
+#itemview[data-mode="var"] #i-cont {
+  display: none;
+}
+
+#itemview[data-explorable="true"] #i-value,
+#itemview[data-explorable="false"] #i-browse {
+  display: none;
+}
+
+#itemview button {
+  width: 100%;
+  border-top: var(--border);
+}
+
+#i-browse {
+  border-top: none;
+}
+
+#i-cont, #v-cont {
   display: flex;
   flex-direction: column;
   margin: var(--margin-base-neg);
 }
 
-#v-cont > * {
+#i-cont > *, #v-cont > * {
   text-align: center;
   padding: var(--margin-base);
 }
 
-#v-value {
+#i-value, #v-name {
   font-family: var(--font-mono);
   word-break: break-all;
   background: var(--color-bg-fainter);
 }
 
-#itemview button {
-  width: 100%;
-}
-
-#itemview button:not(:first-of-type) {
-  border-top: var(--border);
-}
-
-#itemview[data-explorable="true"] #v-value,
-#itemview[data-explorable="false"] #v-browse {
-  display: none;
-}
-
-#v-value.empty {
+#i-value.empty {
   font-family: inherit;
   font-style: italic;
+}
+
+#itemview[data-mode="var"][data-register="save"] #v-save {
+  display: none;
 }

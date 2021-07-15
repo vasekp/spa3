@@ -144,6 +144,14 @@ export default function(root) {
         div.append(dIn, dOut);
         if(reg === 'save' && keys.some(([k, r]) => k === key && r === 'sess'))
           div.classList.add('shadowed');
+        div.dataset.varName = key;
+        div.dataset.register = reg;
+        div.dataset.cmd = dOut.textContent;
+        if(reg === 'sess' && keys.some(([k, r]) => k === key && r === 'save'))
+          div.dataset.clearCommand = 'restore';
+        else
+          div.dataset.clearCommand = 'clear';
+        div.classList.add('item');
         return div;
       }));
   }
@@ -183,13 +191,23 @@ export default function(root) {
     if(!div)
       return;
     const data = div.dataset;
-    const vDiv = root.getElementById('v-value');
-    modal.dataset.explorable = data.type === 'stream' && data.output !== '[]';
-    modal.dataset.cmd = data.cmd;
-    vDiv.textContent = data.output === '[]' ? _('empty stream')
-      : data.output === '""' ? _('empty string')
-      : data.raw;
-    vDiv.classList.toggle('empty', data.output === '[]' || data.output === '""');
+    if(data.varName) {
+      modal.dataset.mode = 'var';
+      modal.dataset.varName = data.varName;
+      modal.dataset.register = data.register;
+      modal.dataset.clearCommand = data.clearCommand;
+      modal.dataset.cmd = data.cmd;
+      root.getElementById('v-name').textContent = data.varName;
+    } else {
+      modal.dataset.mode = 'item';
+      modal.dataset.explorable = data.type === 'stream' && data.output !== '[]';
+      modal.dataset.cmd = data.cmd;
+      const val = root.getElementById('i-value');
+      val.textContent = data.output === '[]' ? _('empty stream')
+        : data.output === '""' ? _('empty string')
+        : data.raw;
+      val.classList.toggle('empty', data.output === '[]' || data.output === '""');
+    }
     modal.show();
   }
 
@@ -254,6 +272,32 @@ export default function(root) {
     })
   }
 
+  function varAction(e) {
+    const button = e.target.closest('button');
+    if(!button)
+      return;
+    if(button.id === 'v-edit') {
+      const cmd = modal.dataset.register === 'save'
+        ? `save(${modal.dataset.varName}=${modal.dataset.cmd})`
+        : `${modal.dataset.varName}=${modal.dataset.cmd}`;
+      modal.hide();
+      textbox.value = cmd;
+      textbox.focus();
+    } else {
+      const cmd0 = button.id === 'v-save' ? 'save'
+        : button.id === 'v-clear' ? modal.dataset.clearCommand
+        : null;
+      if(!cmd0)
+        return;
+      const cmd = `${cmd0}(${modal.dataset.varName})`;
+      modal.hide();
+      sendCommand('exec', {input: cmd}).then(r => {
+        result(r);
+        populateVars();
+      })
+    }
+  }
+
   const viewRadios = {};
   const main = root.querySelector('main');
   for(const view in views) {
@@ -298,12 +342,17 @@ export default function(root) {
   root.getElementById('clear').addEventListener('click', histclear);
   root.getElementById('help').addEventListener('click', _ => location.assign(`js/stream/help.html?lang=${i18n.lang}`));
   root.getElementById('view').addEventListener('click', viewClick);
-  root.getElementById('in').addEventListener('focusin', () => state.view = views.prompt);
+  root.getElementById('in').addEventListener('focusin', () => {
+    errbox.hidden = true;
+    state.view = views.prompt;
+  });
   root.getElementById('hist').addEventListener('click', e => showMenu(e));
   root.getElementById('browse').addEventListener('click', e => showMenu(e));
-  root.getElementById('v-browse').addEventListener('click', e => browse(modal.dataset.cmd));
-  root.getElementById('v-edit').addEventListener('click', e => edit(modal.dataset.cmd));
-  root.getElementById('v-save').addEventListener('click', e => save(modal.dataset.cmd));
+  root.getElementById('vars').addEventListener('click', e => showMenu(e));
+  root.getElementById('i-browse').addEventListener('click', e => browse(modal.dataset.cmd));
+  root.getElementById('i-edit').addEventListener('click', e => edit(modal.dataset.cmd));
+  root.getElementById('i-save').addEventListener('click', e => save(modal.dataset.cmd));
+  root.getElementById('v-cont').addEventListener('click', e => varAction(e));
   return {};
 }
 
