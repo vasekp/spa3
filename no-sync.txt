@@ -13,3 +13,5 @@ fonts/color.in
 assets/any/wordlists/COPYING
 assets/any/wordlists/cs-subst.copyright
 newmodule.sh
+js/stream/stream.js
+js/stream/selftest.js
