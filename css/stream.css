@@ -1,0 +1,134 @@
+@import "components/spa-textbox.css";
+
+#in {
+  font-family: var(--font-mono);
+  max-height: calc(3 * var(--line-height-base));
+  flex-shrink: 0;
+  word-break: break-all;
+}
+
+#in[disabled] {
+  color: var(--color-text-light);
+  transition: color .5s;
+}
+
+#in.skipAnim {
+  transition: none;
+}
+
+#actions {
+  display: flex;
+  justify-content: space-between;
+  margin: var(--margin-small) auto;
+}
+
+#actions > * {
+  margin: 0 var(--margin-base);
+}
+
+button:disabled {
+  opacity: .5;
+}
+
+spa-scroll, spa-inf-scroll {
+  margin: 0 var(--margin-base-neg);
+}
+
+spa-scroll > div, spa-inf-scroll > div {
+  padding: var(--margin-small) var(--margin-base);
+}
+
+spa-scroll > div:nth-child(odd),
+spa-inf-scroll > div:nth-child(odd) {
+  background: var(--color-bg-alt);
+}
+
+#error {
+  border: var(--border-error);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-error);
+  padding: 0 var(--margin-small);
+  margin-bottom: var(--margin-base);
+}
+
+.input, .output {
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input {
+  font-family: var(--font-mono);
+  font-size: 75%;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.input[data-lead]::before {
+  content: attr(data-lead);
+  margin-right: var(--font-space);
+  color: var(--color-text-light);
+}
+
+.shadowed {
+  color: var(--color-text-light);
+}
+
+#vars .output {
+  font-family: var(--font-mono);
+}
+
+input[name="view"] {
+  display: none;
+}
+
+input[name="view"][value="prompt"]:not(:checked) ~ #hist,
+input[name="view"][value="vars"]:not(:checked) ~ #vars,
+input[name="view"][value="browse"]:not(:checked) ~ #browse {
+  display: none;
+}
+
+#itemview[data-mode="item"] #v-cont,
+#itemview[data-mode="var"] #i-cont {
+  display: none;
+}
+
+#itemview[data-explorable="true"] #i-value,
+#itemview[data-explorable="false"] #i-browse {
+  display: none;
+}
+
+#itemview button {
+  width: 100%;
+  border-top: var(--border);
+}
+
+#i-browse {
+  border-top: none;
+}
+
+#i-cont, #v-cont {
+  display: flex;
+  flex-direction: column;
+  margin: var(--margin-base-neg);
+}
+
+#i-cont > *, #v-cont > * {
+  text-align: center;
+  padding: var(--margin-base);
+}
+
+#i-value, #v-name {
+  font-family: var(--font-mono);
+  word-break: break-all;
+  background: var(--color-bg-fainter);
+}
+
+#i-value.empty {
+  font-family: inherit;
+  font-style: italic;
+}
+
+#itemview[data-mode="var"][data-register="save"] #v-save {
+  display: none;
+}

@@ -1,5 +1,6 @@
 .github/FUNDING.yml
 .gitignore
+.gitmodules
 README.md
 LICENSE
 CONTRIBUTING.md

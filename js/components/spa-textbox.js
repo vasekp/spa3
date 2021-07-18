@@ -25,6 +25,9 @@ class TextboxElement extends HTMLElement {
     this._area.setAttribute('spellcheck', false);
     this._area.classList.add('no-outline');
     this._area.addEventListener('input', () => this._update());
+    this._area.addEventListener('scroll', () =>
+      this._span.style.top = `-${this._area.scrollTop}px`,
+      {passive: true});
     /* if value was set before connecting, it shadows the property */
     for(const prop of ['value', 'disabled']) {
       let value = this[prop];
@@ -62,6 +65,8 @@ class TextboxElement extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, value) {
     if(name === 'disabled') {
+      if(!this._area)
+        return;
       const isDisabled = value !== null;
       this._area.disabled = isDisabled;
       if(isDisabled)
@@ -108,7 +113,19 @@ class TextboxElement extends HTMLElement {
     })(this._area);
 
     // Useful for trailing newlines
-    this._span.textContent = this._area.value + 'ž\u200B';
+    this._span.textContent = this._area.value + '\u200B';
+  }
+
+  mark(start, len) {
+    if(len) {
+      const mark = document.createElement('mark');
+      mark.textContent = this._area.value.substring(start, start + len);
+      this._span.textContent = '';
+      this._span.append(this._area.value.substring(0, start),
+        mark,
+        this._area.value.substring(start + len) + '\u200B');
+    } else
+      this._span.textContent = this._area.value + '\u200B';
   }
 }
 

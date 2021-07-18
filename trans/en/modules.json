@@ -18,5 +18,9 @@
   {
     "moduleName": "calendar",
     "displayName": "Name Days"
+  },
+  {
+    "moduleName": "stream",
+    "displayName": "Stream"
   }
 ]

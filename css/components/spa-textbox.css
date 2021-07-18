@@ -2,11 +2,18 @@ spa-textbox {
   display: block;
   position: relative;
   min-height: var(--line-height-base);
+  overflow: hidden;
 }
 
 spa-textbox > span {
+  position: relative;
   padding: 0;
   color: transparent;
+}
+
+spa-textbox mark {
+  background: none;
+  text-shadow: 0px 0px 2px red;
 }
 
 spa-textbox > span, spa-textbox > textarea {

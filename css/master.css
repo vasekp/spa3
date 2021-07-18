@@ -11,11 +11,13 @@
   --l85: calc(50% + var(--c) * 35%);
   --color-line: hsl(0, 0%, 50%);
   --color-line-fainter: hsl(0, 0%, 50%, 50%);
+  --color-line-error: hsl(0, 90%, 50%);
   --color-text-main: hsl(0, 0%, var(--l00));
   --color-text-fainter: hsl(0, 0%, var(--l25));
   --color-text-semitrans: hsl(0, 0%, var(--l00), 50%);
   --color-text-light: hsl(0, 0%, 50%);
   --color-bg-main: hsl(0, 0%, calc(55% + var(--c) * 45%));
+  --color-bg-fainter: hsl(0, 0%, calc(55% + var(--c) * 35%));
   --color-bg-75: hsla(0, 0%, calc(55% + var(--c) * 45%), 0.75);
   --color-bg-00: hsla(0, 0%, calc(55% + var(--c) * 45%), 0);
   --color-bg-sides: hsl(0, 0%, calc(40% + var(--c) * 40%));
@@ -26,8 +28,11 @@
   --color-plus: hsl(100, 50%, 50%);
   --color-error: hsl(0, 90%, var(--l25));
   --border: var(--line-width) solid var(--color-line);
+  --border-error: var(--line-width) dashed var(--color-line-error);
   --border-double: calc(3 * var(--line-width)) double var(--color-line);
   --border-fainter: var(--line-width) solid var(--color-line-fainter);
+  --font-main: "SPA3", "Source Sans Pro";
+  --font-mono: "SPA3", "Source Code Pro";
   --font-ascent: 1.024em;
   --font-descent: 0.4em;
   --font-cap-size: 0.66em;
@@ -48,7 +53,7 @@
   --shadow-kbd-press: 0px 0px 2px #888;
   --line-height-base: 1.5rem;
   --display-update: none;
-  font-family: "SPA3", "Source Sans Pro";
+  font-family: var(--font-main);
   font-size: 16px;
   line-height: var(--line-height-base);
   width: 100%;

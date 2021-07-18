@@ -1,0 +1,33 @@
+<!doctype html>
+<main>
+  <spa-textbox id="in" class="underline">
+  </spa-textbox>
+  <div id="actions">
+    <button id="run" class="patch c-green" data-color="param" data-content="&#x25B6;"></button>
+    <button id="prev" class="patch c-yellow" data-color="param" data-content="&#x25B2;" disabled></button>
+    <button id="view" class="patch c-orange" data-color="param" data-content="="></button>
+    <button id="clear" class="patch c-red" data-color="param" data-content="×"></button>
+    <button id="help" class="patch c-blue" data-color="param" data-content="?"></button>
+  </div>
+  <div id="error" hidden>
+    <div class="input"></div>
+    <div class="output"></div>
+  </div>
+  <spa-scroll id="hist"></spa-scroll>
+  <spa-scroll id="vars"></spa-scroll>
+  <spa-inf-scroll id="browse"></spa-inf-scroll>
+  <spa-modal id="itemview" hidden>
+    <div id="i-cont">
+      <div id="i-value"></div>
+      <button id="i-browse">_(stm:browse)</button>
+      <button id="i-edit">_(stm:edit)</button>
+      <button id="i-save">_(stm:save)</button>
+    </div>
+    <div id="v-cont">
+      <div id="v-name"></div>
+      <button id="v-edit">_(stm:edit)</button>
+      <button id="v-save">_(stm:save)</button>
+      <button id="v-clear">_(stm:clear)</button>
+    </div>
+  </spa-modal>
+</main>
