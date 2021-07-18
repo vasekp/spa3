@@ -108,16 +108,14 @@ export function exec(data) {
         msg: err.msg
       };
     else if(err instanceof TimeoutError)
-      return {
+      return {...data,
         type: 'error',
         msg: 'Timed out',
-        cmd: data.cmd
       };
     else
-      return {
+      return {...data,
         type: 'error',
         msg: err.toString(),
-        cmd: data.cmd
       };
   }
 }
