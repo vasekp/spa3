@@ -201,6 +201,8 @@ export default function(root) {
       modal.dataset.cmd = data.cmd;
       root.getElementById('v-name').textContent = data.varName;
     } else {
+      if(div.dataset.error)
+        return;
       modal.dataset.mode = 'item';
       modal.dataset.explorable = data.type === 'stream' && data.output !== '[]';
       modal.dataset.cmd = data.cmd;
@@ -215,6 +217,7 @@ export default function(root) {
 
   function browse(cmd) {
     const pDiv = root.getElementById('browse');
+    pDiv.stopLoading();
     while(pDiv.firstChild)
       pDiv.removeChild(pDiv.firstChild);
     state.view = views.browse;
@@ -226,10 +229,27 @@ export default function(root) {
         // Firefox compositor would not kick in here otherwise
         if(cnt % 20 === 0)
           await new Promise(resolve => setTimeout(resolve, 1));
-        await pDiv.loadMore;
-        const data = await sendCommand('next', {handle});
-        if(!data.output) // XXX errors
+        const loadMore = await pDiv.loadMore;
+        if(!loadMore)
           return;
+        const data = await sendCommand('next', {handle});
+        if(!data.output) {
+          if(data.result === 'error') {
+            const div = document.createElement('div');
+            div.classList.add('item');
+            const dIn = document.createElement('div');
+            dIn.classList.add('input');
+            dIn.textContent = data.input;
+            const dOut = document.createElement('div');
+            dOut.classList.add('error');
+            dOut.textContent = data.error;
+            div.append(dIn, dOut);
+            div.dataset.cmd = data.input;
+            div.dataset.error = true;
+            pDiv.append(div);
+          }
+          return;
+        }
         const div = document.createElement('div');
         div.classList.add('item');
         const dIn = document.createElement('div');
@@ -313,9 +333,11 @@ export default function(root) {
 
   const state = {
     get view() {
-      return root.querySelector('input[name="view"]:checked').value;
+      return root.querySelector('input[name="view"]:checked')?.value;
     },
     set view(v) {
+      if(this.view === 'browse' && v !== 'browse')
+        root.getElementById('browse').stopLoading();
       viewRadios[v].checked = true;
       root.getElementById('run').disabled = !(v === views.prompt);
       root.getElementById('prev').disabled = !(v === views.prompt && !histEmpty);

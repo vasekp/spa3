@@ -39,7 +39,7 @@ export function exec(data) {
           error: 'Browse cancelled'
         };
       else
-        return {id, cmd, ...intHandle.next()};
+        return {id, cmd, ...intHandle.next({length: LEN})};
   }
 }
 

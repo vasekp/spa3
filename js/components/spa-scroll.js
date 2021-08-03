@@ -33,18 +33,26 @@ class InfScrollElement extends ScrollElement {
     this.shadowRoot.append(div);
 
     let resolvePromise;
+    let visible = false;
     const exec = resolve => resolvePromise = resolve;
     this.loadMore = new Promise(exec);
 
     const io = new IntersectionObserver(entries => {
-      const visible = entries.some(e => e.intersectionRatio > 0);
+      visible = entries.some(e => e.intersectionRatio > 0);
       if(visible) {
         this.dispatchEvent(new CustomEvent('loadmore'));
-        resolvePromise();
+        resolvePromise(true);
       } else
         this.loadMore = new Promise(exec);
     });
     io.observe(div);
+
+    this.stopLoading = _ => {
+      resolvePromise(false);
+      this.loadMore = new Promise(exec);
+      if(visible)
+        resolvePromise(true);
+    }
   }
 }
 
