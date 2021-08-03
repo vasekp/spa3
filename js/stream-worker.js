@@ -3,12 +3,12 @@ import {types} from './stream/base.js';
 
 const LEN = 200;
 let sess = null;
-let browseStream = null;
-let browseHandle = 0;
+let intHandle = null;
+let extHandle = 0;
 
 export function exec(data) {
   if(data.cmd !== 'next')
-    browseStream = null;
+    intHandle = null;
   const cmd = data.cmd;
   const id = data.id;
   switch(data.cmd) {
@@ -28,18 +28,18 @@ export function exec(data) {
       if(res.result === 'error')
         return {id, cmd, ...res};
       else {
-        browseStream = res.output;
-        browseHandle++;
-        return {id, cmd, ...res, handle: browseHandle};
+        intHandle = res.handle;
+        extHandle++;
+        return {id, cmd, ...res, handle: extHandle};
       }
     case 'next':
-      if(!browseStream || data.handle !== browseHandle)
+      if(!intHandle || data.handle !== extHandle)
         return {id, cmd,
           result: 'error',
           error: 'Browse cancelled'
         };
       else
-        return browseStream.next();
+        return {id, cmd, ...intHandle.next()};
   }
 }
 
