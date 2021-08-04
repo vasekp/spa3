@@ -43,11 +43,14 @@ spa-inf-scroll > div:nth-child(odd) {
   background: var(--color-bg-alt);
 }
 
-#error {
+#error, .error {
   border: var(--border-error);
   border-radius: var(--radius-full);
   background: var(--color-bg-error);
   padding: 0 var(--margin-small);
+}
+
+#error {
   margin-bottom: var(--margin-base);
 }
 

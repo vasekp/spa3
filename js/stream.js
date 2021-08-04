@@ -27,10 +27,6 @@ const sendCommand = (() => {
     }
   }).then(worker => {
     console.log('Worker');
-    worker.addEventListener('message', e => {
-      if(e.data.type === 'register')
-        regEvent(e.data.key, e.data.value, e.data.register);
-    });
     return msg => new Promise(resolve => {
       let thisID = id;
       worker.postMessage({...msg, id});
@@ -46,8 +42,6 @@ const sendCommand = (() => {
   }).catch(() => {
     console.log('Sync');
     const impPromise = import('./stream-worker.js');
-    impPromise.then(imp =>
-      imp.et.addEventListener('register', e => regEvent(e.detail.key, e.detail.value, e.detail.register)));
     return msg => impPromise.then(imp => imp.exec(msg));
   });
 
@@ -61,40 +55,48 @@ export default function(root) {
   let histEmpty = true;
 
   function result(data) {
-    if(data.type === 'ok') {
-      textbox.mark();
-      errbox.hidden = true;
-      if(data.cmd === 'exec') {
-        const div = document.createElement('div');
-        div.classList.add('item');
-        const dIn = document.createElement('div');
-        dIn.classList.add('input');
-        dIn.textContent = data.input;
-        if(data.history)
-          dIn.dataset.lead = `$${data.history}:`;
-        const dOut = document.createElement('div');
-        dOut.classList.add('output');
-        dOut.textContent = data.output;
-        div.append(dIn, dOut);
-        root.getElementById('hist').prepend(div);
-        root.getElementById('prev').disabled = false;
-        div.dataset.cmd = data.prep;
-        div.dataset.type = data.dataType;
-        div.dataset.output = data.output;
-        div.dataset.raw = data.dataRaw;
-        div.scrollIntoView();
-        histEmpty = false;
-        textbox.value = '';
-      }
-    } else {
-      textbox.mark(data.pos, data.len);
-      if(data.cmd === 'exec') {
-        errbox.children[0].textContent = data.input;
-        errbox.children[1].textContent = data.msg;
-        errbox.hidden = false;
-      } else
+    switch(data.result) {
+      case 'ok':
+        textbox.mark();
         errbox.hidden = true;
-    };
+        if(data.cmd === 'exec') {
+          const div = document.createElement('div');
+          div.classList.add('item');
+          const dIn = document.createElement('div');
+          dIn.classList.add('input');
+          dIn.textContent = data.input;
+          if(data.histName)
+            dIn.dataset.lead = `${data.histName}:`;
+          const dOut = document.createElement('div');
+          dOut.classList.add('output');
+          dOut.textContent = data.output;
+          div.append(dIn, dOut);
+          root.getElementById('hist').prepend(div);
+          root.getElementById('prev').disabled = false;
+          div.dataset.cmd = data.histRecord;
+          div.dataset.type = data.type;
+          div.dataset.output = data.output;
+          div.dataset.raw = data.outRaw;
+          div.scrollIntoView();
+          histEmpty = false;
+          textbox.value = '';
+          for(const ev of data.regEvents)
+            regEvent(ev);
+        }
+        break;
+      case 'error':
+        textbox.mark(data.errPos, data.errLen);
+        if(data.cmd === 'exec') {
+          errbox.children[0].textContent = data.input;
+          errbox.children[1].textContent = data.error;
+          errbox.hidden = false;
+        } else
+          errbox.hidden = true;
+        break;
+      case 'help':
+        location.assign(`js/stream/help.html?lang=${i18n.lang}${data.ident ? `&entry=${data.ident}` : ''}`);
+        break;
+    }
   }
 
   function run() {
@@ -133,27 +135,27 @@ export default function(root) {
       errbox.hidden = false;
     }
     pDiv.append(...keys.map(([key, reg]) => {
-        const div = document.createElement('div');
-        const dIn = document.createElement('div');
-        dIn.classList.add('input');
-        dIn.textContent = key;
-        dIn.dataset.lead = reg === 'save' ? _('stm:saved') : _('stm:session');
-        const dOut = document.createElement('div');
-        dOut.classList.add('output');
-        dOut.textContent = (reg === 'save' ? saveVars : sessVars)[key];
-        div.append(dIn, dOut);
-        if(reg === 'save' && keys.some(([k, r]) => k === key && r === 'sess'))
-          div.classList.add('shadowed');
-        div.dataset.varName = key;
-        div.dataset.register = reg;
-        div.dataset.cmd = dOut.textContent;
-        if(reg === 'sess' && keys.some(([k, r]) => k === key && r === 'save'))
-          div.dataset.clearCommand = 'restore';
-        else
-          div.dataset.clearCommand = 'clear';
-        div.classList.add('item');
-        return div;
-      }));
+      const div = document.createElement('div');
+      const dIn = document.createElement('div');
+      dIn.classList.add('input');
+      dIn.textContent = key;
+      dIn.dataset.lead = reg === 'save' ? _('stm:saved') : _('stm:session');
+      const dOut = document.createElement('div');
+      dOut.classList.add('output');
+      dOut.textContent = (reg === 'save' ? saveVars : sessVars)[key];
+      div.append(dIn, dOut);
+      if(reg === 'save' && keys.some(([k, r]) => k === key && r === 'sess'))
+        div.classList.add('shadowed');
+      div.dataset.varName = key;
+      div.dataset.register = reg;
+      div.dataset.cmd = dOut.textContent;
+      if(reg === 'sess' && keys.some(([k, r]) => k === key && r === 'save'))
+        div.dataset.clearCommand = 'restore';
+      else
+        div.dataset.clearCommand = 'clear';
+      div.classList.add('item');
+      return div;
+    }));
   }
 
   function histclear() {
@@ -199,6 +201,8 @@ export default function(root) {
       modal.dataset.cmd = data.cmd;
       root.getElementById('v-name').textContent = data.varName;
     } else {
+      if(div.dataset.error)
+        return;
       modal.dataset.mode = 'item';
       modal.dataset.explorable = data.type === 'stream' && data.output !== '[]';
       modal.dataset.cmd = data.cmd;
@@ -213,6 +217,7 @@ export default function(root) {
 
   function browse(cmd) {
     const pDiv = root.getElementById('browse');
+    pDiv.stopLoading();
     while(pDiv.firstChild)
       pDiv.removeChild(pDiv.firstChild);
     state.view = views.browse;
@@ -224,24 +229,41 @@ export default function(root) {
         // Firefox compositor would not kick in here otherwise
         if(cnt % 20 === 0)
           await new Promise(resolve => setTimeout(resolve, 1));
-        await pDiv.loadMore;
-        const data = await sendCommand('next', {handle});
-        if(!data.output) // XXX errors
+        const loadMore = await pDiv.loadMore;
+        if(!loadMore)
           return;
+        const data = await sendCommand('next', {handle});
+        if(!data.output) {
+          if(data.result === 'error') {
+            const div = document.createElement('div');
+            div.classList.add('item');
+            const dIn = document.createElement('div');
+            dIn.classList.add('input');
+            dIn.textContent = data.input;
+            const dOut = document.createElement('div');
+            dOut.classList.add('error');
+            dOut.textContent = data.error;
+            div.append(dIn, dOut);
+            div.dataset.cmd = data.input;
+            div.dataset.error = true;
+            pDiv.append(div);
+          }
+          return;
+        }
         const div = document.createElement('div');
         div.classList.add('item');
         const dIn = document.createElement('div');
         dIn.classList.add('input');
-        dIn.textContent = data.dataType;
+        dIn.textContent = data.type;
         dIn.dataset.lead = `[${cnt}]:`;
         const dOut = document.createElement('div');
         dOut.classList.add('output');
         dOut.textContent = data.output;
         div.append(dIn, dOut);
         div.dataset.cmd = data.input;
-        div.dataset.type = data.dataType;
+        div.dataset.type = data.type;
         div.dataset.output = data.output;
-        div.dataset.raw = data.dataRaw;
+        div.dataset.raw = data.outRaw;
         pDiv.append(div);
       }
     });
@@ -311,9 +333,11 @@ export default function(root) {
 
   const state = {
     get view() {
-      return root.querySelector('input[name="view"]:checked').value;
+      return root.querySelector('input[name="view"]:checked')?.value;
     },
     set view(v) {
+      if(this.view === 'browse' && v !== 'browse')
+        root.getElementById('browse').stopLoading();
       viewRadios[v].checked = true;
       root.getElementById('run').disabled = !(v === views.prompt);
       root.getElementById('prev').disabled = !(v === views.prompt && !histEmpty);
@@ -358,12 +382,12 @@ export default function(root) {
   return {};
 }
 
-function regEvent(key, value, register) {
-  const local = register === 'save' ? saveVars : sessVars;
-  if(value)
-    local[key] = value;
+function regEvent(ev) {
+  const local = ev.register === 'save' ? saveVars : sessVars;
+  if(ev.value)
+    local[ev.key] = ev.value;
   else
-    delete local[key];
-  if(register === 'save')
+    delete local[ev.key];
+  if(ev.register === 'save')
     localStorage[lsKeys.register] = JSON.stringify(saveVars);
 }
