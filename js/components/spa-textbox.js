@@ -20,13 +20,14 @@ class TextboxElement extends HTMLElement {
   connectedCallback() {
     if(this._constructed)
       return;
+    this._div = document.createElement('div');
     this._span = document.createElement('span');
     this._area = document.createElement('textarea');
     this._area.setAttribute('spellcheck', false);
     this._area.classList.add('no-outline');
     this._area.addEventListener('input', () => this._update());
     this._area.addEventListener('scroll', () =>
-      this._span.style.top = `-${this._area.scrollTop}px`,
+      this._div.scrollTop = this._area.scrollTop,
       {passive: true});
     /* if value was set before connecting, it shadows the property */
     for(const prop of ['value', 'disabled']) {
@@ -34,7 +35,12 @@ class TextboxElement extends HTMLElement {
       delete this[prop];
       this[prop] = value;
     }
-    this.appendChild(this._span);
+    const ro = new ResizeObserver(() => this._updateScroll());
+    ro.observe(this._area);
+    this._area.addEventListener('input', () => this._updateScroll());
+    this._div.appendChild(this._span);
+    this._span.textContent = ' '; // forces font load
+    this.appendChild(this._div);
     this.appendChild(this._area);
     this.constructed = true;
   }
@@ -114,6 +120,10 @@ class TextboxElement extends HTMLElement {
 
     // Useful for trailing newlines
     this._span.textContent = this._area.value + '\u200B';
+  }
+
+  _updateScroll() {
+    this._div.style.overflowY = this._area.scrollHeight > this._area.clientHeight ? 'scroll' : 'hidden';
   }
 
   mark(start, len) {
