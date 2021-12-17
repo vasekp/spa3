@@ -1,5 +1,4 @@
-import StreamSession from './stream/interface.js';
-import {types} from './stream/base.js';
+import StreamSession, {types} from './stream/stream.js';
 
 const LEN = 200;
 let sess = null;
