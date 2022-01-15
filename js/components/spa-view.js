@@ -7,11 +7,12 @@ const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
 <link rel="stylesheet" type="text/css" href="css/modules.css"/>
-<spa-slideout id="controls" class="corner">
+<div id="titlebar">
+  <span id="title"></span>
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
   <button id="update"><img class="inline" src="images/download.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
   <button id="home"><img class="inline" src="images/home.svg"/></button>
-</spa-slideout>
+</div>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>
   <div class="settings" tabindex="-1">
@@ -67,6 +68,8 @@ class ViewElement extends HTMLElement {
       cont.append(frag.content);
       this.funcs = script.default(this.shadowRoot);
       this.dataset.module = module;
+      const modNames = await i18n.moduleMap;
+      this.shadowRoot.getElementById('title').textContent = modNames[module];
       this.dispatchEvent(new CustomEvent('module-change',
         { detail: { viewPos: this.dataset.pos, module }, bubbles: true }));
     } catch(e) {

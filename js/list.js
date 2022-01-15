@@ -2,11 +2,12 @@ import './components/spa-scroll.js';
 import * as i18n from './i18n.js';
 
 export default function(root) {
-  (async () => {
-    const items = await(await fetch(`trans/${i18n.lang}/modules.json`)).json();
+  i18n.moduleList.then(items => {
     const cont = root.getElementById('list');
     items.sort((a, b) => i18n.compare(a.displayName, b.displayName));
     for(const item of items) {
+      if(item.moduleName === 'list')
+        continue;
       const div = document.createElement('div');
       div.textContent = item.displayName;
       div.dataset.moduleName = item.moduleName;
@@ -20,7 +21,7 @@ export default function(root) {
         { detail: { module: e.target.dataset.moduleName, viewId: root.host.id },
           bubbles: true, composed: true }));
     });
-  })();
+  });
 
   return {};
 }

@@ -68,7 +68,7 @@ export default function(root) {
     const item = found || lists[0];
     localStorage[lsKeys.wordlist] = item.filename;
 
-    root.getElementById('title').textContent = item.title;
+    root.getElementById('list-name').textContent = item.title;
     root.getElementById('lcase').hidden = !item.showLCase;
     root.getElementById('lcase-indicator').hidden = !item.showLCase || !root.getElementById('lcase').checked;
     const list = root.getElementById('wordlists');

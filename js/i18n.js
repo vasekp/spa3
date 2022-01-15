@@ -46,3 +46,12 @@ export default function _(key) {
 }
 
 export const compare = new Intl.Collator(lang).compare;
+
+export const moduleList = fetch(`trans/${lang}/modules.json`).then(response => response.json());
+
+export const moduleMap = moduleList.then(list => {
+  const map = {};
+  for(const item of list)
+    map[item.moduleName] = item.displayName;
+  return map;
+});

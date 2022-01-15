@@ -33,8 +33,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     ? JSON.parse(localStorage[lsKeys.views])
     : { main: 'logbook', aux1: 'list', aux2: 'list' };
   document.addEventListener('request-module', e => {
-    console.log(e);
     const view = document.getElementById(e.detail.viewId);
+    if(view.dataset.module === e.detail.module)
+      return;
     if(e.detail.module !== 'list')
       for(const other of document.querySelectorAll('spa-view')) {
         if(other.id !== e.detail.viewId && other.dataset.module === e.detail.module) {
@@ -45,9 +46,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     view.loadModule(e.detail.module).catch(_ => viewModule.loadModule('list'));
   });
   document.addEventListener('module-change', e => {
-    console.log(e);
     views[e.detail.viewPos] = e.detail.module;
-    console.log(views);
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
   for(const pos in views)
