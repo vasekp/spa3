@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     ro.observe(view);
   const views = localStorage[lsKeys.views]
     ? JSON.parse(localStorage[lsKeys.views])
-    : { main: 'logbook', aux1: 'list', aux2: 'list' };
+    : { main: 'list', aux1: 'list', aux2: 'list' };
   document.addEventListener('request-module', e => {
     const view = document.getElementById(e.detail.viewId);
     if(view.dataset.module === e.detail.module)
