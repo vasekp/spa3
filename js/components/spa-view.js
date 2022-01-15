@@ -52,7 +52,8 @@ class ViewElement extends HTMLElement {
 
   async loadModule(module) {
     const cont = this.shadowRoot.getElementById('content');
-    cont.replaceChildren();
+    while(cont.firstChild)
+      cont.removeChild(cont.firstChild);
     if(module !== 'list') // switching to menu should look fluid
       cont.classList.add('spa-loading');
     try {
