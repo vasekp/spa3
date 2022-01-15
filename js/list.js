@@ -17,7 +17,7 @@ export default function(root) {
     }
     cont.addEventListener('click', e => {
       root.dispatchEvent(new CustomEvent('request-module',
-        { detail: { module: e.target.dataset.moduleName }, // view ID added in bubbling
+        { detail: { module: e.target.dataset.moduleName, viewId: root.host.id },
           bubbles: true, composed: true }));
     });
   })();

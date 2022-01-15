@@ -1,4 +1,4 @@
-@import "../common.css";
+/*@import "../common.css"; -- always included by modules.css */
 
 :host {
   position: relative;

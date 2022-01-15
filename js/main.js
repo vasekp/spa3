@@ -18,7 +18,7 @@ const ro = new ResizeObserver(entries => {
       : width <= 400 ? 'small'
       : width <= 600 ? 'mid'
       : 'full';
-    view.notifySize(size);
+    view.dataset.size = size;
   }
 });
 
@@ -34,10 +34,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     : { main: 'logbook', aux1: 'list', aux2: 'list' };
   document.addEventListener('request-module', e => {
     console.log(e);
-    const view = document.getElementById(e.detail.view);
+    const view = document.getElementById(e.detail.viewId);
     if(e.detail.module !== 'list')
       for(const other of document.querySelectorAll('spa-view')) {
-        if(other.id !== e.detail.view && other.dataset.module === e.detail.module) {
+        if(other.id !== e.detail.viewId && other.dataset.module === e.detail.module) {
           view.swapWith(other);
           return;
         }
