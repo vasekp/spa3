@@ -7,7 +7,6 @@ const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
 <spa-slideout id="controls" class="corner">
-  <button id="move" part="move-icon" draggable="true"><img class="inline" src="images/move.svg"/></button>
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
   <button id="update"><img class="inline" src="images/download.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
   <button id="home"><img class="inline" src="images/home.svg"/></button>
@@ -44,29 +43,6 @@ class ViewElement extends HTMLElement {
     root.getElementById('content').attachShadow({mode: 'open'});
     root.getElementById('update').addEventListener('click',
       () => window.dispatchEvent(new CustomEvent('update-click')));
-    root.getElementById('move').addEventListener('click',
-      () => alert(_('try dragging')));
-    root.getElementById('move').addEventListener('dragstart', e => {
-      this.classList.add('dragged');
-      e.dataTransfer.setData('application/spa3', this.id);
-      e.currentTarget.blur();
-    });
-    root.getElementById('move').addEventListener('dragend',
-      () => this.classList.remove('dragged'));
-    this.addEventListener('dragenter', e => {
-      if(e.dataTransfer.types.includes('application/spa3'))
-        this.classList.add('dragover');
-    });
-    this.addEventListener('dragleave', () => this.classList.remove('dragover'));
-    this.addEventListener('dragover', e => {
-      if(e.dataTransfer.types.includes('application/spa3'))
-        e.preventDefault();
-    });
-    this.addEventListener('drop', e => {
-      if(e.dataTransfer.types.includes('application/spa3'))
-        this.swap(e.dataTransfer.getData('application/spa3'));
-      this.classList.remove('dragover');
-    });
     this.addEventListener('request-module', e => e.detail.view = this.id);
   }
 
