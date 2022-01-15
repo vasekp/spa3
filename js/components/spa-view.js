@@ -57,6 +57,9 @@ class ViewElement extends HTMLElement {
     if(module !== 'list') // switching to menu should look fluid
       cont.classList.add('spa-loading');
     try {
+      this.dataset.module = module;
+      const modNames = await i18n.moduleMap;
+      this.shadowRoot.getElementById('title').textContent = modNames[module];
       const [responseText, script] = await Promise.all([
         i18n.loadTrans(`trans/${i18n.lang}/${module}.json`).then(
           () => i18n.loadTemplate(`html/${module}.html`)),
@@ -68,9 +71,6 @@ class ViewElement extends HTMLElement {
       cont.classList.remove('spa-loading');
       cont.append(frag.content);
       this.funcs = script.default(this.shadowRoot);
-      this.dataset.module = module;
-      const modNames = await i18n.moduleMap;
-      this.shadowRoot.getElementById('title').textContent = modNames[module];
       this.dispatchEvent(new CustomEvent('module-change',
         { detail: { viewPos: this.dataset.pos, module }, bubbles: true }));
     } catch(e) {
