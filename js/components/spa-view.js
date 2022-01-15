@@ -6,15 +6,13 @@ import _, * as i18n from '../i18n.js';
 const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
-<link rel="stylesheet" type="text/css" href="css/modules.css"/>
-<style>:not(:defined) { display: none; }</style>
 <spa-slideout id="controls" class="corner">
   <button id="move" part="move-icon" draggable="true"><img class="inline" src="images/move.svg"/></button>
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
   <button id="update"><img class="inline" src="images/download.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
   <button id="home"><img class="inline" src="images/home.svg"/></button>
 </spa-slideout>
-<div id="content"><div class="spa-loading"></div></div>
+<div id="content"></div>
 <spa-modal id="settings-modal" hidden>
   <div class="settings" tabindex="-1">
     <div class="trans" id="module-settings-container"></div>
@@ -28,7 +26,8 @@ class ViewElement extends HTMLElement {
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
     root.getElementById('home').addEventListener('click', e => {
-      this.dataset.module = 'list';
+      this.dispatchEvent(new CustomEvent('request-module',
+        { detail: { module: 'list' }, bubbles: true }));
       e.currentTarget.blur();
     });
     const settings = root.getElementById('settings-modal');
@@ -42,6 +41,7 @@ class ViewElement extends HTMLElement {
         this.funcs.populateSettings(s2);
       settings.show();
     });
+    root.getElementById('content').attachShadow({mode: 'open'});
     root.getElementById('update').addEventListener('click',
       () => window.dispatchEvent(new CustomEvent('update-click')));
     root.getElementById('move').addEventListener('click',
@@ -67,67 +67,67 @@ class ViewElement extends HTMLElement {
         this.swap(e.dataTransfer.getData('application/spa3'));
       this.classList.remove('dragover');
     });
+    this.addEventListener('request-module', e => e.detail.view = this.id);
   }
 
   static get observedAttributes() {
     return ['data-module', 'data-pos'];
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if(newValue === oldValue)
-      return;
-    if(name === 'data-module')
-      this.loadModule(newValue).catch(() => this.dataset.module = 'list');
-    document.dispatchEvent(new CustomEvent('view-change', { detail: {
-      id: this.id,
-      module: newValue
-    }}));
-  }
-
   async loadModule(module) {
     const cont = this.shadowRoot.getElementById('content');
-    const prevStyle = this.shadowRoot.getElementById('style');
+    cont.shadowRoot.replaceChildren();
     if(module !== 'list') // switching to menu should look fluid
-      cont.innerHTML = '<div class="spa-loading"></div>';
+      cont.classList.add('spa-loading');
     try {
       const [responseText, script] = await Promise.all([
         i18n.loadTrans(`trans/${i18n.lang}/${module}.json`).then(
           () => i18n.loadTemplate(`html/${module}.html`)),
         import(`../${module}.js`),
-        this.addStyleSheet(`css/${module}.css`)
+        this.loadStyle(`css/modules.css`, cont.shadowRoot),
+        this.loadStyle(`css/${module}.css`, cont.shadowRoot)
       ]);
-      if(prevStyle)
-        prevStyle.id = '';
-      cont.innerHTML = responseText;
-      if(prevStyle)
-        prevStyle.remove();
-      this.funcs = script.default(this.shadowRoot);
+      const frag = document.createElement('template');
+      frag.innerHTML = responseText;
+      cont.classList.remove('spa-loading');
+      cont.shadowRoot.append(frag.content);
+      this.funcs = script.default(cont.shadowRoot);
+      this.dataset.module = module;
+      this.dispatchEvent(new CustomEvent('module-change',
+        { detail: { viewPos: this.dataset.pos, module }, bubbles: true }));
     } catch(e) {
       console.error(e);
       throw e;
     }
   }
 
-  swap(otherId) {
-    if(otherId === this.id)
+  swapWith(other) {
+    if(other.id === this.id)
       return;
-    const other = document.getElementById(otherId);
     const otherPos = other.dataset.pos;
     other.dataset.pos = this.dataset.pos;
     this.dataset.pos = otherPos;
+    this.dispatchEvent(new CustomEvent('module-change',
+      { detail: { viewPos: this.dataset.pos, module: this.dataset.module }, bubbles: true }));
+    this.dispatchEvent(new CustomEvent('module-change',
+      { detail: { viewPos: other.dataset.pos, module: other.dataset.module }, bubbles: true }));
   }
 
-  async addStyleSheet(filename) {
+  async loadStyle(filename, cont) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.href = filename;
     link.id = 'style';
-    this.shadowRoot.insertBefore(link, this.shadowRoot.getElementById('content'));
+    cont.append(link);
     return new Promise((resolve, reject) => {
-      link.addEventListener('load', resolve);
-      link.addEventListener('error', e => reject(`Could not load file ${filename}.`));
+      link.addEventListener('load', resolve, {once: true});
+      link.addEventListener('error', e => reject(`Could not load file ${filename}.`), {once: true});
     });
+  }
+
+  notifySize(size) {
+    this.shadowRoot.getElementById('content').dataset.size = size;
   }
 }
 

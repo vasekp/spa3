@@ -2,7 +2,7 @@ import './components/spa-scroll.js';
 import * as i18n from './i18n.js';
 
 export default function(root) {
-  function filter() {
+  /*function filter() {
     let odd = true;
     const cont = root.getElementById('list');
     for(const item of cont.children) {
@@ -15,7 +15,7 @@ export default function(root) {
         odd = !odd;
       }
     }
-  }
+  }*/
 
   (async () => {
     const items = await(await fetch(`trans/${i18n.lang}/modules.json`)).json();
@@ -30,11 +30,14 @@ export default function(root) {
       div.dataset.active = 1;
       cont.appendChild(div);
     }
-    filter();
-    document.addEventListener('view-change', filter);
+    //filter();
+    //document.addEventListener('view-change', filter);
     cont.addEventListener('click', e => {
-      document.removeEventListener('view-change', filter);
-      root.host.dataset.module = e.target.dataset.moduleName;
+      //document.removeEventListener('view-change', filter);
+      //root.host.dataset.module = e.target.dataset.moduleName;
+      root.dispatchEvent(new CustomEvent('request-module',
+        { detail: { module: e.target.dataset.moduleName }, // view ID added in bubbling
+          bubbles: true, composed: true }));
     });
   })();
 
