@@ -20,6 +20,11 @@
   font-weight: 600;
 }
 
+:host(:not([data-module="list"])) #title::before {
+  content: "\2190";
+  margin-right: var(--margin-small);
+}
+
 #update {
   display: var(--display-update);
 }

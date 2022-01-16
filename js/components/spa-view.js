@@ -11,7 +11,6 @@ template.innerHTML = `
   <span id="title"></span>
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
   <button id="update"><img class="inline" src="images/download.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
-  <button id="home"><img class="inline" src="images/home.svg"/></button>
 </div>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>
@@ -26,7 +25,7 @@ class ViewElement extends HTMLElement {
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
-    root.getElementById('home').addEventListener('click', e => {
+    root.getElementById('title').addEventListener('click', e => {
       this.dispatchEvent(new CustomEvent('request-module',
         { detail: { module: 'list', viewId: this.id }, bubbles: true }));
       e.currentTarget.blur();
