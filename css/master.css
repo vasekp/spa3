@@ -81,6 +81,8 @@ spa-view {
   width: 100%;
   max-width: 800px;
   contain: strict;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 

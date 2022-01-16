@@ -6,3 +6,7 @@ spa-scroll {
 #list > div {
   padding: var(--margin-small) var(--margin-base);
 }
+
+#list > div:nth-child(odd) {
+  background: var(--color-bg-alt);
+}

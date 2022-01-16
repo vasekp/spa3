@@ -1,5 +1,9 @@
 [
   {
+    "moduleName": "list",
+    "displayName": "Vybrat modul"
+  },
+  {
     "moduleName": "logbook",
     "displayName": "Zápisník"
   },

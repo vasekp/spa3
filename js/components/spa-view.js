@@ -7,14 +7,12 @@ const template = document.createElement('template');
 template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
 <link rel="stylesheet" type="text/css" href="css/modules.css"/>
-<style>:not(:defined) { display: none; }</style>
-<spa-slideout id="controls" class="corner">
-  <button id="move" part="move-icon" draggable="true"><img class="inline" src="images/move.svg"/></button>
+<div id="titlebar">
+  <span id="title"></span>
+  <button id="update"><img class="inline" src="images/download.svg"/></button>
   <button id="settings"><img class="inline" src="images/settings.svg"/></button>
-  <button id="update"><img class="inline" src="images/download.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
-  <button id="home"><img class="inline" src="images/home.svg"/></button>
-</spa-slideout>
-<div id="content"><div class="spa-loading"></div></div>
+</div>
+<div id="content"></div>
 <spa-modal id="settings-modal" hidden>
   <div class="settings" tabindex="-1">
     <div class="trans" id="module-settings-container"></div>
@@ -27,8 +25,9 @@ class ViewElement extends HTMLElement {
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
-    root.getElementById('home').addEventListener('click', e => {
-      this.dataset.module = 'list';
+    root.getElementById('title').addEventListener('click', e => {
+      this.dispatchEvent(new CustomEvent('request-module',
+        { detail: { module: 'list', viewId: this.id }, bubbles: true }));
       e.currentTarget.blur();
     });
     const settings = root.getElementById('settings-modal');
@@ -44,89 +43,63 @@ class ViewElement extends HTMLElement {
     });
     root.getElementById('update').addEventListener('click',
       () => window.dispatchEvent(new CustomEvent('update-click')));
-    root.getElementById('move').addEventListener('click',
-      () => alert(_('try dragging')));
-    root.getElementById('move').addEventListener('dragstart', e => {
-      this.classList.add('dragged');
-      e.dataTransfer.setData('application/spa3', this.id);
-      e.currentTarget.blur();
-    });
-    root.getElementById('move').addEventListener('dragend',
-      () => this.classList.remove('dragged'));
-    this.addEventListener('dragenter', e => {
-      if(e.dataTransfer.types.includes('application/spa3'))
-        this.classList.add('dragover');
-    });
-    this.addEventListener('dragleave', () => this.classList.remove('dragover'));
-    this.addEventListener('dragover', e => {
-      if(e.dataTransfer.types.includes('application/spa3'))
-        e.preventDefault();
-    });
-    this.addEventListener('drop', e => {
-      if(e.dataTransfer.types.includes('application/spa3'))
-        this.swap(e.dataTransfer.getData('application/spa3'));
-      this.classList.remove('dragover');
-    });
   }
 
   static get observedAttributes() {
     return ['data-module', 'data-pos'];
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if(newValue === oldValue)
-      return;
-    if(name === 'data-module')
-      this.loadModule(newValue).catch(() => this.dataset.module = 'list');
-    document.dispatchEvent(new CustomEvent('view-change', { detail: {
-      id: this.id,
-      module: newValue
-    }}));
-  }
-
   async loadModule(module) {
     const cont = this.shadowRoot.getElementById('content');
-    const prevStyle = this.shadowRoot.getElementById('style');
+    while(cont.firstChild)
+      cont.removeChild(cont.firstChild);
     if(module !== 'list') // switching to menu should look fluid
-      cont.innerHTML = '<div class="spa-loading"></div>';
+      cont.classList.add('spa-loading');
     try {
+      this.dataset.module = module;
+      const modNames = await i18n.moduleMap;
+      this.shadowRoot.getElementById('title').textContent = modNames[module];
       const [responseText, script] = await Promise.all([
         i18n.loadTrans(`trans/${i18n.lang}/${module}.json`).then(
           () => i18n.loadTemplate(`html/${module}.html`)),
         import(`../${module}.js`),
-        this.addStyleSheet(`css/${module}.css`)
+        this.loadStyle(`css/${module}.css`)
       ]);
-      if(prevStyle)
-        prevStyle.id = '';
-      cont.innerHTML = responseText;
-      if(prevStyle)
-        prevStyle.remove();
+      const frag = document.createElement('template');
+      frag.innerHTML = responseText;
+      cont.classList.remove('spa-loading');
+      cont.append(frag.content);
       this.funcs = script.default(this.shadowRoot);
+      this.dispatchEvent(new CustomEvent('module-change',
+        { detail: { viewPos: this.dataset.pos, module }, bubbles: true }));
     } catch(e) {
       console.error(e);
       throw e;
     }
   }
 
-  swap(otherId) {
-    if(otherId === this.id)
+  swapWith(other) {
+    if(other.id === this.id)
       return;
-    const other = document.getElementById(otherId);
     const otherPos = other.dataset.pos;
     other.dataset.pos = this.dataset.pos;
     this.dataset.pos = otherPos;
+    this.dispatchEvent(new CustomEvent('module-change',
+      { detail: { viewPos: this.dataset.pos, module: this.dataset.module }, bubbles: true }));
+    this.dispatchEvent(new CustomEvent('module-change',
+      { detail: { viewPos: other.dataset.pos, module: other.dataset.module }, bubbles: true }));
   }
 
-  async addStyleSheet(filename) {
+  async loadStyle(filename) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
     link.href = filename;
     link.id = 'style';
-    this.shadowRoot.insertBefore(link, this.shadowRoot.getElementById('content'));
+    this.shadowRoot.getElementById('content').append(link);
     return new Promise((resolve, reject) => {
-      link.addEventListener('load', resolve);
-      link.addEventListener('error', e => reject(`Could not load file ${filename}.`));
+      link.addEventListener('load', resolve, {once: true});
+      link.addEventListener('error', e => reject(`Could not load file ${filename}.`), {once: true});
     });
   }
 }

@@ -14,16 +14,12 @@ const ro = new ResizeObserver(entries => {
   for(const entry of entries) {
     const view = entry.target;
     const width = view.clientWidth;
-    const newSize = width === 0 ? ''
+    const size = width === 0 ? ''
       : width <= 400 ? 'small'
       : width <= 600 ? 'mid'
       : 'full';
-    if(newSize !== view.dataset.size)
-      change = true;
-    view.dataset.size = newSize;
+    view.dataset.size = size;
   }
-  if(change)
-    document.dispatchEvent(new CustomEvent('view-change'));
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -33,26 +29,28 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
     ro.observe(view);
-  if(localStorage[lsKeys.views]) {
-    const views = JSON.parse(localStorage[lsKeys.views]);
-    for(const pos in views)
-      document.querySelector(`spa-view[data-pos="${pos}"]`).dataset.module = views[pos];
-  } else {
-    document.getElementById('v1').dataset.module = 'logbook';
-    document.getElementById('v2').dataset.module = 'list';
-    document.getElementById('v3').dataset.module = 'list';
-  }
-  document.addEventListener('view-change', e => {
-    const views = {};
-    for(const view of document.querySelectorAll('spa-view')) {
-      if(e.detail && view.id !== e.detail.id && view.dataset.module === e.detail.module && view.dataset.module !== 'list') {
-        view.dataset.module = 'list';
-        return;
+  const views = localStorage[lsKeys.views]
+    ? JSON.parse(localStorage[lsKeys.views])
+    : { main: 'list', aux1: 'list', aux2: 'list' };
+  document.addEventListener('request-module', e => {
+    const view = document.getElementById(e.detail.viewId);
+    if(view.dataset.module === e.detail.module)
+      return;
+    if(e.detail.module !== 'list')
+      for(const other of document.querySelectorAll('spa-view')) {
+        if(other.id !== e.detail.viewId && other.dataset.module === e.detail.module) {
+          view.swapWith(other);
+          return;
+        }
       }
-      views[view.dataset.pos] = view.dataset.module;
-    }
+    view.loadModule(e.detail.module).catch(_ => viewModule.loadModule('list'));
+  });
+  document.addEventListener('module-change', e => {
+    views[e.detail.viewPos] = e.detail.module;
     localStorage[lsKeys.views] = JSON.stringify(views);
   });
+  for(const pos in views)
+    document.querySelector(`spa-view[data-pos="${pos}"]`).loadModule(views[pos]);
   document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
   /* Generate manifest */
   const manifest = JSON.parse(await i18n.loadTemplate('manifest.json'));
