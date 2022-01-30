@@ -68,6 +68,7 @@
 
 #module {
   grid-area: 1/2/6/4;
+  overflow: hidden;
 }
 
 #module > * {
@@ -106,17 +107,16 @@
 }
 
 #kbd-morse {
-  display: flex;
-  width: 8rem;
-  flex-wrap: wrap;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto auto auto;
   justify-content: center;
   align-content: space-evenly;
 }
 
 #kbd-morse-telegraph {
-  width: calc(3 * 1.4em + 4 * var(--margin-small));
-  height: 2em;
+  grid-column: 1/4;
+  width: auto;
+  height: 3em;
   touch-action: none;
 }
 
