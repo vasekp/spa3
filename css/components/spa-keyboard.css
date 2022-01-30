@@ -67,7 +67,7 @@
 }
 
 #module {
-  grid-area: 1/3/6/4;
+  grid-area: 1/2/6/4;
 }
 
 #module > * {
@@ -127,7 +127,6 @@
 
 #kbd-pigpen-border {
   width: 8rem;
-  margin: 0 -1rem;
   position: relative;
 }
 
