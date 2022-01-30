@@ -251,14 +251,14 @@
 
 #kbd-mobile {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, minmax(min-content, calc(3rem + var(--margin-base))));
   align-items: center;
   align-content: center;
   justify-content: center;
 }
 
 #kbd-mobile .key {
-  width: 3rem;
+  width: auto;
   height: 2.5rem;
   ruby-position: under;
 }
