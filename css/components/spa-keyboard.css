@@ -214,14 +214,6 @@
   pointer-events: none;
 }
 
-#kbd-sgm-back {
-  -webkit-text-stroke-width: var(--line-width);
-  -webkit-text-fill-color: transparent;
-  /* Maybe we'll see this standardized someday. */
-  text-stroke-width: var(--line-width);
-  text-fill-color: transparent;
-}
-
 #kbd-smp use:not(.selected) {
   opacity: .5;
 }

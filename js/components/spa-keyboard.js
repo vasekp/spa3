@@ -361,19 +361,8 @@ function modPolybius(cont, defKey) {
 function modSegment(cont, defKey) {
   cont.innerHTML = `
   <div id="kbd-sgm">
-    <div id="kbd-sgm-back">&#xF1FF;</div>
+    <div id="kbd-sgm-back">&#xF012;</div>
     <div id="kbd-sgm-fore">&#xF180;</div>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160">
-      <g font-size="12" text-anchor="middle" fill="currentcolor">
-        <text x="0" y="-50">a</text>
-        <text x="26" y="-24">b</text>
-        <text x="26" y="30">c</text>
-        <text x="0" y="56">d</text>
-        <text x="-27" y="30">e</text>
-        <text x="-27" y="-24">f</text>
-        <text x="0" y="2">g</text>
-      </g>
-    </svg>
   </div>`;
 
   const state = Object.defineProperty({}, 'value', {
