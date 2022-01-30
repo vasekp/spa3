@@ -51,7 +51,7 @@
 }
 
 #cancel {
-  grid-area: 1/4/2/5;
+  grid-area: 2/4/3/5;
   background: var(--color-bg-fainter);
 }
 

@@ -27,7 +27,7 @@ template.innerHTML = `
   <button class="key" id="enter">&#x21B5;</button>
 </div>`;
 
-function modBraille(cont, defKey) {
+function modBraille(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <div id="kbd-braille">
     <input type="checkbox" data-value="1"/>
@@ -61,6 +61,7 @@ function modBraille(cont, defKey) {
       this._v = v;
       defKey.textContent = String.fromCodePoint(0x2800 + v);
       defKey.hidden = v === 0;
+      cancelKey.hidden = v === 0;
     },
     get() {
       return this._v;
@@ -312,7 +313,7 @@ function modPigpen(cont, defKey, cancelKey) {
   return { reset };
 };
 
-function modPolybius(cont, defKey) {
+function modPolybius(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <div id="kbd-polybius">
     <input type="checkbox" id="kbd-plb-size" class="patch show-state" data-label="6×6">
@@ -347,16 +348,19 @@ function modPolybius(cont, defKey) {
       detail: { key: defKey.textContent }
     }));
     defKey.hidden = true;
+    cancelKey.hidden = true;
     deselect();
   }, 500);
 
   const reset = () => {
     defKey.hidden = true;
+    cancelKey.hidden = true;
     deselect();
   };
 
   cont.firstElementChild.addEventListener('input', () => {
     const q = cont.querySelectorAll('[type=radio]:checked');
+    cancelKey.hidden = q.length !== 1;
     if(q.length === 2) {
       const coord = [];
       for(const elm of q)
@@ -375,7 +379,7 @@ function modPolybius(cont, defKey) {
   return { reset };
 }
 
-function modSegment(cont, defKey) {
+function modSegment(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <div id="kbd-sgm">
     <div id="kbd-sgm-back">&#xF012;</div>
@@ -389,6 +393,7 @@ function modSegment(cont, defKey) {
         = cont.querySelector('#kbd-sgm-fore').textContent
         = String.fromCodePoint(0xF180 + v);
       defKey.hidden = v === 0;
+      cancelKey.hidden = v === 0;
     },
     get() {
       return this._v;
@@ -420,7 +425,7 @@ function modSegment(cont, defKey) {
   return { reset };
 }
 
-function modSemaphore(cont, defKey) {
+function modSemaphore(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <svg id="kbd-smp" xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160">
     <defs>
@@ -476,6 +481,7 @@ function modSemaphore(cont, defKey) {
       while(sel.length > 2)
         sel.shift();
     }
+    cancelKey.hidden = sel.length !== 1;
     for(const elm of cont.querySelectorAll('use'))
       elm.classList.toggle('selected', sel.includes(elm.dataset.pos));
     if(sel.length == 2) {
@@ -490,7 +496,7 @@ function modSemaphore(cont, defKey) {
   return { reset };
 }
 
-function modFlags(cont) {
+function modFlags(cont, defKey, cancelKey) {
   const flgColors = [
     9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30,
     6, 5, 9, 13, 5, 10, 17, 6, 5, 23,
@@ -530,15 +536,19 @@ function modFlags(cont) {
         cond += +elm.dataset.value;
     for(let i = 0; i < 46; i++)
       children[i].hidden = !((flgColors[i] & cond) === cond);
+    cancelKey.hidden = cond === 0;
+  }
+
+  function reset() {
+    for(const ckbox of cont.querySelector('#kbd-flg-colors').children)
+      ckbox.checked = false;
+    filter();
   }
 
   cont.querySelector('#kbd-flg-colors').addEventListener('input', filter);
+  cont.querySelector('#kbd-flg-sugg').addEventListener('kbd-input', reset);
 
-  cont.querySelector('#kbd-flg-sugg').addEventListener('kbd-input', () => {
-    for(const elm of cont.querySelector('#kbd-flg-colors').children)
-      elm.checked = false;
-    filter();
-  });
+  return { reset };
 }
 
 function modMobile(cont) {
