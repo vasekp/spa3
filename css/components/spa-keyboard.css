@@ -139,6 +139,7 @@
 }
 
 .kbd-pigpen-svg {
+  flex: 1;
   color: var(--color-text-light);
   touch-action: none;
 }
@@ -252,6 +253,7 @@
 #kbd-mobile .key {
   width: auto;
   height: 2.5rem;
+  -webkit-ruby-position: after;
   ruby-position: under;
 }
 
