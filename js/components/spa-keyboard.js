@@ -316,8 +316,8 @@ function modPigpen(cont, defKey, cancelKey) {
 function modPolybius(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <div id="kbd-polybius">
-    <input type="checkbox" id="kbd-plb-size" class="patch show-state" data-label="6×6">
-    <div id="kbd-plb-vert" class="trans">
+    <div>
+      <span>&#xF00C</span>
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="1">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="2">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="3">
@@ -325,7 +325,8 @@ function modPolybius(cont, defKey, cancelKey) {
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="5">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="6">
     </div>
-    <div id="kbd-plb-horz" class="trans">
+    <div>
+      <span>&#xF00D</span>
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="1">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="2">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="3">
@@ -334,8 +335,6 @@ function modPolybius(cont, defKey, cancelKey) {
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="6">
     </div>
   </div>`;
-
-  const lsKey = 'kbd-plb-six';
 
   const deselect = () => {
     for(const elm of cont.querySelectorAll('[type=radio]:checked'))
@@ -370,11 +369,6 @@ function modPolybius(cont, defKey, cancelKey) {
       dbConfirm();
     }
   });
-
-  cont.querySelector('#kbd-plb-size').addEventListener('change', e =>
-    localStorage[lsKey] = +e.currentTarget.checked);
-
-  cont.querySelector('#kbd-plb-size').checked = +localStorage[lsKey];
 
   return { reset };
 }
