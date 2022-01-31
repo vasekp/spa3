@@ -5,6 +5,7 @@ import _, * as i18n from './i18n.js';
 
 const lsKeys = Enum.fromObj({
   views: 'spa-views',
+  size: 'spa-size',
   theme: 'spa-theme',
 });
 
@@ -23,8 +24,8 @@ const ro = new ResizeObserver(entries => {
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
-  const theme = localStorage[lsKeys.theme] || 'light';
-  setTheme(theme);
+  setTheme(getTheme(), false);
+  setSize(getSize(), false);
   await i18n.loadTrans(`trans/${i18n.lang}/main.json`);
   document.title = _('title');
   for(const view of document.querySelectorAll('spa-view'))
@@ -54,7 +55,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
   /* Generate manifest */
   const manifest = JSON.parse(await i18n.loadTemplate('manifest.json'));
-  if(theme === 'dark')
+  if(getTheme() === 'dark')
     manifest.background_color = manifest.theme_color = '#000000';
   const urlPrefix = document.URL.substring(0, document.URL.lastIndexOf('/') + 1);
   manifest.start_url = urlPrefix + manifest.start_url;
@@ -89,7 +90,10 @@ export function populateSettings(elm) {
   elm.querySelector('#m-set-dark').checked = getTheme() === 'dark';
   elm.querySelector('#m-set-theme').addEventListener('change', e =>
     setTheme(e.currentTarget.querySelector(':checked').value));
-  elm.querySelector(`#m-set-lang [value=${i18n.lang}]`).checked = true;
+  elm.querySelector(`#m-set-size [value="${getSize()}"]`).checked = true;
+  elm.querySelector('#m-set-size').addEventListener('change', e =>
+    setSize(e.currentTarget.querySelector(':checked').value));
+  elm.querySelector(`#m-set-lang [value="${i18n.lang}"]`).checked = true;
   elm.querySelector('#m-set-lang').addEventListener('change', e =>
     i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
   const thisModal = elm.closest('spa-modal');
@@ -102,13 +106,24 @@ export function populateSettings(elm) {
   shareModal.addEventListener('click', () => shareModal.hide());
 }
 
-export function setTheme(theme) {
-  localStorage[lsKeys.theme] = theme;
+function setTheme(theme, save = true) {
   document.documentElement.classList.toggle('dark', theme === 'dark');
+  if(save)
+    localStorage[lsKeys.theme] = theme;
 }
 
 function getTheme() {
-  return localStorage[lsKeys.theme];
+  return localStorage[lsKeys.theme] || 'light';
+}
+
+function setSize(size, save = true) {
+  document.documentElement.dataset.size = size;
+  if(save)
+    localStorage[lsKeys.size] = size;
+}
+
+function getSize() {
+  return localStorage[lsKeys.size] || 'S';
 }
 
 const url = new URL(document.URL);

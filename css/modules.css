@@ -162,6 +162,7 @@ input[type="radio"].patch.show-state:checked::before {
 }
 
 #m-set-theme > *,
+#m-set-size > *,
 #m-set-lang > * {
   margin-right: calc(var(--margin-base) - var(--font-space));
 }
@@ -172,6 +173,18 @@ input[type="radio"].patch.show-state:checked::before {
 
 #m-set-lang .img-cb:focus-visible {
   filter: drop-shadow(0 0 2px);
+}
+
+#m-set-size input[value="S"] {
+  font-size: var(--font-size-small);
+}
+
+#m-set-size input[value="M"] {
+  font-size: var(--font-size-medium);
+}
+
+#m-set-size input[value="L"] {
+  font-size: var(--font-size-large);
 }
 
 .m-set-icon {
