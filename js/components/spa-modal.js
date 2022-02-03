@@ -27,11 +27,12 @@ export default class ModalElement extends ContainerElement {
     this.hidden = false;
     history.pushState({reason: 'modal'}, '');
     this.focus();
-    window.addEventListener('popstate', _ => this.hidden = true, {once: true});
+    window.addEventListener('popstate', _ => this.hide(), {once: true});
   }
 
   hide() {
-    if(!this.hidden)
+    this.hidden = true;
+    if(!this.hidden && history.state?.reason === 'modal')
       history.back();
   }
 }
