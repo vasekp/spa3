@@ -1,4 +1,5 @@
 import './components/spa-scroll.js';
+import {loadModule} from './main.js';
 import * as i18n from './i18n.js';
 
 export default function(root) {
@@ -16,11 +17,7 @@ export default function(root) {
       div.dataset.active = 1;
       cont.appendChild(div);
     }
-    cont.addEventListener('click', e => {
-      root.dispatchEvent(new CustomEvent('request-module',
-        { detail: { module: e.target.dataset.moduleName, viewId: root.host.id },
-          bubbles: true, composed: true }));
-    });
+    cont.addEventListener('click', e => loadModule(root.host.id, e.target.dataset.moduleName));
   });
 
   return {};

@@ -33,25 +33,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   const views = localStorage[lsKeys.views]
     ? JSON.parse(localStorage[lsKeys.views])
     : { main: 'list', aux1: 'list', aux2: 'list' };
-  document.addEventListener('request-module', e => {
-    const view = document.getElementById(e.detail.viewId);
-    if(view.dataset.module === e.detail.module)
-      return;
-    if(e.detail.module !== 'list')
-      for(const other of document.querySelectorAll('spa-view')) {
-        if(other.id !== e.detail.viewId && other.dataset.module === e.detail.module) {
-          view.swapWith(other);
-          return;
-        }
-      }
-    view.loadModule(e.detail.module).catch(_ => viewModule.loadModule('list'));
-  });
-  document.addEventListener('module-change', e => {
-    views[e.detail.viewPos] = e.detail.module;
-    localStorage[lsKeys.views] = JSON.stringify(views);
-  });
-  for(const pos in views)
-    document.querySelector(`spa-view[data-pos="${pos}"]`).loadModule(views[pos]);
+  for(const id in views)
+    loadModule(id, views[id]);
   document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
   /* Generate manifest */
   const manifest = JSON.parse(await i18n.loadTemplate('manifest.json'));
@@ -84,6 +67,29 @@ window.addEventListener('keydown', e => {
       target.blur();
   }
 });
+
+export function loadModule(target, module, req = false) {
+  const view = document.getElementById(target);
+  if(view.dataset.module === module)
+    return;
+  if(module !== 'list')
+    for(const other of document.querySelectorAll('spa-view')) {
+      if(other.id !== target && other.dataset.module === module) {
+        view.id = other.id;
+        other.id = target;
+        saveViews();
+        return;
+      }
+    }
+  view.loadModule(module).catch(_ => view.loadModule('list')).then(saveViews);
+}
+
+function saveViews() {
+  const views = {};
+  for(const view of document.querySelectorAll('spa-view'))
+    views[view.id] = view.dataset.module;
+  localStorage[lsKeys.views] = JSON.stringify(views);
+}
 
 export function populateSettings(elm) {
   elm.append(document.getElementById('shared-settings').content.cloneNode(true));
