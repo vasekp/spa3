@@ -25,12 +25,23 @@ export default class ModalElement extends ContainerElement {
 
   show() {
     this.hidden = false;
+    history.pushState({reason: 'modal'}, '');
     this.focus();
+    window.addEventListener('popstate', _ => this.hide(), {once: true});
   }
 
   hide() {
     this.hidden = true;
+    if(!this.hidden && history.state?.reason === 'modal')
+      history.back();
   }
 }
+
+// Disallow forwarding to a state pushed by a modal
+window.addEventListener('popstate', e => {
+  if(e.state?.reason === 'modal')
+    history.back();
+});
+
 
 window.customElements.define('spa-modal', ModalElement);

@@ -25,11 +25,7 @@ class ViewElement extends HTMLElement {
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
-    root.getElementById('title').addEventListener('click', e => {
-      this.dispatchEvent(new CustomEvent('request-module',
-        { detail: { module: 'list', viewId: this.id }, bubbles: true }));
-      e.currentTarget.blur();
-    });
+    root.getElementById('title').addEventListener('click', e => main.loadModule(this.id, 'list'));
     const settings = root.getElementById('settings-modal');
     root.getElementById('settings').addEventListener('click', () => {
       const s1 = root.getElementById('shared-settings-container');
@@ -43,10 +39,6 @@ class ViewElement extends HTMLElement {
     });
     root.getElementById('update').addEventListener('click',
       () => window.dispatchEvent(new CustomEvent('update-click')));
-  }
-
-  static get observedAttributes() {
-    return ['data-module', 'data-pos'];
   }
 
   async loadModule(module) {
@@ -70,24 +62,10 @@ class ViewElement extends HTMLElement {
       cont.classList.remove('spa-loading');
       cont.append(frag.content);
       this.funcs = script.default(this.shadowRoot);
-      this.dispatchEvent(new CustomEvent('module-change',
-        { detail: { viewPos: this.dataset.pos, module }, bubbles: true }));
     } catch(e) {
       console.error(e);
       throw e;
     }
-  }
-
-  swapWith(other) {
-    if(other.id === this.id)
-      return;
-    const otherPos = other.dataset.pos;
-    other.dataset.pos = this.dataset.pos;
-    this.dataset.pos = otherPos;
-    this.dispatchEvent(new CustomEvent('module-change',
-      { detail: { viewPos: this.dataset.pos, module: this.dataset.module }, bubbles: true }));
-    this.dispatchEvent(new CustomEvent('module-change',
-      { detail: { viewPos: other.dataset.pos, module: other.dataset.module }, bubbles: true }));
   }
 
   async loadStyle(filename) {
