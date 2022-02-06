@@ -102,6 +102,7 @@ export function populateSettings(elm) {
   elm.querySelector(`#m-set-lang [value="${i18n.lang}"]`).checked = true;
   elm.querySelector('#m-set-lang').addEventListener('change', e =>
     i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
+  elm.querySelector('#m-set-update-label').innerText = document.body.dataset.oldVersion ? _('updates') : _('first download');
   elm.querySelector('#m-set-update-now').dataset.updateSize = document.body.dataset.updateSize;
   elm.querySelector('#m-set-update-now').addEventListener('click',
     () => window.dispatchEvent(new CustomEvent('update-click')));
