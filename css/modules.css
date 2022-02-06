@@ -175,6 +175,10 @@ input[type="radio"].patch.show-state:checked::before {
   filter: drop-shadow(0 0 2px);
 }
 
+#m-set-size input {
+  line-height: 1rem;
+}
+
 #m-set-size input[value="S"] {
   font-size: var(--font-size-small);
 }
