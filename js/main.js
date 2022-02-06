@@ -168,9 +168,6 @@ if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWor
   });
 
   window.addEventListener('update-click', () => {
-    const templ = document.body.dataset.oldVersion ? _('update available') : _('download available');
-    const text = templ.replace('{size}', document.body.dataset.updateSize);
-    if(confirm(text))
-      navigator.serviceWorker.controller.postMessage({ dryrun: false });
+    navigator.serviceWorker.controller.postMessage({ dryrun: false });
   });
 }
