@@ -7,6 +7,8 @@
   "theme": "Theme:",
   "size": "Size:",
   "language": "Language:",
+  "updates": "Updates:",
+  "download now": "Download now",
   "error": "Error",
   "try dragging": "Try dragging the icon to another panel.",
   "download available": "Download this app for offline use (size: {size}). Download now?",

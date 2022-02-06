@@ -197,6 +197,11 @@ input[type="radio"].patch.show-state:checked::before {
   margin-right: var(--margin-small);
 }
 
+#m-set-update-now::after {
+  display: inline;
+  content: " (" attr(data-update-size) ")";
+}
+
 #m-share-modal img {
   width: 250px;
   height: 250px;

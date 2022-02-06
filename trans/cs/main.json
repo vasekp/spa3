@@ -7,6 +7,8 @@
   "theme": "Vzhled:",
   "size": "Velikost:",
   "language": "Jazyk:",
+  "updates": "Aktualizace:",
+  "download now": "Stáhnout nyní",
   "error": "Chyba",
   "try dragging": "Ikonku zkuste táhnout a pustit do jiného panelu.",
   "download available": "Aplikaci je možno stáhnout do zařízení pro použití offline. Stáhnout nyní (velikost: {size})?",
