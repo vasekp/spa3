@@ -97,7 +97,7 @@ spa-view {
   overflow: hidden;
 }
 
-[data-update-size] #main {
+[data-update-size] {
   --display-update: initial;
 }
 

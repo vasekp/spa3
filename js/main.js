@@ -102,6 +102,12 @@ export function populateSettings(elm) {
   elm.querySelector(`#m-set-lang [value="${i18n.lang}"]`).checked = true;
   elm.querySelector('#m-set-lang').addEventListener('change', e =>
     i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
+  elm.querySelector('#m-set-update-label').innerText = document.body.dataset.oldVersion ? _('updates') : _('first download');
+  elm.querySelector('#m-set-update-now').dataset.updateSize = document.body.dataset.updateSize;
+  elm.querySelector('#m-set-update-now').addEventListener('click', _ => {
+    elm.querySelector('#m-set-update').dataset.active = 1;
+    window.dispatchEvent(new CustomEvent('update-click'));
+  });
   const thisModal = elm.closest('spa-modal');
   const shareModal = elm.querySelector('#m-share-modal');
   thisModal.after(shareModal);
@@ -164,9 +170,6 @@ if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWor
   });
 
   window.addEventListener('update-click', () => {
-    const templ = document.body.dataset.oldVersion ? _('update available') : _('download available');
-    const text = templ.replace('{size}', document.body.dataset.updateSize);
-    if(confirm(text))
-      navigator.serviceWorker.controller.postMessage({ dryrun: false });
+    navigator.serviceWorker.controller.postMessage({ dryrun: false });
   });
 }
