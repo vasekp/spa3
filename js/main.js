@@ -104,8 +104,10 @@ export function populateSettings(elm) {
     i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
   elm.querySelector('#m-set-update-label').innerText = document.body.dataset.oldVersion ? _('updates') : _('first download');
   elm.querySelector('#m-set-update-now').dataset.updateSize = document.body.dataset.updateSize;
-  elm.querySelector('#m-set-update-now').addEventListener('click',
-    () => window.dispatchEvent(new CustomEvent('update-click')));
+  elm.querySelector('#m-set-update-now').addEventListener('click', _ => {
+    elm.querySelector('#m-set-update').dataset.active = 1;
+    window.dispatchEvent(new CustomEvent('update-click'));
+  });
   const thisModal = elm.closest('spa-modal');
   const shareModal = elm.querySelector('#m-share-modal');
   thisModal.after(shareModal);

@@ -197,6 +197,11 @@ input[type="radio"].patch.show-state:checked::before {
   margin-right: var(--margin-small);
 }
 
+#m-set-update[data-active] > button,
+#m-set-update:not([data-active]) > .spa-loading {
+  display: none;
+}
+
 #m-set-update-now::after {
   display: inline;
   content: " (" attr(data-update-size) ")";
