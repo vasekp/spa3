@@ -115,6 +115,18 @@ input[type="radio"].patch.show-state:checked::before {
   grid-column: 1 / 6;
 }
 
+#m-set-update[data-up-to-date="true"] #m-set-update-now,
+#m-set-update[data-up-to-date="false"] #m-set-update-uptodate {
+  display: none;
+}
+
+#m-set-update-uptodate::before {
+  content: "\2713";
+  font-weight: 800;
+  color: green;
+  margin-right: var(--margin-tiny);
+}
+
 .svg-cb svg,
 .img-cb img {
   height: 1em;

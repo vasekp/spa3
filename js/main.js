@@ -103,7 +103,8 @@ export function populateSettings(elm) {
   elm.querySelector('#m-set-lang').addEventListener('change', e =>
     i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
   elm.querySelector('#m-set-update-group').hidden = document.body.dataset.updateSize === undefined;
-  elm.querySelector('#m-set-update-label').innerText = document.body.dataset.oldVersion ? _('updates') : _('first download');
+  elm.querySelector('#m-set-update').dataset.upToDate = document.body.dataset.updateSize === '';
+  elm.querySelector('#m-set-update-label').innerText = document.body.dataset.oldVersion ? _('updates') : _('offline version');
   elm.querySelector('#m-set-update-now').dataset.updateSize = document.body.dataset.updateSize;
   elm.querySelector('#m-set-update-now').addEventListener('click', _ => {
     elm.querySelector('#m-set-update').dataset.active = 1;
@@ -149,6 +150,10 @@ if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWor
 
   navigator.serviceWorker.addEventListener('message', m => {
     switch(m.data.update) {
+      case 'uptodate':
+        document.body.dataset.updateSize = '';
+        // No "old" version
+        break;
       case 'available': {
         const sizeText = (size => {
           if(size < 1024)

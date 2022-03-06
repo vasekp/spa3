@@ -91,7 +91,7 @@ async function update(dryrun = false) {
     };
   } else
     return {
-      update: 'none',
+      update: 'uptodate',
       oldV
     };
 }
