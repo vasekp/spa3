@@ -715,6 +715,8 @@ class KeyboardElement extends HTMLElement {
     this.openModule(mod);
     this.hidden = false;
     const cb = e => {
+      if(window.debugModal)
+        return;
       if(e.relatedTarget === this) {
         this._target.focus();
         return;
