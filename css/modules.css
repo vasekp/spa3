@@ -97,11 +97,11 @@ input[type="radio"].patch.show-state:checked::before {
   margin-bottom: 0;
 }
 
-.settings > div > label {
+.settings label {
   grid-column: 1 / 3;
 }
 
-.settings > div > label + * {
+.settings label + * {
   grid-column: 3 / 6;
 }
 
@@ -113,6 +113,18 @@ input[type="radio"].patch.show-state:checked::before {
   font-style: oblique;
   background: var(--color-bg-alt);
   grid-column: 1 / 6;
+}
+
+#m-set-update[data-up-to-date="true"] #m-set-update-now,
+#m-set-update[data-up-to-date="false"] #m-set-update-uptodate {
+  display: none;
+}
+
+#m-set-update-uptodate::before {
+  content: "\2713";
+  font-weight: 800;
+  color: green;
+  margin-right: var(--margin-tiny);
 }
 
 .svg-cb svg,

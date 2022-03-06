@@ -109,7 +109,3 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
-.display-update {
-  display: var(--display-update);
-}
