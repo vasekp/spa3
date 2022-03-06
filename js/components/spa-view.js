@@ -9,7 +9,7 @@ template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/modules.css"/>
 <div id="titlebar">
   <span id="title"></span>
-  <button id="settings"><img class="inline" src="images/settings.svg"/><img class="display-update" id="update-ticker" src="images/update-ticker.svg"/></button>
+  <button id="settings"><img class="inline" src="images/settings.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
 </div>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>

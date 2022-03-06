@@ -102,6 +102,7 @@ export function populateSettings(elm) {
   elm.querySelector(`#m-set-lang [value="${i18n.lang}"]`).checked = true;
   elm.querySelector('#m-set-lang').addEventListener('change', e =>
     i18n.resetLangReload(e.currentTarget.querySelector(':checked').value));
+  elm.querySelector('#m-set-update-group').hidden = document.body.dataset.updateSize === undefined;
   elm.querySelector('#m-set-update-label').innerText = document.body.dataset.oldVersion ? _('updates') : _('first download');
   elm.querySelector('#m-set-update-now').dataset.updateSize = document.body.dataset.updateSize;
   elm.querySelector('#m-set-update-now').addEventListener('click', _ => {
@@ -158,6 +159,7 @@ if(url.protocol === 'https:' && url.host !== 'localhost' && navigator.serviceWor
           size /= 1024;
           return `${Math.round(size * 10) / 10} MB`;
         })(m.data.dlSize);
+        document.getElementById('main').classList.add('updateTicker');
         document.body.dataset.updateSize = sizeText;
         if(m.data.oldV)
           document.body.dataset.oldVersion = m.data.oldV;

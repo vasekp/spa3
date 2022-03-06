@@ -97,11 +97,11 @@ input[type="radio"].patch.show-state:checked::before {
   margin-bottom: 0;
 }
 
-.settings > div > label {
+.settings label {
   grid-column: 1 / 3;
 }
 
-.settings > div > label + * {
+.settings label + * {
   grid-column: 3 / 6;
 }
 
