@@ -21,12 +21,13 @@ template.innerHTML = `
   </div>
   <div id="module"></div>
   <button class="key" id="default" hidden></button>
+  <button class="key" id="cancel" hidden>&#x21A9;</button>
   <button class="key" id="space">&#x2334;</button>
   <button class="key" id="bsp">&#x232B;</button>
   <button class="key" id="enter">&#x21B5;</button>
 </div>`;
 
-function modBraille(cont, defKey) {
+function modBraille(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <div id="kbd-braille">
     <input type="checkbox" data-value="1"/>
@@ -60,6 +61,7 @@ function modBraille(cont, defKey) {
       this._v = v;
       defKey.textContent = String.fromCodePoint(0x2800 + v);
       defKey.hidden = v === 0;
+      cancelKey.hidden = v === 0;
     },
     get() {
       return this._v;
@@ -130,22 +132,30 @@ function modMorse(cont) {
   })
 }
 
-function modPigpen(cont) {
+function modPigpen(cont, defKey, cancelKey) {
   cont.innerHTML = `
-  <div id="kbd-pigpen-cont">
-    <div id="kbd-pigpen-border">
-      <svg id="kbd-pigpen-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-64 -80 128 160" data-mode="rect">
-        <g id="kbd-pigpen-rect" fill="currentcolor">
-          <circle cx="40" cy="40" r="7"/>
-          <circle cx="-40" cy="40" r="7"/>
-          <circle cx="-40" cy="-40" r="7"/>
-          <circle cx="40" cy="-40" r="7"/>
-          <path fill="none" stroke="currentcolor" stroke-width="1" stroke-dasharray="5 5" stroke-dashoffset="2.5" d="M 40 40 H -40 V -40 H 40 z"/>
-          <path id="kbd-pigpen-path" fill="none" stroke="currentcolor" stroke-width="14" stroke-linejoin="round" stroke-linecap="round" d=""/>
+  <div id="kbd-pigpen-cont" data-mode="rect">
+    <div id="kbd-pigpen-rect">
+      <svg class="kbd-pigpen-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" data-mode="rect" data-diag="0">
+        <g class="kbd-pigpen-rect" fill="currentcolor">
+          <circle cx="30" cy="30" r="5"/>
+          <circle cx="-30" cy="30" r="5"/>
+          <circle cx="-30" cy="-30" r="5"/>
+          <circle cx="30" cy="-30" r="5"/>
+          <path fill="none" stroke="currentcolor" stroke-width="1" stroke-dasharray="5 5" stroke-dashoffset="2.5" d="M 30 30 H -30 V -30 H 30 z"/>
+          <path class="kbd-pigpen-path" fill="none" stroke="currentcolor" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d=""/>
         </g>
       </svg>
-      <input id="kbd-pigpen-dir" xmlns="http://www.w3.org/1999/xhtml"
-        type="checkbox" class="glyph-cb" data-glyph-off="&#xF00D" data-glyph-on="&#xF00C"/>
+      <svg class="kbd-pigpen-svg" xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" data-mode="rect" data-diag="1">
+        <g class="kbd-pigpen-rect" fill="currentcolor" transform="rotate(45)">
+          <circle cx="30" cy="30" r="5"/>
+          <circle cx="-30" cy="30" r="5"/>
+          <circle cx="-30" cy="-30" r="5"/>
+          <circle cx="30" cy="-30" r="5"/>
+          <path fill="none" stroke="currentcolor" stroke-width="1" stroke-dasharray="5 5" stroke-dashoffset="2.5" d="M 30 30 H -30 V -30 H 30 z"/>
+          <path class="kbd-pigpen-path" fill="none" stroke="currentcolor" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" d=""/>
+        </g>
+      </svg>
     </div>
     <div id="kbd-pigpen-sugg">
       <div id="kbd-pigpen-row" hidden>
@@ -166,44 +176,22 @@ function modPigpen(cont) {
   </div>
   `;
 
-  const diag = cont.querySelector('#kbd-pigpen-dir');
-  const svg = cont.querySelector('#kbd-pigpen-svg');
-  const path = cont.querySelector('#kbd-pigpen-path');
+  const outer = cont.querySelector('#kbd-pigpen-cont');
+  const svgs = cont.querySelectorAll('.kbd-pigpen-svg');
   const sugg = cont.querySelector('#kbd-pigpen-sugg');
-  let pointer = null;
-  let cRect = null;
-  let arr = [];
-
-  diag.addEventListener('input', () => {
-    svg.dataset.mode = diag.checked ? 'diag' : 'rect';
-    path.setAttribute('d', '');
-  });
-
-  function adjacent(a, b) {
-    const d = a ^ b;
-    return !(d & (d-1));
-  }
-
-  function xya(e) {
-    let x = (e.clientX - cRect.left) / cRect.width * 160 - 80;
-    let y = (e.clientY - cRect.top) / cRect.height * 160 - 80;
-    if(diag.checked)
-      [x, y] = [0.7071*(y + x), 0.7071*(y - x)];
-    let a = (y > 0 ? 2 : 0) + (x > 0 ? 1 : 0);
-    return [x, y, a];
-  }
-
-  function buildPath(arr, cur) {
-    if(cur)
-      return `M ${cur[0]} ${cur[1]} L` + arr.map(a => ` ${a&1?40:-40} ${a&2?40:-40}`).join();
-    else
-      return `M ` + arr.map(a => ` ${a&1?40:-40} ${a&2?40:-40}`).join(' L ');
-  }
+  const reset_funcs = [];
 
   const wRect = [6, 14, 12, 7, 15, 13, 3, 11, 9];
   const wDiag = [6, 3, 12, 9];
 
-  function updateSugg() {
+  function reset() {
+    for(const func of reset_funcs)
+      func();
+    outer.dataset.mode = 'rect';
+    cancelKey.hidden = true;
+  }
+
+  function showSugg(arr, diag) {
     let w = 0;
     for(let i = 1; i < arr.length; i++) {
       const flip = arr[i] ^ arr[i - 1];
@@ -213,10 +201,10 @@ function modPigpen(cont) {
         : other ? 1 : 3;
       w |= 1 << bit;
     }
-    const i = (diag.checked ? wDiag : wRect).indexOf(w);
+    const i = (diag ? wDiag : wRect).indexOf(w);
     const keys = [];
     if(i >= 0) {
-      if(!diag.checked) {
+      if(!diag) {
         keys.push([], []);
         for(let j = 0; j < 3; j++) {
           keys[0].push(0xF100 + 3*i + j);
@@ -226,80 +214,110 @@ function modPigpen(cont) {
       } else {
         keys[2] = [0xF132 + 2*i, 0xF132 + 2*i + 1];
       }
-    }
-    for(let j = 0; j < 3; j++) {
-      const row = sugg.children[j];
-      if(keys[j]) {
-        for(let k = 0; k < keys[j].length; k++)
-          row.children[k].textContent = String.fromCodePoint(keys[j][k]);
-        row.hidden = false;
-      } else
-        row.hidden = true;
-    }
+
+      for(let j = 0; j < 3; j++) {
+        const row = sugg.children[j];
+        if(keys[j]) {
+          for(let k = 0; k < keys[j].length; k++)
+            row.children[k].textContent = String.fromCodePoint(keys[j][k]);
+          row.hidden = false;
+        } else
+          row.hidden = true;
+      }
+      outer.dataset.mode = 'sugg';
+      cancelKey.hidden = false;
+    } else
+      reset();
   }
 
-  svg.addEventListener('pointerdown', e => {
-    if(pointer !== null)
-      return;
-    pointer = e.pointerId;
-    svg.setPointerCapture(pointer);
-    cRect = svg.getBoundingClientRect();
-    const [x, y, a] = xya(e);
-    arr = [a];
-  });
+  svgs.forEach(svg => {
+    const path = svg.querySelector('.kbd-pigpen-path');
+    const diag = +svg.dataset.diag;
+    let pointer = null;
+    let cRect = null;
+    let arr = [];
 
-  svg.addEventListener('pointermove', e => {
-    if(e.pointerId !== pointer)
-      return;
-    const [x, y, a] = xya(e);
-    if(adjacent(a, arr[0])) {
-      const i = arr.indexOf(a);
-      if(i == -1 || i == 3)
-        arr.unshift(a);
+    function adjacent(a, b) {
+      const d = a ^ b;
+      return !(d & (d-1));
     }
-    if(arr.length == 5) {
+
+    function xya(e) {
+      let x = (e.clientX - cRect.left) / cRect.width * 100 - 50;
+      let y = (e.clientY - cRect.top) / cRect.height * 100 - 50;
+      if(diag)
+        [x, y] = [0.7071*(y + x), 0.7071*(y - x)];
+      let a = (y > 0 ? 2 : 0) + (x > 0 ? 1 : 0);
+      return [x, y, a];
+    }
+
+    function buildPath(arr, cur) {
+      if(cur)
+        return `M ${cur[0]} ${cur[1]} L` + arr.map(a => ` ${a&1?30:-30} ${a&2?30:-30}`).join();
+      else
+        return `M ` + arr.map(a => ` ${a&1?30:-30} ${a&2?30:-30}`).join(' L ');
+    }
+
+    svg.addEventListener('pointerdown', e => {
+      if(pointer !== null)
+        return;
+      pointer = e.pointerId;
+      svg.setPointerCapture(pointer);
+      cRect = svg.getBoundingClientRect();
+      const [x, y, a] = xya(e);
+      arr = [a];
+    });
+
+    svg.addEventListener('pointermove', e => {
+      if(e.pointerId !== pointer)
+        return;
+      const [x, y, a] = xya(e);
+      if(arr.length < 5 && adjacent(a, arr[0])) {
+        const i = arr.indexOf(a);
+        if(i == -1 || i == 3)
+          arr.unshift(a);
+      }
+      if(arr.length == 5)
+        path.setAttribute('d', buildPath(arr));
+      else
+        path.setAttribute('d', buildPath(arr, [x, y]));
+    });
+
+    svg.addEventListener('pointerup', e => {
+      if(e.pointerId !== pointer)
+        return;
       path.setAttribute('d', buildPath(arr));
+      svg.releasePointerCapture(pointer);
       pointer = null;
-      updateSugg();
-    } else
-      path.setAttribute('d', buildPath(arr, [x, y]));
-  });
+      showSugg(arr, diag);
+    });
 
-  svg.addEventListener('pointerup', e => {
-    if(e.pointerId !== pointer)
-      return;
-    path.setAttribute('d', buildPath(arr));
-    svg.releasePointerCapture(pointer);
-    pointer = null;
-    updateSugg();
-  });
+    svg.addEventListener('pointercancel', e => {
+      if(e.pointerId !== pointer)
+        return;
+      path.setAttribute('d', '');
+      svg.releasePointerCapture(pointer);
+      pointer = null;
+      showSugg(arr, diag);
+    });
 
-  svg.addEventListener('pointercancel', e => {
-    if(e.pointerId !== pointer)
-      return;
-    path.setAttribute('d', '');
-    svg.releasePointerCapture(pointer);
-    pointer = null;
-    updateSugg();
+    reset_funcs.push(() => {
+      path.setAttribute('d', '');
+      arr = [];
+      pointer = null;
+    });
   });
-
-  const reset = () => {
-    path.setAttribute('d', '');
-    arr = [];
-    pointer = null;
-    updateSugg();
-  };
 
   sugg.addEventListener('kbd-input', reset);
 
   return { reset };
 };
 
-function modPolybius(cont, defKey) {
+function modPolybius(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <div id="kbd-polybius">
-    <input type="checkbox" id="kbd-plb-size" class="patch show-state" data-label="6×6">
-    <div id="kbd-plb-vert" class="trans">
+    <div>
+      <span>&#xF00C</span>
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="1">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="2">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="3">
@@ -307,7 +325,8 @@ function modPolybius(cont, defKey) {
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="5">
       <input type="radio" name="kbd-plb-vert" class="patch radio" data-coord="0" data-content="6">
     </div>
-    <div id="kbd-plb-horz" class="trans">
+    <div>
+      <span>&#xF00D</span>
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="1">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="2">
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="3">
@@ -316,8 +335,6 @@ function modPolybius(cont, defKey) {
       <input type="radio" name="kbd-plb-horz" class="patch radio" data-coord="1" data-content="6">
     </div>
   </div>`;
-
-  const lsKey = 'kbd-plb-six';
 
   const deselect = () => {
     for(const elm of cont.querySelectorAll('[type=radio]:checked'))
@@ -330,16 +347,19 @@ function modPolybius(cont, defKey) {
       detail: { key: defKey.textContent }
     }));
     defKey.hidden = true;
+    cancelKey.hidden = true;
     deselect();
   }, 500);
 
   const reset = () => {
     defKey.hidden = true;
+    cancelKey.hidden = true;
     deselect();
   };
 
   cont.firstElementChild.addEventListener('input', () => {
     const q = cont.querySelectorAll('[type=radio]:checked');
+    cancelKey.hidden = q.length !== 1;
     if(q.length === 2) {
       const coord = [];
       for(const elm of q)
@@ -350,30 +370,14 @@ function modPolybius(cont, defKey) {
     }
   });
 
-  cont.querySelector('#kbd-plb-size').addEventListener('change', e =>
-    localStorage[lsKey] = +e.currentTarget.checked);
-
-  cont.querySelector('#kbd-plb-size').checked = +localStorage[lsKey];
-
   return { reset };
 }
 
-function modSegment(cont, defKey) {
+function modSegment(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <div id="kbd-sgm">
-    <div id="kbd-sgm-back">&#xF1FF;</div>
+    <div id="kbd-sgm-back">&#xF012;</div>
     <div id="kbd-sgm-fore">&#xF180;</div>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160">
-      <g font-size="12" text-anchor="middle" fill="currentcolor">
-        <text x="0" y="-50">a</text>
-        <text x="26" y="-24">b</text>
-        <text x="26" y="30">c</text>
-        <text x="0" y="56">d</text>
-        <text x="-27" y="30">e</text>
-        <text x="-27" y="-24">f</text>
-        <text x="0" y="2">g</text>
-      </g>
-    </svg>
   </div>`;
 
   const state = Object.defineProperty({}, 'value', {
@@ -383,6 +387,7 @@ function modSegment(cont, defKey) {
         = cont.querySelector('#kbd-sgm-fore').textContent
         = String.fromCodePoint(0xF180 + v);
       defKey.hidden = v === 0;
+      cancelKey.hidden = v === 0;
     },
     get() {
       return this._v;
@@ -414,7 +419,7 @@ function modSegment(cont, defKey) {
   return { reset };
 }
 
-function modSemaphore(cont, defKey) {
+function modSemaphore(cont, defKey, cancelKey) {
   cont.innerHTML = `
   <svg id="kbd-smp" xmlns="http://www.w3.org/2000/svg" viewBox="-80 -80 160 160">
     <defs>
@@ -470,6 +475,7 @@ function modSemaphore(cont, defKey) {
       while(sel.length > 2)
         sel.shift();
     }
+    cancelKey.hidden = sel.length !== 1;
     for(const elm of cont.querySelectorAll('use'))
       elm.classList.toggle('selected', sel.includes(elm.dataset.pos));
     if(sel.length == 2) {
@@ -484,7 +490,7 @@ function modSemaphore(cont, defKey) {
   return { reset };
 }
 
-function modFlags(cont) {
+function modFlags(cont, defKey, cancelKey) {
   const flgColors = [
     9, 4, 13, 10, 12, 5, 10, 5, 18, 9, 10, 18, 9, 9, 6, 9, 2, 6, 9, 13, 5, 5, 13, 9, 6, 30,
     6, 5, 9, 13, 5, 10, 17, 6, 5, 23,
@@ -524,15 +530,19 @@ function modFlags(cont) {
         cond += +elm.dataset.value;
     for(let i = 0; i < 46; i++)
       children[i].hidden = !((flgColors[i] & cond) === cond);
+    cancelKey.hidden = cond === 0;
+  }
+
+  function reset() {
+    for(const ckbox of cont.querySelector('#kbd-flg-colors').children)
+      ckbox.checked = false;
+    filter();
   }
 
   cont.querySelector('#kbd-flg-colors').addEventListener('input', filter);
+  cont.querySelector('#kbd-flg-sugg').addEventListener('kbd-input', reset);
 
-  cont.querySelector('#kbd-flg-sugg').addEventListener('kbd-input', () => {
-    for(const elm of cont.querySelector('#kbd-flg-colors').children)
-      elm.checked = false;
-    filter();
-  });
+  return { reset };
 }
 
 function modMobile(cont) {
@@ -665,6 +675,8 @@ class KeyboardElement extends HTMLElement {
         case 'default':
           sendInsert(e.target, e.target.textContent);
           break;
+        case 'cancel':
+          break;
         default:
           sendInsert(e.target, e.target.textContent);
           break;
@@ -703,6 +715,8 @@ class KeyboardElement extends HTMLElement {
     this.openModule(mod);
     this.hidden = false;
     const cb = e => {
+      if(window.debugModal)
+        return;
       if(e.relatedTarget === this) {
         this._target.focus();
         return;
@@ -725,12 +739,14 @@ class KeyboardElement extends HTMLElement {
   openModule(mod) {
     const cont = this.shadowRoot.getElementById('module');
     const defKey = this.shadowRoot.getElementById('default');
+    const cancelKey = this.shadowRoot.getElementById('cancel');
     defKey.hidden = true;
+    cancelKey.hidden = true;
     if(mod === 'default') {
       if(this._exit)
         this._exit();
     } else
-      this._module = modules[mod](cont, defKey);
+      this._module = modules[mod](cont, defKey, cancelKey);
   }
 }
 

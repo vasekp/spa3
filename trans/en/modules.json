@@ -1,5 +1,9 @@
 [
   {
+    "moduleName": "list",
+    "displayName": "Choose module"
+  },
+  {
     "moduleName": "logbook",
     "displayName": "Logbook"
   },
