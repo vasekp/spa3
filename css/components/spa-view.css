@@ -11,18 +11,21 @@
   display: flex;
 }
 
-#titlebar button {
-  margin-left: var(--margin-base);
-}
-
-#title {
+#title, #home {
   flex: 1;
   font-weight: 600;
 }
 
-:host(:not([data-module="list"])) #title::before {
-  content: "\2190";
-  margin-right: var(--margin-small);
+#home {
+  flex: 0 auto;
+  width: 1rem;
+  height: 1rem;
+  line-height: 1rem;
+  text-align: left;
+}
+
+:host([data-module="list"]) #home {
+  display: none;
 }
 
 #settings {
