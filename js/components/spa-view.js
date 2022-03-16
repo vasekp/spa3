@@ -10,7 +10,7 @@ template.innerHTML = `
 <div id="titlebar">
   <button id="home" class="inline">&#x2190;</button>
   <label for="home" id="title"></label>
-  <button id="settings"><img class="inline" src="images/settings.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
+  <button id="settings" class="inline"><img class="inline" src="images/settings.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
 </div>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>

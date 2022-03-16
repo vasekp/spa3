@@ -69,7 +69,7 @@ textarea {
   width: 1em;
   flex: none;
   box-sizing: content-box;
-  vertical-align: var(--valign-em);
+  vertical-align: top;
   align-self: center;
 }
 
