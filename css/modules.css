@@ -115,12 +115,12 @@ input[type="radio"].patch.show-state:checked::before {
   grid-column: 1 / 6;
 }
 
-#m-set-update[data-up-to-date="true"] #m-set-update-now,
-#m-set-update[data-up-to-date="false"] #m-set-update-uptodate {
+#m-set-update[data-offline="available"] #m-set-update-status,
+#m-set-update:not([data-offline="available"]) #m-set-update-now {
   display: none;
 }
 
-#m-set-update-uptodate::before {
+#m-set-update[data-offline="uptodate"]) #m-set-update-status::before {
   content: "\2713";
   font-weight: 800;
   color: green;
