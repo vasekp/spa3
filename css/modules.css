@@ -218,6 +218,17 @@ input[type="radio"].patch.show-state:checked::before {
   display: none;
 }
 
+#m-set-update-now::before {
+  content: "";
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  vertical-align: var(--valign-em);
+  background-image: url("../images/download.svg");
+  background-size: 1em 1em;
+  margin-right: var(--font-space);
+}
+
 #m-set-update-now::after {
   display: inline;
   content: " (" attr(data-update-size) ")";
