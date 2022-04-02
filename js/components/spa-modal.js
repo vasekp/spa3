@@ -16,6 +16,10 @@ export default class ModalElement extends ContainerElement {
       if(e.target === this)
         this.hide();
     });
+    this.addEventListener('keydown', e => {
+      if(e.key === 'Escape')
+        this.hide();
+    });
   }
 
   connectedCallback() {

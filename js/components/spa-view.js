@@ -8,8 +8,9 @@ template.innerHTML = `
 <link rel="stylesheet" type="text/css" href="css/components/spa-view.css"/>
 <link rel="stylesheet" type="text/css" href="css/modules.css"/>
 <div id="titlebar">
-  <span id="title"></span>
-  <button id="settings"><img class="inline" src="images/settings.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
+  <button id="home" class="inline">&#x2190;</button>
+  <label for="home" id="title"></label>
+  <button id="settings" class="inline"><img class="inline" src="images/settings.svg"/><img id="update-ticker" src="images/update-ticker.svg"/></button>
 </div>
 <div id="content"></div>
 <spa-modal id="settings-modal" hidden>
@@ -24,7 +25,7 @@ class ViewElement extends HTMLElement {
     super();
     const root = this.attachShadow({mode: 'open'});
     root.appendChild(template.content.cloneNode(true));
-    root.getElementById('title').addEventListener('click', e => main.loadModule(this.id, 'list'));
+    root.getElementById('home').addEventListener('click', e => main.loadModule(this.id, 'list'));
     const settings = root.getElementById('settings-modal');
     root.getElementById('settings').addEventListener('click', () => {
       const s1 = root.getElementById('shared-settings-container');
