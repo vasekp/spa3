@@ -2,23 +2,28 @@
   "name": "_(title)",
   "icons": [
     {
-      "src": "images/icon.png",
+      "src": "images/icon-512px.png",
       "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-192px.png",
+      "sizes": "192x192",
       "purpose": "any"
     },
     {
       "src": "images/icon.svg",
-      "sizes": "512x512",
+      "sizes": "any",
       "purpose": "any"
     },
     {
       "src": "images/icon-maskable.svg",
-      "sizes": "512x512",
+      "sizes": "any",
       "purpose": "maskable"
     }
   ],
   "background_color": "#fff",
-  "theme_color": "#ccc",
+  "theme_color": "#fff",
   "start_url": "index.html",
   "display": "standalone"
 }

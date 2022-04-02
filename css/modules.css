@@ -97,11 +97,11 @@ input[type="radio"].patch.show-state:checked::before {
   margin-bottom: 0;
 }
 
-.settings > div > label {
+.settings label {
   grid-column: 1 / 3;
 }
 
-.settings > div > label + * {
+.settings label + * {
   grid-column: 3 / 6;
 }
 
@@ -201,14 +201,37 @@ input[type="radio"].patch.show-state:checked::before {
   margin-right: var(--margin-small);
 }
 
+#m-set-update[data-offline="available"] #m-set-update-status,
+#m-set-update:not([data-offline="available"]) #m-set-update-now {
+  display: none;
+}
+
 #m-set-update[data-active] > button,
 #m-set-update:not([data-active]) > .spa-loading {
   display: none;
 }
 
+#m-set-update-now::before {
+  content: "";
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  vertical-align: var(--valign-em);
+  background-image: url("../images/download.svg");
+  background-size: 1em 1em;
+  margin-right: var(--font-space);
+}
+
 #m-set-update-now::after {
   display: inline;
   content: " (" attr(data-update-size) ")";
+}
+
+#m-set-update[data-offline="uptodate"] #m-set-update-status::before {
+  content: "\2713";
+  font-weight: 800;
+  color: green;
+  margin-right: var(--margin-tiny);
 }
 
 #m-share-modal img {

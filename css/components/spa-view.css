@@ -30,11 +30,15 @@
 }
 
 #update-ticker {
-  display: var(--display-update);
+  display: none;
   position: absolute;
   right: -.1em;
   top: calc((var(--line-height-base) - 1em + var(--font-ascent) - var(--font-descent) - var(--font-cap-size)) / 2 - .1em);
   width: 1rem;
   height: 1rem;
   pointer-events: none;
+}
+
+:host(.updateTicker) #update-ticker {
+  display: initial;
 }
