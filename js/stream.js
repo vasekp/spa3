@@ -158,11 +158,13 @@ export default function(root) {
     }));
   }
 
-  function histclear() {
+  function clear() {
     sendCommand('histclear', {vars: Object.entries(saveVars)})
     const pDiv = root.getElementById('hist');
     while(pDiv.firstChild)
       pDiv.removeChild(pDiv.firstChild);
+    textbox.value = '';
+    textbox.focus();
   }
 
   function viewClick() {
@@ -363,7 +365,7 @@ export default function(root) {
   });
   root.getElementById('run').addEventListener('click', run);
   root.getElementById('prev').addEventListener('click', prev);
-  root.getElementById('clear').addEventListener('click', histclear);
+  root.getElementById('clear').addEventListener('click', clear);
   root.getElementById('help').addEventListener('click', _ => location.assign(`js/stream/help.html?lang=${i18n.lang}`));
   root.getElementById('view').addEventListener('click', viewClick);
   root.getElementById('in').addEventListener('focusin', () => {

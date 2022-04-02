@@ -113,15 +113,20 @@
 
 #kbd-morse {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(5, var(--line-height-base));
+  grid-column-gap: var(--margin-extra);
   justify-content: center;
   align-content: space-evenly;
 }
 
+#kbd-morse > :first-child {
+  grid-column: 2/3;
+}
+
 #kbd-morse-telegraph {
-  grid-column: 1/4;
+  grid-column: 1/6;
   width: auto;
-  height: 3em;
+  height: 6em;
   touch-action: none;
 }
 
