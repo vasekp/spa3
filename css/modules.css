@@ -115,18 +115,6 @@ input[type="radio"].patch.show-state:checked::before {
   grid-column: 1 / 6;
 }
 
-#m-set-update[data-offline="available"] #m-set-update-status,
-#m-set-update:not([data-offline="available"]) #m-set-update-now {
-  display: none;
-}
-
-#m-set-update[data-offline="uptodate"]) #m-set-update-status::before {
-  content: "\2713";
-  font-weight: 800;
-  color: green;
-  margin-right: var(--margin-tiny);
-}
-
 .svg-cb svg,
 .img-cb img {
   height: 1em;
@@ -213,6 +201,11 @@ input[type="radio"].patch.show-state:checked::before {
   margin-right: var(--margin-small);
 }
 
+#m-set-update[data-offline="available"] #m-set-update-status,
+#m-set-update:not([data-offline="available"]) #m-set-update-now {
+  display: none;
+}
+
 #m-set-update[data-active] > button,
 #m-set-update:not([data-active]) > .spa-loading {
   display: none;
@@ -232,6 +225,13 @@ input[type="radio"].patch.show-state:checked::before {
 #m-set-update-now::after {
   display: inline;
   content: " (" attr(data-update-size) ")";
+}
+
+#m-set-update[data-offline="uptodate"] #m-set-update-status::before {
+  content: "\2713";
+  font-weight: 800;
+  color: green;
+  margin-right: var(--margin-tiny);
 }
 
 #m-share-modal img {
