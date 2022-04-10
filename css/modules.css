@@ -247,3 +247,7 @@ input[type="radio"].patch.show-state:checked::before {
   margin-top: var(--margin-small);
   text-align: center;
 }
+
+.set-radiogroup input {
+  margin-right: var(--margin-base);
+}

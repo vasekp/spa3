@@ -3,6 +3,7 @@ import './components/spa-textbox.js';
 import {decode, DecodeError} from './codec.js';
 import Enum from './util/enum.js';
 import * as i18n from './i18n.js';
+import {keyboardSettings} from './components/spa-keyboard.js';
 
 const lsKeys = Enum.fromObj({
   pigpen1: 'dec-pp1',
@@ -49,6 +50,7 @@ export default function(root) {
       conf[e.target.name] = e.target.dataset.value;
       update();
     });
+    keyboardSettings(cont);
   }
 
   return { populateSettings };

@@ -1,5 +1,7 @@
 import './spa-scroll.js';
+import Enum from '../util/enum.js';
 import debounce from '../util/debounce.js';
+import * as i18n from '../i18n.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
@@ -26,6 +28,18 @@ template.innerHTML = `
   <button class="key" id="bsp">&#x232B;</button>
   <button class="key" id="enter">&#x21B5;</button>
 </div>`;
+
+const settingsHTML = `
+<label>_(kbd:morse speed)</label>
+<div class="set-radiogroup" id="spa-kbd-set-morse-speed">
+  <input type="radio" name="morse-speed" class="patch show-state" data-value="10" data-label="10 WPM"/>
+  <input type="radio" name="morse-speed" class="patch show-state" data-value="15" data-label="15 WPM"/>
+  <input type="radio" name="morse-speed" class="patch show-state" data-value="20" data-label="20 WPM"/>
+</div>`;
+
+const lsKeys = Enum.fromObj({
+  morseSpeed: 'spa-morse-speed'
+});
 
 function modBraille(cont, defKey, cancelKey) {
   cont.innerHTML = `
@@ -95,13 +109,16 @@ function modMorse(cont) {
 
   const key = cont.querySelector('#kbd-morse-telegraph');
 
+  const wpm = +localStorage[lsKeys.morseSpeed] ?? 10;
+  const threshold = 1000 * 60 / 48 / wpm * 2;
+
   const debAddSeparator = debounce(x => {
     if(x)
     cont.dispatchEvent(new CustomEvent('kbd-input', {
       bubbles: true,
       detail: { key: String.fromCodePoint(0xF00A) }
     }));
-  }, 500);
+  }, 2 * threshold);
 
   let pointer = null;
   let time;
@@ -121,7 +138,7 @@ function modMorse(cont) {
     const delta = e.timeStamp - time;
     cont.dispatchEvent(new CustomEvent('kbd-input', {
       bubbles: true,
-      detail: { key: String.fromCodePoint(delta < 250 ? 0xF008 : 0xF009) }
+      detail: { key: String.fromCodePoint(delta < threshold ? 0xF008 : 0xF009) }
     }));
     debAddSeparator(true);
   });
@@ -748,6 +765,16 @@ class KeyboardElement extends HTMLElement {
     } else
       this._module = modules[mod](cont, defKey, cancelKey);
   }
+}
+
+export function keyboardSettings(cont) {
+  const tmp = document.createElement('template');
+  tmp.innerHTML = i18n.useTemplate(settingsHTML);
+  cont.append(tmp.content.cloneNode(true));
+  cont.querySelector(`input[name="morse-speed"][data-value="${localStorage[lsKeys.morseSpeed] ?? "10"}"]`).checked = true;
+  cont.querySelector('#spa-kbd-set-morse-speed').addEventListener('input', e => {
+    localStorage[lsKeys.morseSpeed] = e.target.dataset.value;
+  });
 }
 
 window.customElements.define('spa-keyboard', KeyboardElement);
