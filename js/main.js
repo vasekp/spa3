@@ -38,8 +38,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('shared-settings').innerHTML = await i18n.loadTemplate('html/shared-settings.html');
   /* Generate manifest */
   const manifest = JSON.parse(await i18n.loadTemplate('manifest.json'));
-  if(getTheme() === 'dark')
-    manifest.background_color = manifest.theme_color = '#000000';
   const urlPrefix = document.URL.substring(0, document.URL.lastIndexOf('/') + 1);
   manifest.start_url = urlPrefix + manifest.start_url;
   for(const entry of manifest.icons)
@@ -123,6 +121,7 @@ export function populateSettings(elm) {
 
 function setTheme(theme, save = true) {
   document.documentElement.classList.toggle('dark', theme === 'dark');
+  document.head.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#000' : '#fff';
   if(save)
     localStorage[lsKeys.theme] = theme;
 }
