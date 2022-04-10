@@ -16,5 +16,6 @@
   "about app": "About",
   "homepage": "Project homepage",
   "report bug": "Report a bug",
-  "share link": "Share link"
+  "share link": "Share link",
+  "kbd:morse speed": "Morse speed:"
 }
