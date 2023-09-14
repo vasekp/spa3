@@ -50,6 +50,10 @@ button.patch {
   content: "\d7";
 }
 
+input[data-label] {
+  width: auto;
+}
+
 input[data-label]::after,
 button[data-label]::after {
   content: attr(data-label);
