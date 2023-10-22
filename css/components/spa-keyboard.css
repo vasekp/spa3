@@ -47,6 +47,9 @@
 
 #default {
   grid-area: 1/4/2/5;
+}
+
+#default[data-ready="1"] {
   background: var(--color-bg-emph);
 }
 
@@ -241,12 +244,6 @@
   font-size: 70%;
 }
 
-#kbd-digits {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 #kbd-mobile {
   display: grid;
   grid-template-columns: repeat(3, minmax(min-content, calc(3rem + var(--margin-base))));
@@ -262,7 +259,19 @@
   ruby-position: under;
 }
 
+/*#kbd-digits {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #kbd-digits div {
   display: flex;
   justify-content: center;
+}*/
+
+#kbd-colors {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }

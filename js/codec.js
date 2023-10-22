@@ -162,6 +162,15 @@ class Semaphore {
   }
 }
 
+class Permuts {
+  // TODO conf: which two letters missing
+  static dec = (c, ch) => c < 16 ? latin(c + 1) : c < 21 ? latin(c + 2) : latin(c + 3);
+
+  static decoder() {
+    return this.dec;
+  }
+}
+
 const map = [
   [0x2800, Braille],
   [0x2840, null],
@@ -176,7 +185,9 @@ const map = [
   [0xF800, Flags],
   [0xF840, null],
   [0xF880, Semaphore],
-  [0xF8C0, null]
+  [0xF8C0, null],
+  [0xF8E8, Permuts],
+  [0xF900, null]
 ].reduce((() => {
   let lastClass = null;
   let lastStart = 0;

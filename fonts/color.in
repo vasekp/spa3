@@ -601,39 +601,46 @@ smp.6.red 2
 smp.7.yellow 1
 smp.7.red 2
 
-uniF840 2
+uniF840 5
 colors.outer -1
-colors.inner 4
+uniF840.1 2
+uniF840.2 1
+uniF840.3 5
+uniF840.4 3
 
 uniF841 2
 colors.outer -1
-colors.inner 0
+colors.inner 4
 
 uniF842 2
 colors.outer -1
-colors.inner 2
+colors.inner 0
 
 uniF843 2
 colors.outer -1
-colors.inner 8
+colors.inner 2
 
 uniF844 2
 colors.outer -1
-colors.inner 1
+colors.inner 8
 
 uniF845 2
 colors.outer -1
-colors.inner 5
+colors.inner 1
 
 uniF846 2
 colors.outer -1
-colors.inner 6
+colors.inner 5
 
 uniF847 2
 colors.outer -1
-colors.inner 3
+colors.inner 6
 
 uniF848 2
+colors.outer -1
+colors.inner 3
+
+uniF849 2
 colors.outer -1
 colors.inner 7
 

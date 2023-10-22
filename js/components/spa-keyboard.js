@@ -18,7 +18,7 @@ template.innerHTML = `
     <button data-mod="smph">&#xF883;</button>
     <button data-mod="flags">&#xF801;</button>
     <button data-mod="mobile">&#xF00B;</button>
-    <button data-mod="digits">123</button>
+    <button data-mod="colors">&#xF840;</button>
     <button data-mod="default">Aa</button>
   </div>
   <div id="module"></div>
@@ -604,7 +604,7 @@ function modMobile(cont) {
   });
 }
 
-function modDigits(cont) {
+/*function modDigits(cont) {
   cont.innerHTML = `
   <div id="kbd-digits">
     <div>
@@ -630,6 +630,73 @@ function modDigits(cont) {
       <button class="key">F</button>
     </div>
   </div>`;
+}*/
+
+function modColors(cont, defKey, cancelKey) {
+  cont.innerHTML = `
+  <div id="kbd-colors">
+    <button class="patch c-red" data-color="param" data-value="0"></button>
+    <button class="patch c-yellow" data-color="param" data-value="1"></button>
+    <button class="patch c-green" data-color="param" data-value="2"></button>
+    <button class="patch c-blue" data-color="param" data-value="3"></button>
+  </div>`;
+
+  const perm = [];
+
+  const deselect = () => {
+    for(const elm of cont.querySelectorAll('button'))
+      elm.dataset.content = '';
+    perm.splice(0);
+  };
+
+  const dbConfirm = debounce(() => {
+    if(perm.length !== 4)
+      return;
+    cont.dispatchEvent(new CustomEvent('kbd-input', {
+      bubbles: true,
+      detail: { key: defKey.textContent }
+    }));
+    cancelKey.hidden = defKey.hidden = true;
+    deselect();
+  }, 500);
+
+  const reset = () => {
+    cancelKey.hidden = defKey.hidden = true;
+    deselect();
+  };
+
+  const charCode = () => {
+    const p = perm.slice();
+    for(let i = 0; i < p.length - 1; i++)
+      for(let j = i+1; j < p.length; j++)
+        if(p[j] > p[i])
+          p[j]--;
+    console.log(p);
+    switch(perm.length) {
+      case 0: return '';
+      case 1: return 0xF8C0 + p[0];
+      case 2: return 0xF8C4 + p[0] * 3 + p[1];
+      case 3: return 0xF8D0 + p[0] * 6 + p[1] * 2 + p[2];
+      case 4: return 0xF8E8 + p[0] * 6 + p[1] * 2 + p[2];
+      default: throw new Error('invalid perm');
+    }
+  }
+
+  cont.firstElementChild.addEventListener('click', e => {
+    const tgt = e.target;
+    if(tgt.tagName != 'BUTTON' || perm.includes(+tgt.dataset.value))
+      return;
+    perm.push(+tgt.dataset.value);
+    tgt.dataset.content = perm.length;
+    cancelKey.hidden = false;
+    defKey.textContent = String.fromCodePoint(charCode());
+    cancelKey.hidden = defKey.hidden = false;
+    defKey.dataset.ready = +(perm.length === 4);
+    if(perm.length == 4)
+      dbConfirm();
+  });
+
+  return { reset };
 }
 
 const modules = {
@@ -641,7 +708,8 @@ const modules = {
   smph: modSemaphore,
   flags: modFlags,
   mobile: modMobile,
-  digits: modDigits,
+  //digits: modDigits,
+  colors: modColors,
 };
 
 function insert(tgt, key, opts = {}) {
@@ -690,7 +758,10 @@ class KeyboardElement extends HTMLElement {
         case 'bsp':
           break;
         case 'default':
-          sendInsert(e.target, e.target.textContent);
+          if(+e.target.dataset.ready)
+            sendInsert(e.target, e.target.textContent);
+          else
+            return;
           break;
         case 'cancel':
           break;
@@ -758,6 +829,7 @@ class KeyboardElement extends HTMLElement {
     const defKey = this.shadowRoot.getElementById('default');
     const cancelKey = this.shadowRoot.getElementById('cancel');
     defKey.hidden = true;
+    defKey.dataset.ready = 1;
     cancelKey.hidden = true;
     if(mod === 'default') {
       if(this._exit)
