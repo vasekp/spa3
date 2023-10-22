@@ -1,9 +1,13 @@
-5
+9
 FFFFFFFF
 FFFF00FF
 FF0000FF
 0000FFFF
 000000FF
+00FF00FF
+00FFFFFF
+FF00FFFF
+FF8000FF
 
 unif801 6
 unif801.white 0
@@ -596,3 +600,427 @@ smp.6.yellow 1
 smp.6.red 2
 smp.7.yellow 1
 smp.7.red 2
+
+uniF840 2
+colors.outer -1
+colors.inner 4
+
+uniF841 2
+colors.outer -1
+colors.inner 0
+
+uniF842 2
+colors.outer -1
+colors.inner 2
+
+uniF843 2
+colors.outer -1
+colors.inner 8
+
+uniF844 2
+colors.outer -1
+colors.inner 1
+
+uniF845 2
+colors.outer -1
+colors.inner 5
+
+uniF846 2
+colors.outer -1
+colors.inner 6
+
+uniF847 2
+colors.outer -1
+colors.inner 3
+
+uniF848 2
+colors.outer -1
+colors.inner 7
+
+uniF8C0 2
+perm.outer -1
+perm.inner1 2
+
+uniF8C1 2
+perm.outer -1
+perm.inner1 1
+
+uniF8C2 2
+perm.outer -1
+perm.inner1 5
+
+uniF8C3 2
+perm.outer -1
+perm.inner1 3
+
+uniF8C4 3
+perm.outer -1
+perm.inner1 2
+perm.inner2 1
+
+uniF8C5 3
+perm.outer -1
+perm.inner1 2
+perm.inner2 5
+
+uniF8C6 3
+perm.outer -1
+perm.inner1 2
+perm.inner2 3
+
+uniF8C7 3
+perm.outer -1
+perm.inner1 1
+perm.inner2 2
+
+uniF8C8 3
+perm.outer -1
+perm.inner1 1
+perm.inner2 5
+
+uniF8C9 3
+perm.outer -1
+perm.inner1 1
+perm.inner2 3
+
+uniF8CA 3
+perm.outer -1
+perm.inner1 5
+perm.inner2 2
+
+uniF8CB 3
+perm.outer -1
+perm.inner1 5
+perm.inner2 1
+
+uniF8CC 3
+perm.outer -1
+perm.inner1 5
+perm.inner2 3
+
+uniF8CD 3
+perm.outer -1
+perm.inner1 3
+perm.inner2 2
+
+uniF8CE 3
+perm.outer -1
+perm.inner1 3
+perm.inner2 1
+
+uniF8CF 3
+perm.outer -1
+perm.inner1 3
+perm.inner2 5
+
+uniF8D0 4
+perm.outer -1
+perm.inner1 2
+perm.inner2 1
+perm.inner3 5
+
+uniF8D1 4
+perm.outer -1
+perm.inner1 2
+perm.inner2 1
+perm.inner3 3
+
+uniF8D2 4
+perm.outer -1
+perm.inner1 2
+perm.inner2 5
+perm.inner3 1
+
+uniF8D3 4
+perm.outer -1
+perm.inner1 2
+perm.inner2 5
+perm.inner3 3
+
+uniF8D4 4
+perm.outer -1
+perm.inner1 2
+perm.inner2 3
+perm.inner3 1
+
+uniF8D5 4
+perm.outer -1
+perm.inner1 2
+perm.inner2 3
+perm.inner3 5
+
+uniF8D6 4
+perm.outer -1
+perm.inner1 1
+perm.inner2 2
+perm.inner3 5
+
+uniF8D7 4
+perm.outer -1
+perm.inner1 1
+perm.inner2 2
+perm.inner3 3
+
+uniF8D8 4
+perm.outer -1
+perm.inner1 1
+perm.inner2 5
+perm.inner3 2
+
+uniF8D9 4
+perm.outer -1
+perm.inner1 1
+perm.inner2 5
+perm.inner3 3
+
+uniF8DA 4
+perm.outer -1
+perm.inner1 1
+perm.inner2 3
+perm.inner3 2
+
+uniF8DB 4
+perm.outer -1
+perm.inner1 1
+perm.inner2 3
+perm.inner3 5
+
+uniF8DC 4
+perm.outer -1
+perm.inner1 5
+perm.inner2 2
+perm.inner3 1
+
+uniF8DD 4
+perm.outer -1
+perm.inner1 5
+perm.inner2 2
+perm.inner3 3
+
+uniF8DE 4
+perm.outer -1
+perm.inner1 5
+perm.inner2 1
+perm.inner3 2
+
+uniF8DF 4
+perm.outer -1
+perm.inner1 5
+perm.inner2 1
+perm.inner3 3
+
+uniF8E0 4
+perm.outer -1
+perm.inner1 5
+perm.inner2 3
+perm.inner3 2
+
+uniF8E1 4
+perm.outer -1
+perm.inner1 5
+perm.inner2 3
+perm.inner3 1
+
+uniF8E2 4
+perm.outer -1
+perm.inner1 3
+perm.inner2 2
+perm.inner3 1
+
+uniF8E3 4
+perm.outer -1
+perm.inner1 3
+perm.inner2 2
+perm.inner3 5
+
+uniF8E4 4
+perm.outer -1
+perm.inner1 3
+perm.inner2 1
+perm.inner3 2
+
+uniF8E5 4
+perm.outer -1
+perm.inner1 3
+perm.inner2 1
+perm.inner3 5
+
+uniF8E6 4
+perm.outer -1
+perm.inner1 3
+perm.inner2 5
+perm.inner3 2
+
+uniF8E7 4
+perm.outer -1
+perm.inner1 3
+perm.inner2 5
+perm.inner3 1
+
+uniF8E8 5
+perm.outer -1
+perm.inner1 2
+perm.inner2 1
+perm.inner3 5
+perm.inner4 3
+
+uniF8E9 5
+perm.outer -1
+perm.inner1 2
+perm.inner2 1
+perm.inner3 3
+perm.inner4 5
+
+uniF8EA 5
+perm.outer -1
+perm.inner1 2
+perm.inner2 5
+perm.inner3 1
+perm.inner4 3
+
+uniF8EB 5
+perm.outer -1
+perm.inner1 2
+perm.inner2 5
+perm.inner3 3
+perm.inner4 1
+
+uniF8EC 5
+perm.outer -1
+perm.inner1 2
+perm.inner2 3
+perm.inner3 1
+perm.inner4 5
+
+uniF8ED 5
+perm.outer -1
+perm.inner1 2
+perm.inner2 3
+perm.inner3 5
+perm.inner4 1
+
+uniF8EE 5
+perm.outer -1
+perm.inner1 1
+perm.inner2 2
+perm.inner3 5
+perm.inner4 3
+
+uniF8EF 5
+perm.outer -1
+perm.inner1 1
+perm.inner2 2
+perm.inner3 3
+perm.inner4 5
+
+uniF8F0 5
+perm.outer -1
+perm.inner1 1
+perm.inner2 5
+perm.inner3 2
+perm.inner4 3
+
+uniF8F1 5
+perm.outer -1
+perm.inner1 1
+perm.inner2 5
+perm.inner3 3
+perm.inner4 2
+
+uniF8F2 5
+perm.outer -1
+perm.inner1 1
+perm.inner2 3
+perm.inner3 2
+perm.inner4 5
+
+uniF8F3 5
+perm.outer -1
+perm.inner1 1
+perm.inner2 3
+perm.inner3 5
+perm.inner4 2
+
+uniF8F4 5
+perm.outer -1
+perm.inner1 5
+perm.inner2 2
+perm.inner3 1
+perm.inner4 3
+
+uniF8F5 5
+perm.outer -1
+perm.inner1 5
+perm.inner2 2
+perm.inner3 3
+perm.inner4 1
+
+uniF8F6 5
+perm.outer -1
+perm.inner1 5
+perm.inner2 1
+perm.inner3 2
+perm.inner4 3
+
+uniF8F7 5
+perm.outer -1
+perm.inner1 5
+perm.inner2 1
+perm.inner3 3
+perm.inner4 2
+
+uniF8F8 5
+perm.outer -1
+perm.inner1 5
+perm.inner2 3
+perm.inner3 2
+perm.inner4 1
+
+uniF8F9 5
+perm.outer -1
+perm.inner1 5
+perm.inner2 3
+perm.inner3 1
+perm.inner4 2
+
+uniF8FA 5
+perm.outer -1
+perm.inner1 3
+perm.inner2 2
+perm.inner3 1
+perm.inner4 5
+
+uniF8FB 5
+perm.outer -1
+perm.inner1 3
+perm.inner2 2
+perm.inner3 5
+perm.inner4 1
+
+uniF8FC 5
+perm.outer -1
+perm.inner1 3
+perm.inner2 1
+perm.inner3 2
+perm.inner4 5
+
+uniF8FD 5
+perm.outer -1
+perm.inner1 3
+perm.inner2 1
+perm.inner3 5
+perm.inner4 2
+
+uniF8FE 5
+perm.outer -1
+perm.inner1 3
+perm.inner2 5
+perm.inner3 2
+perm.inner4 1
+
+uniF8FF 5
+perm.outer -1
+perm.inner1 3
+perm.inner2 5
+perm.inner3 1
+perm.inner4 2
