@@ -13,7 +13,9 @@ const filterBits = Enum.fromObj({
   start: 2,
   end: 4,
   labelMask: 7,
-  norm: 8,
+  lcase: 8,
+  norm: 16,
+  normMask: 24,
 });
 
 const filterLabels = _('rgx:filter types').split('|');
@@ -96,7 +98,7 @@ export default function(root) {
       }
     };
     const i1 = lineIterator(text);
-    const i2 = lineIterator(normalize(text));
+    const i2 = lineIterator(normalize(text, true) + '\n');
     const lines = [];
     for(const line of i1) {
       const {value: lineN} = i2.next();
@@ -181,12 +183,27 @@ export default function(root) {
         case 'neg':
           type = e.target.checked ? type | filterBits.neg : type & ~filterBits.neg;
           break;
+        case 'lcase':
+          type = e.target.checked ? type | filterBits.lcase : type & ~filterBits.lcase;
+          break;
         case 'norm':
           type = e.target.checked ? type | filterBits.norm : type & ~filterBits.norm;
           break;
       }
       div.dataset.type = type;
-      div.querySelector('[data-id="header"]').textContent = filterLabels[type & filterBits.labelMask] + (type & filterBits.norm ? ' (⁎)' : '');
+      let normMarkers = '';
+      switch(type & filterBits.normMask) {
+        case filterBits.norm:
+          normMarkers = ' (Á→A)';
+          break;
+        case filterBits.lcase:
+          normMarkers = ' (Á→á)';
+          break;
+        case filterBits.norm | filterBits.lcase:
+          normMarkers = ' (Á→a)';
+          break;
+      }
+      div.querySelector('[data-id="header"]').textContent = filterLabels[type & filterBits.labelMask] + normMarkers;
     });
     div.addEventListener('click', e => {
       const id = e.target.dataset.id;
@@ -239,19 +256,14 @@ export default function(root) {
       let error = false;
       if(value) {
         try {
-          const re = new RegExp(`${type & filterBits.start ? '^' : ''}${value}${type & filterBits.end ? '$' : ''}`);
+          const re = new RegExp(`${type & filterBits.start ? '^' : ''}(?:${value})${type & filterBits.end ? '$' : ''}`);
           if(re) {
-            if(type & filterBits.norm) {
-              if(type & filterBits.neg)
-                f = append(f, (text, norm) => !re.test(norm));
-              else
-                f = append(f, (text, norm) => re.test(norm));
-            } else {
-              if(type & filterBits.neg)
-                f = append(f, text => !re.test(text));
-              else
-                f = append(f, text => re.test(text));
-            }
+            let src = (type & filterBits.norm) ? 'norm' : 'text';
+            if(type & filterBits.lcase)
+              src += '.toLowerCase()';
+            let cond = `${type & filterBits.neg ? '!' : ''}re.test(${src})`;
+            let fn = eval(`(text, norm) => ${cond}`);
+            f = append(f, fn);
           }
         } catch {
           error = true;

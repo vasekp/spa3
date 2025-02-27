@@ -14,7 +14,8 @@
   "fix": "Uchytit",
   "fix/start": "začátek",
   "fix/end": "konec",
-  "negate": "Negovat",
-  "base form": "Bez velikosti a diakritiky",
+  "negate": "Negovat tuto podmínku",
+  "lowercase": "Převést na malá",
+  "normalize": "Zrušit diakritiku",
   "add filter": "Přidat filtr"
 }

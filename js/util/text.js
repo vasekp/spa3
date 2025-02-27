@@ -10,10 +10,9 @@ const map = {};
     map[patt[i]] = repl[i];
 }
 
-export default function normalize(str) {
-  return str
+export default function normalize(str, keepCase) {
+  return (keepCase ? str : str.toLowerCase())
     .trim()
-    .toLowerCase()
     .normalize()
     .replace(/[^ -~]/g, c => map[c] || c);
 }
