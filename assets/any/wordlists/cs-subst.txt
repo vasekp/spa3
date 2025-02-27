@@ -898,7 +898,6 @@ akonitát
 akonitin
 akontabilita
 akontace
-akorát
 akord
 akordeon
 akordeonista
@@ -1164,7 +1163,6 @@ alergoložka
 alergóza
 alertnost
 Ales
-alespoň
 Alessandrie
 Alessandro
 Aleš
