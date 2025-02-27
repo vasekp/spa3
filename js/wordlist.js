@@ -239,7 +239,7 @@ export default function(root) {
       let error = false;
       if(value) {
         try {
-          const re = new RegExp(`${type & filterBits.start ? '^' : ''}${value}${type & filterBits.end ? '$' : ''}`);
+          const re = new RegExp(`${type & filterBits.start ? '^' : ''}(?:${value})${type & filterBits.end ? '$' : ''}`);
           if(re) {
             if(type & filterBits.norm) {
               if(type & filterBits.neg)
