@@ -14,7 +14,8 @@
   "fix": "Match word",
   "fix/start": "beginning",
   "fix/end": "end",
-  "negate": "Negate",
-  "base form": "Match normalized",
+  "negate": "Negate this rule",
+  "lowercase": "In lowercase",
+  "normalize": "Remove diacritics",
   "add filter": "Add filter"
 }
