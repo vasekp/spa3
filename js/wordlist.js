@@ -29,6 +29,7 @@ const lsKeys = Enum.fromObj({
 
 export default function(root) {
   const list = root.getElementById('list');
+  const listScroll = root.getElementById('list-scroll');
   let linesP = loadFile(localStorage[lsKeys.wordlist]);
   const reLowerCase = /^\p{Ll}/u;
   const io = new IntersectionObserver(entries => {
@@ -118,7 +119,7 @@ export default function(root) {
           yield line[0];
     })();
     io.disconnect();
-    list.scrollIntoView();
+    listScroll.scrollTop = 0;
     if(list.children.length > BASE)
       clearFrom(BASE);
     let cnt = 0;
